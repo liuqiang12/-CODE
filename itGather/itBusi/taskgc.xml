@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package>
+	<task gc="1" rule="com.zone.ics.business.configAnalyse.rule.ConfigAnalyseTaskRule" controller="com.zone.ics.business.configManageComparison.controller.ConfigManageController"/>
+    <task gc="5" rule="com.zone.ics.business.resourceConfig.rule.ResourceConfigTaskRule" controller="com.zone.ics.business.resourceConfig.controller.ResourceConfigUpperController"/>
+    <task gc="6" rule="com.zone.ics.business.configBackUp.rule.ConfigBackUpRule" controller="com.zone.ics.business.configBackUp.controller.ConfigBackUpController"/>
+    <task gc="8" rule="com.zone.ics.business.artificialhand.rule.ArtificialHandTaskRule" controller="com.zone.ics.business.artificialhand.controller.ArtificialHandUpperController"/>
+    <task gc="9" rule="com.zone.ics.business.cap.rule.CapTaskRule" controller="com.zone.ics.business.cap.controller.CapUpperController"/>
+    <task gc="33" rule="com.zone.ics.business.cap.rule.CapTaskRule" controller="com.zone.ics.business.cap.controller.CapUpperController"/>
+    <task gc="11" rule="com.zone.ics.business.lineAnalyse.rule.LineAnalyseTaskRule" controller="com.zone.ics.business.lineAnalyse.controller.LineAnalyseUpperController"/>
+    <task gc="12" rule="com.zone.ics.business.lightDbm.rule.LightDbmRule" controller="com.zone.ics.business.lightDbm.controller.LightDbmController"/>
+    <task gc="18" rule="com.zone.ics.business.routetable.rule.RoutTaskRule" controller="com.zone.ics.business.routetable.controller.RoutTableController"/>
+    <task gc="19" rule="com.zone.ics.business.routetable.rule.RoutTaskRule" controller="com.zone.ics.business.routetable.controller.RoutTableController"/>
+    <task gc="20" rule="com.zone.ics.business.account.rule.AccountRule" controller="com.zone.ics.business.account.controller.AccountSupperController"/>
+    <task gc="22" rule="com.zone.ics.business.porttypegather.rule.PortTypeGatherRule" controller="com.zone.ics.business.porttypegather.controller.PortTypeGatherController"/>
+    <task gc="24" rule="com.zone.ics.business.routprotocol.rule.RoutProtocolRule" controller="com.zone.ics.business.routprotocol.controller.NewRoutProtocolUpperController"/>
+    <task gc="25" rule="com.zone.ics.business.extendcollect.rule.ExtendCollectTaskRule" controller="com.zone.ics.business.extendcollect.controller.ExtendCollectController"/>
+    <task gc="26" rule="com.zone.ics.business.vlanconfig.rule.VlanConfigTaskRule" controller="com.zone.ics.business.vlanconfig.controller.VlanConfigUpperController"/>
+    <task gc="27" rule="com.zone.ics.business.tracert.rule.TracertTaskRule" controller="com.zone.ics.business.tracert.controller.TraceUpperController"/>
+    <task gc="28" rule="com.zone.ics.business.remoteping.rule.RemotePingRule" controller="com.zone.ics.business.remoteping.controller.RemotePingUpperController"/>
+    <task gc="29" rule="com.zone.ics.business.accesscontrol.rule.AccesscontrolRule" controller="com.zone.ics.business.accesscontrol.controller.AccesscontrolSupperController"/>
+    <task gc="32" rule="com.zone.ics.business.clockcheck.rule.ClockCheckRule" controller="com.zone.ics.business.clockcheck.controller.ClockCheckController"/>
+    <task gc="45" rule="com.zone.ics.business.ippoolanalyse.rule.IpPoolAnalyseRule" controller="com.zone.ics.business.ippoolanalyse.controller.IpPoolAnalyseController"/>
+    <task gc="98" rule="com.zone.ics.business.resourcecollect.rule.ResourceCollectRule" controller="com.zone.ics.business.resourcecollect.controller.NewResourceCollectUpperController"/>
+    <task gc="99" rule="com.zone.ics.business.resourceGather.rule.ResourceGatherRule" controller="com.zone.ics.business.resourceGather.controller.NewResourceGatherController"/>
+    <task gc="30" rule="cn.com.zyserv.portal.component.compliancy.gather.rule.CompliancyTaskRule" controller="cn.com.zyserv.portal.component.compliancy.gather.ConfigCompliancyController"/>
+    <task gc="35" rule="com.zone.ics.business.ipam.rule.IpamTaskRule" controller="com.zone.ics.business.ipam.controller.IpamController"/>
+    <task gc="36" rule="com.zone.ics.business.arp.rule.ArpTaskRule" controller="com.zone.ics.business.arp.controller.ArpController"/>
+    <task gc="37" rule="com.zone.ics.business.p2prouting.rule.P2PRoutingRule" controller="com.zone.ics.business.p2prouting.controller.P2PRoutingController"/>
+    <task gc="38" rule="com.zone.ics.business.vpn.rule.VpnTaskRule" controller="com.zone.ics.business.vpn.controller.VpnController"/>
+	<task gc="39" rule="com.zone.ics.business.routinglist.rule.RoutinglistRule" controller="com.zone.ics.business.routinglist.controller.RoutinglistController"/>
+	<task gc="40" rule="com.zone.ics.business.gatherTask.rule.GatherTaskRule" controller="com.zone.ics.business.gatherTask.controller.GatherTaskController"/>
+    <task gc="41" rule="com.zone.ics.business.p2plineAnalyse.rule.P2PLineAnalyseTaskRule" controller="com.zone.ics.business.p2plineAnalyse.controller.P2PLineAnalyseController"/>
+	<task gc="42" rule="com.zone.ics.business.temperature.rule.TemperatureRule" controller="com.zone.ics.business.temperature.controller.TemperatureController"/>
+	<task gc="50" rule="com.zone.ics.business.ipam.rule.IpamTaskRule" controller="com.zone.ics.business.ipam.controller.IpamController"/>
+    <task gc="51" rule="com.zone.ics.business.arp.rule.ArpTaskRule" controller="com.zone.ics.business.arp.controller.ArpController"/>
+	<task gc="52" rule="com.zone.ics.business.routinglist.rule.RoutinglistRule" controller="com.zone.ics.business.routinglist.controller.RoutinglistController"/>
+
+    <task gc="47" rule="com.zone.ics.business.orderecho.rule.OrderEchoRule" controller="com.zone.ics.business.orderecho.controller.OrderEchoController"/>
+	<task gc="98" rule="com.zone.ics.business.resourcecollect.rule.ResourceCollectRule" controller="com.zone.ics.business.resourcecollect.controller.NewResourceCollectUpperController"/>
+    <task gc="99" rule="com.zone.ics.business.resourceGather.rule.ResourceGatherRule" controller="com.zone.ics.business.resourceGather.controller.NewResourceGatherController"/>
+
+	 <!-- 增加定义临时下发命令撤销任务解析器 -->
+    <task gc="102" rule="com.zone.ics.business.configuration.rule.ConfigurationDeleteRule" controller="com.zone.ics.business.configuration.controller.ConfigurationDeleteController"/>
+</package>

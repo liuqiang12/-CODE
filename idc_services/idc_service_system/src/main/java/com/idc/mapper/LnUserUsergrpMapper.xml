@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LnUserUsergrpMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLnUserUsergrpMap" type="LnUserUsergrp">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="user_id" property="userId" />
+				
+		<result column="ugrp_id" property="ugrpId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LnUserUsergrp">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp where user_id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LnUserUsergrp"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LnUserUsergrp">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LnUserUsergrp">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LnUserUsergrp"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LnUserUsergrp">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LnUserUsergrp">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_user_usergrp
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LnUserUsergrp">
+		update sys_ln_user_usergrp
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_ln_user_usergrp
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_ln_user_usergrp
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_ln_user_usergrp where user_id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LnUserUsergrp">
+		delete from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_ln_user_usergrp
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_ln_user_usergrp where user_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 删除用户与组的绑定 -->
+	<delete id="deleteByLnUserUsergrps" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" open="begin" close="end;">
+			delete from sys_ln_user_usergrp where user_id = #{item.userId} and ugrp_id =#{item.ugrpId};
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LnUserUsergrp"
+		useGeneratedKeys="true" keyProperty="user_id">
+		INSERT INTO sys_ln_user_usergrp
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_ln_user_usergrp (
+		<include refid="batchInsertColumn" />
+		)
+		select lnu.* from (
+			<foreach collection="list" item="item" index="index" separator="union all">
+				select
+					<include refid="batchInsertColumnParam"/>
+				from dual
+			</foreach>
+		) lnu
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	user_id as userId,
+			ugrp_id as ugrpId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[ and user_id = #{userId} ]]></if>
+						
+			<if test="ugrpId != null and ugrpId != '' ">  <![CDATA[ and ugrp_id = #{ugrpId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.userId != null and params.userId != '' ">  <![CDATA[ and user_id = #{params.userId} ]]></if>
+						
+			<if test="params.ugrpId != null and params.ugrpId != '' ">  <![CDATA[ and ugrp_id = #{params.ugrpId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[  user_id = #{userId } ,]]></if>
+						
+			<if test="ugrpId != null and ugrpId != '' ">  <![CDATA[  ugrp_id = #{ugrpId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+				
+		<if test="userId != null and userId != '' ">  <![CDATA[ user_id  , ]]></if>
+				
+		<if test="ugrpId != null and ugrpId != '' ">  <![CDATA[ ugrp_id   ]]></if>
+				
+	</sql>
+
+	<sql id="insertColumnParam">
+		
+		<if test="userId != null and userId != '' ">  <![CDATA[ #{userId } ,]]></if>
+		
+		<if test="ugrpId != null and ugrpId != '' ">  <![CDATA[ #{ugrpId } ]]></if>
+				
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			user_id,ugrp_id
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.userId},#{item.ugrpId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

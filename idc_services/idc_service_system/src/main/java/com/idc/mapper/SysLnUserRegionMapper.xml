@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysLnUserRegionMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultSysLnUserRegionMap" type="SysLnUserRegion">
+        <!-- 数据库属性和实体类属性对应关系 -->
+        <result column="USER_ID" property="userId"/>
+
+        <result column="REGION_ID" property="regionId"/>
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="SysLnUserRegion">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION where USER_ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="SysLnUserRegion"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="SysLnUserRegion">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="SysLnUserRegion">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="SysLnUserRegion"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="SysLnUserRegion">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="SysLnUserRegion">
+        select
+        <include refid="baseColumn"/>
+        from SYS_LN_USER_REGION
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="SysLnUserRegion">
+        update SYS_LN_USER_REGION
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update SYS_LN_USER_REGION
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from SYS_LN_USER_REGION
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from SYS_LN_USER_REGION where USER_ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="SysLnUserRegion">
+        delete from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from SYS_LN_USER_REGION
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from SYS_LN_USER_REGION where USER_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="SysLnUserRegion"
+            useGeneratedKeys="true" keyProperty="USER_ID">
+        INSERT INTO SYS_LN_USER_REGION
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO SYS_LN_USER_REGION (
+        <include refid="batchInsertColumn"/>
+        )
+        select ur.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            <include refid="batchInsertColumnParam"/>
+            from dual
+        </foreach>
+        ) ur
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	USER_ID as userId,
+		  	REGION_ID as regionId
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+            <if test="userId != null and userId != '' ">  <![CDATA[ and USER_ID = #{userId} ]]></if>
+
+            <if test="regionId != null and regionId != '' ">  <![CDATA[ and REGION_ID = #{regionId} ]]></if>
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+            <if test="params.userId != null and params.userId != '' ">
+                <![CDATA[ and USER_ID = #{params.userId} ]]></if>
+
+            <if test="params.regionId != null and params.regionId != '' ">
+                <![CDATA[ and REGION_ID = #{params.regionId} ]]></if>
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+            <if test="userId != null and userId != '' ">  <![CDATA[  USER_ID = #{userId } ,]]></if>
+
+            <if test="regionId != null and regionId != '' ">  <![CDATA[  REGION_ID = #{regionId } ,]]></if>
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+            <if test="userId != null and userId != '' ">  <![CDATA[ USER_ID , ]]></if>
+
+            <if test="regionId != null and regionId != '' ">  <![CDATA[ REGION_ID , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+            <if test="userId != null and userId != '' ">  <![CDATA[ #{userId } , ]]></if>
+
+            <if test="regionId != null and regionId != '' ">  <![CDATA[ #{regionId } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+		USER_ID,REGION_ID
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+		#{item.userId},#{item.regionId}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+</mapper>

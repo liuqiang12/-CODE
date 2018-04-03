@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="GBK"?>
+
+<SNMP>
+<!--�豸�ӿڱ?���ȫ���豸,hiddenColumn��ָsnmp�޷�ֱ�Ӳɼ��������Դ�����ɼ��л�ȡ���С�һ�����Ϊ�ַ�Ľ�ȡ������oid�Ľ�ȡ�������ݲ�֧��
+0-huawei ��Ϊ 1-cisco ˼��2-Alcatel ������3-3com 4-HP  5-Linux  6-Microsoft  7-IBM  8-Sun 9-Accton 10-ADTRAN
+
+11-Riverstone Networks  12-Allied Telesyn������  13-APC  14-Asante Networks 15-Avaya  16-Dell ����
+
+17-D-Link��Ѷ 18-DynaStar 19-Enterasys Networks 20-Extreme Networks
+
+21-F5 Networks  22-Fluke Networks  ��»��   23-Foundry Networks 24-Frontier NETscout 
+
+26-Hirschmann ��˹��  27-Intel  28-Konica Minolta���Ῠ���ܴ� 29-Kyocera Mita  30-Lantronix 31-Madge  32-Marconi
+
+33-MiLAN  34-MotorolaĦ������  35-NAI  36-NETGEAR  37-Netopia  38-Net-SNMP  39-Network Appliance
+
+40-Nortel��������  41-Novell  42-OKI Global  43-Packeteer  44-Radware  45-Redline  46-SMC Networks
+
+47-University of California���ݴ�ѧ   48-Xerox ʩ�� 49-Zebra  50-FUJI��ʿ  51-Canon ���� 52-EPSON������  53-KONICA���Ῠ
+
+54-Juniper  55-Nokia ŵ���� 56-Fortinet  57-Topsec������  58-SonicWALL 59-boda ���� 60-maipu���� 61-h3c���� 62-BeiDa qing niao��������
+63-emulex  64-ZTE���� 65-harbor 66-UTStartCom 67-netgod 68-Brocade 69-Ruijie��� 70-Comba 71-ericsson������
+-->
+<factory value= "-1"><!--���п����г���-->
+<model value="default">
+<table  name="Net_Element_If_Info" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementInterfaceBean"  keyColumn="ifIndex">
+	<column name="ifIndex" oid="1.3.6.1.2.1.2.2.1.1" />
+	<column name="ifDescr" oid="1.3.6.1.2.1.2.2.1.2" />
+	<column name="ifType" oid="1.3.6.1.2.1.2.2.1.3" />
+	<column name="ifPhysAddress" oid="1.3.6.1.2.1.2.2.1.6" />
+	<column name="ifAdminStatus" oid="1.3.6.1.2.1.2.2.1.7" />
+	<column name="ifOperStatus" oid="1.3.6.1.2.1.2.2.1.8" />
+	<column name="ifSpeed" oid="1.3.6.1.2.1.2.2.1.5" />
+	<column name="ifHSpeed" oid="1.3.6.1.2.1.31.1.1.1.15" />
+	<column name="ifAlias" oid="1.3.6.1.2.1.31.1.1.1.18" />
+	<column name="ifName" oid="1.3.6.1.2.1.31.1.1.1.1" />
+	<!-- myp add -->
+	<column name="ifHighSpeed" oid="1.3.6.1.2.1.31.1.1.1.15" /><!--�˿ڴ�� -->
+	<column name="ifInOctets" oid="1.3.6.1.2.1.2.2.1.10" /><!--������ -->
+	<column name="ifInErrors" oid="1.3.6.1.2.1.2.2.1.14" /><!--������� -->
+	<column name="ifOutOctets" oid="1.3.6.1.2.1.2.2.1.16" /><!--������ -->
+	<column name="ifoutErrors" oid="1.3.6.1.2.1.2.2.1.20" /><!--������� -->
+	<column name="ifOperStatus" oid="1.3.6.1.2.1.2.2.1.8" /><!--����״̬ -->
+	<!-- wangxd add -->
+	<column name="ifHCInOctets" oid="1.3.6.1.2.1.31.1.1.1.6" /><!--������ -->
+	<column name="ifHCOutOctets" oid="1.3.6.1.2.1.31.1.1.1.10" /><!--������ -->
+	<column name="sysUptime" oid="1.3.6.1.2.1.1.3" /><!--ϵͳ����ʱ�� -->
+	
+</table>
+
+
+<table  name="Net_EntPhysicalEntry"  mappingBean="com.zone.ics.frame.common.snmpGather.EntPhysicalEntityBean" hiddenColumn="entPhysicalIndex=entPhysicalDescr.oid.last1{point}" keyColumn="entPhysicalIndex">
+<column name="entPhysicalDescr" oid="1.3.6.1.2.1.47.1.1.1.1.2" index="0"/>
+<column name="entPhysicalContainedIn" oid="1.3.6.1.2.1.47.1.1.1.1.4" index="0"/>
+<column name="entPhysicalClass" oid="1.3.6.1.2.1.47.1.1.1.1.5" index="0"/>
+<column name="entPhysicalParentRelPos" oid="1.3.6.1.2.1.47.1.1.1.1.6" index="0"/>
+<column name="entPhysicalName" oid="1.3.6.1.2.1.47.1.1.1.1.7" index="0"/>
+<column name="entPhysicalSoftwareRev" oid="1.3.6.1.2.1.47.1.1.1.1.10" index="0"/>
+<column name="entPhysicalSerialNum" oid="1.3.6.1.2.1.47.1.1.1.1.11" index="0"/>
+</table>
+
+
+<table  name="net_entAliasMapping" mappingBean="com.zone.ics.frame.common.snmpGather.NetAliasMappingBean" hiddenColumn="entPhysicalIndex=entAliasMappingIdentifier.oid.last2-1{point}|ifIndex=entAliasMappingIdentifier.value.last1{point}" keyColumn="entPhysicalIndex">
+<column name="entAliasMappingIdentifier" oid="1.3.6.1.2.1.47.1.3.2.1.2" index="0"/>
+
+</table>
+
+<table  name="net_system"   mappingBean="com.zone.ics.frame.common.snmpGather.NetElementSysBean"  keyColumn="null">
+<column name="sysDescr" oid="1.3.6.1.2.1.1.1" index="0"/>
+<column name="sysUpTime" oid="1.3.6.1.2.1.1.3" index="0"/>
+<column name="sysContact" oid="1.3.6.1.2.1.1.4" index="0"/>
+<column name="sysLocation" oid="1.3.6.1.2.1.1.6" index="0"/>
+<column name="sysObjectId" oid="1.3.6.1.2.1.1.2" index="0"/>
+<column name="sysName" oid="1.3.6.1.2.1.1.5" index="0"/>
+</table>
+
+<table  name="Net_Element_IPAddr" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementIpAddrBean"  keyColumn="ipAdEntIfIndex">
+<column name="ipAdEntAddr" oid="1.3.6.1.2.1.4.20.1.1" index="0"/>
+<column name="ipAdEntIfIndex" oid="1.3.6.1.2.1.4.20.1.2" index="0"/>
+<column name="ipAdEntNetMask" oid="1.3.6.1.2.1.4.20.1.3" index="0"/>
+</table>
+
+<table  name="Net_Element_Fdb_Port_relation" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementFdbPortRelationBean"  keyColumn="dot1dBasePortIfIndex">
+<column name="dot1dBasePort" oid="1.3.6.1.2.1.17.1.4.1.1" index="0"/>
+<column name="dot1dBasePortIfIndex" oid="1.3.6.1.2.1.17.1.4.1.2" index="0"/>
+</table>
+<table  name="Net_Element_Fdb" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementFdbBean"  keyColumn="dot1dTpFdbAddress">
+<column name="dot1dTpFdbAddress" oid="1.3.6.1.2.1.17.4.3.1.1" index="0"/>
+<column name="dot1dTpFdbPort" oid="1.3.6.1.2.1.17.4.3.1.2" index="0"/>
+<column name="dot1dTpFdbStatus" oid="1.3.6.1.2.1.17.4.3.1.3" index="0"/>
+</table>
+<table  name="Net_Element_IPNetMedia" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementIPNetMediaBean" keyColumn="ipNetToMediaNetAddress">
+<column name="ipNetToMediaIfIndex" oid="1.3.6.1.2.1.4.22.1.1" index="0"/>
+<column name="ipNetToMediaPhysAddress" oid="1.3.6.1.2.1.4.22.1.2" index="0"/>
+<column name="ipNetToMediaNetAddress" oid="1.3.6.1.2.1.4.22.1.3" index="0"/>
+<column name="ipNetToMediaType" oid="1.3.6.1.2.1.4.22.1.4" index="0"/>
+</table>
+
+<!-- host -->
+
+<table name="host_system">
+<column name="hrSystemDescr"		oid="1.3.6.1.2.1.1.1" index="0"/>
+<column name="hrSystemName"			oid="1.3.6.1.2.1.1.5" index="0"/>
+<column name="hrSystemUptime"		oid="1.3.6.1.2.1.25.1.1" index="0"/>
+<column name="hrSystemDate"			oid="1.3.6.1.2.1.25.1.2" index="0"/>
+<column name="hrSystemNumUsers"		oid="1.3.6.1.2.1.25.1.5" index="0"/>
+<column name="hrSystemProcesses"	oid="1.3.6.1.2.1.25.1.6" index="0"/>
+</table>
+
+<table name="host_Storage" mappingBean="com.zone.ics.frame.common.snmpGather.HostStorageInfoBean" keyColumn="hrStorageIndex">
+<column name="hrStorageIndex" oid="1.3.6.1.2.1.25.2.3.1.1" index="0"/>
+<column name="hrStorageType" oid="1.3.6.1.2.1.25.2.3.1.2" index="0"/>
+<column name="hrStorageDescr" oid="1.3.6.1.2.1.25.2.3.1.3" index="0"/>
+<column name="hrStorageAllocationUnits" oid="1.3.6.1.2.1.25.2.3.1.4" index="0"/>
+<column name="hrStorageSize" oid="1.3.6.1.2.1.25.2.3.1.5" index="0"/>
+<column name="hrStorageUsed" oid="1.3.6.1.2.1.25.2.3.1.6" index="0"/>
+</table>
+
+<table name="host_Device" mappingBean="com.zone.ics.frame.common.snmpGather.HostDeviceInfoBean" keyColumn="hrDeviceIndex">
+<column name="hrDeviceIndex" oid="1.3.6.1.2.1.25.3.2.1.1" index="0" />
+<column name="hrDeviceType" oid="1.3.6.1.2.1.25.3.2.1.2"  index="0"/>
+<column name="hrDeviceDescr" oid="1.3.6.1.2.1.25.3.2.1.3"  index="0"/>
+<column name="hrDeviceStatus" oid="1.3.6.1.2.1.25.3.2.1.5"  index="0"/>
+<column name="hrDeviceErrors" oid="1.3.6.1.2.1.25.3.2.1.6"  index="0"/>
+
+</table>
+
+<table name="hrDiskStorage" mappingBean="com.zone.ics.frame.common.snmpGather.HostDiskStorageInfoBean" hiddenColumn="hrDeviceIndex=hrDiskStorageMedia.oid.last1{point}" keyColumn="hrDeviceIndex">
+<column name="hrDiskStorageMedia" oid="1.3.6.1.2.1.25.3.6.1.2" index="0"/>
+<column name="hrDiskStorageCapacity" oid="1.3.6.1.2.1.25.3.6.1.4" index="0"/>
+</table>
+
+<table name="host_FDisk" mappingBean="com.zone.ics.frame.common.snmpGather.HostFSInfoBean" keyColumn="hrFSStorageIndex">
+<column name="hrFSIndex" oid="1.3.6.1.2.1.25.3.8.1.1" index="0"/>
+<column name="hrFSType" oid="1.3.6.1.2.1.25.3.8.1.4" index="0"/>
+<column name="hrFSAccess" oid="1.3.6.1.2.1.25.3.8.1.5" index="0"/>
+<column name="hrFSBootable" oid="1.3.6.1.2.1.25.3.8.1.6" index="0"/>
+<column name="hrFSStorageIndex" oid="1.3.6.1.2.1.25.3.8.1.7" index="0"/>
+<!---->
+<column name="hrFSLastFullBackupDate" oid="1.3.6.1.2.1.25.3.8.1.8" index="0"/>
+<column name="hrFSLastPartialBackupDate" oid="1.3.6.1.2.1.25.3.8.1.9" index="0"/>
+
+</table>
+
+<table name="hrProcessorLoad" mappingBean="com.zone.ics.frame.common.snmpGather.HostProcessorLoadInfoBean" hiddenColumn="hrDeviceIndex=hrProcessorFrwID.oid.last1{point}" keyColumn="hrDeviceIndex">
+<column name="hrProcessorFrwID" oid="1.3.6.1.2.1.25.3.3.1.1" index="0"/>
+<column name="hrProcessorLoad" oid="1.3.6.1.2.1.25.3.3.1.2" index="0"/>
+</table>
+
+<table name="host_process" mappingBean="com.zone.ics.frame.common.snmpGather.HostSWRunInfoBean" keyColumn="hrSWRunIndex">
+<column name="hrSWRunIndex" oid="1.3.6.1.2.1.25.4.2.1.1" index="0"/>
+<column name="hrSWRunName" oid="1.3.6.1.2.1.25.4.2.1.2" index="0"/>
+<column name="hrSWRunPath" oid="1.3.6.1.2.1.25.4.2.1.4" index="0"/>
+<column name="hrSWRunParameters" oid="1.3.6.1.2.1.25.4.2.1.5" index="0"/>
+<column name="hrSWRunType" oid="1.3.6.1.2.1.25.4.2.1.6" index="0"/>
+<column name="hrSWRunStatus" oid="1.3.6.1.2.1.25.4.2.1.7" index="0"/>
+<column name="hrSWRunPerfCPU" oid="1.3.6.1.2.1.25.5.1.1.1" index="0"/>
+<column name="hrSWRunPerfMem" oid="1.3.6.1.2.1.25.5.1.1.2" index="0"/>
+</table>
+<table name="host_memory">
+<column name="hrMemorySize" 	oid="1.3.6.1.2.1.25.2.2" index="0"/>
+</table>
+<table name="host_cpu"><!-- cpuUsed -->
+<column name="hrProcessorLoad"		oid="1.3.6.1.2.1.25.3.3.1.2" index="0"/>
+</table>
+
+<!-- "hrSWRunPerformace"��ʹ�� -->
+<table name="hrSWRunPerformace" mappingBean="com.zone.ics.frame.common.snmpGather.HostSWRunPerformace" hiddenColumn="hrSWRunIndex=hrSWRunPerfCPU.oid.last1{point}" keyColumn="hrSWRunIndex">
+<column name="hrSWRunPerfCPU" oid="1.3.6.1.2.1.25.5.1.1.1" index="0"/>
+<column name="hrSWRunPerfMem" oid="1.3.6.1.2.1.25.5.1.1.2" index="0"/>
+</table>
+
+
+<table name="host_Installed" mappingBean="com.zone.ics.frame.common.snmpGather" keyColumn="hrSWInstalledIndex">
+<column name="hrSWInstalledIndex" oid="1.3.6.1.2.1.25.6.3.1.1" index="0"/>
+<column name="hrSWInstalledName" oid="1.3.6.1.2.1.25.6.3.1.2" index="0"/>
+<column name="hrSWInstalledType" oid="1.3.6.1.2.1.25.6.3.1.4" index="0"/>
+<column name="hrSWInstalledDate" oid="1.3.6.1.2.1.25.6.3.1.5" index="0"/>
+
+</table>
+</model>
+</factory>
+<!--cisco-->
+<factory value="1">
+<model value="default">
+<table  name="cdp_cache_table" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementCdpBean" hiddenColumn="ifIndex=cdpCacheAddress.oid.last2-1{point}" keyColumn="cdpCacheDeviceId">
+<column name="cdpCacheAddress" oid="1.3.6.1.4.1.9.9.23.1.2.1.1.4" index="0"/>
+<column name="cdpCacheDevicePort" oid="1.3.6.1.4.1.9.9.23.1.2.1.1.7" index="0"/>
+<column name="cdpCacheDeviceId" oid="1.3.6.1.4.1.9.9.23.1.2.1.1.6" index="0"/>
+<column name="cdpCachePlatform" oid="1.3.6.1.4.1.9.9.23.1.2.1.1.8" index="0"/>
+</table>
+
+
+<table  name="net_PowerEntity"  mappingBean="com.zone.ics.frame.common.snmpGather.NetPowerEntityBean" hiddenColumn="supplyIndex=supplyStatusDescr.oid.last1{point}" keyColumn="supplyIndex">
+<column name="powerprocess" oid="1.3.6.1.4.1.9.9.13.1.5.1.3" index="0"/>
+<column name="supplyStatusDescr" oid="1.3.6.1.4.1.9.9.13.1.5.1.2" index="0"/>
+<column name="supplyState" oid="1.3.6.1.4.1.9.9.13.1.5.1.3" index="0"/>
+<column name="SupplySource" oid="1.3.6.1.4.1.9.9.13.1.5.1.4" index="0"/>
+
+</table>
+
+
+<table name="net_memory"  mappingBean="com.zone.ics.frame.common.snmpGather.NetMemoryEntityBean" keyColumn="memoryPoolName">
+<column name="memoryPoolName" oid="1.3.6.1.4.1.9.9.48.1.1.1.2" index="0"/>
+<column name="memoryPoolAlternate" oid="1.3.6.1.4.1.9.9.48.1.1.1.3" index="0"/>
+<column name="memoryPoolValid" oid="1.3.6.1.4.1.9.9.48.1.1.1.4" index="0"/>
+<column name="memoryPoolUsed" oid="1.3.6.1.4.1.9.9.48.1.1.1.5" index="0"/>
+<column name="memoryPoolFree" oid="1.3.6.1.4.1.9.9.48.1.1.1.6" index="0"/>
+<column name="memoryPoolLargestFree" oid="1.3.6.1.4.1.9.9.48.1.1.1.7" index="0"/>
+<!-- -->
+<column name="memoryused" oid="1.3.6.1.4.1.9.9.48.1.1.1.5" index="0"/>
+<column name="memoryfree" oid="1.3.6.1.4.1.9.9.48.1.1.1.6" index="0"/>
+</table>
+
+
+<table name="net_IOS"  mappingBean="com.zone.ics.frame.common.snmpGather.NetElementIOSInfo" keyColumn="null">
+<column name="image" oid="1.3.6.1.4.1.9.9.25.1.1.1.2.2" index="0"/>
+<column name="family" oid="1.3.6.1.4.1.9.9.25.1.1.1.2.3" index="0"/>
+<column name="version" oid="1.3.6.1.4.1.9.9.25.1.1.1.2.5" index="0"/>
+
+</table>
+
+
+<table  name="net_FanEntity" mappingBean="com.zone.ics.frame.common.snmpGather.NetFanEntityBean" hiddenColumn="fanIndex=fanStatusDescr.oid.last1{point}" keyColumn="fanIndex" >
+<column name="fanStatusDescr" oid="1.3.6.1.4.1.9.9.13.1.4.1.2" index="0"/>
+<column name="fanStatus" oid="1.3.6.1.4.1.9.9.13.1.4.1.3" index="0"/>
+<column name="fanstatus" oid="1.3.6.1.4.1.9.9.13.1.4.1.3" index="0"/>
+
+</table>
+
+<table name="Net_temperature" >
+<column name="temperature" 		 oid="1.3.6.1.4.1.9.9.13.1.3.1.3" index="0"/>
+<column name="temperature_statu" oid="1.3.6.1.4.1.9.9.13.1.3.1.6" index="0"/>
+</table>
+
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.9.9.109.1.1.1.1.4" index="0"/>
+</table>
+</model>
+<model value="ciscoPIXFirewall515">
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.9.9.109.1.1.1.1.5" index="0"/>
+</table>
+</model>
+
+<model value="N*">
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.9.9.109.1.1.1.1.7" index="0"/>
+</table>
+
+<table name="net_memory">
+<column name="memoryUtilization" oid="1.3.6.1.4.1.9.9.305.1.1.2" index="0"/>
+</table>
+
+<table  name="net_PowerEntity">
+<column name="supplyState" oid="1.3.6.1.4.1.9.9.117.1.1.2.1.2" index="0"/>
+</table>
+
+<table  name="net_FanEntity">
+<column name="fanStatus" oid="1.3.6.1.4.1.9.9.117.1.4.1.1.1" index="0"/>
+</table>
+
+</model>
+</factory>
+
+<!--huawei-->
+<factory value="0">
+<model value="default">
+<table  name="cdp_cache_table" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementCdpBean" hiddenColumn="ifIndex=cdpCacheAddress.oid.last2-1{point}" keyColumn="cdpCacheDeviceId">
+<column name="cdpCacheAddress" oid="" index="0"/>
+<column name="cdpCacheDevicePort" oid="" index="0"/>
+<column name="cdpCacheDeviceId" oid="" index="0"/>
+<column name="cdpCachePlatform" oid="" index="0"/>
+</table>
+
+
+<table  name="net_PowerEntity"  mappingBean="com.zone.ics.frame.common.snmpGather.NetPowerEntityBean" hiddenColumn="supplyIndex=supplyStatusDescr.oid.last1{point}" keyColumn="supplyIndex">
+<column name="supplyStatusDescr" oid=""/>
+<column name="supplyState" oid="1.3.6.1.4.1.2011.2.23.1.9.1.2.1.2" index="0"/>
+
+</table>
+
+
+<table name="net_memory"  mappingBean="com.zone.ics.frame.common.snmpGather.NetMemoryEntityBean" keyColumn="memoryPoolName">
+<column name="memoryPoolName" oid="" index="0"/>
+<column name="memoryPoolAlternate" oid=""/>
+<column name="memoryPoolSize" oid="1.3.6.1.4.1.2011.6.1.2.1.1.2" index="0"/>
+<column name="memoryPoolUsed" oid="1.3.6.1.4.1.2011.6.1.2.1.1.4" index="0"/>
+<column name="memoryPoolFree" oid="1.3.6.1.4.1.2011.6.1.2.1.1.3" index="0"/>
+<column name="memoryPoolLargestFree" oid="1.3.6.1.4.1.2011.6.1.2.1.1.5" index="0"/>
+
+</table>
+
+
+<table name="net_IOS"  mappingBean="com.zone.ics.frame.common.snmpGather.NetElementIOSInfo" keyColumn="null">
+<column name="image" oid="" index="0"/>
+<column name="family" oid="" index="0"/>
+<column name="version" oid="" index="0"/>
+
+</table>
+
+
+<table  name="net_FanEntity" mappingBean="com.zone.ics.frame.common.snmpGather.NetFanEntityBean" hiddenColumn="fanIndex=fanStatusDescr.oid.last1{point}" keyColumn="fanIndex" >
+<column name="fanStatusDescr" oid="" index="0"/>
+<column name="fanStatus" oid="1.3.6.1.4.1.2011.2.23.1.9.1.1.1.2" index="0"/>
+<!--<column name="fanstatus" oid="1.3.6.1.4.1.9.9.13.1.4.1.3"/>-->
+
+</table>
+
+<table name="Net_temperature" >
+<column name="temperature" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1.12" index="0"/>
+</table>
+
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.2011.6.1.1.1.4" index="1"/>
+</table>
+</model>
+<model value="ne*,s23*,s33*,s53*,s930*,cx600,cx200d,ME*">
+<table name="net_memory"  mappingBean="com.zone.ics.frame.common.snmpGather.NetMemoryEntityBean" keyColumn="memoryPoolName">
+<column name="memoryPoolName" oid="" index="0"/>
+<column name="memoryPoolAlternate" oid="" index="0"/>
+<column name="memoryPoolSize" oid="1.3.6.1.4.1.2011.6.3.5.1.1.2" index="0"/>
+<column name="memoryPoolUsed" oid="1.3.6.1.4.1.2011.6.3.5.1.1.4" index="0"/>
+<column name="memoryPoolFree" oid="1.3.6.1.4.1.2011.6.3.5.1.1.3" index="0"/>
+<column name="memoryPoolLargestFree" oid="1.3.6.1.4.1.2011.6.3.5.1.1.5" index="0"/>
+</table>
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.2011.6.3.4.1.2" index="1"/>
+</table>
+</model>
+<model value="s65*">
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.2011.2.23.1.18.1.3" index="0"/>
+</table>
+</model>
+<model value="ar*">
+<table name="net_memory">
+<column name="memoryPoolUsed" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1.8" index="0"/>
+</table>
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1" index="0"/>
+</table>
+<table  name="net_PowerEntity"  mappingBean="com.zone.ics.frame.common.snmpGather.NetPowerEntityBean" hiddenColumn="supplyIndex=supplyStatusDescr.oid.last1{point}" keyColumn="supplyIndex">
+<column name="supplyStatusDescr" oid="" index="0"/>
+<column name="supplyState" oid="1.3.6.1.4.1.2011.2.2.4.18" index="0"/>
+</table>
+<table  name="net_FanEntity" mappingBean="com.zone.ics.frame.common.snmpGather.NetFanEntityBean" hiddenColumn="fanIndex=fanStatusDescr.oid.last1{point}" keyColumn="fanIndex" >
+<column name="fanStatusDescr" oid=""/>
+<column name="fanStatus" oid="1.3.6.1.4.1.2011.2.2.4.17" index="0"/>
+</table>
+<table name="Net_temperature" >
+<column name="temperature" oid="1.3.6.1.4.1.2011.2.2.4.15" index="0"/>
+</table>
+</model>
+</factory>
+
+<factory value="61">
+<model value="default">
+<table  name="cdp_cache_table" mappingBean="com.zone.ics.frame.common.snmpGather.NetElementCdpBean" hiddenColumn="ifIndex=cdpCacheAddress.oid.last2-1{point}" keyColumn="cdpCacheDeviceId">
+<column name="cdpCacheAddress" oid="" index="0"/>
+<column name="cdpCacheDevicePort" oid="" index="0"/>
+<column name="cdpCacheDeviceId" oid="" index="0"/>
+<column name="cdpCachePlatform" oid="" index="0"/>
+</table>
+
+
+<table  name="net_PowerEntity"  mappingBean="com.zone.ics.frame.common.snmpGather.NetPowerEntityBean" hiddenColumn="supplyIndex=supplyStatusDescr.oid.last1{point}" keyColumn="supplyIndex">
+<column name="supplyStatusDescr" oid="" index="0"/>
+<column name="supplyState" oid="1.3.6.1.4.1.2011.2.23.1.9.1.2.1.2" index="0"/>
+
+</table>
+
+
+<table name="net_memory"  mappingBean="com.zone.ics.frame.common.snmpGather.NetMemoryEntityBean" keyColumn="memoryPoolName">
+
+<column name="memoryPoolUsed" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1.8" index="0"/>
+
+
+</table>
+
+
+<table name="net_IOS"  mappingBean="com.zone.ics.frame.common.snmpGather.NetElementIOSInfo" keyColumn="null">
+<column name="image" oid="" index="0"/>
+<column name="family" oid="" index="0"/>
+<column name="version" oid="" index="0"/>
+
+</table>
+
+<!--��3�豸�ķ���mib��-->
+<table  name="net_FanEntity" mappingBean="com.zone.ics.frame.common.snmpGather.NetFanEntityBean" hiddenColumn="fanIndex=fanStatusDescr.oid.last1{point}" keyColumn="fanIndex" >
+<column name="fanStatusDescr" oid="" index="0"/>
+<column name="fanStatus" oid="1.3.6.1.4.1.2011.2.23.1.9.1.1.1.2" index="0"/>
+<!--<column name="fanstatus" oid="1.3.6.1.4.1.9.9.13.1.4.1.3"/>-->
+
+</table>
+<!-- ��3�豸���¶�MIB�� -->
+<table name="Net_temperature" >
+<column name="temperature" oid="1.3.6.1.4.1.2011.2.23.1.9.1.3.1.3" index="0"/>
+<!--  column name="temperature" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1.12"/-->
+</table>
+<!-- ��3�豸��CPUMIB�� -->
+<table name="Net_CPU">
+<column name="cpuprocess" oid="1.3.6.1.4.1.2011.10.2.6.1.1.1.1.6" index="0"/>
+
+</table>
+</model>
+
+</factory>
+<factory value="6">
+<model value="default"><!-- ��WINDOWS2003Ϊ��׼ -->
+<table name="host_system" mappingBean="com.zone.ics.frame.common.snmpGather.HostSystem" keyColumn="null">
+<column name="hrSystemDescr"		oid="1.3.6.1.2.1.1.1" index="0"/>
+<column name="hrSystemName"			oid="1.3.6.1.2.1.1.5" index="0"/>
+<column name="hrSystemUptime"		oid="1.3.6.1.2.1.25.1.1" index="0"/>
+<column name="hrSystemDate"			oid="1.3.6.1.2.1.25.1.2" index="0"/>
+<column name="hrSystemNumUsers"		oid="1.3.6.1.2.1.25.1.5" index="0"/>
+<column name="hrSystemProcesses"	oid="1.3.6.1.2.1.25.1.6" index="0"/>
+</table>
+<table name="host_install">
+<column name="hrSWInstalledIndex" oid="1.3.6.1.2.1.25.6.3.1.1" index="0"/>
+<column name="hrSWInstalledName" oid="1.3.6.1.2.1.25.6.3.1.2" index="0"/>
+<column name="hrSWInstalledType" oid="1.3.6.1.2.1.25.6.3.1.4" index="0"/>
+<column name="hrSWInstalledDate" oid="1.3.6.1.2.1.25.6.3.1.5" index="0"/>
+</table>
+<table name="host_device"><!-- ϵͳӲ����Դ -->
+<column name="hrDeviceIndex" oid="1.3.6.1.2.1.25.3.2.1.1" index="0" />
+<column name="hrDeviceType" oid="1.3.6.1.2.1.25.3.2.1.2"  index="0"/>
+<column name="hrDeviceDescr" oid="1.3.6.1.2.1.25.3.2.1.3" index="0" />
+<column name="hrDeviceStatus" oid="1.3.6.1.2.1.25.3.2.1.5" index="0" />
+<column name="hrDeviceErrors" oid="1.3.6.1.2.1.25.3.2.1.6" index="0" />
+</table>
+<table name="host_FDisk" mappingBean="com.zone.ics.frame.common.snmpGather.HostFSInfoBean" keyColumn="hrFSStorageIndex">
+<column name="hrFSIndex" 		oid="1.3.6.1.2.1.25.3.8.1.1" index="0"/>
+<column name="hrFSType" 		oid="1.3.6.1.2.1.25.3.8.1.4" index="0"/>
+<column name="hrFSAccess" 		oid="1.3.6.1.2.1.25.3.8.1.5" index="0"/>
+<column name="hrFSBootable" 	oid="1.3.6.1.2.1.25.3.8.1.6" index="0"/>
+<column name="hrFSStorageIndex" oid="1.3.6.1.2.1.25.3.8.1.7" index="0"/>
+<!---->
+<column name="hrFSLastFullBackupDate" oid="1.3.6.1.2.1.25.3.8.1.8" index="0"/>
+<column name="hrFSLastPartialBackupDate" oid="1.3.6.1.2.1.25.3.8.1.9" index="0"/>
+</table>
+<table name="host_process" >
+<column name="hrSWRunIndex" 		oid="1.3.6.1.2.1.25.4.2.1.1" index="0"/>
+<column name="hrSWRunName" 			oid="1.3.6.1.2.1.25.4.2.1.2" index="0"/>
+<column name="hrSWRunPath" 			oid="1.3.6.1.2.1.25.4.2.1.4" index="0"/>
+<column name="hrSWRunParameters" 	oid="1.3.6.1.2.1.25.4.2.1.5" index="0"/>
+<column name="hrSWRunType" 			oid="1.3.6.1.2.1.25.4.2.1.6" index="0"/>
+<column name="hrSWRunStatus" 		oid="1.3.6.1.2.1.25.4.2.1.7" index="0"/>
+<colunm name="hrSWRunPerfCPU"		oid="1.3.6.1.2.1.25.5.1.1.1" index="0"/><!-- CPUTIME -->
+<colunm name="hrSWRunPerfMEM"		oid="1.3.6.1.2.1.25.5.1.1.2" index="0"/>
+</table>
+
+<table name="host_Storage" mappingBean="com.zone.ics.frame.common.snmpGather.HostStorageInfoBean" keyColumn="hrStorageIndex">
+<column name="hrStorageIndex" 	oid="1.3.6.1.2.1.25.2.3.1.1" index="0"/>
+<column name="hrStorageType"	oid="1.3.6.1.2.1.25.2.3.1.2" index="0"/>
+<column name="hrStorageDescr" 	oid="1.3.6.1.2.1.25.2.3.1.3" index="0"/>
+<column name="hrStorageAllocationUnits"	oid="1.3.6.1.2.1.25.2.3.1.4" index="0"/>
+<column name="hrStorageSize" 	oid="1.3.6.1.2.1.25.2.3.1.5" index="0"/>
+<column name="hrStorageUsed"	oid="1.3.6.1.2.1.25.2.3.1.6" index="0"/>
+</table>
+<table name="host_memory" mappingBean="com.zone.ics.frame.common.snmpGather.HostMem" keyColumn="null">
+<column name="hrMemorySize" 	oid="1.3.6.1.2.1.25.2.2" index="0"/>
+</table>
+<table name="host_cpu"><!-- cpuUsed -->
+<column name="hrProcessorLoad"		oid="1.3.6.1.2.1.25.3.3.1.2" index="0"/>
+</table>
+</model>
+</factory>
+</SNMP>

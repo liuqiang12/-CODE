@@ -1,0 +1,1723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.ActJBPMMapper">
+	<resultMap id="serviceApplImgStatusMap" type="ServiceApplyImgStatus">
+		<result column="rack" property="rack" />
+		<result column="port" property="port" />
+		<result column="ip" property="ip" />
+		<result column="server" property="server" />
+		<result column="add" property="add" />
+		<result column="prod_inst_id" property="prodInstId" />
+	</resultMap>
+
+	<resultMap id="product_category_map" type="ServiceApplyImgStatus">
+		<result column="rack" property="rack" />
+		<result column="port" property="port" />
+		<result column="ip" property="ip" />
+		<result column="server" property="server" />
+		<result column="add" property="add" />
+		<result column="prod_inst_id" property="prodInstId" />
+	</resultMap>
+	<resultMap id="redisSysUserinfoMap" type="com.idc.model.SysUserinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="id" property="id"/>
+		<result column="region_id" property="region"/>
+		<result column="username" property="username"/>
+		<result column="nick" property="nick"/>
+		<result column="phone" property="phone"/>
+		<result column="age" property="age"/>
+		<result column="password" property="password"/>
+		<result column="native_str" property="nativeStr"/>
+		<result column="sex" property="sex"/>
+		<result column="count" property="count"/>
+		<result column="is_depart_leading" property="isDepartLeading"/>
+		<result column="enabled" property="enabled"/>
+		<result column="accountNonLocked" property="accountnonlocked"/>
+		<result column="credentialsNonExpired" property="credentialsnonexpired"/>
+		<result column="accountNonExpired" property="accountnonexpired"/>
+		<result column="create_time" property="createTime"/>
+		<result column="department" property="department"/>
+		<result column="email" property="email"/>
+	</resultMap>
+
+	<resultMap id="redisIdcRunTicketMap" type="com.idc.model.IdcRunTicket">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="CANDIDATE" property="candidate" />
+		<result column="GROUP_ID" property="groupId" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="CATEGORY" property="category" />
+		<result column="APPROVAL_STATUS" property="approvalStatus" />
+		<result column="REMARK" property="remark" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="SERIAL_NUMBER" property="serialNumber" />
+		<result column="INIT_ID" property="initId" />
+		<result column="TASK_NAME" property="taskName" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="FORM_KEY_" property="formKey" />
+		<result column="PROC_DEF_ID_" property="procDefId" />
+		<result column="PROCESSDEFINITONKEY" property="processdefinitonkey" />
+		<result column="REJECT_COMMENT" property="rejectComment" />
+		<result column="IS_REJECT_TICKET" property="isRejectTicket" />
+		<result column="IS_RUBBISH" property="isRubbish" />
+		<result column="BUSNAME" property="busname" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+	</resultMap>
+	<resultMap type ="java.util.HashMap" id="redisView_taskquery_hisMap">
+		<result column ="TASKID" property="TASKID" />
+		<result column ="PROCINSTID" property="PROCINSTID"  />
+		<result column ="IS_REJECT_TICKET" property="IS_REJECT_TICKET" />
+		<result column ="REJECT_COMMENT" property="REJECT_COMMENT"  />
+		<result column ="TASK_NAME" property="TASK_NAME" />
+		<result column ="ACTNAME" property="ACTNAME" />
+		<result column ="CREATETIME" property="CREATETIME" />
+		<result column ="BUSINESS_KEY" property="BUSINESS_KEY" />
+		<result column ="GROUPID" property="GROUPID" />
+		<result column ="PROCDEFID" property="PROCDEFID" />
+		<result column ="FORMKEY" property="FORMKEY" />
+		<result column ="SERIALNUMBER" property="SERIALNUMBER" />
+		<result column ="CUSTOMERID" property="CUSTOMERID" />
+		<result column ="CUSTOMERNAME" property="CUSTOMERNAME" />
+		<result column ="CUSTOMERATTR" property="CUSTOMERATTR" />
+		<result column ="CONTACTMOBILE" property="CONTACTMOBILE" />
+		<result column ="CATEGORYLINKED" property="CATEGORYLINKED" />
+		<result column ="TICKETINSTID" property="TICKETINSTID" />
+		<result column ="PRODINSTID" property="PRODINSTID" />
+		<result column ="PROCESSDEFINITONKEY" property="PROCESSDEFINITONKEY" />
+		<result column ="PARENTID" property="PARENTID" />
+		<result column ="INITID" property="INITID" />
+		<result column ="PRODCATEGORY" property="PRODCATEGORY" />
+		<result column ="TITLE" property="TITLE" />
+		<result column ="FIRSTNODE" property="FIRSTNODE" />
+		<result column ="CATEGORY" property="CATEGORY" />
+		<result column ="PROCTICKET_STATUS" property="PROCTICKET_STATUS" />
+		<result column ="IS_PROCESS_END" property="IS_PROCESS_END" />
+		<result column ="IS_SERVICE_STATUS" property="IS_SERVICE_STATUS" />
+
+		<result column ="APPLY_ID" property="APPLY_ID" />
+		<result column ="APPLY_NAME" property="APPLY_NAME" />
+		<result column ="GROUP_ID" property="GROUP_ID" />
+		<result column ="CUR_TASK_NAME" property="CUR_TASK_NAME" />
+		<result column ="IS_RUBBISH" property="IS_RUBBISH" />
+		<result column ="IS_FORCE_REFUSE" property="IS_FORCE_REFUSE" />
+
+		<result column ="APPLY_REGIONS" property="APPLY_REGIONS" />
+		<result column ="BUSNAME" property="BUSNAME" />
+		<result column ="USER_NAMES" property="USER_NAMES" />
+		<result column ="USER_IDS" property="USER_IDS" />
+		<result column ="USER_REGIONS" property="USER_REGIONS" />
+		<result column ="users_" property="users_" />
+	</resultMap >
+	<resultMap type ="java.util.HashMap" id="redisView_taskquery_runMap">
+		<result column ="TASKID" property="TASKID" />
+		<result column ="PROCINSTID" property="PROCINSTID"  />
+		<result column ="IS_REJECT_TICKET" property="IS_REJECT_TICKET" />
+		<result column ="REJECT_COMMENT" property="REJECT_COMMENT"  />
+		<result column ="TASK_NAME" property="TASK_NAME" />
+		<result column ="ACTNAME" property="ACTNAME" />
+
+		<result column ="CREATETIME" property="CREATETIME" />
+		<result column ="BUSINESS_KEY" property="BUSINESS_KEY" />
+		<result column ="GROUPID" property="GROUPID" />
+		<result column ="PROCDEFID" property="PROCDEFID" />
+		<result column ="FORMKEY" property="FORMKEY" />
+		<result column ="SERIALNUMBER" property="SERIALNUMBER" />
+		<result column ="CUSTOMERID" property="CUSTOMERID" />
+		<result column ="CUSTOMERNAME" property="CUSTOMERNAME" />
+		<result column ="CUSTOMERATTR" property="CUSTOMERATTR" />
+		<result column ="CONTACTMOBILE" property="CONTACTMOBILE" />
+		<result column ="CATEGORYLINKED" property="CATEGORYLINKED" />
+		<result column ="TICKETINSTID" property="TICKETINSTID" />
+		<result column ="PRODINSTID" property="PRODINSTID" />
+		<result column ="PROCESSDEFINITONKEY" property="PROCESSDEFINITONKEY" />
+		<result column ="PARENTID" property="PARENTID" />
+		<result column ="INITID" property="INITID" />
+		<result column ="PRODCATEGORY" property="PRODCATEGORY" />
+		<result column ="TITLE" property="TITLE" />
+		<result column ="FIRSTNODE" property="FIRSTNODE" />
+		<result column ="CATEGORY" property="CATEGORY" />
+		<result column ="PROCTICKET_STATUS" property="PROCTICKET_STATUS" />
+		<result column ="IS_PROCESS_END" property="IS_PROCESS_END" />
+		<result column ="APPLY_ID" property="APPLY_ID" />
+		<result column ="APPLY_NAME" property="APPLY_NAME" />
+		<result column ="GROUP_ID" property="GROUP_ID" />
+		<result column ="APPLY_REGIONS" property="APPLY_REGIONS" />
+		<result column ="CANDIDATE" property="CANDIDATE" />
+		<result column ="BUSNAME" property="BUSNAME" />
+		<result column ="USER_NAMES" property="USER_NAMES" />
+		<result column ="USER_IDS" property="USER_IDS" />
+		<result column ="USER_REGIONS" property="USER_REGIONS" />
+		<result column ="USERS_" property="USERS_" />
+
+	</resultMap >
+
+	<resultMap id="redisIdcHisTicketMap" type="com.idc.model.IdcHisTicket">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="CANDIDATE" property="candidate" />
+		<result column="GROUP_ID" property="groupId" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CUSTOMER_ATTR" property="customerAttr" />
+		<result column="CONTACT_MOBILE" property="contactMobile" />
+		<result column="CATEGORYLINKED" property="categorylinked" />
+		<result column="TITLE" property="title" />
+		<result column="FIRSTNODE" property="firstnode" />
+		<result column="IS_PROCESS_END" property="isProcessEnd" />
+		<result column="CUR_TASK_NAME" property="curTaskName" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="CATEGORY" property="category" />
+		<result column="APPROVAL_STATUS" property="approvalStatus" />
+		<result column="REMARK" property="remark" />
+		<result column="REV" property="rev" />
+		<result column="END_TIME" property="endTime" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="SERIAL_NUMBER" property="serialNumber" />
+		<result column="INIT_ID" property="initId" />
+		<result column="TASK_NAME" property="taskName" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="FORM_KEY_" property="formKey" />
+		<result column="PROC_DEF_ID_" property="procDefId" />
+		<result column="PROCESSDEFINITONKEY" property="processdefinitonkey" />
+		<result column="REJECT_COMMENT" property="rejectComment" />
+		<result column="IS_REJECT_TICKET" property="isRejectTicket" />
+		<result column="IS_RUBBISH" property="isRubbish" />
+		<result column="BUSNAME" property="busname" />
+	</resultMap>
+	<resultMap id="redisIdcHisTicketResourceMap" type="com.idc.model.IdcHisTicketResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="STATUS_PRE" property="statusPre" />
+		<result column="RACK_ID" property="rackId" />
+		<result column="RESOURCENAME" property="resourcename" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="RESOURCEID" property="resourceid" />
+		<result column="STATUS" property="status" />
+		<result column="MANUAL" property="manual" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CATEGORY" property="category" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="END_TIME" property="endTime" />
+		<result column="IP_TYPE" property="ipType" />
+	</resultMap>
+
+	<resultMap id="redisAssetAttachmentinfoMap" type="com.idc.model.AssetAttachmentinfo">
+		<result column="ATTACH_NAME" property="attachName" />
+		<result column="LOGIC_TABLENAME" property="logicTablename" />
+		<result column="LOGIC_COLUMN" property="logicColumn" />
+		<result column="ATTACH_SUFFIX" property="attachSuffix" />
+		<result column="ATTACH_BYTE" property="attachByte" />
+
+		<result column="ATTACH_SIZE" property="attachSize" />
+		<result column="RELATIONAL_VALUE" property="relationalValue" />
+		<result column="ATTACH_AES" property="aesAttachByte" />
+		<result column="CREATE_USERID" property="createUserid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="ATTACH_AES_BYTE" property="aesAttachByteForceByte" />
+	</resultMap>
+
+	<resultMap id="redisIdcReProductMap" type="IdcReProduct">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="APPLYNAME" property="applyname" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="VALIDITY" property="validity" />
+		<result column="IDCNAME" property="idcName" />
+		<result column="BUSNAME" property="busName" />
+		<result column="REV" property="rev" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="IS_ACTIVE" property="isActive" />
+		<result column="PROD_STATUS" property="prodStatus" />
+		<result column="PROD_NAME" property="prodName" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="END_TIME" property="endTime" />
+		<result column="PROD_CATEGORY" property="prodCategory" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+
+	</resultMap>
+
+
+	<resultMap id="redisIdcNetServiceinfoMap" type="IdcNetServiceinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="ICPDOMAIN" property="icpdomain" />
+		<result column="ICPSRVNAME" property="icpsrvname" />
+		<result column="ICPSRVCONTENTCODE" property="icpsrvcontentcode" />
+		<result column="ICPRECORDTYPE" property="icprecordtype" />
+		<result column="ICPRECORDNO" property="icprecordno" />
+		<result column="ICPACCESSTYPE" property="icpaccesstype" />
+		<result column="ICPBUSINESSTYPE" property="icpbusinesstype" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="OPEN_TIME" property="openTime" />
+		<result column="VM_NAME" property="vmName" />
+		<result column="VM_STATUS" property="vmStatus" />
+		<result column="VM_CATEGORY" property="vmCategory" />
+		<result column="VM_NET_ADDR" property="vmNetAddr" />
+		<result column="VM_MANAGER_ADDR" property="vmManagerAddr" />
+		<result column="DOMAIN_STATUS" property="domainStatus" />
+	</resultMap>
+
+
+	<resultMap id="redisIdcRunTicketResourceMap" type="com.idc.model.IdcRunTicketResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="RESOURCEID" property="resourceid" />
+		<result column="STATUS" property="status" />
+		<result column="MANUAL" property="manual" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CATEGORY" property="category" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="IP_TYPE" property="ipType" />
+		<result column="STATUS_PRE" property="statusPre" />
+		<result column="RACK_ID" property="rackId" />
+		<result column="RESOURCENAME" property="resourcename" />
+	</resultMap>
+	<resultMap id="redisIdcHisProcCmentMap" type="com.idc.model.IdcHisProcCment">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="EXECUTIONID" property="executionid" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="ACT_NAME_" property="actName" />
+		<result column="AUTHOR" property="author" />
+		<result column="AUTHOR_ID" property="authorId" />
+		<result column="COMMENT" property="comment" />
+		<result column="STATUS" property="status" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+	</resultMap>
+
+	<resultMap id="redisIdcRunProcCmentMap" type="com.idc.model.IdcRunProcCment">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="EXECUTIONID" property="executionid" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="ACT_NAME_" property="actName" />
+		<result column="AUTHOR" property="author" />
+		<result column="AUTHOR_ID" property="authorId" />
+		<result column="COMMENT" property="comment" />
+		<result column="STATUS" property="status" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+	</resultMap>
+
+	<resultMap id="redisIdcContractMap" type="com.idc.model.IdcContract">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CONTRACTNAME" property="contractname" />
+		<result column="CONTRACTNO" property="contractno" />
+		<result column="CONTRACTPRICE" property="contractprice" />
+		<result column="CONTRACTSIGNDATE" property="contractsigndate" />
+		<result column="CONTRACTSTART" property="contractstart" />
+		<result column="CONTRACTPERIOD" property="contractperiod" />
+		<result column="CONTRACTEXPIRREMINDER" property="contractexpirreminder" />
+		<result column="CONTRACTPOSTPAID" property="contractpostpaid" />
+		<result column="CONTRACTPAYCYCLE" property="contractpaycycle" />
+		<result column="CONTRACTREMARK" property="contractremark" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="ISHAND_STATUS" property="ishandStatus" />
+	</resultMap>
+
+	<resultMap id="redisIdcReCustomerMap" type="com.idc.model.IdcReCustomer">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="DOMAIN_STATUS" property="domainStatus" />
+		<result column="NAME" property="name" />
+		<result column="ATTRIBUTE" property="attribute" />
+		<result column="IDCARDTYPE" property="idcardtype" />
+		<result column="IDCARDNO" property="idcardno" />
+		<result column="ADDR" property="addr" />
+		<result column="ZIPCODE" property="zipcode" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="REV" property="rev" />
+		<result column="CONTACTNAME" property="contactname" />
+		<result column="CONTACT_IDCARDTYPE" property="contactIdcardtype" />
+		<result column="CONTACT_IDCARDNO" property="contactIdcardno" />
+		<result column="CONTACT_PHONE" property="contactPhone" />
+		<result column="CONTACT_MOBILE" property="contactMobile" />
+		<result column="CONTACT_EMAIL" property="contactEmail" />
+		<result column="CATEGORY" property="category" />
+		<result column="CUSTOMERLEVEL" property="customerlevel" />
+		<result column="TRACESTATE" property="tracestate" />
+		<result column="SLA" property="sla" />
+		<result column="IS_CHINA_MOBILE" property="isChinaMobile" />
+	</resultMap>
+
+
+	<resultMap type="java.util.HashMap" id="applyNum">
+		<!--申请机架/机位个数-->
+		<result column="RACK_NUM" property="RACK_NUM" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<!--申请带宽端口个数-->
+		<result column="PORT_NUM" property="PORT_NUM" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<!--申请IP个数-->
+		<result column="IP_NUM" property="IP_NUM" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		<!--申请主机数-->
+		<result column="SERVER_NUM" property="SERVER_NUM" javaType="java.lang.String" jdbcType="VARCHAR"/>
+
+	</resultMap>
+
+	<!--此sql是查询申请的资源的数量-->
+	<select id="callApplyResourceNum" statementType="CALLABLE" parameterType="Map" resultMap="applyNum">
+		<![CDATA[  CALL PROCESS_RESOURCE.queryApplyResourceNum(
+              #{ticketInstId,mode=IN,jdbcType=INTEGER},
+              #{prodInstId,mode=IN,jdbcType=INTEGER},
+              #{RACK_NUM,mode=OUT,jdbcType=VARCHAR},
+              #{PORT_NUM,mode=OUT,jdbcType=VARCHAR},
+              #{IP_NUM,mode=OUT,jdbcType=VARCHAR},
+              #{SERVER_NUM,mode=OUT,jdbcType=VARCHAR}
+			) ]]>
+	</select>
+	<!-- 排除作废的单子和删除的单子。。。 -->
+	<select id="getIExistsOtherTicket" resultType="Boolean">
+		<![CDATA[
+			select count('X') has_other_ticket from idc_his_ticket t where t.parent_id  = #{0}
+			and t.ticket_status <> -2 and t.ticket_status <> -3
+		]]>
+	</select>
+	<!-- 排除下线已经结束的工单和临时工单 -->
+	<select id="getExistsOtherTicket" resultType="String">
+		<![CDATA[
+			select listagg(t.serial_number,'<br>') within GROUP (order by t.id) as serialNumber from
+				(
+				select t.serial_number,t.id,t.ticket_status,t.ticket_category from idc_his_ticket t
+				start with t.id =  #{0}
+				connect by prior t.id = t.parent_id
+				)t
+				where t.id <> #{0} and t.ticket_status <> -2 and t.ticket_status <> -3
+				and ( (t.ticket_category = '600' and t.ticket_status <> 2) or t.ticket_category <> '600' )
+				and t.ticket_category <> '800'
+		]]>
+	</select>
+
+	<select id="getTabsTitleName" resultType="String">
+		<![CDATA[
+			select distinct t.jbpm_name from idc_jbpm_tasknode t where t.prod_category = #{prodCategory} and t.ticket_category = #{ticketCategory}
+		]]>
+	</select>
+
+
+
+
+
+	<!-- jbpmAllTaskQueryListPage -->
+	<select id="jbpmAllTaskQueryListPage" parameterType="PageBean" resultType="Map">
+		/*所有工单*/
+		select t.id,
+		t.ticket_inst_id,
+		t.prod_inst_id,
+		t.parent_id,
+		t.proc_inst_id,
+		t.end_time,
+		to_char(t.create_time,'yyyy-MM-dd HH24:mi:ss') as create_time,
+		t.serial_number,
+		t.task_name,
+		case
+			when t.ticket_category='100' then
+			'预勘流程_' || t.task_name
+			when t.ticket_category='200' then
+			'开通流程_' || t.task_name
+			when t.ticket_category='400' then
+			'停机流程_' || t.task_name
+			when t.ticket_category='500' then
+			'复通流程_' || t.task_name
+			when t.ticket_category='600' then
+			'下线流程_' || t.task_name
+			when t.ticket_category='700' then
+			'变更开通流程_' || t.task_name
+			when t.ticket_category='800' then
+			'临时测试流程_' || t.task_name
+			when t.ticket_category='900' then
+			'业务变更流程_' || t.task_name
+			end as task_name_fy,
+		t.task_id,
+		t.form_key_,
+		t.proc_def_id_,
+		t.processdefinitonkey,
+		t.apply_id,
+		t.apply_name,
+		t.ticket_category,
+		t.customer_id,
+		t.customer_name,
+		t.busname,
+		t.prod_category,
+		t.form_url,
+		t.role_key,
+		t.audit_name,
+		t.ticket_status,
+		t.is_relevant_ticket,
+		t.audit_id,
+		t.resource_allocation_status,
+		t.ticket_resource_hand_status,
+		has_Permission(t.id,t.form_key_,t.TICKET_STATUS,t.ROLE_KEY,t.apply_id,#{params.assignee}) as canPermission,
+		t.ticket_category_from
+		from idc_his_ticket t
+		where EXISTS (select *
+		from IDC_HIS_PROC_CMENT t2
+		where t.ticket_inst_id = t2.ticket_inst_id
+		<if test=" params.assignee != null and params.assignee != '' ">
+			and t2.author_id = #{params.assignee}
+		</if>
+ 			)
+		<![CDATA[
+               and t.ticket_status <> -2
+			   and t.ticket_status <> -3
+			   and t.ticket_category <> 100
+			   and t.ticket_category <> 600      ]]>
+		<if test=" params.prodCategory != null ">
+			and t.prod_category = #{params.prodCategory}
+		</if>
+		<if test=" params.serialNumber != null and params.serialNumber != '' ">
+			and t.serial_number = #{params.serialNumber}
+		</if>
+		<if test=" params.ticketCategory != null and params.ticketCategory != '' ">
+			and t.ticket_category = #{params.ticketCategory}
+		</if>
+		order by t.create_time desc
+	</select>
+
+	<!-- 相关工单 -->
+	<select id="jbpmLinkedHisTicketTaskListPage" parameterType="PageBean" resultType="Map">
+		<![CDATA[
+				select
+					t1.task_id as TASKID,
+					t1.proc_inst_id as procInstId,
+					t1.task_name,
+					case when t1.ticket_status = -1 then to_char('[<span style="color:#9a0505">被驳回</span>]')
+						  when t1.ticket_status = -2 then to_char('[<span style="color:#9a0505">作废</span>]')
+						  when t1.ticket_status = 2 then to_char('[<span style="color:#9a0505">结束</span>]')
+					end actName,
+				    to_char(t1.create_time,'yyyy-MM-dd HH24:mi:ss') as createTime,
+				   'prodInstId'||t1.prod_inst_id||',ticketInstId:'||t1.ticket_inst_id as BUSINESS_KEY,
+					t1.Proc_Def_Id_ as procDefId,
+					t1.form_key_ as formKey,
+				    t1.serial_number as serialNumber,
+					t1.customer_id as customerId,
+					t1.customer_name,
+					t1.ticket_inst_id as TICKETINSTID,
+					t1.prod_inst_id as PRODINSTID,
+					t1.processdefinitonkey as processDefinitonKey,
+					t1.parent_id as parentId,
+					t1.ticket_category as prodCategory,
+					t1.apply_id,/*申请人id*/
+				    t1.apply_name,
+				    t1.busname/*订单名称，即业务名称*/,
+					t1.ticket_status as ticketStatus,
+					t1.ticket_category_from as ticketCategoryFrom,
+					t1.ticket_category as ticketCategoryTo
+				from idc_his_ticket t1
+			  where t1.ticket_status <> -3  /*ticket_status= -3是删除到回收站的单子，不能显示删除的单子*/   ]]>
+			<if test=" params.prodInstId != null and  params.prodInstId != '' ">
+				 and t1.prod_inst_id = #{params.prodInstId}
+			</if>
+			<if test=" params.serialNumber != null and  params.serialNumber != '' ">
+				and t1.serial_number like '%'|| #{params.serialNumber}||'%'
+			</if>
+			<if test=" params.ticketInstId != null and  params.ticketInstId != '' ">
+		      <![CDATA[
+			   and t1.ticket_inst_id <> #{params.ticketInstId}
+			]]>
+			</if>
+		order by createTime desc
+	</select>
+
+	<select id="jbpmHisTicketTaskListPage" parameterType="PageBean" resultType="IdcHisTicket">
+		/*所有工单*/
+		select
+		t.id,/*工单主键*/
+		t.prod_inst_id AS prodInstId,/*业务实例ID*/
+		t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+		t.busname AS busname,/* 业务名称*/
+		t.TICKET_CATEGORY AS ticketCategory, /*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+		case when pt.idcname='DC-280-04' then
+			'西云_'  || t.serial_Number
+			when pt.idcname='DC-280-02' then
+			'东区_'  || t.serial_Number
+			when pt.idcname='DC-280-03' then
+			'西区_'  || t.serial_Number
+			else '没有区域_' || t.serial_Number
+		end as serialNumber,/*工单号*/
+		il.name as idcName,/*idcName*/
+		t.form_key_ AS formkey,/*表单键*/
+		t.FORM_URL AS formUrl,/*表单URL*/
+		t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+		t.customer_id AS customerId, /* 客户ID */
+		t.customer_name AS customerName,/* 客户名称 */
+		/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+		t.APPLY_ID AS applyId,/*申请人ID*/
+		t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+		case when t.TICKET_CATEGORY = 100 and t.PROD_CATEGORY=1 then
+			'政企_预勘流程_' || t.task_name
+			when t.TICKET_CATEGORY = 200 and t.PROD_CATEGORY=1 then
+			'政企_开通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 400 and t.PROD_CATEGORY=1 then
+			'政企_停机流程_' || t.task_name
+			when t.TICKET_CATEGORY = 500 and t.PROD_CATEGORY=1 then
+			'政企_复通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 600 and t.PROD_CATEGORY=1 then
+			'政企_下线流程_' || t.task_name
+			when t.TICKET_CATEGORY = 700 and t.PROD_CATEGORY=1 then
+			'政企_变更开通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 900 and t.PROD_CATEGORY=1 then
+			'政企_业务变更流程_' || t.task_name
+			when t.TICKET_CATEGORY = 100 and t.PROD_CATEGORY=0 then
+			'自有_预勘流程_' || t.task_name
+			when t.TICKET_CATEGORY = 200 and t.PROD_CATEGORY=0 then
+			'自有_开通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 400 and t.PROD_CATEGORY=0 then
+			'自有_停机流程_' || t.task_name
+			when t.TICKET_CATEGORY = 500 and t.PROD_CATEGORY=0 then
+			'自有_复通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 600 and t.PROD_CATEGORY=0 then
+			'自有_下线流程_' || t.task_name
+			when t.TICKET_CATEGORY = 700 and t.PROD_CATEGORY=0 then
+			'自有_变更开通流程_' || t.task_name
+			when t.TICKET_CATEGORY = 900 and t.PROD_CATEGORY=0 then
+			'自有_业务变更流程_' || t.task_name
+			when t.TICKET_CATEGORY = 800 then
+			'临时测试流程_' || t.task_name
+		end as taskName,/*任务名称*/
+		t.task_id AS taskId,/*任务ID*/
+		t.proc_def_id_ AS procDefId,/*流程定义ID*/
+		t.proc_inst_id AS procInstId,/*流程实例ID*/
+		t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+		t.candidate,/*审批候选人*/
+		t.ticket_status as ticketStatus,/*工单状态*/
+		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+		t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+		t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+		t.PARENT_ID as parentId,/*父工单ID*/
+		t.apply_name as applyName,
+		regexp_instr(','||t.CANDIDATE_IDS||','  ,  ','||#{params.assignee}||',' ) as canPermission,
+		TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS') AS createTimeStr  /*创建时间*/
+		from idc_his_ticket t   left join idc_re_product pt on t.prod_inst_id=pt.prod_inst_id left join idc_location il
+		on pt.idcname = il.code
+		<where>
+			<!-- 删除的单子和作废的单子都不可见。。。 -->
+			<![CDATA[ t.role_key is not null
+			 			and t.ticket_status <> -3
+			 			and t.prod_inst_id=pt.prod_inst_id 	]]>
+
+			<if test=" params.lookAllTicketRole == 1 ">  <!-- lookAllTicketRole=1可以查看所有工单的角色 -->
+				<![CDATA[ and
+		 			 	( 1 = #{params.lookAllTicketRole})
+				]]>
+			</if>
+
+			<!-- lookAllTicketRole=0没有可以查看所有工单的角色 -->
+			<if test=" params.lookAllTicketRole == 0 ">
+				<![CDATA[ and ( regexp_like(','||t.CANDIDATE_IDS||','  ,  ','||#{params.assignee}||',' ) OR regexp_instr(','||t.audit_ids||','  ,  ','||#{params.assignee}||',' ) > 0)
+				]]>
+			</if>
+
+			<if test=" params.prodCategory != null ">
+				and t.PROD_CATEGORY = #{params.prodCategory}
+			</if>
+			<if test="params.processDefinitonKey != null and params.processDefinitonKey != '' ">
+				<![CDATA[ and t.processdefinitonkey = #{params.processDefinitonKey}]]>
+			</if>
+			<if test=" params.serialNumber != null and params.serialNumber != '' ">
+				and t.serial_number like '%'|| #{params.serialNumber} ||'%'
+			</if>
+			<if test=" params.ticketStatus != null and params.ticketStatus != '' ">
+				and t.ticket_status = #{params.ticketStatus}
+			</if>
+			<if test=" params.ticketCategory != null and params.ticketCategory != '' ">
+				and t.TICKET_CATEGORY = #{params.ticketCategory}
+			</if>
+			<if test=" params.busName != null and params.busName != '' ">
+				and t.busname like '%' || #{params.busName} || '%'
+			</if>
+			<if test=" params.locationCode != null and params.locationCode != '' ">
+				and pt.idcname = #{params.locationCode}
+			</if>
+		</where>
+		order by TO_CHAR(t.create_time,'YYYY-MM-DD') desc,t.ticket_category,t.serial_number desc
+	</select>
+
+	<select id="jbpmRunTicketTaskListPage" parameterType="Map" resultType="IdcRunTicket">
+		/*所有工单*/
+		select
+				t.id,/*工单主键*/
+				t.prod_inst_id AS prodInstId,/*业务实例ID*/
+				t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+				t.busname AS busname,/* 业务名称*/
+				t.ticket_category AS ticketCategory, /*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+				case when pt.idcname='DC-280-04' then
+					'西云_'  || t.serial_Number
+					when pt.idcname='DC-280-02' then
+					'东区_'  || t.serial_Number
+					when pt.idcname='DC-280-03' then
+					'西区_'  || t.serial_Number
+					else '没有区域_' || t.serial_Number
+				end as serialNumber,/*工单号*/
+                il.name as idcName,/*idcName*/
+                t.form_key_ AS formkey,/*表单键*/
+				t.FORM_URL AS formUrl,/*表单URL*/
+				t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+				t.customer_id AS customerId, /* 客户ID */
+				t.customer_name AS customerName,/* 客户名称 */
+				/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+				t.APPLY_ID AS applyId,/*申请人ID*/
+				t.APPLY_NAME AS applyName,/*申请人名称*/
+				t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+				case when t.TICKET_CATEGORY = 100 and t.PROD_CATEGORY=1 then
+					'政企_预勘流程_' || t.task_name
+					when t.TICKET_CATEGORY = 200 and t.PROD_CATEGORY=1 then
+					'政企_开通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 400 and t.PROD_CATEGORY=1 then
+					'政企_停机流程_' || t.task_name
+					when t.TICKET_CATEGORY = 500 and t.PROD_CATEGORY=1 then
+					'政企_复通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 600 and t.PROD_CATEGORY=1 then
+					'政企_下线流程_' || t.task_name
+					when t.TICKET_CATEGORY = 700 and t.PROD_CATEGORY=1 then
+					'政企_变更开通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 900 and t.PROD_CATEGORY=1 then
+					'政企_业务变更流程_' || t.task_name
+					when t.TICKET_CATEGORY = 100 and t.PROD_CATEGORY=0 then
+					'自有_预勘流程_' || t.task_name
+					when t.TICKET_CATEGORY = 200 and t.PROD_CATEGORY=0 then
+					'自有_开通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 400 and t.PROD_CATEGORY=0 then
+					'自有_停机流程_' || t.task_name
+					when t.TICKET_CATEGORY = 500 and t.PROD_CATEGORY=0 then
+					'自有_复通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 600 and t.PROD_CATEGORY=0 then
+					'自有_下线流程_' || t.task_name
+					when t.TICKET_CATEGORY = 700 and t.PROD_CATEGORY=0 then
+					'自有_变更开通流程_' || t.task_name
+					when t.TICKET_CATEGORY = 900 and t.PROD_CATEGORY=0 then
+					'自有_业务变更流程_' || t.task_name
+					when t.TICKET_CATEGORY = 800 then
+					'临时测试流程_' || t.task_name
+				end as taskName,/*任务名称*/
+				t.task_id AS taskId,/*任务ID*/
+				t.proc_def_id_ AS procDefId,/*流程定义ID*/
+				t.proc_inst_id AS procInstId,/*流程实例ID*/
+				t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+				t.candidate,/*审批候选人*/
+				t.ticket_status as ticketStatus,/*工单状态*/
+				1 as canPermission,/*能够审批*/
+				t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+			    t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+				t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+				t.PARENT_ID as parentId,/*父工单ID*/
+				TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS') AS createTimeStr  /*创建时间*/
+        from idc_run_ticket t left join idc_re_product pt on t.prod_inst_id=pt.prod_inst_id left join idc_location il
+		on pt.idcname = il.code
+		<where>
+			<![CDATA[ t.role_key is not null
+		 				and t.ticket_status <> -2
+		 				and t.ticket_status <> -3	 ]]>
+			<if test=" params.lookAllTicketRole == 1 ">  <!-- lookAllTicketRole=1可以查看所有工单的角色 -->
+				<![CDATA[ and ( 1=#{params.lookAllTicketRole})
+				]]>
+			</if>
+
+			<!-- lookAllTicketRole=0没有可以查看所有工单的角色 -->
+			<if test=" params.lookAllTicketRole == 0 ">
+				<![CDATA[ and ( regexp_like(','||t.CANDIDATE_IDS||','  ,  ','||#{params.assignee}||',' ) )
+				]]>
+			</if>
+ 
+			<if test=" params.prodCategory != null  and params.processDefinitonKey != ''" >
+				and t.PROD_CATEGORY = #{params.prodCategory}
+			</if>
+			<if test="params.processDefinitonKey != null and params.processDefinitonKey != '' ">
+				<![CDATA[ and t.processdefinitonkey = #{params.processDefinitonKey}]]>
+			</if>
+			<if test=" params.serialNumber != null and params.serialNumber != '' ">
+				and t.serial_number like '%'|| #{params.serialNumber} ||'%'
+			</if>
+			<if test=" params.busName != null and params.busName != '' ">
+				and t.BUSNAME like '%'|| #{params.busName} ||'%'
+			</if>
+			<if test=" params.ticketCategory != null and params.ticketCategory != '' ">
+				and t.ticket_Category = #{params.ticketCategory}
+			</if>
+			<if test=" params.locationCode != null and params.locationCode != '' ">
+				and pt.idcname = #{params.locationCode}
+			</if>
+
+		</where>
+		order by TO_CHAR(t.create_time,'YYYY-MM-DD') desc,t.ticket_category,t.serial_number desc
+	</select>
+
+	<!-- 分页查询jbpmTaskQueryListPage -->
+	<select id="jbpmTaskQueryListPage" parameterType="PageBean" resultType="Map">
+		/** 代办任务[activiti 和 业务关联的额外属性sql语句]  **/
+		select
+				t1.TASK_ID as TASKID,
+				t1.PROC_INST_ID as procInstId,
+				t1.ACT_NAME AS actName,
+				t1.CREATE_TIME as createTime,
+				t1.BUSINESS_KEY_ as BUSINESS_KEY,
+				t1.GROUPID,
+				t1.PROC_DEF_ID_ as procDefId,
+				t1.form_key_ as formKey,
+				t2.serialNumber ,
+				t2.prodName,
+				t2.prodCategoryName,
+				t2.customerId,
+				t2.customerName,
+				t2.customerAttr,
+				t2.contactMobile,
+				t2.categoryLinked,
+				t2.TICKETINSTID,
+				t2.PRODINSTID,
+				t1.processDefinitonKey,
+				t2.parentId,/*除了预受理工单没有，其余都有该值*/
+				t2.initId,
+				t2.prodCategory,
+				case when t1.form_key_ = 'pre_accept_apply_form'   then '提交工单'
+				when t1.form_key_ = 'city_government_apply_form' or t1.form_key_ = 'open_city_government_apply_form' or
+				t1.form_key_='open_change_city_government_apply_form' or t1.form_key_='business_change_city_government_apply_form'
+				or t1.form_key_='pause_city_government_apply_form'
+				or t1.form_key_='recover_city_government_apply_form'
+				or t1.form_key_='temporary_city_government_apply_form'
+				or t1.form_key_='halt_city_government_apply_form'
+				then '地市政企审批'
+				when t1.form_key_ = 'province_government_apply_form'
+				or t1.form_key_ = 'open_province_government_apply_form'
+				or t1.form_key_ ='open_change_province_government_apply_form'
+				or t1.form_key_ ='business_change_province_government_apply_form'
+				or t1.form_key_ ='pause_province_government_apply_form'
+				or t1.form_key_ ='recover_province_government_apply_form'
+				or t1.form_key_ ='temporary_province_government_apply_form'
+				or t1.form_key_ ='halt_province_government_apply_form'   then '省政企审批'
+				when t1.form_key_ = 'occupy_relonnissanle_form'
+				or  t1.form_key_ = 'self_business_change_shelveuping_form'   then '预占勘查'
+				when t1.form_key_ = 'comment_form' or t1.form_key_ = 'open_comment_form' or t1.form_key_='open_change_comment_form'
+				or t1.form_key_='business_change_comment_form'
+				or t1.form_key_='pause_comment_form'
+				or t1.form_key_='recover_comment_form'
+				or t1.form_key_='self_open_change_comment_form'
+				or t1.form_key_='self_comment_form'
+				or t1.form_key_='self_pause_comment_form'
+				or t1.form_key_='self_recover_comment_form'
+				or t1.form_key_='self_business_change_comment_form'
+				or t1.form_key_='self_open_comment_form'
+				or t1.form_key_='self_open_comment_form'
+				or t1.form_key_='temporary_comment_form'
+				or t1.form_key_='halt_comment_form' then '评价'
+				when t1.form_key_ = 'open_accept_apply_form' or t1.form_key_ = 'self_open_accept_apply_form' then '开通申请'
+				when t1.form_key_ = 'open_shelveuping_form'
+				or t1.form_key_ ='open_change_shelveuping_form'
+				or t1.form_key_ ='self_open_change_shelveuping_form'
+				or t1.form_key_ = 'self_open_shelveuping_form'
+				then '资源分配上架'
+				when t1.form_key_ = 'open_change_accept_apply_form' or t1.form_key_ ='self_open_change_accept_apply_form' then '变更开通申请'
+				when t1.form_key_ = 'business_change_accept_apply_form'
+				or t1.form_key_ = 'self_business_change_accept_apply_form' then '变更申请'
+				when t1.form_key_ = 'halt_accept_apply_form' then '下线申请'
+				when t1.form_key_ = 'halt_shelveuping_form' then '下线'
+				when t1.form_key_ = 'business_change_shelveuping_form'
+				or t1.form_key_ = 'self_occupy_relonnissanle_form' then '资源预占'
+				when t1.form_key_ = 'pause_accept_apply_form'
+				or t1.form_key_ = 'self_pause_accept_apply_form' then '停机申请'
+				when t1.form_key_ = 'pause_shelveuping_form'
+				or t1.form_key_ = 'self_pause_shelveuping_form'  then '停机'
+
+				when t1.form_key_ = 'temporary_accept_apply_form'
+				or t1.form_key_ = 'self_temporary_accept_apply_form' then '测试申请'
+				when t1.form_key_ = 'temporary_shelveuping_form'
+				or t1.form_key_ = 'self_temporary_shelveuping_form'  then '配合测试'
+
+				when t1.form_key_ = 'recover_accept_apply_form'
+				or t1.form_key_ = 'self_recover_accept_apply_form' then '复通申请'
+				when t1.form_key_ = 'recover_shelveuping_form'
+				or t1.form_key_ = 'self_recover_shelveuping_form' then '复通'
+				when t1.form_key_ = 'self_pre_accept_apply_form' then '预占申请'
+				when t1.form_key_ = 'self_recover_network_apply_form'
+				or t1.form_key_ = 'self_business_change_network_apply_form'
+				or t1.form_key_ = 'self_pause_network_apply_form'
+				or t1.form_key_ = 'self_open_change_network_apply_form'
+				or t1.form_key_ = 'self_open_network_apply_form'
+				or t1.form_key_ = 'self_network_apply_form' then '网络部审批'
+				end title,
+				/*第一次*/
+				case when
+				t1.form_key_ = 'pre_accept_apply_form' or
+				t1.form_key_ = 'halt_accept_apply_form' or
+				t1.form_key_ = 'open_accept_apply_form' or
+				t1.form_key_ = 'open_change_accept_apply_form' or
+				t1.form_key_ = 'business_change_accept_apply_form' or
+				t1.form_key_ = 'pause_accept_apply_form'   or
+				t1.form_key_ = 'recover_accept_apply_form'  or
+				t1.form_key_ = 'business_change_accept_apply_form' or
+				t1.form_key_ = 'temporary_accept_apply_form' or
+				t1.form_key_ = 'self_pre_accept_apply_form' or
+				t1.form_key_ = 'self_open_accept_apply_form' or
+				t1.form_key_ = 'self_open_change_accept_apply_form' or
+				t1.form_key_ = 'self_pause_accept_apply_form'   or
+				t1.form_key_ = 'self_recover_accept_apply_form'   or
+				t1.form_key_ = 'self_business_change_accept_apply_form'     then 1
+				else 0
+				end firstNode
+				from view_TASKQUERY t1 left join view_task_extra_query t2 on
+				t1.BUSINESS_KEY_ = 'prodInstId:' || t2.PRODINSTID ||',ticketInstId:' || t2.TICKETINSTID
+		<where>
+			t2.serialNumber is not null/* 排除异常工单 */
+			<if test=" params.serialNumber != null and params.serialNumber != '' ">
+				and t2.serialNumber like '%'|| #{params.serialNumber} ||'%'
+			</if>
+			<if test=" params.prodCategory != null ">
+				and t2.prodCategory = #{params.prodCategory}
+			</if>
+			<if test=" params.prodName != null and params.prodName != '' ">
+				and t2.prodName like '%'|| #{params.prodName} ||'%'
+			</if>
+			<if test=" params.customerName != null and params.customerName != '' ">
+				and t2.customerName like '%'|| #{params.customerName} ||'%'
+			</if>
+			<if test=" params.attribute != null and params.attribute != '' ">
+				and t2.customerAttr like '%'|| #{params.attribute} ||'%'
+			</if>
+			<if test=" params.processDefinitonKey != null and params.processDefinitonKey != '' ">
+				and t1.processDefinitonKey =  #{params.processDefinitonKey}
+			</if>
+			<if test=" params.assignee != null and params.assignee != '' ">
+				and (
+					t1.ASSIGNEE = #{params.assignee}
+					<if test=" params.groupListMap != null  ">
+						or t1.GROUPID  in
+						<foreach collection="params.groupListMap" item="item" index="index" separator="," close=")" open="(">
+							'${item}'
+						</foreach>
+					</if>
+				 )
+			</if>
+		</where>
+		order by t1.CREATE_TIME desc,t2.prodName,t2.customerId
+	</select>
+
+	<select id="getTaskIdAdnTaskName" resultType="Map">
+		select
+		  t.id_ task_id,
+		  t.name_ task_Name,
+		  t.form_key_ as form_key,
+		  t.proc_def_id_ as proc_def_id,
+		  rp.key_ as processDefinitonKey
+	  from Act_Ru_Task T
+	  left join act_re_procdef rp on rp.id_ = T.proc_def_id_
+	  WHERE to_char(t.proc_inst_id_) = to_char(#{0})
+	</select>
+	<select id="jbpmHisTaskQueryListPage" parameterType="PageBean" resultType="ViewAuthorHisTask">
+		<!--  -->
+		select
+		 	t1.procInstId,
+			t1.prodInstId,
+			t1.assignee,
+			t1.taskName,
+			t1.startTime,
+			t1.endTime,
+			t1.statusName,
+			t1.author,
+			t1."comment" "comment",
+			t1.serialNumber,
+			t1.customerName,
+			t1.categoryLinked,
+			t1.ticketInstId,
+            t1.customerId,
+			t1.prodCategory
+		from view_his_taskquery_list t1
+		<where>
+			<if test=" params.serialNumberPre != null and params.serialNumberPre != '' ">
+				and  t1.serialNumber like #{params.serialNumberPre}||'%'
+			</if>
+			<if test=" params.category != null and params.category != '' ">
+				and t1.category = #{params.category}
+			</if>
+			<if test=" params.assignee != null and params.assignee != '' ">
+				and t1.assignee = #{params.assignee}
+			</if>
+			<if test="params.prodCategory != null">
+				and t1.prodCategory = #{params.prodCategory}
+			</if>
+			<!-- 查询条件 -->
+			<if test=" params.serialNumber != null and params.serialNumber != '' ">
+				and t1.serialNumber like '%' || #{params.serialNumber} || '%'
+			</if>
+		</where>
+	</select>
+
+	<select id="callActUpdateResource">
+		CALL act_update_resource(#{modelId},#{editorSourceValueId},#{editorSourceExtraValueId},#{imageName},#{deploymentId})
+	</select>
+
+
+	<!-- 这里只是部分维护。没有做过多的流程数据缓存了 -->
+	<select id="callSingleTicketJbpmIntoLinkedRedis" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_singleLinked_redis(
+  				#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  				#{singleStatus,jdbcType=VARCHAR,mode=IN},
+				#{projectManagerUseRedis,jdbcType=VARCHAR,mode=IN},
+				#{step,jdbcType=VARCHAR,mode=IN},
+				#{run_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketMap},
+				#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketMap},
+				#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcContractMap}
+			) ]]>
+	</select>
+
+	<!-- 这里只是部分维护。没有做过多的流程数据缓存了 -->
+	<select id="callSingleTicketJbpmIntoRedis" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_single_jbpm_into_redis(
+  				#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  				#{singleStatus,jdbcType=VARCHAR,mode=IN},
+				#{projectManagerUseRedis,jdbcType=VARCHAR,mode=IN},
+				#{run_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketMap},
+				#{run_ticket_task_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisView_taskquery_runMap},
+
+				#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketMap},
+
+				#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcContractMap},
+				#{userinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisSysUserinfoMap},
+
+				#{run_proccment_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunProcCmentMap},
+				#{his_proccment_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisProcCmentMap},
+
+				#{run_ticket_resource_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketResourceMap},
+				#{his_ticket_resource_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketResourceMap},
+
+				#{asset_attachmentinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisAssetAttachmentinfoMap},
+				#{re_product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcReProductMap},
+				#{net_service_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcNetServiceinfoMap}
+			) ]]>
+	</select>
+
+	<!-- 游标返回的值过于太多。效率会很慢。故拆分成几个存储过程。 -->
+	<select id="callJbpmLinkedIntoRedis" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_jbpmLinked_into_redis(
+  				#{projectManagerUseRedis,jdbcType=VARCHAR,mode=IN},
+				#{run_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketMap},
+				#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketMap},
+				#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcContractMap}
+			) ]]>
+	</select>
+	<select id="callJbpmIntoRedis" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_jbpm_into_redis(
+  				#{projectManagerUseRedis,jdbcType=VARCHAR,mode=IN},
+				#{run_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketMap},
+				#{run_ticket_task_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisView_taskquery_runMap},
+				#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketMap},
+				#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcContractMap},
+
+				#{customer_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcReCustomerMap},
+
+				#{userinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisSysUserinfoMap},
+
+				#{run_proccment_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunProcCmentMap},
+				#{his_proccment_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisProcCmentMap},
+
+				#{run_ticket_resource_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcRunTicketResourceMap},
+				#{his_ticket_resource_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcHisTicketResourceMap},
+				#{asset_attachmentinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisAssetAttachmentinfoMap},
+				#{re_product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcReProductMap},
+				#{net_service_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.ActJBPMMapper.redisIdcNetServiceinfoMap}
+			) ]]>
+	</select>
+	<!-- 增加附件条数sssss -->
+	<!--<select id="callJbpmProcessProcJbpmHis" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_jbpm_show_his(
+  			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  			#{prodInstId,jdbcType=INTEGER,mode=IN},
+			#{ticketAttachCount,jdbcType=INTEGER,javaType=INTEGER,mode=OUT},
+			#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketMapper.resultIdcHisTicketMap},
+			#{customer_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReCustomerMapper.resultIdcReCustomerMap},
+			#{product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReProductMapper.resultIdcReProductMap},
+			#{rackModel_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReRackModelMapper.resultIdcReRackModelMap},
+			#{portModel_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcRePortModelMapper.resultIdcRePortModelMap},
+			#{ipModel_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReIpModelMapper.resultIdcReIpModelMap},
+			#{serverModel_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReServerModelMapper.resultIdcReServerModelMap},
+			#{newlyModel_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReNewlyModelMapper.resultIdcReNewlyModelMap},
+			#{serviceApply_img_status_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=serviceApplImgStatusMap},
+			#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcContractMapper.resultIdcContractMap},
+			#{assetAttachmentinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.AssetAttachmentinfoMapper.resultAssetAttachmentinfoMap},
+			#{idcNetServiceinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcNetServiceinfoMapper.resultIdcNetServiceinfoMap}
+		) ]]>
+	</select>-->
+
+	<select id="jbpmManagerViewListPage" parameterType="PageBean" resultType="Map">
+			select  t1.CUSTOMER_NAME as CUSTOMERNAME,
+					t1.TICKET_INST_ID ,
+					t1.PROD_INST_ID ,
+					t1.PARENT_ID ,
+					t1.END_TIME ,
+					case when pt.idcname='DC-280-04' then
+						'西云_'  || t1.serial_Number
+						when pt.idcname='DC-280-02' then
+						'东区_'  || t1.serial_Number
+						when pt.idcname='DC-280-03' then
+						'西区_'  || t1.serial_Number
+						else '没有区域_' || t1.serial_Number
+					end as SERIAL_NUMBER,
+					t1.TASK_NAME ,
+					t1.TASK_ID ,
+					t1.FORM_KEY_ ,
+					t1.PROC_DEF_ID_ ,
+					t1.PROCESSDEFINITONKEY ,
+					t1.APPLY_NAME ,
+					t1.TICKET_CATEGORY ,
+					case when t1.TICKET_CATEGORY='100'
+							then '预堪预占流程'
+						 when t1.TICKET_CATEGORY='200'
+							then '开通流程'
+						 when t1.TICKET_CATEGORY='400'
+							then '停机流程'
+						 when t1.TICKET_CATEGORY='500'
+							then '复通流程'
+						 when t1.TICKET_CATEGORY='600'
+							then '下线流程'
+						 when t1.TICKET_CATEGORY='700'
+							then '变更开通流程'
+						 when t1.TICKET_CATEGORY='800'
+							then '临时测试流程'
+						 when t1.TICKET_CATEGORY='900'
+							then '业务变更流程'
+					end as ticketCategory ,
+					t1.CUSTOMER_NAME ,
+					t1.BUSNAME,
+					t1.PROD_CATEGORY ,
+					t1.FORM_URL ,
+					t1.AUDIT_NAME ,
+					t1.TICKET_STATUS ,
+					case when t1.TICKET_STATUS=-2
+							then '作废'
+						when t1.TICKET_STATUS=2
+							then '结束'
+						when t1.TICKET_STATUS=-3
+							then '工单已删除'
+						else '流程中'
+					end as TICKETSTATUS ,
+					has_Permission(t1.id,t1.form_key_,t1.ticket_status,t1.ROLE_KEY,t1.apply_id,#{params.assignee}) as canPermission,
+					t1.IS_RELEVANT_TICKET ,
+					t1.APPLY_ID ,
+					t1.AUDIT_ID ,
+					to_char(t1.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') as CREATE_TIME
+				 from idc_his_ticket t1,idc_re_product pt
+				where  <![CDATA[  t1.TICKET_STATUS <> -3  ]]> and t1.prod_inst_id=pt.prod_inst_id
+					<if test="params.assignee != null  and params.assignee != ''">
+						and t1.apply_id = #{params.assignee}    /*这是客户经理视图：工单的申请人ID和当前登陆是同一个人*/
+					</if>
+					<if test="params.prodCategory != null  and params.prodCategory != ''">
+						and t1.PROD_CATEGORY = #{params.prodCategory}
+					</if>
+					<if test=" params.locationCode != null and params.locationCode != '' ">
+						and pt.idcname = #{params.locationCode}
+					</if>
+
+		order by t1.CREATE_TIME desc
+	</select>
+
+	<select id="ticketOnServerListPage" parameterType="PageBean" resultType="Map">
+		select case
+				when t.ticket_category = 200 and t.prod_category = 1 then
+				'政企业务_已开通'
+				when t.ticket_category = 400 and t.prod_category = 1 then
+				'政企业务_已停机'
+				when t.ticket_category = 500 and t.prod_category = 1 then
+				'政企业务_已复通'
+				when t.ticket_category = 600 and t.prod_category = 1 then
+				'政企业务_已下线'
+				when t.ticket_category = 700 and t.prod_category = 1 then
+				'政企业务_已变更开通'
+				when t.ticket_category = 900 and t.prod_category = 1 then
+				'政企业务_已业务变更'
+				when t.ticket_category = 200 and t.prod_category = 0 then
+				'自有业务_已开通'
+				when t.ticket_category = 400 and t.prod_category = 0 then
+				'自有业务_已停机'
+				when t.ticket_category = 500 and t.prod_category = 0 then
+				'自有业务_已复通'
+				when t.ticket_category = 600 and t.prod_category = 0 then
+				'自有业务_已下线'
+				when t.ticket_category = 700 and t.prod_category = 0 then
+				'自有业务_已变更开通'
+				when t.ticket_category = 900 and t.prod_category = 0 then
+				'自有业务_已业务变更'
+				when t.ticket_category = 800 then
+				'临时测试'
+				end as ticket_type,
+				t.id,
+				t.ticket_inst_id,
+				t.prod_inst_id,
+				t.parent_id,
+				t.proc_inst_id,
+				t.serial_number,
+				t.task_name,
+				t.task_id,
+				t.form_key_,
+				t.proc_def_id_,
+				t.processdefinitonkey,
+				t.apply_id,
+				t.apply_name,
+				t.ticket_category,
+				t.customer_id,
+				t.customer_name,
+				t.busname,
+				t.prod_category,
+				t.form_url,
+				t.role_key,
+				t.audit_name,
+				t.ticket_status,
+				t.is_relevant_ticket,
+				t.audit_id,
+				t.resource_allocation_status,
+				t.ticket_resource_hand_status,
+				t.ticket_category_from,
+				t.rev,
+				to_char(t.create_time, 'YYYY-MM-DD HH24:MI:SS') as create_time
+					from idc_his_ticket t
+				where t.TICKET_STATUS = 2  and t.ticket_category in(200,400,500,600,700,900,800) and son_ticket_not_end(t.ticket_inst_id,t.prod_inst_id)=0
+							<if test="params.serialNumber != null  and params.serialNumber != ''">
+								and t.SERIAL_NUMBER = #{params.serialNumber}
+							</if>
+							<if test="params.prodCategory != null  and params.prodCategory != ''">
+								and t.PROD_CATEGORY = #{params.prodCategory}
+							</if>
+							<if test="params.ticketCategory != null  and params.ticketCategory != ''">
+								and t.TICKET_CATEGORY = #{params.ticketCategory}
+							</if>
+							<if test="params.loginUserId != null  and params.loginUserId != ''">
+								and t.APPLY_ID = #{params.loginUserId}
+							</if>
+						order by t.CREATE_TIME desc
+	</select>
+
+	<!--<select id="callJbpmProcessProcJbpmOnlyRead" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_jbpm_onlyRead(
+  			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  			#{prodInstId,jdbcType=INTEGER,mode=IN},
+  			#{ticketAttachCount,jdbcType=INTEGER,javaType=INTEGER,mode=OUT},
+			#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketMapper.resultIdcHisTicketMap},
+			#{customer_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReCustomerMapper.resultIdcReCustomerMap},
+			#{product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReProductMapper.resultIdcReProductMap},
+			#{serviceApply_img_status_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=serviceApplImgStatusMap},
+			#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcContractMapper.resultIdcContractMap},
+			#{idcNetServiceinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcNetServiceinfoMapper.resultIdcNetServiceinfoMap},
+			#{hasOtherTicket_r,jdbcType=INTEGER,javaType=INTEGER,mode=OUT}
+		) ]]>
+	</select>-->
+	<!--<select id="callJbpmProcessProcJbpmApply" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_jbpm_info(
+  			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  			#{prodInstId,jdbcType=INTEGER,mode=IN},
+  			#{ticketAttachCount,jdbcType=INTEGER,javaType=INTEGER,mode=OUT},
+
+			#{run_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcRunTicketMapper.resultIdcRunTicketMap},
+			#{customer_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReCustomerMapper.resultIdcReCustomerMap},
+			#{product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReProductMapper.resultIdcReProductMap},
+			#{product_category_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=product_category_map},
+			#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcContractMapper.resultIdcContractMap},
+			#{idcNetServiceinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcNetServiceinfoMapper.resultIdcNetServiceinfoMap}
+		) ]]>
+	</select>-->
+
+	<!-- 增加附件条数 -->
+	<select id="callJbpmProcessProcJbpmPreCreateData" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_child_jbpm(
+  			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  			#{prodInstId,jdbcType=INTEGER,mode=IN},
+  			#{ticketAttachCount,jdbcType=INTEGER,javaType=INTEGER,mode=OUT},
+			#{his_ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketMapper.resultIdcHisTicketMap},
+			#{customer_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReCustomerMapper.resultIdcReCustomerMap},
+			#{product_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcReProductMapper.resultIdcReProductMap},
+			#{serviceApply_img_status_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=serviceApplImgStatusMap},
+			#{idcNetServiceinfo_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcNetServiceinfoMapper.resultIdcNetServiceinfoMap},
+			#{hasOtherTicket_r,jdbcType=INTEGER,javaType=INTEGER,mode=OUT},
+			#{contract_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcContractMapper.resultIdcContractMap}
+		) ]]>
+	</select>
+
+	<select id="customerViewData"  resultType="Map">
+		<![CDATA[
+			 select sum(tmp.totalNum) as pending, sum(tmp.other) as founding
+				  from (
+						select count('a') totalNum, 0 other
+						  from idc_his_ticket t2 where t2.apply_id = #{0} and t2.ticket_status <> -3
+						union
+						select 0 totalNum, count('a') other
+						  from idc_his_ticket t
+						 where t.apply_id= #{0} and (t.task_name like '%申请%'
+							or t.task_name like '%评价%') and t.ticket_status <> -3
+						) tmp
+		]]>
+	</select>
+
+
+	<select id="callProcTicketStatus">
+		CALL jbpm_process_back.PROC_TICKET_STATUS(#{prodInstId},#{ticketInstId},#{procticketStatus})
+	</select>
+
+	<select id="queryApplyerById" parameterType="java.lang.Long" resultType="Map">
+		select roleNameStr as applyerRoles, u.username as applyerName, u.phone as applyerPhone
+		  from (select wm_concat(to_char(t1.name)) roleNameStr
+				  from sys_roleinfo t1
+				 where exists
+				 (select 1
+						  from sys_ln_usergrp_role t2
+						 where t1.id = t2.role_id
+						   and exists (select 1
+								  from sys_user_group t3
+								 where exists (select 1
+										  from sys_ln_user_usergrp t4
+										 where t3.id = t4.ugrp_id
+										   and t4.user_id = #{0})
+								   and t2.ugrp_id = t3.id))),
+			   sys_userinfo u
+		 where u.id = #{0}
+	</select>
+
+	<!-- 查看按照机位分配的工单，没有选择机位的资源。安装机位分配，选择了机架必须分配机位  -->
+	<select id="queryRackIsHaveUnit"  resultType="Long">
+			select count('X') from idc_his_ticket_resource t where t.ticket_inst_id = #{ticketInstId} and
+			 t.category = #{ticketCategory}
+			and t.used_rack_unit is null
+	</select>
+	<!--  保存资源信息方法 -->
+	<select id="callProcTicketResourceSaveArry" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_ticket_resource_arry(
+  			#{itemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.TicketResouceArrayObjectHandler},
+  			#{obj_meta_curr_id,jdbcType=INTEGER,mode=OUT},
+  			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+		) ]]>
+	</select>
+
+
+	<select id="getTicketRackGridInfoByResourceId" resultType="TicketRackGrid">
+		select
+			  customerRack_tmp.rackId as targetId,/*机架*/
+			  customerRack_tmp.rackName as targetName,/*机架名称*/
+			  customerRack_tmp.machineroomId as belongId,/*机房ID*/
+			  t3.sitename  as belongName,/*所属机房*/
+			  customerRack_tmp.rackStatus as status,/*状态*/
+			   case when customerRack_tmp.rackStatus = 20 then '可用'
+				   when customerRack_tmp.rackStatus = 30 then '预留'
+				   when customerRack_tmp.rackStatus = 40 then '空闲'
+				   when customerRack_tmp.rackStatus = 50 then '预占'
+				   when customerRack_tmp.rackStatus = 55 then '已停机'
+				   when customerRack_tmp.rackStatus = 60 then '在服'
+				   when customerRack_tmp.rackStatus = 110 then '不可用'
+			  end statusName ,
+			  (case when t2.uheight is null then 42
+         	else t2.uheight end) as uheight,
+			(select substr(f_rackunitused_customer(customerRack_tmp.rackId,#{0}),1,length(f_rackunitused_customer(customerRack_tmp.rackId,#{0}))-1) from dual) as usedRackUnIt,
+			  customerRack_tmp.ratedelectricenergy,
+			  customerRack_tmp.pduPowertype,
+			  customerRack_tmp.renttype
+			from (
+				 /*这个是客户机架信息*/
+			  select t1.id as rackId,/*机架*/
+					 t1.name as rackName,/*机架名称*/
+					 t1.Roomid as machineroomId,/*机房ID*/
+					  t1.rackmodelid,
+					  t1.ratedelectricenergy,  /* 额定电量 */
+					  t1.pdu_powertype as pduPowertype,         /* 用电类型 */
+					  t1.renttype,/*出租类型*/
+					  t1.status as rackStatus
+			  from IDC_RACK t1
+			where t1.Businesstype_Id = 'equipment'
+			and t1.id = #{0}
+        and t1.isdelete = 0
+			)customerRack_tmp
+			left join dcim_rack_model t2 on customerRack_tmp.rackmodelid = t2.id
+			left join zb_machineroom t3 on customerRack_tmp.machineroomId = t3.id
+        where t3.isdelete = 0
+	</select>
+	<select id="queryRackIsHaveUnitNEW" resultType="Integer">
+		select count(*) as notEmptyCount from  idc_run_ticket_resource t1
+			where t1.category = '600' and t1.rack_id is null
+			and t1.ticket_inst_id = #{0}
+	</select>
+
+
+	<!-- 满意度报表 查询数据 -->
+	<select id="ticketSatisfactionReportData" parameterType="Map" resultType="Map">
+
+		select t2.satisfaction,
+		select case
+				when xxx.satisfaction = 5 then
+				'five_star'
+				when xxx.satisfaction = 4 then
+				'four_star'
+				when xxx.satisfaction = 3 then
+				'three_star'
+				when xxx.satisfaction = 2 then
+				'two_star'
+				when xxx.satisfaction = 1 then
+				'one_star'
+			end as satisfaction,
+			xxx.prod_category,
+			xxx.yz as "预占流程",
+			xxx.kt as "开通流程",
+			xxx.tj as "停机流程",
+			xxx.ft as "复通流程",
+			xxx.xx as "下线流程",
+			xxx.bgkt as "变更开通流程",
+			xxx.lscs as "临时测试流程",
+			xxx.ywbg as "业务变更流程"
+		from (select tmp.satisfaction,
+				tmp.prod_category,
+				nvl(tmp.yz, 0) yz,
+				nvl(tmp.kt, 0) kt,
+				nvl(tmp.tj, 0) tj,
+				nvl(tmp.ft, 0) ft,
+				nvl(tmp.xx, 0) xx,
+				nvl(tmp.bgkt, 0) bgkt,
+				nvl(tmp.lscs, 0) lscs,
+				nvl(tmp.ywbg, 0) ywbg
+				from (select *
+						from (select count(t.satisfaction) as satisfactionCount,
+						t.satisfaction,
+						xx.ticket_category,
+						xx.prod_category
+						from idc_his_ticket_commnet t
+						left join idc_his_ticket xx
+						on t.ticket_inst_id = xx.ticket_inst_id
+						where xx.ticket_status = 2
+						and t.satisfaction is not null
+						and xx.ticket_category is not null
+						and ( to_date(to_char(t.CREATE_TIME, 'yy-mm-dd'), 'yy-mm-dd') between
+							to_date(#{createTime}, 'yy-mm-dd')
+							and to_date(#{endTime}, 'yy-mm-dd'))
+						group by xx.ticket_category,
+						xx.prod_category,
+						t.satisfaction)
+					pivot(sum(nvl(satisfactionCount, 0))
+					for ticket_category in('100' as yz,
+					'200' AS kt,
+					'400' AS tj,
+					'500' AS ft,
+					'600' as xx,
+					'700' as bgkt,
+					'800' as lscs,
+					'900' as ywbg))) tmp) xxx
+		order by xxx.satisfaction desc, xxx.prod_category desc
+
+
+		<!--select t2.satisfaction,
+		<if test=" ticketCtegory != null and ticketCtegory != '' ">
+		(case
+			when t1.ticket_category = 100 then
+			'预勘/预占流程'
+			when t1.ticket_category = 200 then
+			'开通流程'
+			when t1.ticket_category = 300 then
+			'空'
+			when t1.ticket_category = 400 then
+			'停机流程'
+			when t1.ticket_category = 500 then
+			'复通流程'
+			when t1.ticket_category = 600 then
+			'下线流程'
+			when t1.ticket_category = 700 then
+			'变更开通流程'
+			when t1.ticket_category = 800 then
+			'临时测试流程'
+			when t1.ticket_category = 900 then
+			'业务变更流程'
+			end) as ticketCtegory,
+		</if>
+
+		<if test=" prodCategory != null and prodCategory != '' ">
+		(case
+			when t1.PROD_CATEGORY = 1 then
+			'政企业务'
+			when t1.PROD_CATEGORY = 0 then
+			'自有业务'
+			end) as prodCategory,
+		</if>
+		count(t2.satisfaction) as satisfactionCount
+		from idc_his_ticket t1
+		left join idc_his_ticket_commnet t2
+		on t1.ticket_inst_id = t2.ticket_inst_id
+		<where>
+			t2.satisfaction is not null
+			and (
+				to_date(to_char(t1.CREATE_TIME, 'yy-mm-dd'), 'yy-mm-dd') between
+	 			to_date(#{createTime}, 'yy-mm-dd')
+ 				and to_date(#{endTime}, 'yy-mm-dd'))
+
+			<if test="ticketCtegory != null and ticketCtegory != '' ">
+				and t1.ticket_category = #{ticketCtegory} 		/*条件：工单状态。。。。。*/
+			</if>
+			<if test=" prodCategory != null and prodCategory != '' ">
+				and t1.PROD_CATEGORY = #{prodCategory}     /*条件：是自有业务还是政企业务*/
+			</if>
+
+		</where>
+		group by t2.satisfaction
+		<if test=" ticketCtegory != null and ticketCtegory != '' ">
+				,t1.ticket_category
+		</if>
+		<if test=" prodCategory != null and prodCategory != '' ">
+				,t1.PROD_CATEGORY
+		</if>
+		order by t2.satisfaction desc-->
+
+	</select>
+
+	<!-- 满意度报表 查询数据 -->
+	<select id="allTicketCountPageData" parameterType="Map" resultType="Map">
+		  select case
+		<![CDATA[	when t.prod_category = 1 then
+					'<span style="color: #00B4E1">政企业务</span>'
+					when t.prod_category = 0 then
+					'<span style="color: #b540d4">自有业务</span>'
+		]]>
+					end as prodType,
+				case
+					when t.ticket_category = 100 then
+					'预勘流程'
+					when t.ticket_category = 200 then
+					'开通流程'
+					when t.ticket_category = 400 then
+					'停机流程'
+					when t.ticket_category = 500 then
+					'复通流程'
+					when t.ticket_category = 600 then
+					'下线流程'
+					when t.ticket_category = 700 then
+					'变更开通流程'
+					when t.ticket_category = 800 then
+					'临时测试流程'
+					when t.ticket_category = 900 then
+					'业务变更流程'
+			end as ticketType,
+			count(*) as ticketCount
+		  from idc_his_ticket t
+		where
+			to_date(to_char(t.CREATE_TIME, 'yy-mm-dd'), 'yy-mm-dd') between
+			to_date(#{createTime}, 'yy-mm-dd')
+			and to_date(#{endTime}, 'yy-mm-dd')
+			<![CDATA[ and t.TICKET_STATUS <> -3 ]]>
+		group by t.prod_category, t.ticket_category
+		order by t.prod_category desc
+
+		<!--select count('a') as countAll
+		  from idc_his_ticket t1
+		 where
+			to_date(to_char(t1.CREATE_TIME, 'yy-mm-dd'), 'yy-mm-dd') between
+			to_date(#{createTime}, 'yy-mm-dd')
+			and to_date(#{endTime}, 'yy-mm-dd')
+			<![CDATA[ and t1.TICKET_STATUS <> -3 ]]>
+		<if test=" prodCategory != null and prodCategory != '' ">
+				and t1.PROD_CATEGORY=#{prodCategory}
+			</if>
+			<if test=" ticketActiviti == null or ticketActiviti == '' ">
+				/*	TICKET_STATUS状态:  1同意、0初始化工单、  -1不同意|驳回、作废-2、删除到回收站-3、2结束;
+					ticketActiviti=空 全部工单；ticketActiviti=222流程审批中工单；ticketActiviti=333流程审批结束工单；ticketActiviti=444流程作废工单;
+				 */
+				and t1.TICKET_STATUS in (-1,-2,1,2)
+			</if>
+			<if test=" ticketActiviti == 222 ">
+				and t1.TICKET_STATUS in (-1,1)
+			</if>
+			<if test=" ticketActiviti == 333 ">
+				and t1.TICKET_STATUS = 2
+			</if>
+			<if test=" ticketActiviti == 444 ">
+				and t1.TICKET_STATUS = -2
+			</if>
+			<if test=" ticketCtegory != null and ticketCtegory != '' ">
+				and t1.TICKET_CATEGORY=#{ticketCtegory}
+			</if>-->
+	</select>
+
+	<select id="getDataCentre" resultType="Map">
+		select t. id,
+		   t.name,
+		   t.address,
+		   t.code,
+		   t.province,
+		   t.city,
+		   t.district,
+		   t.zipcode,
+		   t.contactperson,
+		   t.contacttel,
+		   t.contactfax,
+		   t.remark,
+		   t.totalbandwidth,
+		   t.gatewayip,
+		   t.ratedcapacity,
+		   t.nature,
+		   t.provid,
+		   t.houseid,
+		   t.houseprovince,
+		   t.housecity,
+		   t.housecounty
+	  from IDC_LOCATION t
+
+	</select>
+
+	<select id="getBuildingByLocationID" resultType="Map" parameterType="Long">
+		select t.id,
+			   t.name,
+			   t.code,
+			   t.locationid,
+			   t.contacttel,
+			   t.contactfax,
+			   t.floornumber,
+			   t.remark,
+			   t.seismicgrade,
+			   t.ratedcapacity,
+			   t.totalbandwidth,
+			   t.gatewayip,
+			   t.rackcount,
+			   t.rackspare,
+			   t.rackusage,
+			   t.isdelete
+		  from IDC_BUILDING t
+		 where t.locationid = #{0}
+	</select>
+
+	<select id="getMachineRoomByBuildingID" resultType="Map" parameterType="Long">
+			select t.id,
+			   t.sitename,
+			   t.sitenamesn,
+			   t.buildingid,
+			   t.roomcategory,
+			   t.grade,
+			   t.maxracks,
+			   t.designelectricity,
+			   t.area,
+			   t.floorheight,
+			   t.remark,
+			   t.airconditioningreserve,
+			   t.totalbandwidth,
+			   t.width_m,
+			   t.height_m,
+			   t.accessporttotal,
+			   t.accessportusage,
+			   t.usefor,
+			   t.modifytime,
+			   t.rackspare,
+			   t.responsibleuserid,
+			   t.rackcount,
+			   t.rackusage,
+			   t.isdelete
+		  from ZB_MACHINEROOM t
+		 where t.buildingid=#{0}
+	</select>
+
+
+	<select id="getRackStatusByRoomID" resultType="Map" parameterType="Long">
+
+		select t.status, count(t.status) as statusCount
+		  from idc_rack t
+		 where  1=1
+		<if test=" roomID != null and roomID != '' ">
+			and t.roomid = #{roomID}
+		</if>
+		and (t.status = 40 or t.status = 60)     /*  资源的状态请查看 ResourceEnum枚举*/
+		 group by t.status
+
+	</select>
+
+	<select id="getRackUnitStatusByRoomID" resultType="Map" parameterType="Long">
+
+		select t.status, count(t.status) as statusCount
+		  from idc_rackUnit t
+		 where 1=1
+		<if test=" roomID != null and roomID != '' ">
+			and t.roomid = #{roomID}
+		</if>
+		and (t.status = 20 or t.status = 60)     /*  资源的状态请查看 ResourceEnum枚举*/
+		 group by t.status
+
+	</select>
+
+	<select id="getPortStatusByRoomID" resultType="Map" parameterType="Long">
+
+		select t3.portactive, count(t3.portactive) as statusCount
+		  from idc_rack t1
+		  left join idc_device t2
+			on t1.id = t2.RACK_ID
+		  left join net_port t3
+			on t3.deviceid = t2.DEVICEID
+		 where 1=1
+		<if test=" roomID != null and roomID != '' ">
+			and t1.roomid = #{roomID}
+		</if>
+		and  t2.deviceclass=1
+		   and (t3.portactive = 40 or t3.portactive = 60)    /*  资源的状态请查看 ResourceEnum枚举*/
+		 group by t3.portactive
+
+	</select>
+
+	<select id="getIPStatusByRoomID" resultType="Map">
+		select t.status, count(t.status) as statusCount
+		  from idc_ipinfo t
+		 where  (t.status = 0 or t.status = 1)       /*  资源的状态请查看 ResourceEnum枚举*/
+		 group by t.status
+
+	</select>
+
+	<select id="getServerStatusByRoomID" resultType="Map" parameterType="Long">
+
+		select t1.status, count(t1.status) as statusCount
+		  from idc_device t1
+		  left join idc_rack t2
+			on t1.rack_id = t2.id
+		 where 1=1
+		<if test=" roomID != null and roomID != '' ">
+			and t2.roomid = #{roomID}
+		</if>
+		and (t1.status = 40 or t1.status = 60)
+		 group by t1.status
+
+	</select>
+
+	<select id="getMCBStatusByRoomID" resultType="Map" parameterType="Long">
+
+		select t2.PWR_PWRSTATUS, count(t2.PWR_PWRSTATUS) as statusCount
+		from idc_rack t1
+		left join idc_mcb t2
+		on t1.id = t2.PWR_INSTALLEDRACK_ID
+		where 1 = 1
+		<if test=" roomID != null and roomID != '' ">
+			and t2.roomid = #{roomID}
+		</if>
+		<if test=" roomID != null and roomID != '' ">
+			and t2.roomid = #{roomID}
+		</if>
+		and (t2.PWR_PWRSTATUS = 40 or t2.PWR_PWRSTATUS = 60)
+		group by t2.PWR_PWRSTATUS
+
+	</select>
+
+</mapper>

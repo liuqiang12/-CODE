@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+        <setting name="aggressiveLazyLoading" value="false" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<setting name="defaultStatementTimeout" value="25000" />
+        <!--  设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER -->
+        <setting name="jdbcTypeForNull" value="NULL" />
+        <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
+        <!--<setting name="callSettersOnNulls" value="true"/>-->
+    </settings>
+    <typeAliases> 
+        <typeAlias alias="Map" type="java.util.Map"/>  
+        <typeAlias alias="HashMap" type="java.util.HashMap"/>  
+        <typeAlias alias="LinkedHashMap" type="java.util.LinkedHashMap"/>
+        <typeAlias alias="List" type="java.util.List"/>
+        <typeAlias alias="ArrayList" type="java.util.ArrayList"/>
+        <typeAlias alias="Integer" type="java.lang.Integer"/>
+        <typeAlias alias="Float" type="java.lang.Float"/>
+        <typeAlias alias="String" type="java.lang.String"/>
+        <typeAlias alias="Long" type="java.lang.Long"/>
+        <typeAlias alias="Date" type="java.util.Date"/>
+        <typeAlias alias="Set" type="java.util.Set"/>
+        <typeAlias alias="Boolean" type="java.lang.Boolean"/>
+        <typeAlias alias="PageBean" type="system.data.page.PageBean"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="com.idc.tag.ProductArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.RackArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.PortArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.IpArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.ServerArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.NewlyArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.TicketResouceArrayObjectHandler" javaType="list"></typeHandler>
+        <typeHandler handler="com.idc.tag.TicketPropertyArrayObjectHandler" javaType="list"></typeHandler>
+    </typeHandlers>
+
+    <plugins>
+        <!--<plugin interceptor="com.github.pagehelper.PageInterceptor">-->
+            <!--&lt;!&ndash; 使用下面的方式配置参数，后面会有所有的参数介绍 &ndash;&gt;-->
+            <!--<property name="param1" value="value1"/>-->
+        <!--</plugin>-->
+		<plugin interceptor="system.data.page.core.PagePlugin">
+            <property name="databaseType" value="oracle" />
+            <property name="pageSqlId" value="ListPage" />
+		</plugin>
+<!--   		<plugin interceptor="system.data.page.core.DiclectResultSetHandlerInterceptor"/>   -->
+	</plugins>
+
+
+</configuration>

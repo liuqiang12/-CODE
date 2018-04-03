@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetTopoviewMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetTopoviewMap" type="com.idc.model.NetTopoView">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="VIEWID" property="viewid" />
+				
+		<result column="BACKGROUND" property="background" />
+				
+		<result column="USERID" property="userid" />
+				
+		<result column="VIEWMODE" property="viewmode" />
+				
+		<result column="VIEWNAME" property="viewname" />
+				
+		<result column="VIEWTYPE" property="viewtype" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.NetTopoView">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW where VIEWID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.NetTopoView"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.NetTopoView">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.NetTopoView">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.NetTopoView"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.NetTopoView">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetTopoView">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEW
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.NetTopoView">
+		update NET_TOPOVIEW
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_TOPOVIEW
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_TOPOVIEW
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_TOPOVIEW where VIEWID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.NetTopoView">
+		delete from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_TOPOVIEW
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_TOPOVIEW where VIEWID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.NetTopoView"
+		useGeneratedKeys="true" keyProperty="viewid">
+        <selectKey keyProperty="viewid" resultType="java.lang.Long" order="BEFORE">
+            select NET_TOPOVIEW_seq.nextval from dual
+        </selectKey>
+		INSERT INTO NET_TOPOVIEW
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_TOPOVIEW (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	VIEWID as viewid,
+			BACKGROUND as background,
+			USERID as userid,
+			VIEWMODE as viewmode,
+			VIEWNAME as viewname,
+			VIEWTYPE as viewtype
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[ and VIEWID = #{viewid} ]]></if>
+						
+			<if test="background != null and background != '' ">  <![CDATA[ and BACKGROUND = #{background} ]]></if>
+						
+			<if test="userid != null and userid != '' ">  <![CDATA[ and USERID = #{userid} ]]></if>
+						
+			<if test="viewmode != null and viewmode != '' ">  <![CDATA[ and VIEWMODE = #{viewmode} ]]></if>
+						
+			<if test="viewname != null and viewname != '' ">  <![CDATA[ and VIEWNAME = #{viewname} ]]></if>
+						
+			<if test="viewtype != null and viewtype != '' ">  <![CDATA[ and VIEWTYPE = #{viewtype} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.viewid != null and params.viewid != '' ">  <![CDATA[ and VIEWID = #{params.viewid} ]]></if>
+						
+			<if test="params.background != null and params.background != '' ">  <![CDATA[ and BACKGROUND = #{params.background} ]]></if>
+						
+			<if test="params.userid != null and params.userid != '' ">  <![CDATA[ and USERID = #{params.userid} ]]></if>
+						
+			<if test="params.viewmode != null and params.viewmode != '' ">  <![CDATA[ and VIEWMODE = #{params.viewmode} ]]></if>
+
+            <if test="params.viewname != null and params.viewname != '' ">  <![CDATA[ and (VIEWNAME like '%${params.viewname}%') ]]></if>
+
+			<if test="params.viewtype != null and params.viewtype != '' ">  <![CDATA[ and VIEWTYPE = #{params.viewtype} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[  VIEWID = #{viewid } ,]]></if>
+						
+			<if test="background != null and background != '' ">  <![CDATA[  BACKGROUND = #{background } ,]]></if>
+						
+			<if test="userid != null and userid != '' ">  <![CDATA[  USERID = #{userid } ,]]></if>
+						
+			<if test="viewmode != null and viewmode != '' ">  <![CDATA[  VIEWMODE = #{viewmode } ,]]></if>
+						
+			<if test="viewname != null and viewname != '' ">  <![CDATA[  VIEWNAME = #{viewname } ,]]></if>
+						
+			<if test="viewtype != null and viewtype != '' ">  <![CDATA[  VIEWTYPE = #{viewtype } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ VIEWID , ]]></if>
+				
+		<if test="background != null and background != '' ">  <![CDATA[ BACKGROUND , ]]></if>
+				
+		<if test="userid != null and userid != '' ">  <![CDATA[ USERID , ]]></if>
+				
+		<if test="viewmode != null and viewmode != '' ">  <![CDATA[ VIEWMODE , ]]></if>
+				
+		<if test="viewname != null and viewname != '' ">  <![CDATA[ VIEWNAME , ]]></if>
+				
+		<if test="viewtype != null and viewtype != '' ">  <![CDATA[ VIEWTYPE , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ #{viewid } , ]]></if>
+				
+		<if test="background != null and background != '' ">  <![CDATA[ #{background } , ]]></if>
+				
+		<if test="userid != null and userid != '' ">  <![CDATA[ #{userid } , ]]></if>
+				
+		<if test="viewmode != null and viewmode != '' ">  <![CDATA[ #{viewmode } , ]]></if>
+				
+		<if test="viewname != null and viewname != '' ">  <![CDATA[ #{viewname } , ]]></if>
+				
+		<if test="viewtype != null and viewtype != '' ">  <![CDATA[ #{viewtype } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			VIEWID,BACKGROUND,USERID,VIEWMODE,VIEWNAME,VIEWTYPE
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.viewid},#{item.background},#{item.userid},#{item.viewmode},#{item.viewname},#{item.viewtype}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

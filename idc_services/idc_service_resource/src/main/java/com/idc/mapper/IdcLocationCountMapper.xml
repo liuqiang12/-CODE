@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcLocationCountMapper">
+	<!-- 杩斿洖绫诲瀷 -->
+	<resultMap id="resultIdcLocationCountMap" type="com.idc.model.IdcLocationCount">
+		<!-- 鏁版嵁搴撳睘鎬у拰瀹炰綋绫诲睘鎬у搴斿叧绯�-->
+				
+		<result column="ID" property="id" />
+				
+		<result column="RACKTOTAL" property="racktotal" />
+				
+		<result column="RACKUSAGE" property="rackusage" />
+				
+		<result column="IPTOTAL" property="iptotal" />
+				
+		<result column="IPUSAGE" property="ipusage" />
+				
+		<result column="COREPORTTOTAL" property="coreporttotal" />
+				
+		<result column="COREPORTUSAGE" property="coreportusage" />
+				
+		<result column="ACCESSPORTTOTAL" property="accessporttotal" />
+				
+		<result column="ACCESSPORTUSAGE" property="accessportusage" />
+				
+		<result column="CUSTOMERTOTAL" property="customertotal" />
+				
+		<result column="BANDWIDTHTOTAL" property="bandwidthtotal" />
+				
+		<result column="BANDWIDTHUSAGE" property="bandwidthusage" />
+				
+		<result column="CUSTOMER_OFF_TOTAL" property="customerOffTotal" />
+				
+		<result column="PA_TOTAL" property="paTotal" />
+				
+		<result column="PA_GOODRATE" property="paGoodrate" />
+				
+		<result column="KT_TOTAL" property="ktTotal" />
+				
+		<result column="KT_GOODRATE" property="ktGoodrate" />
+				
+		<result column="BA_TOTAL" property="baTotal" />
+				
+		<result column="BA_GOOGRATE" property="baGoograte" />
+				
+		<result column="BK_TOTAL" property="bkTotal" />
+				
+		<result column="BK_GOODRATE" property="bkGoodrate" />
+				
+		<result column="XX_TOTAL" property="xxTotal" />
+
+		<result column="OPEN_TIME" property="open_time" />
+
+		<result column="USEDRACKNUM" property="usedracknum"/>
+
+		<result column="USEDIPNUM" property="usedipnum"/>
+
+		<result column="USEDCOREPORT" property="usedcoreport"/>
+
+		<result column="USEDACCESSPORT" property="usedaccessport"/>
+
+		<result column="USEDBANDWIDTH" property="usedbandwidth"/>
+
+	</resultMap>
+
+	<!-- 閫氳繃涓婚敭鏌ヨ璁板綍 -->
+	<select id="getModelById" resultType="com.idc.model.IdcLocationCount">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT where ID= #{0}
+	</select>
+
+	<!-- map瀵瑰簲鐨刱ey鍜屽疄浣撶被涓殑灞炴�涓�嚧 -->
+	<select id="getModelByMap" resultType="com.idc.model.IdcLocationCount"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 閫氳繃瀹炰綋绫绘煡璇㈣褰�-->
+	<select id="getModelByObject" resultType="com.idc.model.IdcLocationCount">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 鏌ヨ鎵�湁璁板綍 -->
+	<select id="queryList" resultType="com.idc.model.IdcLocationCount">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+	</select>
+
+	<!-- 鏌ヨ璁板綍:map鍙傛暟key瀵瑰簲瀹炰綋绫诲睘鎬�鏌ヨ澶氭潯璁板綍 -->
+	<select id="queryListByMap" resultType="com.idc.model.IdcLocationCount"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 鏌ヨ璁板綍:閫氳繃瀹炰綋绫绘煡璇㈠鏉¤褰�-->
+	<select id="queryListByObject" resultType="com.idc.model.IdcLocationCount">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 鍒嗛〉鏌ヨ -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.IdcLocationCount">
+		select
+		<include refid="baseColumn" />
+		from IDC_LOCATION_COUNT
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.IdcLocationCount">
+		update IDC_LOCATION_COUNT
+		<include refid="updateParam" />
+        WHERE ID = #{id}
+    </update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_LOCATION_COUNT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 鎱庣敤姝ゆ柟娉�-->
+	<delete id="deleteAll">
+		delete from IDC_LOCATION_COUNT
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_LOCATION_COUNT where ID= #{0}
+	</delete>
+
+	<!-- 鍒犻櫎鏁版嵁 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.IdcLocationCount">
+		delete from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 鍒犻櫎鏁版嵁 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_LOCATION_COUNT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 鍒犻櫎鏁版嵁 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_LOCATION_COUNT where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert淇濆瓨鏂规硶 -->
+	<insert id="insert" parameterType="com.idc.model.IdcLocationCount"
+		useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select IDC_LOCATION_COUNT_seq.nextval from dual
+        </selectKey>
+		INSERT INTO IDC_LOCATION_COUNT
+		(ID
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=INTEGER},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 鎵归噺淇濆瓨 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_LOCATION_COUNT (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql鍩烘湰鏄犲皠 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			RACKTOTAL as racktotal,
+			RACKUSAGE as rackusage,
+			IPTOTAL as iptotal,
+			IPUSAGE as ipusage,
+			COREPORTTOTAL as coreporttotal,
+			COREPORTUSAGE as coreportusage,
+			ACCESSPORTTOTAL as accessporttotal,
+			ACCESSPORTUSAGE as accessportusage,
+			CUSTOMERTOTAL as customertotal,
+			BANDWIDTHTOTAL as bandwidthtotal,
+			BANDWIDTHUSAGE as bandwidthusage,
+			CUSTOMER_OFF_TOTAL as customerOffTotal,
+			PA_TOTAL as paTotal,
+			PA_GOODRATE as paGoodrate,
+			KT_TOTAL as ktTotal,
+			KT_GOODRATE as ktGoodrate,
+			BA_TOTAL as baTotal,
+			BA_GOOGRATE as baGoograte,
+			BK_TOTAL as bkTotal,
+			BK_GOODRATE as bkGoodrate,
+			XX_TOTAL as xxTotal,
+			USEDRACKNUM as usedracknum,
+			USEDIPNUM as usedipnum,
+			USEDCOREPORT as usedcoreport,
+			USEDACCESSPORT as usedaccessport,
+			USEDBANDWIDTH as usedbandwidth
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="racktotal != null and racktotal != '' ">  <![CDATA[ and RACKTOTAL = #{racktotal} ]]></if>
+						
+			<if test="rackusage != null and rackusage != '' ">  <![CDATA[ and RACKUSAGE = #{rackusage} ]]></if>
+						
+			<if test="iptotal != null and iptotal != '' ">  <![CDATA[ and IPTOTAL = #{iptotal} ]]></if>
+						
+			<if test="ipusage != null and ipusage != '' ">  <![CDATA[ and IPUSAGE = #{ipusage} ]]></if>
+						
+			<if test="coreporttotal != null and coreporttotal != '' ">  <![CDATA[ and COREPORTTOTAL = #{coreporttotal} ]]></if>
+						
+			<if test="coreportusage != null and coreportusage != '' ">  <![CDATA[ and COREPORTUSAGE = #{coreportusage} ]]></if>
+						
+			<if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ and ACCESSPORTTOTAL = #{accessporttotal} ]]></if>
+						
+			<if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ and ACCESSPORTUSAGE = #{accessportusage} ]]></if>
+						
+			<if test="customertotal != null and customertotal != '' ">  <![CDATA[ and CUSTOMERTOTAL = #{customertotal} ]]></if>
+						
+			<if test="bandwidthtotal != null and bandwidthtotal != '' ">  <![CDATA[ and BANDWIDTHTOTAL = #{bandwidthtotal} ]]></if>
+						
+			<if test="bandwidthusage != null and bandwidthusage != '' ">  <![CDATA[ and BANDWIDTHUSAGE = #{bandwidthusage} ]]></if>
+						
+			<if test="customerOffTotal != null and customerOffTotal != '' ">  <![CDATA[ and CUSTOMER_OFF_TOTAL = #{customerOffTotal} ]]></if>
+						
+			<if test="paTotal != null and paTotal != '' ">  <![CDATA[ and PA_TOTAL = #{paTotal} ]]></if>
+						
+			<if test="paGoodrate != null and paGoodrate != '' ">  <![CDATA[ and PA_GOODRATE = #{paGoodrate} ]]></if>
+						
+			<if test="ktTotal != null and ktTotal != '' ">  <![CDATA[ and KT_TOTAL = #{ktTotal} ]]></if>
+						
+			<if test="ktGoodrate != null and ktGoodrate != '' ">  <![CDATA[ and KT_GOODRATE = #{ktGoodrate} ]]></if>
+						
+			<if test="baTotal != null and baTotal != '' ">  <![CDATA[ and BA_TOTAL = #{baTotal} ]]></if>
+						
+			<if test="baGoograte != null and baGoograte != '' ">  <![CDATA[ and BA_GOOGRATE = #{baGoograte} ]]></if>
+						
+			<if test="bkTotal != null and bkTotal != '' ">  <![CDATA[ and BK_TOTAL = #{bkTotal} ]]></if>
+						
+			<if test="bkGoodrate != null and bkGoodrate != '' ">  <![CDATA[ and BK_GOODRATE = #{bkGoodrate} ]]></if>
+						
+			<if test="xxTotal != null and xxTotal != '' ">  <![CDATA[ and XX_TOTAL = #{xxTotal} ]]></if>
+
+			<if test="usedracknum != null and usedracknum != '' ">  <![CDATA[ and USEDRACKNUM = #{usedracknum} ]]></if>
+
+			<if test="usedipnum != null and usedipnum != '' ">  <![CDATA[ and USEDIPNUM = #{usedipnum} ]]></if>
+
+			<if test="usedcoreport != null and usedcoreport != '' ">  <![CDATA[ and USEDCOREPORT = #{usedcoreport} ]]></if>
+
+			<if test="usedaccessport != null and usedaccessport != '' ">  <![CDATA[ and USEDACCESSPORT = #{usedaccessport} ]]></if>
+
+			<if test="usedbandwidth != null and usedbandwidth != '' ">  <![CDATA[ and USEDBANDWIDTH = #{usedbandwidth} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.racktotal != null and params.racktotal != '' ">  <![CDATA[ and RACKTOTAL = #{params.racktotal} ]]></if>
+						
+			<if test="params.rackusage != null and params.rackusage != '' ">  <![CDATA[ and RACKUSAGE = #{params.rackusage} ]]></if>
+						
+			<if test="params.iptotal != null and params.iptotal != '' ">  <![CDATA[ and IPTOTAL = #{params.iptotal} ]]></if>
+						
+			<if test="params.ipusage != null and params.ipusage != '' ">  <![CDATA[ and IPUSAGE = #{params.ipusage} ]]></if>
+						
+			<if test="params.coreporttotal != null and params.coreporttotal != '' ">  <![CDATA[ and COREPORTTOTAL = #{params.coreporttotal} ]]></if>
+						
+			<if test="params.coreportusage != null and params.coreportusage != '' ">  <![CDATA[ and COREPORTUSAGE = #{params.coreportusage} ]]></if>
+						
+			<if test="params.accessporttotal != null and params.accessporttotal != '' ">  <![CDATA[ and ACCESSPORTTOTAL = #{params.accessporttotal} ]]></if>
+						
+			<if test="params.accessportusage != null and params.accessportusage != '' ">  <![CDATA[ and ACCESSPORTUSAGE = #{params.accessportusage} ]]></if>
+						
+			<if test="params.customertotal != null and params.customertotal != '' ">  <![CDATA[ and CUSTOMERTOTAL = #{params.customertotal} ]]></if>
+						
+			<if test="params.bandwidthtotal != null and params.bandwidthtotal != '' ">  <![CDATA[ and BANDWIDTHTOTAL = #{params.bandwidthtotal} ]]></if>
+						
+			<if test="params.bandwidthusage != null and params.bandwidthusage != '' ">  <![CDATA[ and BANDWIDTHUSAGE = #{params.bandwidthusage} ]]></if>
+						
+			<if test="params.customerOffTotal != null and params.customerOffTotal != '' ">  <![CDATA[ and CUSTOMER_OFF_TOTAL = #{params.customerOffTotal} ]]></if>
+						
+			<if test="params.paTotal != null and params.paTotal != '' ">  <![CDATA[ and PA_TOTAL = #{params.paTotal} ]]></if>
+						
+			<if test="params.paGoodrate != null and params.paGoodrate != '' ">  <![CDATA[ and PA_GOODRATE = #{params.paGoodrate} ]]></if>
+						
+			<if test="params.ktTotal != null and params.ktTotal != '' ">  <![CDATA[ and KT_TOTAL = #{params.ktTotal} ]]></if>
+						
+			<if test="params.ktGoodrate != null and params.ktGoodrate != '' ">  <![CDATA[ and KT_GOODRATE = #{params.ktGoodrate} ]]></if>
+						
+			<if test="params.baTotal != null and params.baTotal != '' ">  <![CDATA[ and BA_TOTAL = #{params.baTotal} ]]></if>
+						
+			<if test="params.baGoograte != null and params.baGoograte != '' ">  <![CDATA[ and BA_GOOGRATE = #{params.baGoograte} ]]></if>
+						
+			<if test="params.bkTotal != null and params.bkTotal != '' ">  <![CDATA[ and BK_TOTAL = #{params.bkTotal} ]]></if>
+						
+			<if test="params.bkGoodrate != null and params.bkGoodrate != '' ">  <![CDATA[ and BK_GOODRATE = #{params.bkGoodrate} ]]></if>
+						
+			<if test="params.xxTotal != null and params.xxTotal != '' ">  <![CDATA[ and XX_TOTAL = #{params.xxTotal} ]]></if>
+
+			<if test="params.usedracknum != null and params.usedracknum != '' ">
+				<![CDATA[ and USEDRACKNUM = #{params.usedracknum} ]]></if>
+
+			<if test="params.usedipnum != null and params.usedipnum != '' ">  <![CDATA[ and USEDIPNUM = #{params.usedipnum} ]]></if>
+
+			<if test="params.usedcoreport != null and params.usedcoreport != '' ">  <![CDATA[ and USEDCOREPORT = #{params.usedcoreport} ]]></if>
+
+			<if test="params.usedaccessport != null and params.usedaccessport != '' ">  <![CDATA[ and USEDACCESSPORT = #{params.usedaccessport} ]]></if>
+
+			<if test="params.usedbandwidth != null and params.usedbandwidth != '' ">  <![CDATA[ and USEDBANDWIDTH = #{params.usedbandwidth} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="racktotal != null or racktotal == '0' ">  <![CDATA[  RACKTOTAL = #{racktotal } ,]]></if>
+						
+			<if test="rackusage != null or rackusage == '0' ">  <![CDATA[  RACKUSAGE = #{rackusage } ,]]></if>
+						
+			<if test="iptotal != null or iptotal == '0' ">  <![CDATA[  IPTOTAL = #{iptotal } ,]]></if>
+						
+			<if test="ipusage != null or ipusage == '0' ">  <![CDATA[  IPUSAGE = #{ipusage } ,]]></if>
+						
+			<if test="coreporttotal != null or coreporttotal == '0' ">  <![CDATA[  COREPORTTOTAL = #{coreporttotal } ,]]></if>
+						
+			<if test="coreportusage != null or coreportusage == '0' ">  <![CDATA[  COREPORTUSAGE = #{coreportusage } ,]]></if>
+						
+			<if test="accessporttotal != null or accessporttotal == '0' ">  <![CDATA[  ACCESSPORTTOTAL = #{accessporttotal } ,]]></if>
+						
+			<if test="accessportusage != null or accessportusage == '0' ">  <![CDATA[  ACCESSPORTUSAGE = #{accessportusage } ,]]></if>
+						
+			<if test="customertotal != null or customertotal == '0' ">  <![CDATA[  CUSTOMERTOTAL = #{customertotal } ,]]></if>
+						
+			<if test="bandwidthtotal != null or bandwidthtotal == '0' ">  <![CDATA[  BANDWIDTHTOTAL = #{bandwidthtotal } ,]]></if>
+						
+			<if test="bandwidthusage != null or bandwidthusage == '0' ">  <![CDATA[  BANDWIDTHUSAGE = #{bandwidthusage } ,]]></if>
+						
+			<if test="customerOffTotal != null or customerOffTotal == '0' ">  <![CDATA[  CUSTOMER_OFF_TOTAL = #{customerOffTotal } ,]]></if>
+						
+			<if test="paTotal != null or paTotal == '0' ">  <![CDATA[  PA_TOTAL = #{paTotal } ,]]></if>
+						
+			<if test="paGoodrate != null or paGoodrate == '0' ">  <![CDATA[  PA_GOODRATE = #{paGoodrate } ,]]></if>
+						
+			<if test="ktTotal != null or ktTotal == '0' ">  <![CDATA[  KT_TOTAL = #{ktTotal } ,]]></if>
+						
+			<if test="ktGoodrate != null or ktGoodrate == '0' ">  <![CDATA[  KT_GOODRATE = #{ktGoodrate } ,]]></if>
+						
+			<if test="baTotal != null or baTotal == '0' ">  <![CDATA[  BA_TOTAL = #{baTotal } ,]]></if>
+						
+			<if test="baGoograte != null or baGoograte == '0' ">  <![CDATA[  BA_GOOGRATE = #{baGoograte } ,]]></if>
+						
+			<if test="bkTotal != null or bkTotal == '0' ">  <![CDATA[  BK_TOTAL = #{bkTotal } ,]]></if>
+						
+			<if test="bkGoodrate != null or bkGoodrate == '0' ">  <![CDATA[  BK_GOODRATE = #{bkGoodrate } ,]]></if>
+						
+			<if test="xxTotal != null or xxTotal == '0' ">  <![CDATA[  XX_TOTAL = #{xxTotal } ,]]></if>
+
+			<if test="usedracknum != null or usedracknum == '0' ">  <![CDATA[  USEDRACKNUM = #{usedracknum } ,]]></if>
+
+			<if test="usedipnum != null or usedipnum == '0' ">  <![CDATA[ USEDIPNUM = #{usedipnum}, ]]></if>
+
+			<if test="usedcoreport != null or usedcoreport == '0' ">  <![CDATA[ USEDCOREPORT = #{usedcoreport}, ]]></if>
+
+			<if test="usedaccessport != null or usedaccessport == '0' ">  <![CDATA[ USEDACCESSPORT = #{usedaccessport}, ]]></if>
+
+			<if test="usedbandwidth != null or usedbandwidth == '0' ">  <![CDATA[ USEDBANDWIDTH = #{usedbandwidth}, ]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="racktotal != null and racktotal != '' ">  <![CDATA[ RACKTOTAL , ]]></if>
+				
+		<if test="rackusage != null and rackusage != '' ">  <![CDATA[ RACKUSAGE , ]]></if>
+				
+		<if test="iptotal != null and iptotal != '' ">  <![CDATA[ IPTOTAL , ]]></if>
+				
+		<if test="ipusage != null and ipusage != '' ">  <![CDATA[ IPUSAGE , ]]></if>
+				
+		<if test="coreporttotal != null and coreporttotal != '' ">  <![CDATA[ COREPORTTOTAL , ]]></if>
+				
+		<if test="coreportusage != null and coreportusage != '' ">  <![CDATA[ COREPORTUSAGE , ]]></if>
+				
+		<if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ ACCESSPORTTOTAL , ]]></if>
+				
+		<if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ ACCESSPORTUSAGE , ]]></if>
+				
+		<if test="customertotal != null and customertotal != '' ">  <![CDATA[ CUSTOMERTOTAL , ]]></if>
+				
+		<if test="bandwidthtotal != null and bandwidthtotal != '' ">  <![CDATA[ BANDWIDTHTOTAL , ]]></if>
+				
+		<if test="bandwidthusage != null and bandwidthusage != '' ">  <![CDATA[ BANDWIDTHUSAGE , ]]></if>
+				
+		<if test="customerOffTotal != null and customerOffTotal != '' ">  <![CDATA[ CUSTOMER_OFF_TOTAL , ]]></if>
+				
+		<if test="paTotal != null and paTotal != '' ">  <![CDATA[ PA_TOTAL , ]]></if>
+				
+		<if test="paGoodrate != null and paGoodrate != '' ">  <![CDATA[ PA_GOODRATE , ]]></if>
+				
+		<if test="ktTotal != null and ktTotal != '' ">  <![CDATA[ KT_TOTAL , ]]></if>
+				
+		<if test="ktGoodrate != null and ktGoodrate != '' ">  <![CDATA[ KT_GOODRATE , ]]></if>
+				
+		<if test="baTotal != null and baTotal != '' ">  <![CDATA[ BA_TOTAL , ]]></if>
+				
+		<if test="baGoograte != null and baGoograte != '' ">  <![CDATA[ BA_GOOGRATE , ]]></if>
+				
+		<if test="bkTotal != null and bkTotal != '' ">  <![CDATA[ BK_TOTAL , ]]></if>
+				
+		<if test="bkGoodrate != null and bkGoodrate != '' ">  <![CDATA[ BK_GOODRATE , ]]></if>
+				
+		<if test="xxTotal != null and xxTotal != '' ">  <![CDATA[ XX_TOTAL , ]]></if>
+
+		<if test="usedracknum != null and usedracknum != '' ">  <![CDATA[ USEDRACKNUM , ]]></if>
+
+		<if test="usedipnum != null and usedipnum != '' ">  <![CDATA[ USEDIPNUM , ]]></if>
+
+		<if test="usedcoreport != null and usedcoreport != '' ">  <![CDATA[ USEDCOREPORT , ]]></if>
+
+		<if test="usedaccessport != null and usedaccessport != '' ">  <![CDATA[ USEDACCESSPORT , ]]></if>
+
+		<if test="usedbandwidth != null and usedbandwidth != '' ">  <![CDATA[ USEDBANDWIDTH , ]]></if>
+	</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="racktotal != null and racktotal != '' ">  <![CDATA[ #{racktotal } , ]]></if>
+				
+		<if test="rackusage != null and rackusage != '' ">  <![CDATA[ #{rackusage } , ]]></if>
+				
+		<if test="iptotal != null and iptotal != '' ">  <![CDATA[ #{iptotal } , ]]></if>
+				
+		<if test="ipusage != null and ipusage != '' ">  <![CDATA[ #{ipusage } , ]]></if>
+				
+		<if test="coreporttotal != null and coreporttotal != '' ">  <![CDATA[ #{coreporttotal } , ]]></if>
+				
+		<if test="coreportusage != null and coreportusage != '' ">  <![CDATA[ #{coreportusage } , ]]></if>
+				
+		<if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ #{accessporttotal } , ]]></if>
+				
+		<if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ #{accessportusage } , ]]></if>
+				
+		<if test="customertotal != null and customertotal != '' ">  <![CDATA[ #{customertotal } , ]]></if>
+				
+		<if test="bandwidthtotal != null and bandwidthtotal != '' ">  <![CDATA[ #{bandwidthtotal } , ]]></if>
+				
+		<if test="bandwidthusage != null and bandwidthusage != '' ">  <![CDATA[ #{bandwidthusage } , ]]></if>
+				
+		<if test="customerOffTotal != null and customerOffTotal != '' ">  <![CDATA[ #{customerOffTotal } , ]]></if>
+				
+		<if test="paTotal != null and paTotal != '' ">  <![CDATA[ #{paTotal } , ]]></if>
+				
+		<if test="paGoodrate != null and paGoodrate != '' ">  <![CDATA[ #{paGoodrate } , ]]></if>
+				
+		<if test="ktTotal != null and ktTotal != '' ">  <![CDATA[ #{ktTotal } , ]]></if>
+				
+		<if test="ktGoodrate != null and ktGoodrate != '' ">  <![CDATA[ #{ktGoodrate } , ]]></if>
+				
+		<if test="baTotal != null and baTotal != '' ">  <![CDATA[ #{baTotal } , ]]></if>
+				
+		<if test="baGoograte != null and baGoograte != '' ">  <![CDATA[ #{baGoograte } , ]]></if>
+				
+		<if test="bkTotal != null and bkTotal != '' ">  <![CDATA[ #{bkTotal } , ]]></if>
+				
+		<if test="bkGoodrate != null and bkGoodrate != '' ">  <![CDATA[ #{bkGoodrate } , ]]></if>
+				
+		<if test="xxTotal != null and xxTotal != '' ">  <![CDATA[ #{xxTotal } , ]]></if>
+
+		<if test="usedracknum != null and usedracknum != '' ">  <![CDATA[ #{usedracknum } , ]]></if>
+
+		<if test="usedipnum != null and usedipnum != '' ">  <![CDATA[ #{usedipnum} , ]]></if>
+
+		<if test="usedcoreport != null and usedcoreport != '' ">  <![CDATA[ #{usedcoreport} , ]]></if>
+
+		<if test="usedaccessport != null and usedaccessport != '' ">  <![CDATA[ #{usedaccessport} , ]]></if>
+
+		<if test="usedbandwidth != null and usedbandwidth != '' ">  <![CDATA[ #{usedbandwidth} , ]]></if>
+	</trim>
+	</sql>
+
+	<!-- 鎵归噺淇濆瓨 -->
+	<sql id="batchInsertColumn">
+			ID,RACKTOTAL,RACKUSAGE,IPTOTAL,IPUSAGE,COREPORTTOTAL,COREPORTUSAGE,ACCESSPORTTOTAL,ACCESSPORTUSAGE,CUSTOMERTOTAL,
+			BANDWIDTHTOTAL,BANDWIDTHUSAGE,CUSTOMER_OFF_TOTAL,PA_TOTAL,PA_GOODRATE,KT_TOTAL,KT_GOODRATE,BA_TOTAL,BA_GOOGRATE,
+			BK_TOTAL,BK_GOODRATE,XX_TOTAL,USEDRACKNUM,USEDIPNUM,USEDCOREPORT,USEDACCESSPORT,USEDBANDWIDTH
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.racktotal},#{item.rackusage},#{item.iptotal},#{item.ipusage},#{item.coreporttotal},#{item.coreportusage},
+			#{item.accessporttotal},#{item.accessportusage},#{item.customertotal},#{item.bandwidthtotal},#{item.bandwidthusage},
+			#{item.customerOffTotal},#{item.paTotal},#{item.paGoodrate},#{item.ktTotal},#{item.ktGoodrate},#{item.baTotal},#{item.baGoograte},
+			#{item.bkTotal},#{item.bkGoodrate},#{item.xxTotal},#{usedracknum},#{usedipnum},#{usedcoreport},#{usedaccessport},#{usedbandwidth}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+	<!-- 统计资源相关数据ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo start-->
+	<!-- 获取机房总数 -->
+	<select id="getRoomCount" resultType="java.lang.Long">
+		select count(1) from zb_machineroom m
+        where m.isdelete = 0 and m.roomtype=1 and exists (select 1 from idc_building b where b.id = m.buildingid and b.locationid = #{0}
+        and b.isdelete = 0)
+	</select>
+	<!-- 获取机楼总数 -->
+	<select id="getBuildCount" resultType="java.lang.Long">
+        select count(1) from idc_building b where b.locationid = #{0} and b.isdelete = 0
+	</select>
+	<!-- 获取ODF架总数 -->
+	<select id="getOdfCount" resultType="java.lang.Long">
+		select count(1) from idc_rack r
+ 		where r.businesstype_id = 'df'
+ 			and r.dftype = 'odf'
+        	and r.isdelete = 0
+   			and exists
+        (select 1 from zb_machineroom m where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+        and exists (select 1 from idc_building b where b.id = m.buildingid and b.locationid=#{0} and b.isdelete = 0))
+	</select>
+	<!-- 获取PDF架总数 -->
+	<select id="getPdfCount" resultType="java.lang.Long">
+		select count(1) from idc_rack r
+ 		where r.businesstype_id = 'pdu'
+        	and r.isdelete = 0
+   			and exists
+        (select 1 from zb_machineroom m where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+        and exists(select 1 from idc_building b where b.id = m.buildingid and b.locationid=#{0} and b.isdelete = 0))
+	</select>
+	<!-- 获取机房空闲率 -->
+	<select id="getRoomFreeUsgeTOP" resultType="Map">
+		select m.sitename roomName,
+		round((case
+        when (select count(1) from idc_rack r where r.roomid = m.id and r.isdelete = 0) = 0 then
+		0
+		else
+		(select count(1)
+		from idc_rack r
+		where r.roomid = m.id
+        and r.isdelete = 0
+		and r.status = 40) /
+        (select count(1) from idc_rack r where r.roomid = m.id and r.isdelete = 0)
+		end) * 100,
+		2) freeUage
+        from zb_machineroom m where m.isdelete = 0 and m.roomtype=1 order by m.sitename
+	</select>
+
+	<!-- 查询所有的政企业务的好评 -->
+	<select id="getGoodEvaluate" resultType="Map">
+		  select * from VIEW_SATISFACTION_COUNT
+
+	</select>
+
+	<!-- 查询待处理工单 -->
+	<select id="getUntreatedTicket" resultType="Map">
+		select * from VIEW_UNTREATED_TICKE
+	</select>
+
+	<!-- 查询有域名的用户 -->
+	<select id="getDNS" resultType="java.lang.Integer">
+		select * from VIEW_GET_HAVE_DNS
+	</select>
+	<!-- 查询没有域名的用户 -->
+	<select id="getNotDNS" resultType="java.lang.Integer">
+		  select * from VIEW_GET_NO_DNS
+	</select>
+
+	<!-- 查询最近数个月每个月新增的用户 -->
+	<select id="onlineTicketList" resultType="Map">
+		/*select * from VIEW_MONTH_ADD_CUSTOMER*/
+		select *
+		from (select *
+		from (select t2.ticket_category,
+		count('X') NUM_,
+		TO_CHAR(T1.CREATE_TIME, 'yyyy-MM') date_
+		from idc_his_ticket_commnet t1
+		left join idc_his_ticket t2
+		on t1.ticket_inst_id = t2.id
+		where t2.ticket_status = 2
+		and t2.ticket_category
+	<![CDATA[	<>  ]]>
+		800 /*排除测试流程*/
+		group by TO_CHAR(T1.CREATE_TIME, 'yyyy-MM'),
+		t2.ticket_category
+		order by TO_CHAR(T1.CREATE_TIME, 'yyyy-MM') asc)
+		PIVOT(sum(num_)
+		FOR ticket_category IN(100 AS YZ,
+		200 AS KT, /* 每月开通的工单
+		每月下线的工单
+		*/
+		400 AS TJ,
+		500 AS FT,
+		600 AS XX,
+		700 AS BGKT,
+		900 AS YWBG)))
+		order by date_ desc
+
+	</select>
+	<!-- 查询最近数个月每个月减少的用户 -->
+	<select id="MonthDelCustomer" resultType="Map">
+		select * from VIEW_MONTH_DEL_CUSTOMER
+	</select>
+
+	<!-- 通过客户名称获取资源相关数量  机架-机位-IP-端口 -->
+	<select id="getIdcResourceCountByCustomerId" resultType="Map">
+        <![CDATA[
+		  select
+			(select count(1) from(select r.ticket_id as ticketId,r.id as rackId, r.name as rackName
+				  from idc_rack r
+				  where r.actualcustomerid = #{cusId} and r.isdelete = 0
+				  union
+				  select t.orderid as ticketId,t.rackid as rackId, k.name as rackName
+				  from idc_rackunit t
+				  inner join idc_rack k
+				  on (k.id = t.rackid)
+				where t.customerid = #{cusId} and k.isdelete = 0)) rackNum,/*占用机架数*/
+			(select count(1) from idc_rackunit t where t.customerid = #{cusId}) rackunitNum,/*占用机位数*/
+		    (select count(1) from NET_PORT p where p.customerid = #{cusId}) portNum,/*占用端口数*/
+		    (select count(1) from idc_ipinfo i where i.userid = to_char(#{cusId})) ipNum,/*占用IP数*/
+		    (select sum(m.bandwidth)
+			  from idc_re_port_model m
+			 where exists
+			 (select 1
+			  from idc_his_ticket t
+			 where t.ticket_inst_id = m.id
+			   and t.customer_id = #{cusId}
+			   and exists (select 1
+					  from idc_re_product p
+					 where p.procticket_status in (31, 71, 81)
+					   and p.id = t.prod_inst_id))) totalBandwidth/*占用带宽*/
+		  from dual
+		  ]]>
+	</select>
+
+	<!-- 将各个机房统计值更新到对应机房 -->
+	<select id="reloadRoomStatistics">
+		  call auto_reload_roomstatistics()
+	</select>
+</mapper>

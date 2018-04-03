@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo>
+    <provID>280</provID>
+    <deleteInfo>
+        <idcId>A2.B1.B2-20100001</idcId>
+        <deleteData>
+            <house>
+                <houseId>65004</houseId>
+                <gatewayId>5000001409</gatewayId>
+                <ipSegId>183.223.118.137</ipSegId>
+            </house>
+            <house>
+                <houseId>65004</houseId>
+                <gatewayId>5000001410</gatewayId>
+                <ipSegId>183.223.118.141</ipSegId>
+            </house>
+            <house>
+                <houseId>65004</houseId>
+                <gatewayId>5000001411</gatewayId>
+                <ipSegId>221.183.50.57</ipSegId>
+            </house>
+        </deleteData>
+    </deleteInfo>
+    <timeStamp>2017-11-13 19:20:42</timeStamp>
+</basicInfo>

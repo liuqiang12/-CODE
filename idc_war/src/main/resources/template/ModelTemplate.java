@@ -1,0 +1,61 @@
+package ${bussPackage}.${model_path};
+import java.math.BigDecimal;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.sql.Timestamp;
+import java.sql.Clob;
+import java.text.SimpleDateFormat;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+/**
+ * <br>
+ * <b>实体类</b><br>
+ * <b>功能：业务表</b>${tableData.tableName}:${tableData.tableComment}<br>
+ * <b>作者：${author}</b><br>
+ * <b>日期：</b> ${nowDate} <br>
+ * <b>版权所有：<b>版权所有(C) 2016<br>
+ */
+@SuppressWarnings("serial")
+public class ${className} implements Serializable {
+	#set($tableNameStr = """${tableData.tableName}""")
+	
+	public static final String tableName = $tableNameStr;
+#foreach($item in $!{effectModelDataList})
+	#set($columnTypeStr = $item.modelType)
+	#set($modelNameStr = $item.modelName+"Str")
+	#if($!item.isPri)
+    
+    @Id@GeneratedValue##
+ 	
+ 	private $!item.modelType $!item.modelName; //   $!item.modelComment
+ 	#else##
+	#if($!item.modelType == "Timestamp" or $!item.modelType == "Date")
+	
+	private $!item.modelType $!item.modelName; //   $!item.modelComment 
+	
+	private String $!modelNameStr; //   $!item.modelComment [日期格式化后的字符串]
+	#else##
+	
+	private $!item.modelType $!item.modelName; //   $!item.modelComment 
+	#end##
+ 	#end##
+#end
+
+/************************get set method**************************/
+#foreach($item in $!{effectModelDataList})
+ 	$!item.getMethod
+ 	$!item.setMethod
+#end
+
+#foreach($item in $!{effectModelDataListWithDate})
+	$!item.getMethod
+ 	$!item.setMethod
+#end
+	
+	$toStringMethod
+	
+
+ }

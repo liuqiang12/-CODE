@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.TicketJbpmReportMapper">
+	<!-- 返回类型 -->
+	<resultMap id="redisIdcRunTicketMap" type="com.idc.model.IdcRunTicket">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="CANDIDATE" property="candidate" />
+		<result column="GROUP_ID" property="groupId" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+	</resultMap>
+
+	<!-- 查询资源分配报表的信息 -->
+	<select id="getTicketReportListPage" parameterType="PageBean" resultType="Map">
+		select * from VIEW_TICKET_REPORT t1
+		<where>
+			<if test="params.busName != null and params.busName != '' ">
+				<![CDATA[ and T1.BUSNAME = #{params.busName}]]>
+			</if>
+			<if test=" params.customerName != null and params.customerName != '' ">
+				<![CDATA[ and t1.CUSTOMER_NAME= #{params.customerName} ]]>
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询ip地址使用报表 -->
+	<select id="getIpTicketReportListPage" parameterType="PageBean" resultType="Map">
+		select * from VIEW_TICKET_IP_REPORT t1
+		<where>
+			<if test="params.busName != null and params.busName != '' ">
+				<![CDATA[ and T1.BUSNAME = #{params.busName}]]>
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询资源回收表 -->
+	<select id="getRecycleTicketReportListPage" parameterType="PageBean" resultType="Map">
+		select * from VIEW_TICKET_RECYCLE_REPORT t1
+		<where>
+			<if test="params.busName != null and params.busName != '' ">
+				<![CDATA[ and T1.BUSNAME = #{params.busName}]]>
+			</if>
+			<if test=" params.customerName != null and params.customerName != '' ">
+				<![CDATA[ and t1.CUSTOMER_NAME= #{params.customerName} ]]>
+			</if>
+		</where>
+	</select>
+</mapper>

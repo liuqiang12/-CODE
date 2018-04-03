@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.DcimRackModelMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultDcimRackModelMap" type="DcimRackModel">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id"/>
+
+        <result column="NAME" property="name"/>
+
+        <result column="CODE" property="code"/>
+
+        <result column="MANUFACTURE" property="manufacture"/>
+
+        <result column="LENGTH" property="length"/>
+
+        <result column="WIDTH" property="width"/>
+
+        <result column="HEIGHT" property="height"/>
+
+        <result column="POWERINFO" property="powerinfo"/>
+
+        <result column="MEMO" property="memo"/>
+
+        <result column="TYPE" property="type"/>
+
+        <result column="UHEIGHT" property="uheight"/>
+
+        <result column="DEVICEWIDTH" property="devicewidth"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="DcimRackModel">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL where id= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="DcimRackModel"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="DcimRackModel">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="DcimRackModel">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="DcimRackModel"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="DcimRackModel">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="DcimRackModel">
+        select
+        <include refid="baseColumn"/>
+        from DCIM_RACK_MODEL
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="DcimRackModel">
+        update DCIM_RACK_MODEL
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update DCIM_RACK_MODEL
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from DCIM_RACK_MODEL
+	</delete>
+
+
+    <delete id="deleteById">
+        delete from DCIM_RACK_MODEL where id= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="DcimRackModel">
+        delete from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from DCIM_RACK_MODEL
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from DCIM_RACK_MODEL where id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="DcimRackModel"
+            useGeneratedKeys="true" keyProperty="ID">
+        INSERT INTO DCIM_RACK_MODEL
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO DCIM_RACK_MODEL (
+        <include refid="insertColumn"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam"/>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	ID as id,
+			NAME as name,
+			CODE as code,
+			MANUFACTURE as manufacture,
+			LENGTH as length,
+			WIDTH as width,
+			HEIGHT as height,
+			POWERINFO as powerinfo,
+			MEMO as memo,
+			TYPE as type,
+			UHEIGHT as uheight,
+			DEVICEWIDTH as devicewidth
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+            <if test="manufacture != null and manufacture != '' ">  <![CDATA[ and MANUFACTURE = #{manufacture} ]]></if>
+
+            <if test="length != null and length != '' ">  <![CDATA[ and LENGTH = #{length} ]]></if>
+
+            <if test="width != null and width != '' ">  <![CDATA[ and WIDTH = #{width} ]]></if>
+
+            <if test="height != null and height != '' ">  <![CDATA[ and HEIGHT = #{height} ]]></if>
+
+            <if test="powerinfo != null and powerinfo != '' ">  <![CDATA[ and POWERINFO = #{powerinfo} ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ and MEMO = #{memo} ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ and TYPE = #{type} ]]></if>
+
+            <if test="uheight != null and uheight != '' ">  <![CDATA[ and UHEIGHT = #{uheight} ]]></if>
+
+            <if test="devicewidth != null and devicewidth != '' ">  <![CDATA[ and DEVICEWIDTH = #{devicewidth} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+            <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+            <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+            <if test="params.manufacture != null and params.manufacture != '' ">
+                <![CDATA[ and MANUFACTURE = #{params.manufacture} ]]></if>
+
+            <if test="params.length != null and params.length != '' ">  <![CDATA[ and LENGTH = #{params.length} ]]></if>
+
+            <if test="params.width != null and params.width != '' ">  <![CDATA[ and WIDTH = #{params.width} ]]></if>
+
+            <if test="params.height != null and params.height != '' ">  <![CDATA[ and HEIGHT = #{params.height} ]]></if>
+
+            <if test="params.powerinfo != null and params.powerinfo != '' ">
+                <![CDATA[ and POWERINFO = #{params.powerinfo} ]]></if>
+
+            <if test="params.memo != null and params.memo != '' ">  <![CDATA[ and MEMO = #{params.memo} ]]></if>
+
+            <if test="params.type != null and params.type != '' ">  <![CDATA[ and TYPE = #{params.type} ]]></if>
+
+            <if test="params.uheight != null and params.uheight != '' ">
+                <![CDATA[ and UHEIGHT = #{params.uheight} ]]></if>
+
+            <if test="params.devicewidth != null and params.devicewidth != '' ">
+                <![CDATA[ and DEVICEWIDTH = #{params.devicewidth} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+            <if test="manufacture != null and manufacture != '' ">  <![CDATA[  MANUFACTURE = #{manufacture } ,]]></if>
+
+            <if test="length != null and length != '' ">  <![CDATA[  LENGTH = #{length } ,]]></if>
+
+            <if test="width != null and width != '' ">  <![CDATA[  WIDTH = #{width } ,]]></if>
+
+            <if test="height != null and height != '' ">  <![CDATA[  HEIGHT = #{height } ,]]></if>
+
+            <if test="powerinfo != null and powerinfo != '' ">  <![CDATA[  POWERINFO = #{powerinfo } ,]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[  MEMO = #{memo } ,]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[  TYPE = #{type } ,]]></if>
+
+            <if test="uheight != null and uheight != '' ">  <![CDATA[  UHEIGHT = #{uheight } ,]]></if>
+
+            <if test="devicewidth != null and devicewidth != '' ">  <![CDATA[  DEVICEWIDTH = #{devicewidth } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+            <if test="manufacture != null and manufacture != '' ">  <![CDATA[ MANUFACTURE , ]]></if>
+
+            <if test="length != null and length != '' ">  <![CDATA[ LENGTH , ]]></if>
+
+            <if test="width != null and width != '' ">  <![CDATA[ WIDTH , ]]></if>
+
+            <if test="height != null and height != '' ">  <![CDATA[ HEIGHT , ]]></if>
+
+            <if test="powerinfo != null and powerinfo != '' ">  <![CDATA[ POWERINFO , ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ MEMO , ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ TYPE , ]]></if>
+
+            <if test="uheight != null and uheight != '' ">  <![CDATA[ UHEIGHT , ]]></if>
+
+            <if test="devicewidth != null and devicewidth != '' ">  <![CDATA[ DEVICEWIDTH , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+            <if test="manufacture != null and manufacture != '' ">  <![CDATA[ #{manufacture } , ]]></if>
+
+            <if test="length != null and length != '' ">  <![CDATA[ #{length } , ]]></if>
+
+            <if test="width != null and width != '' ">  <![CDATA[ #{width } , ]]></if>
+
+            <if test="height != null and height != '' ">  <![CDATA[ #{height } , ]]></if>
+
+            <if test="powerinfo != null and powerinfo != '' ">  <![CDATA[ #{powerinfo } , ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ #{memo } , ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ #{type } , ]]></if>
+
+            <if test="uheight != null and uheight != '' ">  <![CDATA[ #{uheight } , ]]></if>
+
+            <if test="devicewidth != null and devicewidth != '' ">  <![CDATA[ #{devicewidth } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			ID,NAME,CODE,MANUFACTURE,LENGTH,WIDTH,HEIGHT,POWERINFO,MEMO,TYPE,UHEIGHT,DEVICEWIDTH
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.id},#{item.name},#{item.code},#{item.manufacture},#{item.length},#{item.width},#{item.height},#{item.powerinfo},#{item.memo},#{item.type},#{item.uheight},#{item.devicewidth}
+	</sql>
+
+
+</mapper>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetKpiAlarmLevelConfigMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetKpialarmlevelconfigMap" type="com.idc.model.NetKpiAlarmLevelConfig">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="KPIID" property="kpiid" />
+				
+		<result column="THRESHOLDLIMIT" property="thresholdlimit" />
+				
+		<result column="THRESHOLDLOWLIMIT" property="thresholdlowlimit" />
+				
+		<result column="KEYSTR" property="keystr" />
+				
+		<result column="ALARMLEVEL" property="alarmlevel" />
+				
+		<result column="ALARMCLASS" property="alarmclass" />
+				
+		<result column="RESOURCEID" property="resourceid" />
+				
+		<result column="DELFLAG" property="delflag" />
+				
+		<result column="DESCRIPTION" property="description" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.NetKpiAlarmLevelConfig">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.NetKpiAlarmLevelConfig"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.NetKpiAlarmLevelConfig">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.NetKpiAlarmLevelConfig">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.NetKpiAlarmLevelConfig"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.NetKpiAlarmLevelConfig">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetKpiAlarmLevelConfig">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIALARMLEVELCONFIG
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.NetKpiAlarmLevelConfig">
+		update NET_KPIALARMLEVELCONFIG
+		<include refid="updateParam" />
+        WHERE id= #{id}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_KPIALARMLEVELCONFIG
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_KPIALARMLEVELCONFIG
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_KPIALARMLEVELCONFIG where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.NetKpiAlarmLevelConfig">
+		delete from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_KPIALARMLEVELCONFIG
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_KPIALARMLEVELCONFIG where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.NetKpiAlarmLevelConfig"
+		useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            select NET_KPIALARMLEVELCONFIG_seq.nextval from dual
+        </selectKey>
+		INSERT INTO NET_KPIALARMLEVELCONFIG
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_KPIALARMLEVELCONFIG (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			KPIID as kpiid,
+			THRESHOLDLIMIT as thresholdlimit,
+			THRESHOLDLOWLIMIT as thresholdlowlimit,
+			KEYSTR as keystr,
+			ALARMLEVEL as alarmlevel,
+			ALARMCLASS as alarmclass,
+			RESOURCEID as resourceid,
+			DELFLAG as delflag,
+			DESCRIPTION as description
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="kpiid != null and kpiid != '' ">  <![CDATA[ and KPIID = #{kpiid} ]]></if>
+						
+			<if test="thresholdlimit != null and thresholdlimit != '' ">  <![CDATA[ and THRESHOLDLIMIT = #{thresholdlimit} ]]></if>
+						
+			<if test="thresholdlowlimit != null and thresholdlowlimit != '' ">  <![CDATA[ and THRESHOLDLOWLIMIT = #{thresholdlowlimit} ]]></if>
+						
+			<if test="keystr != null and keystr != '' ">  <![CDATA[ and KEYSTR = #{keystr} ]]></if>
+						
+			<if test="alarmlevel != null and alarmlevel != '' ">  <![CDATA[ and ALARMLEVEL = #{alarmlevel} ]]></if>
+						
+			<if test="alarmclass != null and alarmclass != '' ">  <![CDATA[ and ALARMCLASS = #{alarmclass} ]]></if>
+						
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ and RESOURCEID = #{resourceid} ]]></if>
+						
+			<if test="delflag != null and delflag != '' ">  <![CDATA[ and DELFLAG = #{delflag} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and DESCRIPTION = #{description} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.kpiid != null and params.kpiid != '' ">  <![CDATA[ and KPIID = #{params.kpiid} ]]></if>
+						
+			<if test="params.thresholdlimit != null and params.thresholdlimit != '' ">  <![CDATA[ and THRESHOLDLIMIT = #{params.thresholdlimit} ]]></if>
+						
+			<if test="params.thresholdlowlimit != null and params.thresholdlowlimit != '' ">  <![CDATA[ and THRESHOLDLOWLIMIT = #{params.thresholdlowlimit} ]]></if>
+						
+			<if test="params.keystr != null and params.keystr != '' ">  <![CDATA[ and KEYSTR = #{params.keystr} ]]></if>
+						
+			<if test="params.alarmlevel != null and params.alarmlevel != '' ">  <![CDATA[ and ALARMLEVEL = #{params.alarmlevel} ]]></if>
+						
+			<if test="params.alarmclass != null and params.alarmclass != '' ">  <![CDATA[ and ALARMCLASS = #{params.alarmclass} ]]></if>
+						
+			<if test="params.resourceid != null and params.resourceid != '' ">  <![CDATA[ and RESOURCEID = #{params.resourceid} ]]></if>
+						
+			<if test="params.delflag != null and params.delflag != '' ">  <![CDATA[ and DELFLAG = #{params.delflag} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and DESCRIPTION = #{params.description} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="kpiid != null and kpiid != '' ">  <![CDATA[  KPIID = #{kpiid } ,]]></if>
+						
+			<if test="thresholdlimit != null and thresholdlimit != '' ">  <![CDATA[  THRESHOLDLIMIT = #{thresholdlimit } ,]]></if>
+						
+			<if test="thresholdlowlimit != null and thresholdlowlimit != '' ">  <![CDATA[  THRESHOLDLOWLIMIT = #{thresholdlowlimit } ,]]></if>
+						
+			<if test="keystr != null and keystr != '' ">  <![CDATA[  KEYSTR = #{keystr } ,]]></if>
+						
+			<if test="alarmlevel != null and alarmlevel != '' ">  <![CDATA[  ALARMLEVEL = #{alarmlevel } ,]]></if>
+						
+			<if test="alarmclass != null and alarmclass != '' ">  <![CDATA[  ALARMCLASS = #{alarmclass } ,]]></if>
+						
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[  RESOURCEID = #{resourceid } ,]]></if>
+						
+			<if test="delflag != null and delflag != '' ">  <![CDATA[  DELFLAG = #{delflag } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  DESCRIPTION = #{description } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="kpiid != null and kpiid != '' ">  <![CDATA[ KPIID , ]]></if>
+				
+		<if test="thresholdlimit != null and thresholdlimit != '' ">  <![CDATA[ THRESHOLDLIMIT , ]]></if>
+				
+		<if test="thresholdlowlimit != null and thresholdlowlimit != '' ">  <![CDATA[ THRESHOLDLOWLIMIT , ]]></if>
+				
+		<if test="keystr != null and keystr != '' ">  <![CDATA[ KEYSTR , ]]></if>
+				
+		<if test="alarmlevel == 0 or alarmlevel != null  ">  <![CDATA[ ALARMLEVEL , ]]></if>
+				
+		<if test="alarmclass != null and alarmclass != '' ">  <![CDATA[ ALARMCLASS , ]]></if>
+				
+		<if test="resourceid != null and resourceid != '' ">  <![CDATA[ RESOURCEID , ]]></if>
+				
+		<if test="delflag != null and delflag != '' ">  <![CDATA[ DELFLAG , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ DESCRIPTION , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="kpiid != null and kpiid != '' ">  <![CDATA[ #{kpiid } , ]]></if>
+				
+		<if test="thresholdlimit != null and thresholdlimit != '' ">  <![CDATA[ #{thresholdlimit } , ]]></if>
+				
+		<if test="thresholdlowlimit != null and thresholdlowlimit != '' ">  <![CDATA[ #{thresholdlowlimit } , ]]></if>
+				
+		<if test="keystr != null and keystr != '' ">  <![CDATA[ #{keystr } , ]]></if>
+				
+		<if test="alarmlevel==0 or alarmlevel != null ">  <![CDATA[ #{alarmlevel} , ]]></if>
+				
+		<if test="alarmclass != null and alarmclass != '' ">  <![CDATA[ #{alarmclass } , ]]></if>
+				
+		<if test="resourceid != null and resourceid != '' ">  <![CDATA[ #{resourceid } , ]]></if>
+				
+		<if test="delflag != null and delflag != '' ">  <![CDATA[ #{delflag } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,KPIID,THRESHOLDLIMIT,THRESHOLDLOWLIMIT,KEYSTR,ALARMLEVEL,ALARMCLASS,RESOURCEID,DELFLAG,DESCRIPTION
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.kpiid},#{item.thresholdlimit},#{item.thresholdlowlimit},#{item.keystr},#{item.alarmlevel},#{item.alarmclass},#{item.resourceid},#{item.delflag},#{item.description}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

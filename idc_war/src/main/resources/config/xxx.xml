@@ -1,0 +1,133 @@
+create tablespace ticket
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_ticket_space.dbf'
+        size 50m
+        autoextend on
+        next 50m
+        extent management local;
+
+
+        create tablespace idc_resource_space
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_resource_space.dbf'
+        size 500m
+        autoextend on
+        next 50m
+        extent management local;
+
+        create tablespace idc_resource_port
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_port_space.dbf'
+        size 500m
+        autoextend on
+        next 50m
+        extent management local;
+
+        create tablespace idc_resource_ip
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_ip_space.dbf'
+        size 500m
+        autoextend on
+        next 50m
+        extent management local;
+
+        create tablespace idc_resource_net
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_net_space.dbf'
+        size 500m
+        autoextend on
+        next 50m
+        extent management local;
+
+        create tablespace idc_sys_space
+        logging
+        datafile '/mnt/home/app/oracle/product/11.2.0/dbhome_1/dbs/idc_sys_space.dbf'
+        size 500m
+        autoextend on
+        next 50m
+        extent management local;
+
+
+
+
+
+        /**
+        **/
+        /*初始化设置空间大小为:900M 自动扩展400m*/
+        alter table dcim.idc_his_ticket  move tablespace ticket;
+        alter table dcim.idc_his_ticket_change  move tablespace ticket;
+        alter table dcim.idc_his_ticket_commnet  move tablespace ticket;
+        alter table dcim.idc_his_ticket_halt  move tablespace ticket;
+        alter table dcim.idc_his_ticket_open  move tablespace ticket;
+        alter table dcim.idc_his_ticket_pause  move tablespace ticket;
+        alter table dcim.idc_his_ticket_pre_accept  move tablespace ticket;
+        alter table dcim.idc_his_ticket_recover  move tablespace ticket;
+        alter table dcim.idc_his_ticket_resource  move tablespace ticket;
+        alter table dcim.idc_his_ticket_temporary  move tablespace ticket;
+
+        alter table dcim.idc_run_ticket  move tablespace ticket;
+        alter table dcim.idc_run_ticket_back  move tablespace ticket;
+        alter table dcim.idc_run_ticket_change  move tablespace ticket;
+        alter table dcim.idc_run_ticket_commnet  move tablespace ticket;
+        alter table dcim.idc_run_ticket_halt  move tablespace ticket;
+        alter table dcim.idc_run_ticket_open  move tablespace ticket;
+        alter table dcim.idc_run_ticket_pause  move tablespace ticket;
+        alter table dcim.idc_run_ticket_rack  move tablespace ticket;
+        alter table dcim.idc_run_ticket_recover  move tablespace ticket;
+        alter table dcim.idc_run_ticket_resource  move tablespace ticket;
+        alter table dcim.idc_run_ticket_temporary  move tablespace ticket;
+        alter table dcim.idc_ticket_tree  move tablespace ticket;
+        /****  机架 机位 初始化1024m  自动扩展500m  ***/
+
+        alter table dcim.idc_rack  move tablespace idc_resource_space;
+        alter table dcim.idc_rackunit  move tablespace idc_resource_space;
+        /**** IP 初始化4024m  自动扩展500m  ***/
+        alter table dcim.idc_ipinfo  move tablespace idc_resource_ip;
+        alter table dcim.idc_ipsubnet  move tablespace idc_resource_ip;
+        /**** 端口 初始化1024m  自动扩展500m  ***/
+        alter table dcim.idc_port  move tablespace idc_resource_port;
+        /** 性能: 初始化5120m 自动扩展2048m **/
+
+
+
+        alter table dcim.net_alarminfo_curr  move tablespace idc_resource_net;
+        alter table dcim.net_alarminfo_his  move tablespace idc_resource_net;
+
+        alter table dcim.net_busiport  move tablespace idc_resource_net;
+        alter table dcim.net_busi_port  move tablespace idc_resource_net;
+
+        alter table dcim.net_cap_cpu  move tablespace idc_resource_net;
+        alter table dcim.net_cap_cpu_curr  move tablespace idc_resource_net;
+        alter table dcim.net_cap_mem_curr  move tablespace idc_resource_net;
+        alter table dcim.net_cap_temperature_curr  move tablespace idc_resource_net;
+
+        alter table dcim.net_device move tablespace idc_resource_net;
+        alter table dcim.net_gathertask_period move tablespace idc_resource_net;
+        alter table dcim.net_kpialarmlevelconfig move tablespace idc_resource_net;
+        alter table dcim.net_kpialarmsendconfig move tablespace idc_resource_net;
+        alter table dcim.net_kpibase move tablespace idc_resource_net;
+        alter table dcim.net_port move tablespace idc_resource_net;
+        alter table dcim.net_topoview move tablespace idc_resource_net;
+        alter table dcim.net_topoviewobj move tablespace idc_resource_net;
+        alter table dcim.net_topo_obj_link move tablespace idc_resource_net;
+        /*  系统表  */
+        alter table dcim.sys_user_group move tablespace idc_sys_space;
+        alter table dcim.sys_userlogin move tablespace idc_sys_space;
+        alter table dcim.sys_userinfo move tablespace idc_sys_space;
+        alter table dcim.sys_roleinfo move tablespace idc_sys_space;
+        alter table dcim.sys_permissioninfo move tablespace idc_sys_space;
+        alter table dcim.sys_operate_log move tablespace idc_sys_space;
+        alter table dcim.sys_operate move tablespace idc_sys_space;
+        alter table dcim.sys_ln_user_usergrp move tablespace idc_sys_space;
+        alter table dcim.sys_ln_user_role move tablespace idc_sys_space;
+        alter table dcim.sys_ln_user_region move tablespace idc_sys_space;
+        alter table dcim.sys_ln_user_department move tablespace idc_sys_space;
+        alter table dcim.sys_ln_usergrp_role move tablespace idc_sys_space;
+        alter table dcim.sys_ln_role_permissioninfo move tablespace idc_sys_space;
+        alter table dcim.sys_ln_role_data_permission move tablespace idc_sys_space;
+        alter table dcim.sys_ln_operate_permissioninfo move tablespace idc_sys_space;
+        alter table dcim.sys_ln_menu_permissioninfo move tablespace idc_sys_space;
+        alter table dcim.sys_department move tablespace idc_sys_space;
+
+
+

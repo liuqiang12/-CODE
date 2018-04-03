@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <!-- 引入CXF Bean定义如下,早期的版本中使用 -->
+    <!--<import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />-->
+    <!--发布webservice-->
+    <!-- WebService的实现Bean定义 -->
+    <!--web.xml配置了webservice的访问路径/server/*，那么/server/isp_publish?wsdl就是该webservice的访问路径-->
+    <bean id="webserviceServer" class="com.idc.cxf.isp.service.impl.EventServiceImpl" />
+    <bean id="commandServiceWebService" class="com.idc.cxf.isp.service.impl.CommandServiceImpl" />
+    <!-- jax-ws endpoint定义  -->
+    <jaxws:endpoint id="ispService_point" implementor="#webserviceServer"  address="/isp_publish" >
+        <!-- 添加in拦截器 -->
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <bean class="com.utils.ValidationInterceptor"/>
+        </jaxws:inInterceptors>
+        <!-- 添加out拦截器 -->
+        <!--<jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </jaxws:outInterceptors>-->
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="commandService_point" implementor="#commandServiceWebService"  address="/idcCommand" >
+        <!-- 添加in拦截器 -->
+        <jaxws:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+            <bean class="com.utils.ValidationInterceptor"/>
+        </jaxws:inInterceptors>
+        <!-- 添加out拦截器 -->
+        <!--<jaxws:outInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </jaxws:outInterceptors>-->
+    </jaxws:endpoint>
+    <!--发布webservice-->
+</beans>

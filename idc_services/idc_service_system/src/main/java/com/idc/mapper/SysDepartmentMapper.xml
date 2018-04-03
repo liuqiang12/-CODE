@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysDepartmentMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysDepartmentMap" type="SysDepartment">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="org_id" property="orgId" />
+				
+		<result column="name" property="name" />
+				
+		<result column="parent_id" property="parentId" />
+				
+		<result column="description" property="description" />
+				
+		<result column="tree_type" property="treeType" />
+				
+		<result column="create_time" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysDepartment">
+		select
+		<include refid="baseColumn" />
+		from sys_department where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysDepartment"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysDepartment">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysDepartment">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysDepartment"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysDepartment">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysDepartment">
+		select
+		<include refid="baseColumn" />
+		from sys_department
+		<include refid="wherePageParam" />
+	</select>
+
+	<!--根据用户ID获取部门信息-->
+	<select id="getDepartmentListByUserId" parameterType="java.lang.Integer" resultType="SysDepartment">
+		select t1.* FROM sys_department t1 LEFT join sys_ln_user_department t2 on t1.id= t2.dpt_id
+		where t2.user_id= #{0}
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysDepartment">
+		update sys_department
+		<include refid="updateParam" />
+        WHERE  id=#{id}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_department
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_department
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_department where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysDepartment">
+		delete from sys_department
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_department
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_department where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysDepartment"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_department
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_department (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			org_id as orgId,
+			name as name,
+			parent_id as parentId,
+			description as description,
+			tree_type as treeType,
+			create_time as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="orgId != null and orgId != '' ">  <![CDATA[ and org_id = #{orgId} ]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[ and name = #{name} ]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[ and parent_id = #{parentId} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and description = #{description} ]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[ and tree_type = #{treeType} ]]></if>
+						
+			<if test="createTime != null  ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+
+            <if test="orgids != null and orgids!='' ">  <![CDATA[ and  org_id in(#{orgids}) ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.orgId != null and params.orgId != '' ">  <![CDATA[ and org_id = #{params.orgId} ]]></if>
+						
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and name = #{params.name} ]]></if>
+						
+			<if test="params.parentId != null and params.parentId != '' ">  <![CDATA[ and parent_id = #{params.parentId} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and description = #{params.description} ]]></if>
+						
+			<if test="params.treeType != null and params.treeType != '' ">  <![CDATA[ and tree_type = #{params.treeType} ]]></if>
+						
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+						
+			<if test="orgId != null and orgId != '' ">  <![CDATA[  org_id = #{orgId } ,]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[  name = #{name } ,]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[  parent_id = #{parentId } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  description = #{description } ,]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[  tree_type = #{treeType } ,]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>
+				
+		<if test="orgId != null and orgId != '' ">  <![CDATA[ org_id , ]]></if>
+				
+		<if test="name != null and name != '' ">  <![CDATA[ name , ]]></if>
+				
+		<if test="parentId != null and parentId != '' ">  <![CDATA[ parent_id , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ description , ]]></if>
+				
+		<if test="treeType != null and treeType != '' ">  <![CDATA[ tree_type , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ create_time , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="orgId != null and orgId != '' ">  <![CDATA[ #{orgId } , ]]></if>
+				
+		<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+				
+		<if test="parentId != null and parentId != '' ">  <![CDATA[ #{parentId } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				
+		<if test="treeType != null and treeType != '' ">  <![CDATA[ #{treeType } , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			id,org_id,name,parent_id,description,tree_type,create_time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.orgId},#{item.name},#{item.parentId},#{item.description},#{item.treeType},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

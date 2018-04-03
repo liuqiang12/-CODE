@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.DeviceCapMapper">
+
+
+
+    <select id="getHis" resultType="Map">
+
+        <if test="type=='cpu'">
+            SELECT recordtime as timestr,ProcessValue as value from   Net_CAP_CPU
+        </if>
+        <if test="type=='temperature'">
+            SELECT recordtime as timestr,Temperature as value from  NET_CAP_TEMPERATURE
+        </if>
+        <if test="type=='memory'">
+            SELECT recordtime as timestr,UsedValue as value from  Net_cap_Mem
+        </if>
+        WHERE
+        ROUTID = #{routid} and
+        RECORDTIME >= TO_DATE(#{startTime},'yyyy-MM-dd') and recordtime &lt; TO_DATE(#{endTime},'yyyy-MM-dd')
+        ORDER  by recordtime
+    </select>
+    <select id="getMaxTaskId" resultType="java.lang.Long">
+        SELECT  max(taskid) from task_manager
+    </select>
+    <select id="getMaxTempTaskProId" resultType="java.lang.Long">
+         SELECT  max(id) from TASK_TEMPOBJ
+    </select>
+    <insert id="addTask">
+        INSERT INTO TASK_MANAGER(taskid,taskclass,taskname,tasktype,configtime,exectime,runflag,nodeid,extend,userid)
+        values(#{taskid},1,#{taskname},0,sysdate,sysdate,0,0,0,'muyp')
+    </insert>
+    <insert id="addTaskObj">
+          INSERT INTO TASK_TEMPOBJ(id,taskid,goid)
+          values(#{id},#{taskid},#{deviceid})
+    </insert>
+</mapper>

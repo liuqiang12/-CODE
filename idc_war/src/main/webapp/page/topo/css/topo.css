@@ -1,0 +1,708 @@
+a:hover {
+    cursor: pointer;
+}
+span[name=prop]{
+    color:black;
+}
+h5{
+    word-break:break-all;//自动换行
+}
+/*获取字符串的大小*/
+span[name=topo_get_string_Width]{
+    visibility: hidden;
+}
+/*颜色选择框*/
+.color_selected{
+    position:absolute;
+    left:-120px;
+    top:-150px
+}
+.bootstrap-colorpalette {
+    padding-left:4px;
+    padding-right:4px;
+    white-space: normal;
+    line-height:1;
+}
+
+.bootstrap-colorpalette div {
+    line-height:0;
+}
+
+.bootstrap-colorpalette .btn-color {
+    width: 17px;
+    height: 17px;
+    border: 1px solid #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.bootstrap-colorpalette .btn-color:hover {
+    border: 1px solid #000;
+}
+/*滚动条*/
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    /* 滚动槽 */
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0,0.5);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    /* 滑块 */
+    border-radius: 10px;
+    background: rgba(51, 122,183,1);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    /* 未选中*/
+}
+/*IE中滚动条*/
+body {
+    SCROLLBAR-FACE-COLOR: rgba(51, 122, 183, 1);        /*滚动条凸出部分的颜色*/
+    SCROLLBAR-HIGHLIGHT-COLOR: rgba(51, 122, 183, 0);    /*滚动条空白部分的颜色*/
+    SCROLLBAR-SHADOW-COLOR:rgba(0, 100, 150, 0.5);     /*立体滚动条阴影的颜色*/
+    SCROLLBAR-3DLIGHT-COLOR:rgba(51, 122, 183, 0);     /*滚动条亮边的颜色*/
+    SCROLLBAR-ARROW-COLOR: rgba(0, 100, 150, 0.5);     /*上下按钮上三角箭头的颜色*/
+    SCROLLBAR-TRACK-COLOR: rgba(0, 100, 150, 0.5);     /*滚动条的背景颜色*/
+    SCROLLBAR-DARKSHADOW-COLOR: rgba(51, 122, 183, 0);     /*滚动条强阴影的颜色*/
+    SCROLLBAR-BASE-COLOR: rgba(51, 122, 183, 0);     /*滚动条的基本颜色*/
+}
+/*窗口进度条*/
+.inner-progress {
+    position: relative;
+    top: 7px;
+}
+
+/*数值框*/
+input[name*='num'] {
+    text-align: center;
+}
+
+/*模拟框*/
+div.modal.fade {
+    position: absolute;
+    top: 20%;
+}
+
+div[name*=topo] .modal-content {
+    color: white;
+    background: rgba(51, 122, 183, 0.5);
+}
+
+/*图片选择框*/
+div[name=image_select] .modal-body {
+    overflow-x: hidden;
+    height: 300px;
+    padding: 0;
+}
+div[name=image_select] .panel{
+    position:relative;
+    border:0;
+}
+div[name=image_select] .panel-heading{
+    background: rgba(51, 122, 183, 0.5);
+    color:white;
+}
+div[name=image_select] .panel-body{
+    padding: 0;
+}
+div[name=image_select] [name=image_show]{
+    margin-left: 10px;
+    padding: 0;
+}
+div[name=image_select] img{
+    width: 50px;
+    height:50px;
+}
+
+/*进度条*/
+div.modal[name=topo_progress] {
+    position: absolute;
+    top: 40%;
+}
+
+div.modal[name=topo_progress] .modal-content {
+    border: 0;
+}
+
+div.modal[name=topo_progress] .progress {
+    height: 30px;
+}
+
+div.modal[name=topo_progress] .progress-bar {
+    font-size: 20px;
+}
+
+/*工具栏*/
+div[name=topo_toolbar_template]  .panel{
+    position: fixed;
+    padding: 0;
+    border: 0;
+}
+div[name=topo_toolbar_template]  .panel-body{
+    padding: 0;
+    border: 0;
+}
+div.panel[name=topo_toolbar] {
+    right: 0;
+    top: 0;
+}
+div.panel[name=topo_toolbar] .input-group{
+    display: inline-block;
+}
+
+div.panel[name=topo_toolbar] span {
+    display: inline;
+}
+
+div.panel[name=topo_toolbar] select[name=search_mode] {
+    /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+    border: solid 1px #2e6da4;
+    width: 100px;
+    color: #fff;
+    background-color: #337ab7;
+}
+div.panel[name=topo_toolbar] select[name=search_result] {
+    position: absolute;
+    width:150px;
+    top:35px;
+    right:34px;
+}
+div.panel[name=topo_toolbar] input[name=search_text] {
+    width: 150px;
+}
+
+/*窗口*/
+div.panel {
+    color: white;
+    background: rgba(51, 122, 183, 0.5);
+    position: absolute;
+}
+
+div.panel-footer {
+    padding: 0;
+    background: rgba(51, 122, 183, 0.5);
+}
+div.panel-footer [name=group]{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+div[name=topo_image_node] {
+    width: 350px;
+}
+
+div[name=topo_text_node] {
+    width: 350px;
+}
+
+div[name=topo_link_attribute] {
+    width: 350px;
+}
+div[name=topo_line_attribute]{
+    width: 350px;
+}
+div[name=topo_auto_layout] {
+    width: 350px;
+}
+div[name=alarm_config] {
+    width: 350px;
+}
+div[name=topo_tips]{
+}
+div[name=topo_tips] > .panel-body {
+    padding: 0;
+    border: 0;
+}
+
+div[name=topo_exprop] {
+    width: 600px;
+}
+
+div[name=topo_exprop] .col-sm-6 {
+    padding: 0
+}
+
+div[name=topo_exprop] .col-sm-1 {
+    padding: 0
+}
+div[name=topo_exprop] .panel-body {
+    overflow-x: hidden;
+    height: 300px;
+}
+div[name=topo_container_attribute] {
+    width: 350px;
+}
+
+div[name=topo_container_attribute] .panel-body {
+    overflow-x: hidden;
+    height: 300px;
+}
+/*右键菜单*/
+ul[name='topo_rightMenu']{
+    padding:0;
+    background: #337ab7;
+}
+ul[name='topo_rightMenu'] li{
+    width: inherit;
+}
+ul[name='topo_rightMenu'] .divider{
+    width:100%;
+    margin: 0;
+}
+.dropdown-submenu {
+    position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+    padding:0;
+    background: #337ab7;
+}
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: white;
+    margin-top: 6px;
+    margin-right: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.buttonSquare {
+    width: 100%;
+    border-radius: 0;
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    position: relative;
+    cursor: pointer;
+    margin: 0 0 0 0;
+    padding: 5px 0 5px 0;
+    border: none;
+    font: normal 12px "Roboto", Helvetica, sans-serif;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: capitalize;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: #FFFFFF;
+    text-shadow: 0 0 0 rgba(239, 245, 247, 1);
+    transition: all 0.2s;
+}
+
+.buttonSquare span {
+    width: 80%;
+    display: inline-block;
+    position: absolute;
+    left: 20%;
+    text-transform: uppercase;
+}
+
+.buttonSquare i {
+    margin: 0 5px 0 5px;
+    z-index: 9999;
+    position: relative;
+}
+.buttonSquare:hover {
+    color:black;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s;
+}
+.buttonSquare::before {
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 18%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    border: none;
+    color: rgba(0, 0, 0, 0.9);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: rgba(0, 0, 0, 0.2);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    -webkit-background-size: 48px auto;
+    background-size: 48px auto;
+    transition: all 0.2s;
+}
+
+/*Colors*/
+
+.darkpink {
+    background: #e798ba;
+}
+
+.darkpink:active, .darkpink:focus {
+    background: #edb2cb;
+}
+
+.lightpink {
+    background: #fa6374;
+}
+
+.lightpink:active, .lightpink:focus {
+    background: #fb8a97;
+}
+
+.darkorange {
+    background: #ba6200;
+}
+
+.darkorange:active, .darkorange:focus {
+    background: #cb8940;
+}
+
+.orangeplus {
+    background: #fc7736;
+}
+
+.orangeplus:active, .orangeplus:focus {
+    background: #fd9968;
+}
+
+.orange {
+    background: #d35400;
+}
+
+.orange:active, .orange:focus {
+    background: #de7f40;
+}
+
+.orangelight {
+    background: #f7941d;
+}
+
+.orangelight:active, .orangelight:focus {
+    background: #f9af56;
+}
+
+.orangelightplus {
+    background: #f39c12;
+}
+
+.orangelightplus:active, .orangelightplus:focus {
+    background: #f6b54d;
+}
+
+.orangeblind {
+    background: #f8b243;
+}
+
+.orangeblind:active, .orangeblind:focus {
+    background: #fac572;
+}
+
+.yellow {
+    background: #f3cf3f;
+}
+
+.yellow:active, .yellow:focus {
+    background: #f6db6f;
+}
+
+.muddygreen {
+    background: #9e9a27;
+}
+
+.muddygreen:active, .muddygreen:focus {
+    background: #ada563;
+}
+
+.muddygreenplus {
+    background: #a9baa2;
+}
+
+.muddygreenplus:active, .muddygreenplus:focus {
+    background: #bfcbb9;
+}
+
+.green {
+    background: #01b169;
+}
+
+.green:active, .green:focus {
+    background: #62d995;
+}
+
+.greenplus {
+    background: #16a085;
+}
+
+.greenplus:active, .greenplus:focus {
+    background: #50b8a4;
+}
+
+.anothergreen {
+    background: #52be7f;
+}
+
+.anothergreen:active, .anothergreen:focus {
+    background: #7dce9f;
+}
+
+.lightgreen {
+    background: #82d8b5;
+}
+
+.lightgreen:active, .lightgreen:focus {
+    background: #a1e2c8;
+}
+
+.lightgreenplus {
+    background: #47c9af;
+}
+
+.lightgreenplus:active, .lightgreenplus:focus {
+    background: #75d7c3;
+}
+
+.lightgreentwoplus {
+    background: #5aada2;
+}
+
+.lightgreentwoplus:active, .lightgreentwoplus:focus {
+    background: #83c2b9;
+}
+
+.darkgreen {
+    background: #8ba987;
+}
+
+.darkgreen:active, .darkgreen:focus {
+    background: #bfcbb9;
+}
+
+.darkgreenplus {
+    background: #067a6b;
+}
+
+.darkgreenplus:active, .darkgreenplus:focus {
+    background: #449b90;
+}
+
+.lightred {
+    background: #f26c63;
+}
+
+.lightred:active, .lightred:focus {
+    background: #f5918a;
+}
+
+.red {
+    background: #e74c3c;
+}
+
+.red:active, .red:focus {
+    background: #ed796d;
+}
+
+.muddyred {
+    background: #cc6055;
+}
+
+.muddyred:active, .muddyred:focus {
+    background: #d98880;
+}
+
+.lime {
+    background: #cfe374;
+}
+
+.lime:active, .lime:focus {
+    background: #dbea97;
+}
+
+.gray {
+    background: #5f5e61;
+}
+
+.gray:active, .gray:focus {
+    background: #878689;
+}
+
+.black {
+    background: #2d2e2b;
+}
+
+.black:active, .black:focus {
+    background: #626260;
+}
+
+.beige {
+    background: #b69f76;
+}
+
+.beige:active, .beige:focus {
+    background: #c8b798;
+}
+
+.beigeplus {
+    background: #e39568;
+}
+
+.beigeplus:active, .beigeplus:focus {
+    background: #eab08e;
+}
+
+.brown {
+    background: #9a6362;
+}
+
+.brown:active, .brown:focus {
+    background: #b38a89;
+}
+
+.brownlight {
+    background: #a87878;
+}
+
+.brownlight:active, .brownlight:focus {
+    background: #be9a9a;
+}
+
+.darkbrown {
+    background: #52323a;
+}
+
+.darkbrown:active, .darkbrown:focus {
+    background: #7d656b;
+}
+
+.darkpurple {
+    background: #584c58;
+}
+
+.darkpurple:active, .darkpurple:focus {
+    background: #827982;
+}
+
+.lightpurple {
+    background: #55367a;
+}
+
+.lightpurple:active, .lightpurple:focus {
+    background: #80689b;
+}
+
+.lightpurpleplus {
+    background: #af7ac4;
+}
+
+.lightpurpleplus:active, .lightpurpleplus:focus {
+    background: #c39bd3;
+}
+
+.purple {
+    background: #8e44ad;
+}
+
+.purple:active, .purple:focus {
+    background: #aa73c2;
+}
+
+.purpleplus {
+    background: #ae5e9b;
+}
+
+.purpleplus:active, .purpleplus:focus {
+    background: #c286b4;
+}
+
+.anotherpurple {
+    background: #9c00c5;
+}
+
+.anotherpurple:active, .anotherpurple:focus {
+    background: #b540d4;
+}
+
+.muddypurple {
+    background: #807399;
+}
+
+.muddypurple:active, .muddypurple:focus {
+    background: #a096b3;
+}
+
+.azure {
+    background: #00a2d3;
+}
+
+.azure:active, .azure:focus {
+    background: #40b9de;
+}
+
+.blue {
+    background: #024883;
+}
+
+.blue:active, .blue:focus {
+    background: #4176a2;
+}
+
+.bluelight {
+    background: #337ab7;
+}
+
+.bluelight:active, .bluelight:focus {
+    background: #a0bed9;
+}
+
+.bluelightplus {
+    background: #6ab1b8;
+}
+
+.bluelightplus:active, .bluelightplus:focus {
+    background: #8fc5ca;
+}
+
+.blueplus {
+    background: #2980b9;
+}
+
+.blueplus:active, .blueplus:focus {
+    background: #5fa0cb;
+}
+
+.darkblue {
+    background: #34495e;
+}
+
+.darkblue:active, .darkblue:focus {
+    background: #677786;
+}
+
+.darkbluelight {
+    background: #484860;
+}
+
+.darkbluelight:active, .darkbluelight:focus {
+    background: #767688;
+}
+
+.darkbluelightplus {
+    background: #60677a;
+}
+
+.darkbluelightplus:active, .darkbluelightplus:focus {
+    background: #888d9b;
+}

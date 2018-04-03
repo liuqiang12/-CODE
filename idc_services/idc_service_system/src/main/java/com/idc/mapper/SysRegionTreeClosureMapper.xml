@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysRegionTreeClosureMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysRegionTreeClosureMap" type="SysRegionTreeClosure">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ancestor" property="ancestor" />
+				
+		<result column="descendant" property="descendant" />
+				
+		<result column="distance" property="distance" />
+				
+		<result column="create_time" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysRegionTreeClosure">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure where ancestor= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysRegionTreeClosure"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysRegionTreeClosure">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysRegionTreeClosure">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysRegionTreeClosure"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysRegionTreeClosure">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysRegionTreeClosure">
+		select
+		<include refid="baseColumn" />
+		from sys_region_tree_closure
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysRegionTreeClosure">
+		update sys_region_tree_closure
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_region_tree_closure
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_region_tree_closure
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_region_tree_closure where ancestor= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysRegionTreeClosure">
+		delete from sys_region_tree_closure
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_region_tree_closure
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_region_tree_closure where ancestor in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysRegionTreeClosure"
+		useGeneratedKeys="true" keyProperty="ancestor">
+		INSERT INTO sys_region_tree_closure
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_region_tree_closure (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ancestor as ancestor,
+			descendant as descendant,
+			distance as distance,
+			create_time as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="ancestor != null and ancestor != '' ">  <![CDATA[ and ancestor = #{ancestor} ]]></if>
+						
+			<if test="descendant != null and descendant != '' ">  <![CDATA[ and descendant = #{descendant} ]]></if>
+						
+			<if test="distance != null and distance != '' ">  <![CDATA[ and distance = #{distance} ]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.ancestor != null and params.ancestor != '' ">  <![CDATA[ and ancestor = #{params.ancestor} ]]></if>
+						
+			<if test="params.descendant != null and params.descendant != '' ">  <![CDATA[ and descendant = #{params.descendant} ]]></if>
+						
+			<if test="params.distance != null and params.distance != '' ">  <![CDATA[ and distance = #{params.distance} ]]></if>
+						
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="ancestor != null and ancestor != '' ">  <![CDATA[  ancestor = #{ancestor } ,]]></if>
+						
+			<if test="descendant != null and descendant != '' ">  <![CDATA[  descendant = #{descendant } ,]]></if>
+						
+			<if test="distance != null and distance != '' ">  <![CDATA[  distance = #{distance } ,]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+				
+		<if test="ancestor != null and ancestor != '' ">  <![CDATA[ ancestor  , ]]></if>
+				
+		<if test="descendant != null and descendant != '' ">  <![CDATA[ descendant  , ]]></if>
+				
+		<if test="distance != null and distance != '' ">  <![CDATA[ distance  , ]]></if>
+				
+		<if test="createTime != null  ">  <![CDATA[ create_time   ]]></if>
+				
+	</sql>
+
+	<sql id="insertColumnParam">
+		
+		<if test="ancestor != null and ancestor != '' ">  <![CDATA[ #{ancestor } ,]]></if>
+		
+		<if test="descendant != null and descendant != '' ">  <![CDATA[ #{descendant } ,]]></if>
+		
+		<if test="distance != null and distance != '' ">  <![CDATA[ #{distance } ,]]></if>
+		
+		<if test="createTime != null ">  <![CDATA[ #{createTime } ]]></if>
+				
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ancestor,descendant,distance,create_time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.ancestor},#{item.descendant},#{item.distance},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

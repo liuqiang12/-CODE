@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReIpModelMapper">
+	<resultMap id="resultIdcReIpModelMap" type="IdcReIpModel">
+		<!-- 数据库属性和实体类属性对应关系 -->
+
+		<result column="ID" property="id" />
+
+		<result column="REV" property="rev" />
+
+		<result column="PORT_MODE" property="portMode" />
+
+		<result column="NUM" property="num" />
+
+		<result column="DESC" property="desc" />
+
+		<result column="CREATE_TIME" property="createTime" />
+
+	</resultMap>
+
+	<select id="getModelByTicketInstId" resultMap="resultIdcReIpModelMap">
+		select t.id,
+			   t.rev,
+			   t.port_mode,
+			   t.num,
+       		   t."DESC" as "desc",
+			   t.create_time,
+			   t.ticket_inst_id,
+			   t.prod_inst_id from IDC_RE_IP_MODEL t
+					where t.id=(select max(x.id)
+                  from IDC_RE_IP_MODEL x
+                  where x.ticket_inst_id=#{0})
+	</select>
+
+	<update id="updateModel" parameterType="IdcReIpModel">
+		update IDC_RE_IP_MODEL
+		<trim suffix="" suffixOverrides=",">
+			<set>
+				<if test="portMode != null and portMode != '' ">  <![CDATA[ PORT_MODE = #{portMode}  , ]]></if>
+				<if test="num != null and num != '' ">  <![CDATA[ NUM = #{num}  , ]]></if>
+				<if test="desc != null and desc != '' ">  <![CDATA[ "DESC" = #{desc}  , ]]></if>
+			</set>
+		</trim>
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<!-- insert保存方法 -->
+	<insert id="insertIpModel" parameterType="IdcReIpModel" >
+		INSERT INTO IDC_RE_IP_MODEL
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="portMode != null and portMode != '' ">  <![CDATA[ PORT_MODE , ]]></if>
+			<if test="num != null and num != '' ">  <![CDATA[ NUM , ]]></if>
+			<if test="desc != null and desc != '' ">  <![CDATA[ "DESC" , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="portMode != null and portMode != '' ">  <![CDATA[ #{portMode } , ]]></if>
+			<if test="num != null and num != '' ">  <![CDATA[ #{num } , ]]></if>
+			<if test="desc != null and desc != '' ">  <![CDATA[ #{desc } , ]]></if>
+		</trim>
+		)
+	</insert>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.AssetBaseinfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultAssetBaseinfoMap" type="AssetBaseinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="CODE" property="code" />
+		<result column="NAME" property="name" />
+		<result column="SELECTED" property="selected" />
+		<result column="PARENT_CODE" property="parentCode" />
+		<result column="REMARK" property="remark" />
+	</resultMap>
+
+	<resultMap id="IDCNameMap" type="AssetBaseinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="CODE" property="code" />
+		<result column="NAME" property="label" />
+		<result column="SELECTED" property="selected" />
+	</resultMap>
+
+
+	<resultMap id="IDCNameMap_id" type="AssetBaseinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="CODE" property="value" />
+		<result column="NAME" property="label"/>
+		<result column="SELECTED" property="selected" />
+	</resultMap>
+
+	<select id="getIDCName" resultMap="IDCNameMap_id">
+		select
+			t.code,
+			t."NAME",
+			0 as "SELECTED"
+		from idc_location t where t.code = #{0}
+	</select>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getIDC" resultType="AssetBaseinfo">
+		select
+			t.code as value,
+			t.name as label,
+			t.selected as selected
+		from ASSET_BASEINFO t where t.code like #{0}||'___'
+	</select>
+
+	<select id="getIntentionIdcCode" resultType="AssetBaseinfo">
+		select t.id as id,
+			   t.name as label,
+			   t.code as value,
+			   0 as selected
+		  from IDC_LOCATION t
+	</select>
+
+	<select id="queryComboboxDataIntoRedis" resultType="AssetBaseinfo">
+		select
+		t.id as id,
+		t.code as value,
+		t.name as label,
+		t.selected as selected,
+      	t.parent_code as parentCode
+		from ASSET_BASEINFO t
+	</select>
+
+	<select id="queryComboboxData" resultType="AssetBaseinfo">
+		select
+		t.id as id,
+		t.code as value,
+		t.name as label,
+		t.selected as selected,
+      	t.parent_code as parentCode
+		from ASSET_BASEINFO t where t.parent_code=#{0}
+	</select>
+
+	<select id="checkboxOpenMSG" resultType="Map">
+		select
+		t.id as value,
+		t.code ,
+		t.name as label,
+		t.selected as selected,
+      	t.parent_code as parentCode
+		from ASSET_BASEINFO t where t.parent_code like 50||'_'
+	</select>
+
+	<select id="getRootByParentCodeLike_" resultType="AssetBaseinfo">
+		select
+		distinct t.id as id,
+		t.code as value,
+		t.name as label,
+		t.selected as selected,
+		t.parent_code as parentCode
+		from ASSET_BASEINFO t where t.code like #{0}||'_'
+	</select>
+
+	<select id="getChildrenByParend" resultType="AssetBaseinfo">
+		select
+		/*t.id as id,*/
+		t.code as id,
+		t.name as label,
+		t.selected as selected,
+      	t.parent_code as parentCode
+		from ASSET_BASEINFO t where parent_code =#{0}
+	</select>
+
+</mapper>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReCustomerMapper">
+	<resultMap id="resultIdcReCustomerMap" type="IdcReCustomer">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="DOMAIN_STATUS" property="domainStatus" />
+		<result column="NAME" property="name" />
+		<result column="ATTRIBUTE" property="attribute" />
+		<result column="IDCARDTYPE" property="idcardtype" />
+		<result column="IDCARDNO" property="idcardno" />
+		<result column="ADDR" property="addr" />
+		<result column="ZIPCODE" property="zipcode" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CONTACTNAME" property="contactname" />
+		<result column="CONTACT_IDCARDTYPE" property="contactIdcardtype" />
+		<result column="CONTACT_IDCARDNO" property="contactIdcardno" />
+		<result column="CONTACT_PHONE" property="contactPhone" />
+		<result column="CONTACT_MOBILE" property="contactMobile" />
+		<result column="CONTACT_EMAIL" property="contactEmail" />
+		<result column="CATEGORY" property="category" />
+		<result column="CUSTOMERLEVEL" property="customerlevel" />
+		<result column="TRACESTATE" property="tracestate" />
+		<result column="SLA" property="sla" />
+		<result column="IS_CHINA_MOBILE" property="isChinaMobile" />
+		<result column="SUBORDINATE_MANAGER_NAME" property="subordinateManagerName" />
+		<result column="SUBORDINATE_MANAGER_ID" property="subordinateManagerId" />
+	</resultMap>
+
+	<!-- 分页查询 -->
+	<select id="queryMngGridFilterListPage" parameterType="PageBean" resultType="IdcReCustomer">
+		select
+			t1.ID                 as id,
+			t1.NAME               as name,
+			t1.ATTRIBUTE          as attribute,
+			t1.IDCARDTYPE         as idcardtype,
+			t1.IDCARDNO           as idcardno,
+			t1.ADDR               as addr,
+			t1.ZIPCODE            as zipcode,
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+			t1.REV                as rev,
+			t1.CONTACTNAME        as contactname,
+			t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+			t1.CONTACT_IDCARDNO   as contactIdcardno,
+			t1.CONTACT_PHONE      as contactPhone,
+			t1.CONTACT_MOBILE     as contactMobile,
+			t1.CONTACT_EMAIL      as contactEmail,
+			t1.CATEGORY           as category,
+			t1.CUSTOMERLEVEL      as customerlevel,
+			t1.TRACESTATE         as tracestate,
+			t1.SLA                as sla,
+			t1.alias,
+			t1.SUBORDINATE_MANAGER_NAME   as subordinateManagerName,
+			t1.SUBORDINATE_MANAGER_ID     as subordinateManagerId,
+			t2.remark as loginUserRegion
+		from IDC_RE_CUSTOMER t1
+		left join (select s1.id, s1.username, s1.nick, s3.name, s3.remark
+						from sys_userinfo s1
+						left join sys_ln_user_region s2
+						on s1.id = s2.user_id
+						left join sys_region s3
+						on s2.region_id = s3.id) t2
+			on t1.subordinate_manager_id = t2.id
+		<where>
+			1=1
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and t1.name like '%'||#{params.name}||'%' ]]></if>
+			<if test="params.customerlevel != null and params.customerlevel != '' ">  <![CDATA[ and t1.customerlevel = #{params.customerlevel}  ]]></if>
+			<if test="params.tracestate != null and params.tracestate != '' ">  <![CDATA[ and t1.tracestate = #{params.tracestate}  ]]></if>
+			<if test="params.category != null and params.category != '' ">  <![CDATA[ and t1.category = #{params.category}  ]]></if>
+			<if test="params.sla != null and params.sla != '' ">  <![CDATA[ and t1.sla = #{params.sla}  ]]></if>
+			<if test=" params.isChinaMobile != null ">  <![CDATA[ and t1.IS_CHINA_MOBILE = 0 ]]></if>
+			<![CDATA[ and (#{params.lookAllCustomer} > 0 or t1.subordinate_manager_id = #{params.subordinateManagerId})   ]]>
+		</where>
+		order by t1.name,t1.CONTACTNAME,t1.CREATE_TIME desc
+	</select>
+
+<!-- w_look_customer -->
+	<select id="getAllCustomer" resultType="IdcReCustomer">
+		select
+		t1.ID                 as id,
+		t1.NAME               as name,
+		t1.ATTRIBUTE          as attribute,
+		t1.IDCARDTYPE         as idcardtype,
+		t1.IDCARDNO           as idcardno,
+		t1.ADDR               as addr,
+		t1.ZIPCODE            as zipcode,
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+		t1.DOMAIN_STATUS domainStatus,
+		t1.SLA                as sla,
+		t1.alias
+		from IDC_RE_CUSTOMER t1
+	</select>
+
+	<select id="getModelByChinaData" resultType="IdcReCustomer">
+		select
+		t1.ID                 as id,
+		t1.NAME               as name,
+		t1.ATTRIBUTE          as attribute,
+		t1.IDCARDTYPE         as idcardtype,
+		t1.IDCARDNO           as idcardno,
+		t1.ADDR               as addr,
+		t1.ZIPCODE            as zipcode,
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+		t1.REV                as rev,
+		t1.CONTACTNAME        as contactname,
+		t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+		t1.CONTACT_IDCARDNO   as contactIdcardno,
+		t1.CONTACT_PHONE      as contactPhone,
+		t1.CONTACT_MOBILE     as contactMobile,
+		t1.CONTACT_EMAIL      as contactEmail,
+		t1.CATEGORY           as category,
+		t1.CUSTOMERLEVEL      as customerlevel,
+		case when t1.CUSTOMERLEVEL = '10' then 'A类个人客户'
+		when t1.CUSTOMERLEVEL = '20' then 'B类个人客户'
+		when t1.CUSTOMERLEVEL = '30' then 'C类个人客户'
+		when t1.CUSTOMERLEVEL = '40' then 'A类集团'
+		when t1.CUSTOMERLEVEL = '50' then 'A1类集团'
+		when t1.CUSTOMERLEVEL = '60' then 'A2类集团'
+		when t1.CUSTOMERLEVEL = '70' then 'B类集团'
+		when t1.CUSTOMERLEVEL = '80' then 'B1类集团'
+		when t1.CUSTOMERLEVEL = '90' then 'B2类集团'
+		when t1.CUSTOMERLEVEL = '100' then 'C类集团'
+		when t1.CUSTOMERLEVEL = '110' then 'D类集团'
+		when t1.CUSTOMERLEVEL = '120' then 'Z类集团'
+		when t1.CUSTOMERLEVEL = '999' then '其他'
+		END customerlevelName,
+		t1.TRACESTATE         as tracestate,
+		t1.SLA                as sla,
+		t1.alias
+		from IDC_RE_CUSTOMER t1
+		<where>
+			t1.IS_CHINA_MOBILE = 1
+		</where>
+
+	</select>
+
+
+	<select id="getFilterModelByReCustomerId" parameterType="Long" resultType="IdcReCustomer">
+		select
+		t1.ID                 as id,
+		t1.NAME               as name,
+		t1.ATTRIBUTE          as attribute,
+		t1.IDCARDTYPE         as idcardtype,
+		t1.IDCARDNO           as idcardno,
+		t1.ADDR               as addr,
+		t1.ZIPCODE            as zipcode,
+		t1.CONTACTNAME        as contactname,
+		t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+		t1.CONTACT_IDCARDNO   as contactIdcardno,
+		t1.CONTACT_PHONE      as contactPhone,
+		t1.CONTACT_MOBILE     as contactMobile,
+		t1.CONTACT_EMAIL      as contactEmail,
+		t1.CATEGORY           as category,
+		t1.CUSTOMERLEVEL      as customerlevel,
+		t1.TRACESTATE         as tracestate,
+		t1.SLA                as sla,
+		t1.CREATE_TIME as createTime,
+		t1.alias
+		from IDC_RE_CUSTOMER t1
+		where t1.ID = #{0}
+	</select>
+	<select id="getModelByReCustomerId" parameterType="Long" resultType="IdcReCustomer">
+		select
+		        t1.ID                 as id,
+				t1.NAME               as name,
+				t1.ATTRIBUTE          as attribute,
+				t1.IDCARDTYPE         as idcardtype,
+				t1.IDCARDNO           as idcardno,
+				t1.ADDR               as addr,
+				t1.ZIPCODE            as zipcode,
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+				t1.REV                as rev,
+				t1.CONTACTNAME        as contactname,
+				t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+				t1.CONTACT_IDCARDNO   as contactIdcardno,
+				t1.CONTACT_PHONE      as contactPhone,
+				t1.CONTACT_MOBILE     as contactMobile,
+				t1.CONTACT_EMAIL      as contactEmail,
+				t1.CATEGORY           as category,
+				t1.CUSTOMERLEVEL      as customerlevel,
+				case when t1.CUSTOMERLEVEL = '10' then 'A类个人客户'
+					 when t1.CUSTOMERLEVEL = '20' then 'B类个人客户'
+					 when t1.CUSTOMERLEVEL = '30' then 'C类个人客户'
+					when t1.CUSTOMERLEVEL = '40' then 'A类集团'
+					when t1.CUSTOMERLEVEL = '50' then 'A1类集团'
+					when t1.CUSTOMERLEVEL = '60' then 'A2类集团'
+					when t1.CUSTOMERLEVEL = '70' then 'B类集团'
+					when t1.CUSTOMERLEVEL = '80' then 'B1类集团'
+					when t1.CUSTOMERLEVEL = '90' then 'B2类集团'
+					when t1.CUSTOMERLEVEL = '100' then 'C类集团'
+					when t1.CUSTOMERLEVEL = '110' then 'D类集团'
+					when t1.CUSTOMERLEVEL = '120' then 'Z类集团'
+					when t1.CUSTOMERLEVEL = '999' then '其他'
+  				  END customerlevelName,
+				t1.TRACESTATE         as tracestate,
+				t1.SLA                as sla,
+				t1.alias
+				from IDC_RE_CUSTOMER t1
+		<where>
+			t1.ID = #{0}
+		</where>
+		order by t1.NAME,t1.CONTACTNAME,t1.CREATE_TIME
+	</select>
+	<!-- 合体方法 -->
+	<update id="mergeInto" parameterType="IdcReCustomer" >
+		merge into IDC_RE_CUSTOMER t
+		using ( select #{id,jdbcType=NUMERIC} as id from dual) t1
+		on(t.id = t1.id)
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+			<if test="attribute != null and attribute != '' ">  <![CDATA[ ATTRIBUTE , ]]></if>
+			<if test="idcardtype != null and idcardtype != '' ">  <![CDATA[ IDCARDTYPE , ]]></if>
+			<if test="idcardno != null and idcardno != '' ">  <![CDATA[ IDCARDNO , ]]></if>
+			<if test="addr != null and addr != '' ">  <![CDATA[ ADDR , ]]></if>
+			<if test="zipcode != null and zipcode != '' ">  <![CDATA[ ZIPCODE , ]]></if>
+			<if test="createTime != null ">  <![CDATA[ CREATE_TIME , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="contactname != null and contactname != '' ">  <![CDATA[ CONTACTNAME , ]]></if>
+			<if test="contactIdcardtype != null and contactIdcardtype != '' ">  <![CDATA[ CONTACT_IDCARDTYPE , ]]></if>
+			<if test="contactIdcardno != null and contactIdcardno != '' ">  <![CDATA[ CONTACT_IDCARDNO , ]]></if>
+			<if test="contactPhone != null and contactPhone != '' ">  <![CDATA[ CONTACT_PHONE , ]]></if>
+			<if test="contactMobile != null and contactMobile != '' ">  <![CDATA[ CONTACT_MOBILE , ]]></if>
+			<if test="contactEmail != null and contactEmail != '' ">  <![CDATA[ CONTACT_EMAIL , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ CATEGORY , ]]></if>
+			<if test="customerlevel != null and customerlevel != '' ">  <![CDATA[ CUSTOMERLEVEL , ]]></if>
+			<if test="tracestate != null and tracestate != '' ">  <![CDATA[ TRACESTATE , ]]></if>
+			<if test="sla != null and sla != '' ">  <![CDATA[ SLA , ]]></if>
+			<if test="subordinateManagerName != null and subordinateManagerName != '' ">  <![CDATA[ SUBORDINATE_MANAGER_NAME , ]]></if>
+			<if test="subordinateManagerId != null and subordinateManagerId != '' ">  <![CDATA[ SUBORDINATE_MANAGER_ID , ]]></if>
+			<if test="alias != null and alias != '' ">  <![CDATA[ ALIAS , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="name != null and name != '' ">  #{name ,jdbcType=VARCHAR} ,</if>
+			<if test="attribute != null and attribute != '' ">  #{attribute ,jdbcType=VARCHAR} ,</if>
+			<if test="idcardtype != null and idcardtype != '' ">  #{idcardtype ,jdbcType=VARCHAR} ,</if>
+			<if test="idcardno != null and idcardno != '' ">  #{idcardno ,jdbcType=VARCHAR} ,</if>
+			<if test="addr != null and addr != '' ">  #{addr ,jdbcType=VARCHAR} ,</if>
+			<if test="zipcode != null and zipcode != '' ">  #{zipcode ,jdbcType=VARCHAR} ,</if>
+			<if test="createTime != null  ">  #{createTime ,jdbcType=TIMESTAMP} ,</if>
+			<if test="rev != null and rev != '' ">  #{rev ,jdbcType=DECIMAL} ,</if>
+			<if test="contactname != null and contactname != '' ">  #{contactname ,jdbcType=VARCHAR} , </if>
+			<if test="contactIdcardtype != null and contactIdcardtype != '' ">  #{contactIdcardtype ,jdbcType=VARCHAR} , </if>
+			<if test="contactIdcardno != null and contactIdcardno != '' ">  #{contactIdcardno ,jdbcType=VARCHAR} , </if>
+			<if test="contactPhone != null and contactPhone != '' ">  #{contactPhone ,jdbcType=VARCHAR} , </if>
+			<if test="contactMobile != null and contactMobile != '' ">  #{contactMobile ,jdbcType=VARCHAR} , </if>
+			<if test="contactEmail != null and contactEmail != '' ">  #{contactEmail ,jdbcType=VARCHAR} , </if>
+			<if test="category != null and category != '' ">  #{category ,jdbcType=VARCHAR} , </if>
+			<if test="customerlevel != null and customerlevel != '' ">  #{customerlevel ,jdbcType=VARCHAR} , </if>
+			<if test="tracestate != null and tracestate != '' ">  #{tracestate ,jdbcType=VARCHAR} , </if>
+			<if test="sla != null and sla != '' ">  #{sla ,jdbcType=VARCHAR} , </if>
+			<if test="subordinateManagerName != null and subordinateManagerName != '' ">  #{subordinateManagerName ,jdbcType=VARCHAR} , </if>
+			<if test="subordinateManagerId != null and subordinateManagerId != '' ">  #{subordinateManagerId ,jdbcType=INTEGER} , </if>
+			<if test="alias != null and alias != '' ">  #{alias ,jdbcType=VARCHAR} , </if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="name != null and name != '' ">  <![CDATA[  NAME = #{name ,jdbcType=VARCHAR} ,]]></if>
+			<if test="attribute != null and attribute != '' ">  <![CDATA[  ATTRIBUTE = #{attribute ,jdbcType=VARCHAR} ,]]></if>
+			<if test="idcardtype != null and idcardtype != '' ">  <![CDATA[  IDCARDTYPE = #{idcardtype ,jdbcType=VARCHAR} ,]]></if>
+			<if test="idcardno != null and idcardno != '' ">  <![CDATA[  IDCARDNO = #{idcardno ,jdbcType=VARCHAR} ,]]></if>
+			<if test="addr != null and addr != '' ">  <![CDATA[  ADDR = #{addr ,jdbcType=VARCHAR} ,]]></if>
+			<if test="zipcode != null and zipcode != '' ">  <![CDATA[  ZIPCODE = #{zipcode ,jdbcType=VARCHAR} ,]]></if>
+			<if test="createTime != null ">  <![CDATA[  CREATE_TIME = #{createTime ,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[  REV = #{rev ,jdbcType=DECIMAL} ,]]></if>
+			<if test="contactname != null and contactname != '' ">  <![CDATA[  CONTACTNAME = #{contactname ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contactIdcardtype != null and contactIdcardtype != '' ">  <![CDATA[  CONTACT_IDCARDTYPE = #{contactIdcardtype ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contactIdcardno != null and contactIdcardno != '' ">  <![CDATA[  CONTACT_IDCARDNO = #{contactIdcardno ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contactPhone != null and contactPhone != '' ">  <![CDATA[  CONTACT_PHONE = #{contactPhone ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contactMobile != null and contactMobile != '' ">  <![CDATA[  CONTACT_MOBILE = #{contactMobile ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contactEmail != null and contactEmail != '' ">  <![CDATA[  CONTACT_EMAIL = #{contactEmail ,jdbcType=VARCHAR} ,]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[  CATEGORY = #{category ,jdbcType=VARCHAR} ,]]></if>
+			<if test="customerlevel != null and customerlevel != '' ">  <![CDATA[  CUSTOMERLEVEL = #{customerlevel ,jdbcType=VARCHAR} ,]]></if>
+			<if test="tracestate != null and tracestate != '' ">  <![CDATA[  TRACESTATE = #{tracestate ,jdbcType=VARCHAR} ,]]></if>
+			<if test="sla != null and sla != '' ">  <![CDATA[  SLA = #{sla ,jdbcType=VARCHAR} ,]]></if>
+			<if test="subordinateManagerName != null and subordinateManagerName != '' ">  <![CDATA[  SUBORDINATE_MANAGER_NAME = #{subordinateManagerName ,jdbcType=VARCHAR} ,]]></if>
+			<if test="subordinateManagerId != null and subordinateManagerId != '' ">  <![CDATA[  SUBORDINATE_MANAGER_ID = #{subordinateManagerId ,jdbcType=INTEGER} ,]]></if>
+			<if test="alias != null and alias != '' ">  <![CDATA[  ALIAS = #{alias ,jdbcType=VARCHAR} ,]]></if>
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<select id="getIdcReCustomerNameById" resultType="String">
+		SELECT T1.NAME from IDC_RE_CUSTOMER t1 WHERE t1.ID = #{0}
+	</select>
+
+
+	<!-- 删除记录 -->
+	<delete id="deleteRecordById">
+		delete from IDC_RE_CUSTOMER where ID= #{0}
+	</delete>
+
+	<!--查询所有的客户-->
+	<select id="queryAllCustomer" resultType="Map">
+		select
+		t1.ID                 as id,
+		t1.NAME               as name,
+		t1.ATTRIBUTE          as attribute,
+		t1.IDCARDTYPE         as idcardtype,
+		t1.IDCARDNO           as idcardno,
+		t1.ADDR               as addr,
+		t1.ZIPCODE            as zipcode,
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+		t1.REV                as rev,
+		t1.CONTACTNAME        as contactname,
+		t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+		t1.CONTACT_IDCARDNO   as contactIdcardno,
+		t1.CONTACT_PHONE      as contactPhone,
+		t1.CONTACT_MOBILE     as contactMobile,
+		t1.CONTACT_EMAIL      as contactEmail,
+		t1.CATEGORY           as category,
+		t1.CUSTOMERLEVEL      as customerlevel,
+		case when t1.CUSTOMERLEVEL = '10' then 'A类个人客户'
+		when t1.CUSTOMERLEVEL = '20' then 'B类个人客户'
+		when t1.CUSTOMERLEVEL = '30' then 'C类个人客户'
+		when t1.CUSTOMERLEVEL = '40' then 'A类集团'
+		when t1.CUSTOMERLEVEL = '50' then 'A1类集团'
+		when t1.CUSTOMERLEVEL = '60' then 'A2类集团'
+		when t1.CUSTOMERLEVEL = '70' then 'B类集团'
+		when t1.CUSTOMERLEVEL = '80' then 'B1类集团'
+		when t1.CUSTOMERLEVEL = '90' then 'B2类集团'
+		when t1.CUSTOMERLEVEL = '100' then 'C类集团'
+		when t1.CUSTOMERLEVEL = '110' then 'D类集团'
+		when t1.CUSTOMERLEVEL = '120' then 'Z类集团'
+		when t1.CUSTOMERLEVEL = '999' then '其他'
+		END customerlevelName,
+		t1.TRACESTATE         as tracestate,
+		t1.SLA                as sla,
+		t1.alias
+			from IDC_RE_CUSTOMER t1
+	</select>
+
+	<!--查询所有的客户-->
+	<select id="queryCustomerByTicketInstId" resultType="Map">
+		select
+		t1.ID                 as id,
+		t1.NAME               as name,
+		t1.ATTRIBUTE          as attribute,
+		t1.IDCARDTYPE         as idcardtype,
+		t1.IDCARDNO           as idcardno,
+		t1.ADDR               as addr,
+		t1.ZIPCODE            as zipcode,
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') as createTime,
+		t1.REV                as rev,
+		t1.CONTACTNAME        as contactname,
+		t1.CONTACT_IDCARDTYPE as contactIdcardtype,
+		t1.CONTACT_IDCARDNO   as contactIdcardno,
+		t1.CONTACT_PHONE      as contactPhone,
+		t1.CONTACT_MOBILE     as contactMobile,
+		t1.CONTACT_EMAIL      as contactEmail,
+		t1.CATEGORY           as category,
+		t1.CUSTOMERLEVEL      as customerlevel,
+		case when t1.CUSTOMERLEVEL = '10' then 'A类个人客户'
+		when t1.CUSTOMERLEVEL = '20' then 'B类个人客户'
+		when t1.CUSTOMERLEVEL = '30' then 'C类个人客户'
+		when t1.CUSTOMERLEVEL = '40' then 'A类集团'
+		when t1.CUSTOMERLEVEL = '50' then 'A1类集团'
+		when t1.CUSTOMERLEVEL = '60' then 'A2类集团'
+		when t1.CUSTOMERLEVEL = '70' then 'B类集团'
+		when t1.CUSTOMERLEVEL = '80' then 'B1类集团'
+		when t1.CUSTOMERLEVEL = '90' then 'B2类集团'
+		when t1.CUSTOMERLEVEL = '100' then 'C类集团'
+		when t1.CUSTOMERLEVEL = '110' then 'D类集团'
+		when t1.CUSTOMERLEVEL = '120' then 'Z类集团'
+		when t1.CUSTOMERLEVEL = '999' then '其他'
+		END customerlevelName,
+		t1.TRACESTATE         as tracestate,
+		t1.SLA                as sla,
+		t1.alias
+			from IDC_RE_CUSTOMER t1 where id in
+				<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	</select>
+
+</mapper>

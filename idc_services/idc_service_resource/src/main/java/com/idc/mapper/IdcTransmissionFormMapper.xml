@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcTransmissionFormMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultIdcTransmissionFormMap" type="IdcTransmissionForm">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="IDC_TRANSMISSION_ID" property="idcTransmissionId"/>
+
+        <result column="IDC_TRANSMISSION_CODE" property="idcTransmissionCode"/>
+
+        <result column="NOTE" property="note"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="IdcTransmissionForm">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM where IDC_TRANSMISSION_ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="IdcTransmissionForm"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="IdcTransmissionForm">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="IdcTransmissionForm">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="IdcTransmissionForm"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="IdcTransmissionForm">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="IdcTransmissionForm">
+        select
+        <include refid="baseColumn"/>
+        from IDC_TRANSMISSION_FORM
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="IdcTransmissionForm">
+        update IDC_TRANSMISSION_FORM
+        <include refid="updateParam"/>
+        WHERE IDC_TRANSMISSION_ID = #{idcTransmissionId}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update IDC_TRANSMISSION_FORM
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+        delete from IDC_TRANSMISSION_FORM
+    </delete>
+
+
+    <delete id="deleteById">
+        delete from IDC_TRANSMISSION_FORM where IDC_TRANSMISSION_ID= #{0}
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="IdcTransmissionForm">
+        delete from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from IDC_TRANSMISSION_FORM
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from IDC_TRANSMISSION_FORM where IDC_TRANSMISSION_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="IdcTransmissionForm"
+            useGeneratedKeys="true" keyProperty="IDC_TRANSMISSION_ID">
+        <selectKey keyProperty="idcTransmissionId" resultType="java.lang.Long" order="BEFORE">
+            select IDC_TRANSMISSION_FORM_seq.nextval from dual
+        </selectKey>
+        INSERT INTO IDC_TRANSMISSION_FORM
+        (IDC_TRANSMISSION_ID,
+        <include refid="insertColumn"/>
+        ) VALUES
+        (#{idcTransmissionId},
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_TRANSMISSION_FORM (
+        <include refid="insertColumn"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam"/>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+        <![CDATA[
+		  	IDC_TRANSMISSION_ID as idcTransmissionId,
+			IDC_TRANSMISSION_CODE as idcTransmissionCode,
+			NOTE as note
+	  ]]>
+    </sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_ID = #{idcTransmissionId} ]]></if>
+
+            <if test="idcTransmissionCode != null and idcTransmissionCode != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_CODE = #{idcTransmissionCode} ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ and NOTE = #{note} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.idcTransmissionId != null and params.idcTransmissionId != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_ID = #{params.idcTransmissionId} ]]></if>
+
+            <if test="params.idcTransmissionCode != null and params.idcTransmissionCode != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_CODE = #{params.idcTransmissionCode} ]]></if>
+
+            <if test="params.note != null and params.note != '' ">  <![CDATA[ and NOTE = #{params.note} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">
+                <![CDATA[  IDC_TRANSMISSION_ID = #{idcTransmissionId } ,]]></if>
+
+            <if test="idcTransmissionCode != null and idcTransmissionCode != '' ">
+                <![CDATA[  IDC_TRANSMISSION_CODE = #{idcTransmissionCode } ,]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[  NOTE = #{note } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <!--<if test="idcTransmissionId != null and idcTransmissionId != '' ">  <![CDATA[ IDC_TRANSMISSION_ID , ]]></if>-->
+
+            <if test="idcTransmissionCode != null and idcTransmissionCode != '' ">
+                <![CDATA[ IDC_TRANSMISSION_CODE , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <!--<if test="idcTransmissionId != null and idcTransmissionId != '' ">  <![CDATA[ #{idcTransmissionId } , ]]></if>-->
+
+            <if test="idcTransmissionCode != null and idcTransmissionCode != '' ">
+                <![CDATA[ #{idcTransmissionCode } , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+        IDC_TRANSMISSION_ID,IDC_TRANSMISSION_CODE,NOTE
+    </sql>
+
+    <sql id="batchInsertColumnParam">
+        #{item.idcTransmissionId},#{item.idcTransmissionCode},#{item.note}
+    </sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+</mapper>

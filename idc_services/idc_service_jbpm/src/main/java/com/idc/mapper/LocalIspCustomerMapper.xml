@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspCustomerMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspCustomerMap" type="LocalIspCustomer">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="AID" property="aid" />
+				
+		<result column="RANDOM_SERVER_ID" property="randomServerId" />
+				
+		<result column="CUSTOMER_ID" property="customerId" />
+				
+		<result column="NATURE" property="nature" />
+				
+		<result column="UNIT_NAME" property="unitName" />
+				
+		<result column="UNIT_NATURE" property="unitNature" />
+				
+		<result column="ID_TYPE" property="idType" />
+				
+		<result column="ID_NUMBER" property="idNumber" />
+				
+		<result column="OFFER_NAME" property="offerName" />
+				
+		<result column="OFFER_ID_TYPE" property="offerIdType" />
+				
+		<result column="OFFER_ID" property="offerId" />
+				
+		<result column="OFFER_TEL" property="offerTel" />
+				
+		<result column="OFFER_MOBILE" property="offerMobile" />
+				
+		<result column="OFFER_EMAIL" property="offerEmail" />
+				
+		<result column="ADDR" property="addr" />
+				
+		<result column="ZIP_CODE" property="zipCode" />
+				
+		<result column="REGISTER_TIME" property="registerTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspCustomer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspCustomer"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspCustomer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspCustomer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspCustomer"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspCustomer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspCustomer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_CUSTOMER
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspCustomer">
+		update LOCAL_ISP_CUSTOMER
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_CUSTOMER
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_CUSTOMER
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_CUSTOMER where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspCustomer">
+		delete from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_CUSTOMER
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_CUSTOMER where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspCustomer"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO LOCAL_ISP_CUSTOMER
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_CUSTOMER (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,			RANDOM_SERVER_ID as randomServerId,			CUSTOMER_ID as customerId,			NATURE as nature,			UNIT_NAME as unitName,			UNIT_NATURE as unitNature,			ID_TYPE as idType,			ID_NUMBER as idNumber,			OFFER_NAME as offerName,			OFFER_ID_TYPE as offerIdType,			OFFER_ID as offerId,			OFFER_TEL as offerTel,			OFFER_MOBILE as offerMobile,			OFFER_EMAIL as offerEmail,			ADDR as addr,			ZIP_CODE as zipCode,			REGISTER_TIME as registerTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="randomServerId != null and randomServerId != '' ">  <![CDATA[ and RANDOM_SERVER_ID = #{randomServerId} ]]></if>
+						
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ and CUSTOMER_ID = #{customerId} ]]></if>
+						
+			<if test="nature != null and nature != '' ">  <![CDATA[ and NATURE = #{nature} ]]></if>
+						
+			<if test="unitName != null and unitName != '' ">  <![CDATA[ and UNIT_NAME = #{unitName} ]]></if>
+						
+			<if test="unitNature != null and unitNature != '' ">  <![CDATA[ and UNIT_NATURE = #{unitNature} ]]></if>
+						
+			<if test="idType != null and idType != '' ">  <![CDATA[ and ID_TYPE = #{idType} ]]></if>
+						
+			<if test="idNumber != null and idNumber != '' ">  <![CDATA[ and ID_NUMBER = #{idNumber} ]]></if>
+						
+			<if test="offerName != null and offerName != '' ">  <![CDATA[ and OFFER_NAME = #{offerName} ]]></if>
+						
+			<if test="offerIdType != null and offerIdType != '' ">  <![CDATA[ and OFFER_ID_TYPE = #{offerIdType} ]]></if>
+						
+			<if test="offerId != null and offerId != '' ">  <![CDATA[ and OFFER_ID = #{offerId} ]]></if>
+						
+			<if test="offerTel != null and offerTel != '' ">  <![CDATA[ and OFFER_TEL = #{offerTel} ]]></if>
+						
+			<if test="offerMobile != null and offerMobile != '' ">  <![CDATA[ and OFFER_MOBILE = #{offerMobile} ]]></if>
+						
+			<if test="offerEmail != null and offerEmail != '' ">  <![CDATA[ and OFFER_EMAIL = #{offerEmail} ]]></if>
+						
+			<if test="addr != null and addr != '' ">  <![CDATA[ and ADDR = #{addr} ]]></if>
+						
+			<if test="zipCode != null and zipCode != '' ">  <![CDATA[ and ZIP_CODE = #{zipCode} ]]></if>
+						
+			<if test="registerTime != null and registerTime != '' ">  <![CDATA[ and REGISTER_TIME = #{registerTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.randomServerId != null and params.randomServerId != '' ">  <![CDATA[ and RANDOM_SERVER_ID = #{params.randomServerId} ]]></if>
+						
+			<if test="params.customerId != null and params.customerId != '' ">  <![CDATA[ and CUSTOMER_ID = #{params.customerId} ]]></if>
+						
+			<if test="params.nature != null and params.nature != '' ">  <![CDATA[ and NATURE = #{params.nature} ]]></if>
+						
+			<if test="params.unitName != null and params.unitName != '' ">  <![CDATA[ and UNIT_NAME = #{params.unitName} ]]></if>
+						
+			<if test="params.unitNature != null and params.unitNature != '' ">  <![CDATA[ and UNIT_NATURE = #{params.unitNature} ]]></if>
+						
+			<if test="params.idType != null and params.idType != '' ">  <![CDATA[ and ID_TYPE = #{params.idType} ]]></if>
+						
+			<if test="params.idNumber != null and params.idNumber != '' ">  <![CDATA[ and ID_NUMBER = #{params.idNumber} ]]></if>
+						
+			<if test="params.offerName != null and params.offerName != '' ">  <![CDATA[ and OFFER_NAME = #{params.offerName} ]]></if>
+						
+			<if test="params.offerIdType != null and params.offerIdType != '' ">  <![CDATA[ and OFFER_ID_TYPE = #{params.offerIdType} ]]></if>
+						
+			<if test="params.offerId != null and params.offerId != '' ">  <![CDATA[ and OFFER_ID = #{params.offerId} ]]></if>
+						
+			<if test="params.offerTel != null and params.offerTel != '' ">  <![CDATA[ and OFFER_TEL = #{params.offerTel} ]]></if>
+						
+			<if test="params.offerMobile != null and params.offerMobile != '' ">  <![CDATA[ and OFFER_MOBILE = #{params.offerMobile} ]]></if>
+						
+			<if test="params.offerEmail != null and params.offerEmail != '' ">  <![CDATA[ and OFFER_EMAIL = #{params.offerEmail} ]]></if>
+						
+			<if test="params.addr != null and params.addr != '' ">  <![CDATA[ and ADDR = #{params.addr} ]]></if>
+						
+			<if test="params.zipCode != null and params.zipCode != '' ">  <![CDATA[ and ZIP_CODE = #{params.zipCode} ]]></if>
+						
+			<if test="params.registerTime != null and params.registerTime != '' ">  <![CDATA[ and REGISTER_TIME = #{params.registerTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="randomServerId != null and randomServerId != '' ">  <![CDATA[  RANDOM_SERVER_ID = #{randomServerId } ,]]></if>
+						
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId } ,]]></if>
+						
+			<if test="nature != null and nature != '' ">  <![CDATA[  NATURE = #{nature } ,]]></if>
+						
+			<if test="unitName != null and unitName != '' ">  <![CDATA[  UNIT_NAME = #{unitName } ,]]></if>
+						
+			<if test="unitNature != null and unitNature != '' ">  <![CDATA[  UNIT_NATURE = #{unitNature } ,]]></if>
+						
+			<if test="idType != null and idType != '' ">  <![CDATA[  ID_TYPE = #{idType } ,]]></if>
+						
+			<if test="idNumber != null and idNumber != '' ">  <![CDATA[  ID_NUMBER = #{idNumber } ,]]></if>
+						
+			<if test="offerName != null and offerName != '' ">  <![CDATA[  OFFER_NAME = #{offerName } ,]]></if>
+						
+			<if test="offerIdType != null and offerIdType != '' ">  <![CDATA[  OFFER_ID_TYPE = #{offerIdType } ,]]></if>
+						
+			<if test="offerId != null and offerId != '' ">  <![CDATA[  OFFER_ID = #{offerId } ,]]></if>
+						
+			<if test="offerTel != null and offerTel != '' ">  <![CDATA[  OFFER_TEL = #{offerTel } ,]]></if>
+						
+			<if test="offerMobile != null and offerMobile != '' ">  <![CDATA[  OFFER_MOBILE = #{offerMobile } ,]]></if>
+						
+			<if test="offerEmail != null and offerEmail != '' ">  <![CDATA[  OFFER_EMAIL = #{offerEmail } ,]]></if>
+						
+			<if test="addr != null and addr != '' ">  <![CDATA[  ADDR = #{addr } ,]]></if>
+						
+			<if test="zipCode != null and zipCode != '' ">  <![CDATA[  ZIP_CODE = #{zipCode } ,]]></if>
+						
+			<if test="registerTime != null and registerTime != '' ">  <![CDATA[  REGISTER_TIME = #{registerTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="randomServerId != null and randomServerId != '' ">  <![CDATA[ RANDOM_SERVER_ID , ]]></if>
+				
+		<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+				
+		<if test="nature != null and nature != '' ">  <![CDATA[ NATURE , ]]></if>
+				
+		<if test="unitName != null and unitName != '' ">  <![CDATA[ UNIT_NAME , ]]></if>
+				
+		<if test="unitNature != null and unitNature != '' ">  <![CDATA[ UNIT_NATURE , ]]></if>
+				
+		<if test="idType != null and idType != '' ">  <![CDATA[ ID_TYPE , ]]></if>
+				
+		<if test="idNumber != null and idNumber != '' ">  <![CDATA[ ID_NUMBER , ]]></if>
+				
+		<if test="offerName != null and offerName != '' ">  <![CDATA[ OFFER_NAME , ]]></if>
+				
+		<if test="offerIdType != null and offerIdType != '' ">  <![CDATA[ OFFER_ID_TYPE , ]]></if>
+				
+		<if test="offerId != null and offerId != '' ">  <![CDATA[ OFFER_ID , ]]></if>
+				
+		<if test="offerTel != null and offerTel != '' ">  <![CDATA[ OFFER_TEL , ]]></if>
+				
+		<if test="offerMobile != null and offerMobile != '' ">  <![CDATA[ OFFER_MOBILE , ]]></if>
+				
+		<if test="offerEmail != null and offerEmail != '' ">  <![CDATA[ OFFER_EMAIL , ]]></if>
+				
+		<if test="addr != null and addr != '' ">  <![CDATA[ ADDR , ]]></if>
+				
+		<if test="zipCode != null and zipCode != '' ">  <![CDATA[ ZIP_CODE , ]]></if>
+				
+		<if test="registerTime != null and registerTime != '' ">  <![CDATA[ REGISTER_TIME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="randomServerId != null and randomServerId != '' ">  <![CDATA[ #{randomServerId } , ]]></if>
+				
+		<if test="customerId != null and customerId != '' ">  <![CDATA[ #{customerId } , ]]></if>
+				
+		<if test="nature != null and nature != '' ">  <![CDATA[ #{nature } , ]]></if>
+				
+		<if test="unitName != null and unitName != '' ">  <![CDATA[ #{unitName } , ]]></if>
+				
+		<if test="unitNature != null and unitNature != '' ">  <![CDATA[ #{unitNature } , ]]></if>
+				
+		<if test="idType != null and idType != '' ">  <![CDATA[ #{idType } , ]]></if>
+				
+		<if test="idNumber != null and idNumber != '' ">  <![CDATA[ #{idNumber } , ]]></if>
+				
+		<if test="offerName != null and offerName != '' ">  <![CDATA[ #{offerName } , ]]></if>
+				
+		<if test="offerIdType != null and offerIdType != '' ">  <![CDATA[ #{offerIdType } , ]]></if>
+				
+		<if test="offerId != null and offerId != '' ">  <![CDATA[ #{offerId } , ]]></if>
+				
+		<if test="offerTel != null and offerTel != '' ">  <![CDATA[ #{offerTel } , ]]></if>
+				
+		<if test="offerMobile != null and offerMobile != '' ">  <![CDATA[ #{offerMobile } , ]]></if>
+				
+		<if test="offerEmail != null and offerEmail != '' ">  <![CDATA[ #{offerEmail } , ]]></if>
+				
+		<if test="addr != null and addr != '' ">  <![CDATA[ #{addr } , ]]></if>
+				
+		<if test="zipCode != null and zipCode != '' ">  <![CDATA[ #{zipCode } , ]]></if>
+				
+		<if test="registerTime != null and registerTime != '' ">  <![CDATA[ #{registerTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,RANDOM_SERVER_ID,CUSTOMER_ID,NATURE,UNIT_NAME,UNIT_NATURE,ID_TYPE,ID_NUMBER,OFFER_NAME,OFFER_ID_TYPE,OFFER_ID,OFFER_TEL,OFFER_MOBILE,OFFER_EMAIL,ADDR,ZIP_CODE,REGISTER_TIME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.randomServerId},#{item.customerId},#{item.nature},#{item.unitName},#{item.unitNature},#{item.idType},#{item.idNumber},#{item.offerName},#{item.offerIdType},#{item.offerId},#{item.offerTel},#{item.offerMobile},#{item.offerEmail},#{item.addr},#{item.zipCode},#{item.registerTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

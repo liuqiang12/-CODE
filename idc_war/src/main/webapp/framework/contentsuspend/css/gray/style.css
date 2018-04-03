@@ -1,0 +1,76 @@
+/*优胜空间 */
+.content_suspend {
+	position: fixed;
+	left:-251px;
+	top: 0px; 
+	_position: absolute;
+	width: 250px; 
+	height: 98.4%; 
+	background: #FFFFFF; 
+	z-index: 99999999999; 
+	_margin-bottom:0px;
+	_top: expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0)));
+	transition:all .5s ease; 
+	border-right: 1px solid #C3C3C3;
+	/*
+	border-top-left-radius:4px;
+	border-top-right-radius:4px;
+	border-bottom-left-radius:4px;
+	border-bottom-right-radius:4px;
+	*/
+	cursor:default;
+}
+.content_suspend .hoverbtn{
+	width:24px;
+	padding:15px 0px;
+	cursor: pointer;
+	position:absolute;
+	top:50%;
+	margin-top:-66px;
+	left:250px;
+	font-size:14px;
+	color:#fff;
+	background:#888888;
+	-webkit-border-radius: 0px 3px 3px 0px;
+	-moz-border-radius: 0px 3px 3px 0px;
+	-o-border-radius: 0px 3px 3px 0px; 
+	border-radius: 0px 3px 3px 0px; 
+	-moz-box-shadow: 2px 2px 3px -1px #000; 
+	-webkit-box-shadow: 2px 2px 3px -1px #000;
+	box-shadow: 2px 2px 3px -1px #000;
+	opacity: 0.5;
+}
+.content_suspend .hoverbtn span{
+	width:100%; 
+	height:19px;
+	line-height: 19px;
+	text-align: center;
+	overflow:hidden;
+	float:left;
+}
+.content_suspend .hoverbtn .hoverimg{
+	width:13px;
+	height:9px;
+	margin:6px;
+	float:left; 
+	display:inline;
+	background-repeat: no-repeat;
+	background-image: url(../../images/hoverbtnbg1.gif);
+}
+
+.content_suspend .conter{
+	overflow: auto;
+	max-width: 100%;
+	max-height: 100%;
+	height: 100%;
+}
+ 
+.content_suspend:hover{
+	left:0px !important;
+}
+.content_suspend:hover .hoverbtn{
+	opacity: 1;
+}
+.content_suspend:hover .hoverbtn .hoverimg{
+	background-image: url(../../images/hoverbtnbg.gif);
+}

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.RmDevInOutFormMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultRmDevInOutFormMap" type="RmDevInOutForm">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="RM_DEV_IN_OUT_ID" property="rmDevInOutId"/>
+
+        <result column="RM_DEV_IN_OUT_TITLE" property="rmDevInOutTitle"/>
+
+        <result column="RM_ROOM_NAME" property="rmRoomName"/>
+
+        <result column="RM_IN_OUT_ITEM" property="rmInOutItem"/>
+
+        <result column="RM_LEAD" property="rmLead"/>
+
+        <result column="RM_BUILD_COMPANY" property="rmBuildCompany"/>
+
+        <result column="RM_BUILD_MAN" property="rmBuildMan"/>
+
+        <result column="RM_CONTACTS" property="rmContacts"/>
+
+        <result column="RM_REASON" property="rmReason"/>
+
+        <result column="RM_CREATE_USER" property="rmCreateUser"/>
+
+        <result column="RM_CREATE_TIME" property="rmCreateTime"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="RmDevInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM where RM_DEV_IN_OUT_ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="RmDevInOutForm"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="RmDevInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="RmDevInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+    </select>
+
+    <!-- 获取满足条件的设备出入申请单  map -->
+    <select id="queryListMap" parameterType="Map" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <where>
+            <if test="name != null and name != '' ">
+                <![CDATA[ and upper(RM_DEV_IN_OUT_TITLE) like '%'||upper(#{name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取满足条件的设备出入申请单  分页 map -->
+    <select id="queryListPageMap" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <where>
+            <if test="params.name != null and params.name != '' ">
+                <![CDATA[ and upper(RM_DEV_IN_OUT_TITLE) like '%'||upper(#{params.name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="RmDevInOutForm"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="RmDevInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="RmDevInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_IN_OUT_FORM
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="RmDevInOutForm">
+        update RM_DEV_IN_OUT_FORM
+        <include refid="updateParam"/>
+        where RM_DEV_IN_OUT_ID = #{rmDevInOutId}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update RM_DEV_IN_OUT_FORM
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from RM_DEV_IN_OUT_FORM
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from RM_DEV_IN_OUT_FORM where RM_DEV_IN_OUT_ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="RmDevInOutForm">
+        delete from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from RM_DEV_IN_OUT_FORM
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from RM_DEV_IN_OUT_FORM where RM_DEV_IN_OUT_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="RmDevInOutForm"
+            useGeneratedKeys="true" keyProperty="RM_DEV_IN_OUT_ID">
+        INSERT INTO RM_DEV_IN_OUT_FORM
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO RM_DEV_IN_OUT_FORM (
+        <include refid="insertColumn"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam"/>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	RM_DEV_IN_OUT_ID as rmDevInOutId,
+			RM_DEV_IN_OUT_TITLE as rmDevInOutTitle,
+			RM_ROOM_NAME as rmRoomName,
+			RM_IN_OUT_ITEM as rmInOutItem,
+			RM_LEAD as rmLead,
+			RM_BUILD_COMPANY as rmBuildCompany,
+			RM_BUILD_MAN as rmBuildMan,
+			RM_CONTACTS as rmContacts,
+			RM_REASON as rmReason,
+			RM_CREATE_USER as rmCreateUser,
+			RM_CREATE_TIME as rmCreateTime
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">
+                <![CDATA[ and RM_DEV_IN_OUT_ID = #{rmDevInOutId} ]]></if>
+
+            <if test="rmDevInOutTitle != null and rmDevInOutTitle != '' ">
+                <![CDATA[ and RM_DEV_IN_OUT_TITLE = #{rmDevInOutTitle} ]]></if>
+
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[ and RM_ROOM_NAME = #{rmRoomName} ]]></if>
+
+            <if test="rmInOutItem != null and rmInOutItem != '' ">
+                <![CDATA[ and RM_IN_OUT_ITEM = #{rmInOutItem} ]]></if>
+
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[ and RM_LEAD = #{rmLead} ]]></if>
+
+            <if test="rmBuildCompany != null and rmBuildCompany != '' ">
+                <![CDATA[ and RM_BUILD_COMPANY = #{rmBuildCompany} ]]></if>
+
+            <if test="rmBuildMan != null and rmBuildMan != '' ">  <![CDATA[ and RM_BUILD_MAN = #{rmBuildMan} ]]></if>
+
+            <if test="rmContacts != null and rmContacts != '' ">  <![CDATA[ and RM_CONTACTS = #{rmContacts} ]]></if>
+
+            <if test="rmReason != null and rmReason != '' ">  <![CDATA[ and RM_REASON = #{rmReason} ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">
+                <![CDATA[ and RM_CREATE_USER = #{rmCreateUser} ]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[ and RM_CREATE_TIME = #{rmCreateTime} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.rmDevInOutId != null and params.rmDevInOutId != '' ">
+                <![CDATA[ and RM_DEV_IN_OUT_ID = #{params.rmDevInOutId} ]]></if>
+
+            <if test="params.rmDevInOutTitle != null and params.rmDevInOutTitle != '' ">
+                <![CDATA[ and RM_DEV_IN_OUT_TITLE = #{params.rmDevInOutTitle} ]]></if>
+
+            <if test="params.rmRoomName != null and params.rmRoomName != '' ">
+                <![CDATA[ and RM_ROOM_NAME = #{params.rmRoomName} ]]></if>
+
+            <if test="params.rmInOutItem != null and params.rmInOutItem != '' ">
+                <![CDATA[ and RM_IN_OUT_ITEM = #{params.rmInOutItem} ]]></if>
+
+            <if test="params.rmLead != null and params.rmLead != '' ">
+                <![CDATA[ and RM_LEAD = #{params.rmLead} ]]></if>
+
+            <if test="params.rmBuildCompany != null and params.rmBuildCompany != '' ">
+                <![CDATA[ and RM_BUILD_COMPANY = #{params.rmBuildCompany} ]]></if>
+
+            <if test="params.rmBuildMan != null and params.rmBuildMan != '' ">
+                <![CDATA[ and RM_BUILD_MAN = #{params.rmBuildMan} ]]></if>
+
+            <if test="params.rmContacts != null and params.rmContacts != '' ">
+                <![CDATA[ and RM_CONTACTS = #{params.rmContacts} ]]></if>
+
+            <if test="params.rmReason != null and params.rmReason != '' ">
+                <![CDATA[ and RM_REASON = #{params.rmReason} ]]></if>
+
+            <if test="params.rmCreateUser != null and params.rmCreateUser != '' ">
+                <![CDATA[ and RM_CREATE_USER = #{params.rmCreateUser} ]]></if>
+
+            <if test="params.rmCreateTime != null">  <![CDATA[ and RM_CREATE_TIME = #{params.rmCreateTime} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">
+                <![CDATA[  RM_DEV_IN_OUT_ID = #{rmDevInOutId } ,]]></if>
+
+            <if test="rmDevInOutTitle != null and rmDevInOutTitle != '' ">
+                <![CDATA[  RM_DEV_IN_OUT_TITLE = #{rmDevInOutTitle } ,]]></if>
+
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[  RM_ROOM_NAME = #{rmRoomName } ,]]></if>
+
+            <if test="rmInOutItem != null and rmInOutItem != '' ">
+                <![CDATA[  RM_IN_OUT_ITEM = #{rmInOutItem } ,]]></if>
+
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[  RM_LEAD = #{rmLead } ,]]></if>
+
+            <if test="rmBuildCompany != null and rmBuildCompany != '' ">
+                <![CDATA[  RM_BUILD_COMPANY = #{rmBuildCompany } ,]]></if>
+
+            <if test="rmBuildMan != null and rmBuildMan != '' ">  <![CDATA[  RM_BUILD_MAN = #{rmBuildMan } ,]]></if>
+
+            <if test="rmContacts != null and rmContacts != '' ">  <![CDATA[  RM_CONTACTS = #{rmContacts } ,]]></if>
+
+            <if test="rmReason != null and rmReason != '' ">  <![CDATA[  RM_REASON = #{rmReason } ,]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">
+                <![CDATA[  RM_CREATE_USER = #{rmCreateUser } ,]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[  RM_CREATE_TIME = #{rmCreateTime } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">  <![CDATA[ RM_DEV_IN_OUT_ID , ]]></if>
+
+            <if test="rmDevInOutTitle != null and rmDevInOutTitle != '' ">  <![CDATA[ RM_DEV_IN_OUT_TITLE , ]]></if>
+
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[ RM_ROOM_NAME , ]]></if>
+
+            <if test="rmInOutItem != null and rmInOutItem != '' ">  <![CDATA[ RM_IN_OUT_ITEM , ]]></if>
+
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[ RM_LEAD , ]]></if>
+
+            <if test="rmBuildCompany != null and rmBuildCompany != '' ">  <![CDATA[ RM_BUILD_COMPANY , ]]></if>
+
+            <if test="rmBuildMan != null and rmBuildMan != '' ">  <![CDATA[ RM_BUILD_MAN , ]]></if>
+
+            <if test="rmContacts != null and rmContacts != '' ">  <![CDATA[ RM_CONTACTS , ]]></if>
+
+            <if test="rmReason != null and rmReason != '' ">  <![CDATA[ RM_REASON , ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ RM_CREATE_USER , ]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[ RM_CREATE_TIME , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">  <![CDATA[ #{rmDevInOutId } , ]]></if>
+
+            <if test="rmDevInOutTitle != null and rmDevInOutTitle != '' ">  <![CDATA[ #{rmDevInOutTitle } , ]]></if>
+
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[ #{rmRoomName } , ]]></if>
+
+            <if test="rmInOutItem != null and rmInOutItem != '' ">  <![CDATA[ #{rmInOutItem } , ]]></if>
+
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[ #{rmLead } , ]]></if>
+
+            <if test="rmBuildCompany != null and rmBuildCompany != '' ">  <![CDATA[ #{rmBuildCompany } , ]]></if>
+
+            <if test="rmBuildMan != null and rmBuildMan != '' ">  <![CDATA[ #{rmBuildMan } , ]]></if>
+
+            <if test="rmContacts != null and rmContacts != '' ">  <![CDATA[ #{rmContacts } , ]]></if>
+
+            <if test="rmReason != null and rmReason != '' ">  <![CDATA[ #{rmReason } , ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ #{rmCreateUser } , ]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[ #{rmCreateTime } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			RM_DEV_IN_OUT_ID,RM_DEV_IN_OUT_TITLE,RM_ROOM_NAME,RM_IN_OUT_ITEM,RM_LEAD,RM_BUILD_COMPANY,RM_BUILD_MAN,RM_CONTACTS,RM_REASON,RM_CREATE_USER,RM_CREATE_TIME
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.rmDevInOutId},#{item.rmDevInOutTitle},#{item.rmRoomName},#{item.rmInOutItem},#{item.rmLead},#{item.rmBuildCompany},#{item.rmBuildMan},#{item.rmContacts},#{item.rmReason},#{item.rmCreateUser},#{item.rmCreateTime}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+</mapper>

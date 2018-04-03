@@ -1,0 +1,458 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page isErrorPage="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String contextPath = request.getContextPath();
+%>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <%--<link rel="stylesheet" type="text/css"--%>
+          <%--href="<%=request.getContextPath() %>/framework/easyui/themes/default/easyui.css">--%>
+    <%--<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/framework/easyui/themes/icon.css">--%>
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/framework/layout/ui7/css/common.css">
+
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/framework/layout/ui7/css/style.css">
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/framework/layout/ui7/css/menu.css">
+    <script type="text/javascript" src="<%=request.getContextPath() %>/framework/bootstrap/js/jquery-2.0.3.min.js"></script>
+    <%--<script type="text/javascript" src="<%=request.getContextPath() %>/framework/bootstrap/js/jquery.easyui.min.js"></script>--%>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/framework/jqueryui/frame/layer/skin/layer.css">
+    <script type="text/javascript" src="<%=request.getContextPath() %>/framework/jqueryui/frame/layer/layer.js"></script>
+    <title>云南移动能耗管理平台</title>
+    <script type="text/javascript" language="JavaScript">
+        $(document).ready(function(){
+            $(".nav li a").click(function(){
+                var uri = $(this).attr("url");
+                if(uri.indexOf("?")>0){
+                    uri += "&_" + new Date();
+                }else{
+                    uri += "?_=" + new Date();
+                }
+                if(uri.indexOf("/")==0){
+                    // uri = "<%=request.getContextPath() %>"+uri;
+                    uri = "<%=request.getContextPath() %>/redirect.do?fromindex=fromindex&url="+encodeURI(uri);
+
+                }else{
+                    uri="http://"+uri;
+                    $("#maincontent").attr("src",uri);
+                }
+                $("#maincontent").attr("src",uri);
+
+            })
+        });
+        function changeFrameHeight(){
+//            var ifm= document.getElementById("maincontent");
+//             ifm.height=document.documentElement.clientHeight;
+        }
+        window.onresize=function(){
+            changeFrameHeight();
+        }
+    </script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div id="top">
+    <div class="header-bg">
+        <div class="main-logo"><img src="<%=request.getContextPath() %>/framework/layout/ui7/img/main-logo.png" width="443" height="64" alt=""></div>
+        <div class="topnav">
+            <div class="topnav-l"></div>
+            <div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>
+            <div class="topnav-r"></div>
+        </div>
+        <div class="highlight"></div>
+    </div>
+    <div class = "nav">
+        <nav>
+            <ul class="clearfix">
+                <li>
+                    <a href="">
+                        颜值
+                    </a>
+                    <ul>
+                        <li class="children">
+                            <a href="#">
+                                妹子
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        女汉子
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        大妈
+                                    </a>
+                                </li>
+                                <li class="children">
+                                    <a href="#">
+                                        绿茶婊
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                女汉子
+                                            </a>
+                                        </li>
+                                        <li class="children">
+                                            <a href="#">
+                                                大妈
+                                            </a>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        女汉子
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        大妈
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        绿茶婊
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                绿茶婊
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="children">
+                            <a href="#">
+                                高富帅
+                            </a>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        女汉子
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        大妈
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        绿茶婊
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                吊丝
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                逗逼
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        逗比
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        约吗
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        我想静静
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        小鲜肉
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        单身狗
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div id="middle">
+    <%--<iframe id="maincontent" name="maincontent" width="100%" height="100%" frameborder="0" scrolling="yes" src="/t/userinfo/index.do"></iframe>--%>
+    <%--<div id="iframe" style="width:100%;height: 300px">--%>
+        <iframe id="maincontent" name="maincontent" width="100%" height="100%" frameborder="0" onload="changeFrameHeight()" scrolling="no" src="/t/userinfo/index.do"></iframe>
+    <%--</div>--%>
+</div>
+<div id="copyright">
+    Copyright © 2007 - 2015 广州咨元. All Rights Reserved
+</div>
+<%--<div style="height: 108px">--%>
+    <%--<div class="header-bg">--%>
+        <%--<div class="main-logo"><img src="<%=request.getContextPath() %>/framework/layout/ui7/img/main-logo.png" width="443" height="64" alt=""></div>--%>
+        <%--<div class="topnav">--%>
+            <%--<div class="topnav-l"></div>--%>
+            <%--<div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>--%>
+            <%--<div class="topnav-r"></div>--%>
+        <%--</div>--%>
+        <%--<div class="highlight"></div>--%>
+    <%--</div>--%>
+    <%--<div class = "nav">--%>
+        <%--<nav>--%>
+            <%--<ul class="clearfix">--%>
+                <%--<li>--%>
+                    <%--<a href="">--%>
+                        <%--颜值--%>
+                    <%--</a>--%>
+                    <%--<ul>--%>
+                        <%--<li class="children">--%>
+                            <%--<a href="#">--%>
+                                <%--妹子--%>
+                            <%--</a>--%>
+                            <%--<ul>--%>
+                                <%--<li>--%>
+                                    <%--<a href="#">--%>
+                                        <%--女汉子--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                    <%--<a href="#">--%>
+                                        <%--大妈--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li class="children">--%>
+                                    <%--<a href="#">--%>
+                                        <%--绿茶婊--%>
+                                    <%--</a>--%>
+                                    <%--<ul>--%>
+                                        <%--<li>--%>
+                                            <%--<a href="#">--%>
+                                                <%--女汉子--%>
+                                            <%--</a>--%>
+                                        <%--</li>--%>
+                                        <%--<li class="children">--%>
+                                            <%--<a href="#">--%>
+                                                <%--大妈--%>
+                                            <%--</a>--%>
+                                            <%--<ul>--%>
+                                                <%--<li>--%>
+                                                    <%--<a href="#">--%>
+                                                        <%--女汉子--%>
+                                                    <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                    <%--<a href="#">--%>
+                                                        <%--大妈--%>
+                                                    <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                    <%--<a href="#">--%>
+                                                        <%--绿茶婊--%>
+                                                    <%--</a>--%>
+                                                <%--</li>--%>
+                                            <%--</ul>--%>
+                                        <%--</li>--%>
+                                        <%--<li>--%>
+                                            <%--<a href="#">--%>
+                                                <%--绿茶婊--%>
+                                            <%--</a>--%>
+                                        <%--</li>--%>
+                                    <%--</ul>--%>
+                                <%--</li>--%>
+                            <%--</ul>--%>
+                        <%--</li>--%>
+                        <%--<li class="children">--%>
+                            <%--<a href="#">--%>
+                                <%--高富帅--%>
+                            <%--</a>--%>
+                            <%--<ul>--%>
+                                <%--<li>--%>
+                                    <%--<a href="#">--%>
+                                        <%--女汉子--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                    <%--<a href="#">--%>
+                                        <%--大妈--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                                <%--<li>--%>
+                                    <%--<a href="#">--%>
+                                        <%--绿茶婊--%>
+                                    <%--</a>--%>
+                                <%--</li>--%>
+                            <%--</ul>--%>
+                        <%--</li>--%>
+                        <%--<li>--%>
+                            <%--<a href="#">--%>
+                                <%--吊丝--%>
+                            <%--</a>--%>
+                        <%--</li>--%>
+                        <%--<li>--%>
+                            <%--<a href="#">--%>
+                                <%--逗逼--%>
+                            <%--</a>--%>
+                        <%--</li>--%>
+                    <%--</ul>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="#">--%>
+                        <%--逗比--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="#">--%>
+                        <%--约吗--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="#">--%>
+                        <%--我想静静--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="#">--%>
+                        <%--小鲜肉--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="#">--%>
+                        <%--单身狗--%>
+                    <%--</a>--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</nav>--%>
+    <%--</div>--%>
+<%--</div>--%>
+<%--<div data-options="region:'north',border:false" class="header">--%>
+    <%--<div class="header-bg">--%>
+        <%--<div class="main-logo"><img src="<%=request.getContextPath() %>/framework/layout/ui7/img/main-logo.png" width="443" height="64" alt=""></div>--%>
+        <%--<div class="topnav">--%>
+            <%--<div class="topnav-l"></div>--%>
+            <%--<div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>--%>
+            <%--<div class="topnav-r"></div>--%>
+        <%--</div>--%>
+        <%--<div class="highlight"></div>--%>
+    <%--</div>--%>
+    <%--<div class="nav">--%>
+        <%--<a href="#">1</a><a href="#" class="on">2</a><a href="#">3</a><a href="#">4</a>--%>
+    <%--</div>--%>
+    <%--&lt;%&ndash;<div class="menu">&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<ul class="level0">&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<li class="imyeah"> <a href="#">immenu0</a>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<ul class="level1">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu00</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li class="imyeah"> <a href="#">imdropmenu01</a>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<ul class="level2">&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li class="imyeah"> <a href="#">imdropmenu010</a>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<ul class="level3">&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu0100</a> </li>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu0101</a> </li>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li> <a href="#">imdropmenu011</a> </li>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li> <a href="#">imdropmenu012</a> </li>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu02</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu03</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu04</a> </li>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<li class="imyeah"> <a href="#" class="top_link">immenu1</a>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<ul class="level1">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li class="imyeah"> <a href="#">imdropmenu10</a>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;<ul class="level2">&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li> <a href="#">imdropmenu100</a> </li>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li class="imyeah"> <a href="#">imdropmenu101</a>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;<ul class="level3">&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu1010</a> </li>&ndash;%&gt;--%>
+                                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu1011</a> </li>&ndash;%&gt;--%>
+                                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+                            <%--&lt;%&ndash;<li> <a href="#">imdropmenu102</a> </li>&ndash;%&gt;--%>
+                        <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu11</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu12</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu13</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu14</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu15</a> </li>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<li class="imyeah"> <a href="#" class="top_link">immenu2</a>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<ul class="level1">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu20</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu21</a> </li>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<li class="imyeah"> <a href="#" class="top_link">immenu3</a>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<ul class="level1">&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu30</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu31</a> </li>&ndash;%&gt;--%>
+                    <%--&lt;%&ndash;<li> <a href="#">imdropmenu32</a> </li>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;</ul> </li>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<li> <a href="#" class="top_link">immenu4</a> </li>&ndash;%&gt;--%>
+        <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+<%--</div>--%>
+
+<%--<div class="header-bg">--%>
+    <%--<div class="main-logo"><img src="<%=request.getContextPath() %>/framework/layout/ui7/img/main-logo.png"--%>
+                                <%--width="443" height="64" alt=""></div>--%>
+    <%--<div class="topnav">--%>
+        <%--<div class="topnav-l"></div>--%>
+        <%--<div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>--%>
+        <%--<div class="topnav-r"></div>--%>
+    <%--</div>--%>
+    <%--<div class="highlight"></div>--%>
+<%--</div>--%>
+<%--<div >--%>
+    <%----%>
+<%--</div>--%>
+<%--<div class="header-bg">--%>
+    <%--<div class="main-logo"><img src="../../img/main-logo.png" width="443" height="64" alt=""></div>--%>
+    <%--<div class="topnav">--%>
+        <%--<div class="topnav-l"></div>--%>
+        <%--<div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>--%>
+        <%--<div class="topnav-r"></div>--%>
+    <%--</div>--%>
+    <%--<div class="highlight"></div>--%>
+<%--</div>--%>
+<%--<div data-options="region:'north',border:false" class="header">--%>
+    <%--<div class="header-bg">--%>
+        <%--<div class="main-logo"><img src="<%=request.getContextPath() %>/framework/layout/ui7/img/main-logo.png"--%>
+                                    <%--width="443" height="64" alt=""></div>--%>
+        <%--<div class="topnav">--%>
+            <%--<div class="topnav-l"></div>--%>
+            <%--<div class="topnav-c"><a href="#">退出系统</a>|<a href="#">帮助文档</a></div>--%>
+            <%--<div class="topnav-r"></div>--%>
+        <%--</div>--%>
+        <%--<div class="highlight"></div>--%>
+    <%--</div>--%>
+    <%----%>
+<%--&lt;%&ndash;<div class="nav" id="nav">&ndash;%&gt;--%>
+        <%--&lt;%&ndash;<jsp:include page="menu.jsp"></jsp:include>&ndash;%&gt;--%>
+    <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
+<%--</div>--%>
+<!--header-->
+
+<%--<div id="content"  style="margin:0;padding:1px 3px 1px 3px;text-align:center;line-height:100%;height:400px;overflow:hidden;">--%>
+    <%--<div id="iframe" style="width:100%;height:100%;"  class="ui-layout-center">--%>
+        <%--<iframe id="maincontent" name="maincontent" width="100%" height="100%" frameborder="0" scrolling="yes" src="/t/userinfo/index.do"></iframe>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+<%--<jsp:include page="footer.jsp"></jsp:include>--%>
+<!--header END-->
+<!--footer END-->
+</body>
+</html>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.RmMaterialTypeMapper">
+
+    <!--*****************************************************************查询start*******************************************************************-->
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="RmMaterialType">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_TYPE where RM_MATERIAL_TYPE_ID= #{0}
+    </select>
+
+    <!-- 获取满足条件的所有物资类别  map -->
+    <select id="queryListMap" parameterType="Map" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_TYPE
+        <where>
+            <if test="name != null and name != '' ">
+                <![CDATA[ and upper(RM_MATERIAL_TYPE_NAME) like '%'||upper(#{name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取满足条件的所有物资类别  分页 map -->
+    <select id="queryListPageMap" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_TYPE
+        <where>
+            <if test="params.name != null and params.name != '' ">
+                <![CDATA[ and upper(RM_MATERIAL_TYPE_NAME) like '%'||upper(#{params.name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取所有物资类型 -->
+    <select id="queryAllMaterialTypeModel" resultType="Map">
+        select RM_MATERIAL_TYPE_ID as id,RM_MATERIAL_TYPE_NAME as name from RM_MATERIAL_TYPE
+    </select>
+    <!--*****************************************************************查询end*********************************************************************-->
+
+    <!--*****************************************************************修改start*******************************************************************-->
+    <!-- 通过实体修改物资类别 -->
+    <update id="updateByObject" parameterType="RmMaterialType">
+        update RM_MATERIAL_TYPE
+        <include refid="updateParam"/>
+        where RM_MATERIAL_TYPE_ID = #{rmMaterialTypeId}
+    </update>
+    <!--*****************************************************************修改end*********************************************************************-->
+
+    <!--*****************************************************************新增start*******************************************************************-->
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="RmMaterialType"
+            useGeneratedKeys="true" keyProperty="RM_MATERIAL_TYPE_ID">
+        INSERT INTO RM_MATERIAL_TYPE
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+    <!--*****************************************************************新增end*********************************************************************-->
+
+    <!--*****************************************************************删除start*******************************************************************-->
+    <!-- 通过物资列别ID删除物资类别信息 -->
+    <delete id="deleteById">
+        delete from RM_MATERIAL_TYPE where RM_MATERIAL_TYPE_ID= #{0}
+    </delete>
+
+    <!-- 通过IDS 批量删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from RM_MATERIAL_TYPE where RM_MATERIAL_TYPE_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--*****************************************************************删除end*********************************************************************-->
+
+    <!--*****************************************************************sql  satrt *****************************************************************-->
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+        <![CDATA[
+		  	RM_MATERIAL_TYPE_ID as rmMaterialTypeId,
+			RM_MATERIAL_TYPE_CODE as rmMaterialTypeCode,
+			RM_MATERIAL_TYPE_NAME as rmMaterialTypeName,
+			NOTE as note
+        ]]>
+    </sql>
+
+    <!-- 修改 sql -->
+    <sql id="updateParam">
+        <set>
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">
+                <![CDATA[  RM_MATERIAL_TYPE_ID = #{rmMaterialTypeId } ,]]></if>
+            <if test="rmMaterialTypeCode != null and rmMaterialTypeCode != '' ">
+                <![CDATA[  RM_MATERIAL_TYPE_CODE = #{rmMaterialTypeCode } ,]]></if>
+            <if test="rmMaterialTypeName != null and rmMaterialTypeName != '' ">
+                <![CDATA[  RM_MATERIAL_TYPE_NAME = #{rmMaterialTypeName } ,]]></if>
+            <if test="note != null and note != '' ">  <![CDATA[  NOTE = #{note } ,]]></if>
+        </set>
+    </sql>
+
+    <!-- 新增物资类别  对应字段 -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">  <![CDATA[ RM_MATERIAL_TYPE_ID , ]]></if>
+            <if test="rmMaterialTypeCode != null and rmMaterialTypeCode != '' ">
+                <![CDATA[ RM_MATERIAL_TYPE_CODE , ]]></if>
+            <if test="rmMaterialTypeName != null and rmMaterialTypeName != '' ">
+                <![CDATA[ RM_MATERIAL_TYPE_NAME , ]]></if>
+            <if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 新增物资类别  字段对应值 -->
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">  <![CDATA[ #{rmMaterialTypeId } , ]]></if>
+            <if test="rmMaterialTypeCode != null and rmMaterialTypeCode != '' ">
+                <![CDATA[ #{rmMaterialTypeCode } , ]]></if>
+            <if test="rmMaterialTypeName != null and rmMaterialTypeName != '' ">
+                <![CDATA[ #{rmMaterialTypeName } , ]]></if>
+            <if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+        </trim>
+    </sql>
+    <!--*****************************************************************sql  end *******************************************************************-->
+
+</mapper>

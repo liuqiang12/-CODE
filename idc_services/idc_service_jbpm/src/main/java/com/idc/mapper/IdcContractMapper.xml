@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcContractMapper">
+	<resultMap id="resultIdcContractMap" type="IdcContract">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CONTRACTNAME" property="contractname" />
+		<result column="CONTRACTNO" property="contractno" />
+		<result column="CONTRACTPRICE" property="contractprice" />
+		<result column="CONTRACTSIGNDATE" property="contractsigndate" />
+		<result column="CONTRACTSTART" property="contractstart" />
+		<result column="CONTRACTPERIOD" property="contractperiod" />
+		<result column="CONTRACTEXPIRREMINDER" property="contractexpirreminder" />
+		<result column="CONTRACTPOSTPAID" property="contractpostpaid" />
+		<result column="CONTRACTPAYCYCLE" property="contractpaycycle" />
+		<result column="CONTRACTREMARK" property="contractremark" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+	</resultMap>
+
+	<!-- 分页查询 -->
+	<select id="queryGridListPage" parameterType="PageBean" resultType="IdcContract">
+		select
+		distinct t1.ID as id,
+		t1.CONTRACTNAME as contractname,
+		t1.CONTRACTNO as contractno,
+		t1.CONTRACTPRICE as contractprice,
+		t1.CONTRACTSIGNDATE as contractsigndate,
+		t1.CONTRACTSTART as contractstart,
+		t1.CONTRACTPERIOD as contractperiod,
+		t1.CONTRACTEXPIRREMINDER as contractexpirreminder,
+		t1.CONTRACTPOSTPAID as contractpostpaid,
+		t1.CONTRACTPAYCYCLE as contractpaycycle,
+		'user_key_'||ui.username||'@id_'||ui.id as applyId,
+		t1.APPLY_NAME as applyName,
+		t1.CONTRACTREMARK as contractremark,
+		t1.CUSTOMER_ID as customerId,
+		t2.name customerName,
+		t3.serial_number
+		from IDC_CONTRACT t1 left join idc_re_customer t2 on t1.customer_id = t2.id
+		left join sys_userinfo ui on to_number(t1.apply_id) = to_number(ui.id)
+		left join view_user_regions vur on ui.id = vur.id
+		left join idc_his_ticket t3 on t1.ticket_inst_id = t3.id
+		left join VIEW_USER_GROUPS_ROLES roleinfo on
+		instr(','||roleinfo.group_roleAndKeys_||',',','||t3.group_id||',' ) > 0
+		<include refid="wherePageParam" />
+		order by t3.serial_number,t1.contractstart desc,t1.CONTRACTSIGNDATE desc,t1.CUSTOMER_ID
+	</select>
+
+	<!--   -->
+	<select id="queryContractByUserListPage" parameterType="PageBean" resultType="Map">
+		select ttt1.id,
+			   ttt1.contractname,
+			   ttt1.contractno,
+			   ttt1.contractprice,
+			   ttt1.contractstart,
+			   ttt1.contractsigndate,
+			   ttt1.contractperiod,
+			   ttt1.contractexpirreminder,
+			   ttt1.contractpostpaid,
+			   ttt1.contractpaycycle,
+			   ttt1.contractremark,
+			   ttt1.customer_id,
+			   ttt1.ticket_inst_id,
+			   ttt1.apply_id,
+			   ttt1.apply_name,
+			   ttt1.customer_name,
+			   ttt1.dns,
+			   ttt1.ishand_status,
+			   ttt1.delete_after,
+			   ttt1.prod_inst_id,
+			   ttt2.serial_number         as SERIAL_NUMBER,
+			   ttt3.name                  as CUSTOMERNAME
+		  from (select t.id,
+					   t.contractname,
+					   t.contractno,
+					   t.contractprice,
+					   to_char(t.contractstart, 'yyyy-MM-dd HH24:mi:ss') as contractstart,
+					   to_char(t.contractsigndate, 'yyyy-MM-dd HH24:mi:ss') as contractsigndate,
+					   t.contractperiod,
+					   t.contractexpirreminder,
+					   t.contractpostpaid,
+					   t.contractpaycycle,
+					   t.contractremark,
+					   t.customer_id,
+					   t.ticket_inst_id,
+					   t.apply_id,
+					   t.apply_name,
+					   t.customer_name,
+					   t.dns,
+					   t.ishand_status,
+					   t.delete_after,
+					   t.prod_inst_id
+				  from IDC_CONTRACT t
+				 where exists (select t2.ticket_inst_id
+						  from idc_re_product t2
+						 where t.ticket_inst_id = t2.ticket_inst_id)
+				 order by t.ticket_inst_id desc) ttt1,
+			   idc_his_ticket ttt2,
+			   idc_re_customer ttt3
+		 where ttt1.ticket_inst_id = ttt2.ticket_inst_id
+		  <if test="params.contractname != null and params.contractname != '' ">
+			  <![CDATA[ and ttt1.contractname =  #{params.contractname} ]]>
+		  </if>
+		  <if test="params.contractno != null and params.contractno != '' ">
+			  <![CDATA[ and ttt1.contractno =  #{params.contractno} ]]>
+		  </if>
+		  <if test="params.loginUserID != null and params.loginUserID != '' ">
+			  <![CDATA[ and ttt2.apply_id =  #{params.loginUserID} ]]>
+		  </if>
+		and ttt2.customer_id = ttt3.id
+		order by ttt1.ticket_inst_id desc
+	</select>
+
+	<select id="verifyContractRepeat" resultType="Long">
+		select count('w') From idc_contract t where t.CONTRACTNO =#{0}
+	</select>
+
+
+	<select id="querySonTicketIsEnd" resultType="String">
+		<![CDATA[
+			select max(t1.ticket_inst_id)
+			  from idc_his_ticket t1
+			 where exists (select t.ticket_inst_id
+					  from idc_re_product t
+					 where t1.prod_inst_id = #{prodInstId})
+			   and t1.TICKET_STATUS <> -2
+			   and TICKET_STATUS <> -3
+			   and t1.ticket_category <>
+				   (select t.ticket_category
+					  from idc_his_ticket t
+					 where t.ticket_inst_id =  #{ticketInstId})
+		]]>
+	</select>
+
+	<select id="getContractByTicketInstId" parameterType="Long" resultType="IdcContract">
+		select
+			t1.ID as id,
+			t1.CONTRACTNAME as contractname,
+			t1.CONTRACTNO as contractno,
+			t1.CONTRACTPRICE as contractprice,
+			to_char(t1.CONTRACTSIGNDATE,'yyyy-mm-dd hh24:mi:ss') as contractsigndateStr,
+			to_char(t1.CONTRACTSTART,'yyyy-mm-dd hh24:mi:ss') as contractstartStr,
+			t1.CONTRACTPERIOD as contractperiod,
+			t1.CONTRACTEXPIRREMINDER as contractexpirreminder,
+			t1.CONTRACTPOSTPAID as contractpostpaid,
+			t1.CONTRACTPAYCYCLE as contractpaycycle,
+			t1.CONTRACTREMARK as contractremark,
+			t1.CUSTOMER_ID as customerId,
+			t1.ticket_inst_id as ticketInstId,
+			t2.name customerName
+		from IDC_CONTRACT t1 left join idc_re_customer t2 on t1.customer_id = t2.id
+		<where>
+			t1.ticket_inst_id = #{0}
+		</where>
+	</select>
+
+	<select id="getIdcContractDataIntoRedis" resultType="IdcContract">
+		select * from IDC_CONTRACT
+	</select>
+
+
+	<select id="queryContractRemainingDays" resultType="Map">
+	<![CDATA[ 		SELECT 	ceil(ABS((Cast(t.CONTRACTSTART As Date) + t.CONTRACTPERIOD) - TRUNC(sysdate))) as remainingdays,
+						t.TICKET_INST_ID,
+						t.CONTRACTNAME,
+						t.CONTRACTNO,
+						t.CONTRACTPRICE,
+						t.CONTRACTSTART,
+						t.CONTRACTPERIOD,
+						t.CONTRACTEXPIRREMINDER,
+						t.APPLY_ID,
+						t.APPLY_NAME,
+						t.CUSTOMER_NAME
+					 FROM idc_contract t
+					WHERE ceil(ABS((Cast(t.CONTRACTSTART As Date) + t.CONTRACTPERIOD) - TRUNC(sysdate))) < 30
+	 ]]>
+	</select>
+
+	<select id="getModelByContractId" parameterType="Long" resultType="IdcContract">
+		select
+		t1.ID as id,
+		t1.CONTRACTNAME as contractname,
+		t1.CONTRACTNO as contractno,
+		t1.CONTRACTPRICE as contractprice,
+		to_char(t1.CONTRACTSIGNDATE,'yyyy-MM-dd HH24:mi:ss') as contractsigndate,
+		to_char(t1.CONTRACTSTART,'yyyy-MM-dd HH24:mi:ss') as contractstart,
+		t1.CONTRACTPERIOD as contractperiod,
+		t1.CONTRACTEXPIRREMINDER as contractexpirreminder,
+		t1.CONTRACTPOSTPAID as contractpostpaid,
+		t1.CONTRACTPAYCYCLE as contractpaycycle,
+		t1.CONTRACTREMARK as contractremark,
+		t1.CUSTOMER_ID as customerId,
+
+		t1.APPLY_ID as applyId,
+		t1.APPLY_NAME as applyName,
+
+		t2.name customerName
+		from IDC_CONTRACT t1 left join idc_re_customer t2 on t1.customer_id = t2.id
+		<where>
+			t1.ID = #{0}
+		</where>
+	</select>
+
+	<select id="getIsHasContract"  resultType="Boolean">
+		select count('X') x from IDC_CONTRACT t1 where t1.TICKET_INST_ID = #{0}
+	</select>
+
+
+	<update id="updateIdcContractByTicket" parameterType="IdcContract">
+		UPDATE IDC_CONTRACT
+		<set>
+			<if test="contractname != null and contractname != '' ">  <![CDATA[  CONTRACTNAME = #{contractname,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractno != null and contractno != '' ">  <![CDATA[ CONTRACTNO = #{contractno,jdbcType=VARCHAR} , ]]></if>
+			<if test="contractprice != null and contractprice != '' ">  <![CDATA[  CONTRACTPRICE = #{contractprice ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractsigndate != null  ">  <![CDATA[  CONTRACTSIGNDATE = #{contractsigndate,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractstart != null  ">  <![CDATA[  CONTRACTSTART = #{contractstart,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractperiod != null and contractperiod != '' ">  <![CDATA[  CONTRACTPERIOD = #{contractperiod ,jdbcType=NUMERIC } ,]]></if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' ">  <![CDATA[  CONTRACTEXPIRREMINDER = #{contractexpirreminder,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">  <![CDATA[  CONTRACTPOSTPAID = #{contractpostpaid ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  <![CDATA[  CONTRACTPAYCYCLE = #{contractpaycycle ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contractremark != null and contractremark != '' ">  <![CDATA[  CONTRACTREMARK = #{contractremark ,jdbcType=VARCHAR} ,]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[  APPLY_ID = #{applyId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLY_NAME = #{applyName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME = #{customerName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID = #{prodInstId ,jdbcType=NUMERIC}  , ]]></if>
+		</set>
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<update id="updateIdcContract" parameterType="IdcContract">
+		UPDATE IDC_CONTRACT
+		<set>
+			<if test="contractname != null and contractname != '' ">  <![CDATA[  CONTRACTNAME = #{contractname,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractno != null and contractno != '' ">  <![CDATA[ CONTRACTNO = #{contractno,jdbcType=VARCHAR} , ]]></if>
+			<if test="contractprice != null and contractprice != '' ">  <![CDATA[  CONTRACTPRICE = #{contractprice ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractsigndate != null  ">  <![CDATA[  CONTRACTSIGNDATE = #{contractsigndate,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractstart != null  ">  <![CDATA[  CONTRACTSTART = #{contractstart,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractperiod != null and contractperiod != '' ">  <![CDATA[  CONTRACTPERIOD = #{contractperiod ,jdbcType=NUMERIC } ,]]></if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' ">  <![CDATA[  CONTRACTEXPIRREMINDER = #{contractexpirreminder,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">  <![CDATA[  CONTRACTPOSTPAID = #{contractpostpaid ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  <![CDATA[  CONTRACTPAYCYCLE = #{contractpaycycle ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contractremark != null and contractremark != '' ">  <![CDATA[  CONTRACTREMARK = #{contractremark ,jdbcType=VARCHAR} ,]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[  APPLY_ID = #{applyId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLY_NAME = #{applyName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME = #{customerName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID = #{prodInstId ,jdbcType=NUMERIC}  , ]]></if>
+		</set>
+		where ID= #{id}
+	</update>
+	<insert id="insertIdcContract" parameterType="IdcContract"  >
+		<selectKey  keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_CONTRACT.CURRVAL AS id FROM DUAL
+		</selectKey>
+		insert into IDC_CONTRACT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contractname != null and contractname != '' ">  <![CDATA[ CONTRACTNAME , ]]></if>
+			<if test="contractno != null and contractno != '' ">  <![CDATA[ CONTRACTNO , ]]></if>
+			<if test="contractprice != null and contractprice != '' ">  <![CDATA[ CONTRACTPRICE , ]]></if>
+			<if test="contractsigndate != null ">  <![CDATA[ CONTRACTSIGNDATE , ]]></if>
+			<if test="contractstart != null ">  <![CDATA[ CONTRACTSTART , ]]></if>
+			<if test="contractperiod != null and contractperiod != '' ">  <![CDATA[ CONTRACTPERIOD , ]]></if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' ">  <![CDATA[ CONTRACTEXPIRREMINDER , ]]></if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">  <![CDATA[ CONTRACTPOSTPAID , ]]></if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  <![CDATA[ CONTRACTPAYCYCLE , ]]></if>
+			<if test="contractremark != null and contractremark != '' ">  <![CDATA[ CONTRACTREMARK , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[ APPLY_ID , ]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLY_NAME , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="contractname != null and contractname != '' ">  #{contractname,jdbcType=VARCHAR } ,</if>
+			<if test="contractno != null and contractno != '' ">   #{contractno ,jdbcType=VARCHAR} ,</if>
+			<if test="contractprice != null and contractprice != '' "> #{contractprice ,jdbcType=NUMERIC} ,</if>
+			<if test="contractsigndate != null  ">  #{contractsigndate,jdbcType=TIMESTAMP}  ,</if>
+			<if test="contractstart != null  "> #{contractstart,jdbcType=TIMESTAMP},</if>
+			<if test="contractperiod != null and contractperiod != '' "> #{contractperiod ,jdbcType=NUMERIC} ,</if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' "> #{contractexpirreminder ,jdbcType=VARCHAR} ,</if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">   #{contractpostpaid ,jdbcType=NUMERIC} ,</if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  #{contractpaycycle ,jdbcType=VARCHAR} ,</if>
+			<if test="contractremark != null and contractremark != '' ">     #{contractremark ,jdbcType=VARCHAR} ,</if>
+			<if test="customerId != null and customerId != '' ">   #{customerId ,jdbcType=NUMERIC} ,</if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId ,jdbcType=NUMERIC}  , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId ,jdbcType=NUMERIC}  , ]]></if>
+			<if test="applyId != null and applyId != '' ">  #{applyId ,jdbcType=NUMERIC} ,</if>
+			<if test="applyName != null and applyName != '' ">     #{applyName ,jdbcType=VARCHAR} ,</if>
+			<if test="customerName != null and customerName != '' ">     #{customerName ,jdbcType=VARCHAR} ,</if>
+		</trim>
+	</insert>
+ 	<!-- 删除记录 -->
+	<delete id="deleteRecordById">
+		delete from IDC_CONTRACT where ID= #{0}
+	</delete>
+	<!-- 合体方法 -->
+	<update id="mergeInto" parameterType="IdcContract" >
+		merge into IDC_CONTRACT t
+		using ( select #{contractno,jdbcType=VARCHAR} as contractno,#{ticketInstId,jdbcType=NUMERIC} as ticketInstId from dual) t1
+		on(t.CONTRACTNO = t1.contractno)
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contractname != null and contractname != '' ">  <![CDATA[ CONTRACTNAME , ]]></if>
+			<if test="contractno != null and contractno != '' ">  <![CDATA[ CONTRACTNO , ]]></if>
+			<if test="contractprice != null and contractprice != '' ">  <![CDATA[ CONTRACTPRICE , ]]></if>
+			<if test="contractsigndate != null ">  <![CDATA[ CONTRACTSIGNDATE , ]]></if>
+			<if test="contractstart != null ">  <![CDATA[ CONTRACTSTART , ]]></if>
+			<if test="contractperiod != null and contractperiod != '' ">  <![CDATA[ CONTRACTPERIOD , ]]></if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' ">  <![CDATA[ CONTRACTEXPIRREMINDER , ]]></if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">  <![CDATA[ CONTRACTPOSTPAID , ]]></if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  <![CDATA[ CONTRACTPAYCYCLE , ]]></if>
+			<if test="contractremark != null and contractremark != '' ">  <![CDATA[ CONTRACTREMARK , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+
+			<if test="applyId != null and applyId != '' ">  <![CDATA[ APPLY_ID , ]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLY_NAME , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="contractname != null and contractname != '' ">  #{contractname,jdbcType=VARCHAR } ,</if>
+			<if test="contractno != null and contractno != '' ">   #{contractno ,jdbcType=VARCHAR} ,</if>
+			<if test="contractprice != null and contractprice != '' "> #{contractprice ,jdbcType=NUMERIC} ,</if>
+			<if test="contractsigndate != null  ">  #{contractsigndate,jdbcType=TIMESTAMP}  ,</if>
+			<if test="contractstart != null  "> #{contractstart,jdbcType=TIMESTAMP},</if>
+			<if test="contractperiod != null and contractperiod != '' "> #{contractperiod ,jdbcType=NUMERIC} ,</if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' "> #{contractexpirreminder ,jdbcType=VARCHAR} ,</if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">   #{contractpostpaid ,jdbcType=NUMERIC} ,</if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  #{contractpaycycle ,jdbcType=VARCHAR} ,</if>
+			<if test="contractremark != null and contractremark != '' ">     #{contractremark ,jdbcType=VARCHAR} ,</if>
+			<if test="customerId != null and customerId != '' ">   #{customerId ,jdbcType=NUMERIC} ,</if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId ,jdbcType=NUMERIC}  , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId ,jdbcType=NUMERIC}  , ]]></if>
+
+			<if test="applyId != null and applyId != '' ">  #{applyId ,jdbcType=NUMERIC} ,</if>
+			<if test="applyName != null and applyName != '' ">     #{applyName ,jdbcType=VARCHAR} ,</if>
+			<if test="customerName != null and customerName != '' ">     #{customerName ,jdbcType=VARCHAR} ,</if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="contractname != null and contractname != '' ">  <![CDATA[  CONTRACTNAME = #{contractname,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractprice != null and contractprice != '' ">  <![CDATA[  CONTRACTPRICE = #{contractprice ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractsigndate != null  ">  <![CDATA[  CONTRACTSIGNDATE = #{contractsigndate,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractstart != null  ">  <![CDATA[  CONTRACTSTART = #{contractstart,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="contractperiod != null and contractperiod != '' ">  <![CDATA[  CONTRACTPERIOD = #{contractperiod ,jdbcType=NUMERIC } ,]]></if>
+			<if test="contractexpirreminder != null and contractexpirreminder != '' ">  <![CDATA[  CONTRACTEXPIRREMINDER = #{contractexpirreminder,jdbcType=VARCHAR } ,]]></if>
+			<if test="contractpostpaid != null and contractpostpaid != '' ">  <![CDATA[  CONTRACTPOSTPAID = #{contractpostpaid ,jdbcType=NUMERIC} ,]]></if>
+			<if test="contractpaycycle != null and contractpaycycle != '' ">  <![CDATA[  CONTRACTPAYCYCLE = #{contractpaycycle ,jdbcType=VARCHAR} ,]]></if>
+			<if test="contractremark != null and contractremark != '' ">  <![CDATA[  CONTRACTREMARK = #{contractremark ,jdbcType=VARCHAR} ,]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[  APPLY_ID = #{applyId ,jdbcType=NUMERIC} ,]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLY_NAME = #{applyName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME = #{customerName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID = #{ticketInstId ,jdbcType=NUMERIC}  , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID = #{prodInstId ,jdbcType=NUMERIC}  , ]]></if>
+		</set>
+		where CONTRACTNO = #{contractno ,jdbcType=VARCHAR}
+		    and TICKET_INST_ID = #{ticketInstId ,jdbcType=NUMERIC}
+	</update>
+	<sql id="wherePageParam">
+		<where>
+
+			<if test=" params.apply_regions != null and  params.apply_regions != '' ">
+				exists
+				(
+				select tm.column_value as cv from table(split(#{params.apply_regions},';')) tm
+				where  regexp_like(';'||vur.regions_||';',';'||tm.column_value||';')
+				and ui.id is not null
+				<if test="params.contractname != null and params.contractname != '' ">
+					<![CDATA[ and t1.CONTRACTNAME like '%'||#{params.contractname}||'%' ]]></if>
+				<if test="params.contractno != null and params.contractno != '' ">
+					<![CDATA[ and t1.CONTRACTNO like '%'|| #{params.contractno}||'%' ]]></if>
+				<if test=" params.assignee != null and params.assig	nee != '' ">
+					and (
+					T1.APPLY_ID = #{params.applyId}
+					or roleinfo.userid_ = #{params.loginIdstr}
+					)
+				</if>
+				)
+			</if>
+		</where>
+	</sql>
+</mapper>

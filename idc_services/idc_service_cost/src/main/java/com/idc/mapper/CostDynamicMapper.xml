@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.CostDynamicMapper">
+  <resultMap id="BaseResultMap" type="com.idc.model.CostDynamic">
+    <id column="COST_ROOM_ID" jdbcType="VARCHAR" property="costRoomId" />
+    <result column="COST_FIXED_ID" jdbcType="VARCHAR" property="costFixedId" />
+    <result column="COST_DEPRECIATION" jdbcType="DECIMAL" property="costDepreciation" />
+    <result column="COST_MAINTENANCE" jdbcType="DECIMAL" property="costMaintenance" />
+    <result column="COST_REPAIR" jdbcType="DECIMAL" property="costRepair" />
+    <result column="COST_RENOVATION" jdbcType="DECIMAL" property="costRenovation" />
+    <result column="COST_DEV_DEPRECIATION" jdbcType="DECIMAL" property="costDevDepreciation" />
+    <result column="COST_DEV_REPAIR" jdbcType="DECIMAL" property="costDevRepair" />
+    <result column="COST_WATER_ RATE" jdbcType="DECIMAL" property="costWaterRate" />
+    <result column="COST_ENERGY" jdbcType="DECIMAL" property="costEnergy" />
+    <result column="COST_WORK" jdbcType="DECIMAL" property="costWork" />
+    <result column="COST_NETWORK" jdbcType="DECIMAL" property="costNetwork" />
+    <result column="COST_TIME_UNIT" jdbcType="VARCHAR" property="costTimeUnit" />
+    <result column="ROOM_CODE" jdbcType="VARCHAR" property="roomCode" />
+    <result column="ROOM_NAME" jdbcType="VARCHAR" property="roomName" />
+    <result column="COST_YEAR_OR_MONTH" jdbcType="DECIMAL" property="costYearOrMonth" />
+    <result column="BUIDING_CODE" jdbcType="VARCHAR" property="buidingCode" />
+    <result column="COST_START_TIME" jdbcType="DATE" property="costStartTime" />
+    <result column="COST_END_TIME" jdbcType="DATE" property="costEndTime" />
+    <result column="COST_CREATE_TIME" jdbcType="DATE" property="costCreateTime" />
+    <result column="COST_MARKETTING" jdbcType="DECIMAL" property="costMarketting" />
+    <result column="COST_CUSTOM_INCOME" jdbcType="DECIMAL" property="costCustomIncome" />
+    <result column="CUSTOM_ID" jdbcType="VARCHAR" property="customId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    COST_ROOM_ID, COST_FIXED_ID, COST_DEPRECIATION, COST_MAINTENANCE, COST_REPAIR, COST_RENOVATION, 
+    COST_DEV_DEPRECIATION, COST_DEV_REPAIR, "COST_WATER_ RATE", COST_ENERGY, COST_WORK, 
+    COST_NETWORK, COST_TIME_UNIT, ROOM_CODE, ROOM_NAME, COST_YEAR_OR_MONTH, BUIDING_CODE, 
+    COST_START_TIME, COST_END_TIME, COST_CREATE_TIME, COST_MARKETTING, COST_CUSTOM_INCOME, 
+    CUSTOM_ID
+  </sql>
+  <select id="selectByExample" parameterType="com.idc.model.CostDynamicExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from COST_ROOM_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from COST_ROOM_BASE
+    where COST_ROOM_ID = #{costRoomId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from COST_ROOM_BASE
+    where COST_ROOM_ID = #{costRoomId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.idc.model.CostDynamicExample">
+    delete from COST_ROOM_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.idc.model.CostDynamic">
+    insert into COST_ROOM_BASE (COST_ROOM_ID, COST_FIXED_ID, COST_DEPRECIATION, 
+      COST_MAINTENANCE, COST_REPAIR, COST_RENOVATION, 
+      COST_DEV_DEPRECIATION, COST_DEV_REPAIR, "COST_WATER_ RATE", 
+      COST_ENERGY, COST_WORK, COST_NETWORK, 
+      COST_TIME_UNIT, ROOM_CODE, ROOM_NAME, 
+      COST_YEAR_OR_MONTH, BUIDING_CODE, COST_START_TIME, 
+      COST_END_TIME, COST_CREATE_TIME, COST_MARKETTING, 
+      COST_CUSTOM_INCOME, CUSTOM_ID)
+    values (#{costRoomId,jdbcType=VARCHAR}, #{costFixedId,jdbcType=VARCHAR}, #{costDepreciation,jdbcType=DECIMAL}, 
+      #{costMaintenance,jdbcType=DECIMAL}, #{costRepair,jdbcType=DECIMAL}, #{costRenovation,jdbcType=DECIMAL}, 
+      #{costDevDepreciation,jdbcType=DECIMAL}, #{costDevRepair,jdbcType=DECIMAL}, #{costWaterRate,jdbcType=DECIMAL}, 
+      #{costEnergy,jdbcType=DECIMAL}, #{costWork,jdbcType=DECIMAL}, #{costNetwork,jdbcType=DECIMAL}, 
+      #{costTimeUnit,jdbcType=VARCHAR}, #{roomCode,jdbcType=VARCHAR}, #{roomName,jdbcType=VARCHAR}, 
+      #{costYearOrMonth,jdbcType=DECIMAL}, #{buidingCode,jdbcType=VARCHAR}, #{costStartTime,jdbcType=DATE}, 
+      #{costEndTime,jdbcType=DATE}, #{costCreateTime,jdbcType=DATE}, #{costMarketting,jdbcType=DECIMAL}, 
+      #{costCustomIncome,jdbcType=DECIMAL}, #{customId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.idc.model.CostDynamic">
+    insert into COST_ROOM_BASE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costRoomId != null">
+        COST_ROOM_ID,
+      </if>
+      <if test="costFixedId != null">
+        COST_FIXED_ID,
+      </if>
+      <if test="costDepreciation != null">
+        COST_DEPRECIATION,
+      </if>
+      <if test="costMaintenance != null">
+        COST_MAINTENANCE,
+      </if>
+      <if test="costRepair != null">
+        COST_REPAIR,
+      </if>
+      <if test="costRenovation != null">
+        COST_RENOVATION,
+      </if>
+      <if test="costDevDepreciation != null">
+        COST_DEV_DEPRECIATION,
+      </if>
+      <if test="costDevRepair != null">
+        COST_DEV_REPAIR,
+      </if>
+      <if test="costWaterRate != null">
+        "COST_WATER_ RATE",
+      </if>
+      <if test="costEnergy != null">
+        COST_ENERGY,
+      </if>
+      <if test="costWork != null">
+        COST_WORK,
+      </if>
+      <if test="costNetwork != null">
+        COST_NETWORK,
+      </if>
+      <if test="costTimeUnit != null">
+        COST_TIME_UNIT,
+      </if>
+      <if test="roomCode != null">
+        ROOM_CODE,
+      </if>
+      <if test="roomName != null">
+        ROOM_NAME,
+      </if>
+      <if test="costYearOrMonth != null">
+        COST_YEAR_OR_MONTH,
+      </if>
+      <if test="buidingCode != null">
+        BUIDING_CODE,
+      </if>
+      <if test="costStartTime != null">
+        COST_START_TIME,
+      </if>
+      <if test="costEndTime != null">
+        COST_END_TIME,
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME,
+      </if>
+      <if test="costMarketting != null">
+        COST_MARKETTING,
+      </if>
+      <if test="costCustomIncome != null">
+        COST_CUSTOM_INCOME,
+      </if>
+      <if test="customId != null">
+        CUSTOM_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costRoomId != null">
+        #{costRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedId != null">
+        #{costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="costDepreciation != null">
+        #{costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costMaintenance != null">
+        #{costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="costRepair != null">
+        #{costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costRenovation != null">
+        #{costRenovation,jdbcType=DECIMAL},
+      </if>
+      <if test="costDevDepreciation != null">
+        #{costDevDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costDevRepair != null">
+        #{costDevRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costWaterRate != null">
+        #{costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costEnergy != null">
+        #{costEnergy,jdbcType=DECIMAL},
+      </if>
+      <if test="costWork != null">
+        #{costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="costNetwork != null">
+        #{costNetwork,jdbcType=DECIMAL},
+      </if>
+      <if test="costTimeUnit != null">
+        #{costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null">
+        #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roomName != null">
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="costYearOrMonth != null">
+        #{costYearOrMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="buidingCode != null">
+        #{buidingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costStartTime != null">
+        #{costStartTime,jdbcType=DATE},
+      </if>
+      <if test="costEndTime != null">
+        #{costEndTime,jdbcType=DATE},
+      </if>
+      <if test="costCreateTime != null">
+        #{costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="costMarketting != null">
+        #{costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="costCustomIncome != null">
+        #{costCustomIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="customId != null">
+        #{customId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.idc.model.CostDynamicExample" resultType="java.lang.Long">
+    select count(*) from COST_ROOM_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update COST_ROOM_BASE
+    <set>
+      <if test="record.costRoomId != null">
+        COST_ROOM_ID = #{record.costRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costFixedId != null">
+        COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costDepreciation != null">
+        COST_DEPRECIATION = #{record.costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costMaintenance != null">
+        COST_MAINTENANCE = #{record.costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRepair != null">
+        COST_REPAIR = #{record.costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRenovation != null">
+        COST_RENOVATION = #{record.costRenovation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costDevDepreciation != null">
+        COST_DEV_DEPRECIATION = #{record.costDevDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costDevRepair != null">
+        COST_DEV_REPAIR = #{record.costDevRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costWaterRate != null">
+        "COST_WATER_ RATE" = #{record.costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costEnergy != null">
+        COST_ENERGY = #{record.costEnergy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costWork != null">
+        COST_WORK = #{record.costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costNetwork != null">
+        COST_NETWORK = #{record.costNetwork,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costTimeUnit != null">
+        COST_TIME_UNIT = #{record.costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomCode != null">
+        ROOM_CODE = #{record.roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomName != null">
+        ROOM_NAME = #{record.roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costYearOrMonth != null">
+        COST_YEAR_OR_MONTH = #{record.costYearOrMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.buidingCode != null">
+        BUIDING_CODE = #{record.buidingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costStartTime != null">
+        COST_START_TIME = #{record.costStartTime,jdbcType=DATE},
+      </if>
+      <if test="record.costEndTime != null">
+        COST_END_TIME = #{record.costEndTime,jdbcType=DATE},
+      </if>
+      <if test="record.costCreateTime != null">
+        COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="record.costMarketting != null">
+        COST_MARKETTING = #{record.costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costCustomIncome != null">
+        COST_CUSTOM_INCOME = #{record.costCustomIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="record.customId != null">
+        CUSTOM_ID = #{record.customId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update COST_ROOM_BASE
+    set COST_ROOM_ID = #{record.costRoomId,jdbcType=VARCHAR},
+      COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      COST_DEPRECIATION = #{record.costDepreciation,jdbcType=DECIMAL},
+      COST_MAINTENANCE = #{record.costMaintenance,jdbcType=DECIMAL},
+      COST_REPAIR = #{record.costRepair,jdbcType=DECIMAL},
+      COST_RENOVATION = #{record.costRenovation,jdbcType=DECIMAL},
+      COST_DEV_DEPRECIATION = #{record.costDevDepreciation,jdbcType=DECIMAL},
+      COST_DEV_REPAIR = #{record.costDevRepair,jdbcType=DECIMAL},
+      "COST_WATER_ RATE" = #{record.costWaterRate,jdbcType=DECIMAL},
+      COST_ENERGY = #{record.costEnergy,jdbcType=DECIMAL},
+      COST_WORK = #{record.costWork,jdbcType=DECIMAL},
+      COST_NETWORK = #{record.costNetwork,jdbcType=DECIMAL},
+      COST_TIME_UNIT = #{record.costTimeUnit,jdbcType=VARCHAR},
+      ROOM_CODE = #{record.roomCode,jdbcType=VARCHAR},
+      ROOM_NAME = #{record.roomName,jdbcType=VARCHAR},
+      COST_YEAR_OR_MONTH = #{record.costYearOrMonth,jdbcType=DECIMAL},
+      BUIDING_CODE = #{record.buidingCode,jdbcType=VARCHAR},
+      COST_START_TIME = #{record.costStartTime,jdbcType=DATE},
+      COST_END_TIME = #{record.costEndTime,jdbcType=DATE},
+      COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE},
+      COST_MARKETTING = #{record.costMarketting,jdbcType=DECIMAL},
+      COST_CUSTOM_INCOME = #{record.costCustomIncome,jdbcType=DECIMAL},
+      CUSTOM_ID = #{record.customId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.idc.model.CostDynamic">
+    update COST_ROOM_BASE
+    <set>
+      <if test="costFixedId != null">
+        COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="costDepreciation != null">
+        COST_DEPRECIATION = #{costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costMaintenance != null">
+        COST_MAINTENANCE = #{costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="costRepair != null">
+        COST_REPAIR = #{costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costRenovation != null">
+        COST_RENOVATION = #{costRenovation,jdbcType=DECIMAL},
+      </if>
+      <if test="costDevDepreciation != null">
+        COST_DEV_DEPRECIATION = #{costDevDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costDevRepair != null">
+        COST_DEV_REPAIR = #{costDevRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costWaterRate != null">
+        "COST_WATER_ RATE" = #{costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costEnergy != null">
+        COST_ENERGY = #{costEnergy,jdbcType=DECIMAL},
+      </if>
+      <if test="costWork != null">
+        COST_WORK = #{costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="costNetwork != null">
+        COST_NETWORK = #{costNetwork,jdbcType=DECIMAL},
+      </if>
+      <if test="costTimeUnit != null">
+        COST_TIME_UNIT = #{costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null">
+        ROOM_CODE = #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roomName != null">
+        ROOM_NAME = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="costYearOrMonth != null">
+        COST_YEAR_OR_MONTH = #{costYearOrMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="buidingCode != null">
+        BUIDING_CODE = #{buidingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costStartTime != null">
+        COST_START_TIME = #{costStartTime,jdbcType=DATE},
+      </if>
+      <if test="costEndTime != null">
+        COST_END_TIME = #{costEndTime,jdbcType=DATE},
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="costMarketting != null">
+        COST_MARKETTING = #{costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="costCustomIncome != null">
+        COST_CUSTOM_INCOME = #{costCustomIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="customId != null">
+        CUSTOM_ID = #{customId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where COST_ROOM_ID = #{costRoomId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.idc.model.CostDynamic">
+    update COST_ROOM_BASE
+    set COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR},
+      COST_DEPRECIATION = #{costDepreciation,jdbcType=DECIMAL},
+      COST_MAINTENANCE = #{costMaintenance,jdbcType=DECIMAL},
+      COST_REPAIR = #{costRepair,jdbcType=DECIMAL},
+      COST_RENOVATION = #{costRenovation,jdbcType=DECIMAL},
+      COST_DEV_DEPRECIATION = #{costDevDepreciation,jdbcType=DECIMAL},
+      COST_DEV_REPAIR = #{costDevRepair,jdbcType=DECIMAL},
+      "COST_WATER_ RATE" = #{costWaterRate,jdbcType=DECIMAL},
+      COST_ENERGY = #{costEnergy,jdbcType=DECIMAL},
+      COST_WORK = #{costWork,jdbcType=DECIMAL},
+      COST_NETWORK = #{costNetwork,jdbcType=DECIMAL},
+      COST_TIME_UNIT = #{costTimeUnit,jdbcType=VARCHAR},
+      ROOM_CODE = #{roomCode,jdbcType=VARCHAR},
+      ROOM_NAME = #{roomName,jdbcType=VARCHAR},
+      COST_YEAR_OR_MONTH = #{costYearOrMonth,jdbcType=DECIMAL},
+      BUIDING_CODE = #{buidingCode,jdbcType=VARCHAR},
+      COST_START_TIME = #{costStartTime,jdbcType=DATE},
+      COST_END_TIME = #{costEndTime,jdbcType=DATE},
+      COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE},
+      COST_MARKETTING = #{costMarketting,jdbcType=DECIMAL},
+      COST_CUSTOM_INCOME = #{costCustomIncome,jdbcType=DECIMAL},
+      CUSTOM_ID = #{customId,jdbcType=VARCHAR}
+    where COST_ROOM_ID = #{costRoomId,jdbcType=VARCHAR}
+  </update>
+</mapper>

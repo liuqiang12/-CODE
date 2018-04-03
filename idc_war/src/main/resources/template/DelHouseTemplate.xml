@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<deleteInfo>
+		<deleteData>
+			#foreach($item in $gatewayInfoList)#*5链路信息:通过表中数据固化*#
+			#set($i=$velocityCount - 1)#*设置序号*#
+			<house>
+				<houseId>$ispSolidData.houseId</houseId>
+				<gatewayId>$item.id</gatewayId>
+				<ipSegId>$!ipSegInfoList.get($i).id</ipSegId>
+			</house>
+			#end#*#*//5链路信息:通过表中数据固化*#
+		</deleteData>
+	</deleteInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

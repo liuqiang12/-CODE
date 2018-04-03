@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisTicketPreAcceptMapper">
+	<!-- insert保存方法 -->
+	<insert id="createIdcHisTicketPreAccept" parameterType="IdcHisTicketPreAccept" >
+		INSERT INTO IDC_HIS_TICKET_PRE_ACCEPT
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="reservestart != null   ">  <![CDATA[ RESERVESTART , ]]></if>
+			<if test="reserveend != null   ">  <![CDATA[ RESERVEEND , ]]></if>
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[ CONSTRUCT_COMMENT , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[ APPLYDESC , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="reservestart != null   ">  <![CDATA[ #{reservestart } , ]]></if>
+			<if test="reserveend != null   ">  <![CDATA[ #{reserveend } , ]]></if>
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[ #{constructComment } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[ #{applydesc } , ]]></if>
+		</trim>
+		)
+	</insert>
+	<update id="updateByData" parameterType="IdcHisTicketPreAccept">
+		update IDC_HIS_TICKET_PRE_ACCEPT
+		<set>
+			<if test="reservestart != null  ">  <![CDATA[ RESERVESTART = #{reservestart } , ]]></if>
+			<if test="reserveend != null   ">  <![CDATA[ RESERVEEND = #{reserveend } , ]]></if>
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[ CONSTRUCT_COMMENT = #{constructComment } , ]]></if>
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[ APPLYDESC = #{applydesc } , ]]></if>
+		</set>
+		WHERE  TICKET_INST_ID = #{ticketInstId }
+	</update>
+
+	<select id="getDataByTicketInstId" resultType="Map">
+		select t.ticket_inst_id,
+		to_char(t.reservestart, 'yyyy-MM-dd HH24:mi:ss') reservestart,
+		to_char(t.reserveend, 'yyyy-MM-dd HH24:mi:ss') reserveend,
+		t.construct_comment,
+		t.applydesc
+		from IDC_HIS_TICKET_PRE_ACCEPT t
+		where t.TICKET_INST_ID = #{0}
+	</select>
+
+</mapper>

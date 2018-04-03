@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspIframeMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspIframeMap" type="LocalIspIframe">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="AID" property="aid" />
+				
+		<result column="HH_ID" property="hhId" />
+				
+		<result column="USE_TYPE" property="useType" />
+				
+		<result column="DISTRIBUTION" property="distribution" />
+				
+		<result column="OCCUPANCY" property="occupancy" />
+				
+		<result column="FRAME_NAME" property="frameName" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspIframe">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspIframe"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspIframe">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspIframe">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspIframe"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspIframe">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspIframe">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IFRAME
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspIframe">
+		update LOCAL_ISP_IFRAME
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_IFRAME
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_IFRAME
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_IFRAME where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspIframe">
+		delete from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_IFRAME
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_IFRAME where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspIframe"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO LOCAL_ISP_IFRAME
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_IFRAME (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,			HH_ID as hhId,			USE_TYPE as useType,			DISTRIBUTION as distribution,			OCCUPANCY as occupancy,			FRAME_NAME as frameName
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="hhId != null and hhId != '' ">  <![CDATA[ and HH_ID = #{hhId} ]]></if>
+						
+			<if test="useType != null and useType != '' ">  <![CDATA[ and USE_TYPE = #{useType} ]]></if>
+						
+			<if test="distribution != null and distribution != '' ">  <![CDATA[ and DISTRIBUTION = #{distribution} ]]></if>
+						
+			<if test="occupancy != null and occupancy != '' ">  <![CDATA[ and OCCUPANCY = #{occupancy} ]]></if>
+						
+			<if test="frameName != null and frameName != '' ">  <![CDATA[ and FRAME_NAME = #{frameName} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.hhId != null and params.hhId != '' ">  <![CDATA[ and HH_ID = #{params.hhId} ]]></if>
+						
+			<if test="params.useType != null and params.useType != '' ">  <![CDATA[ and USE_TYPE = #{params.useType} ]]></if>
+						
+			<if test="params.distribution != null and params.distribution != '' ">  <![CDATA[ and DISTRIBUTION = #{params.distribution} ]]></if>
+						
+			<if test="params.occupancy != null and params.occupancy != '' ">  <![CDATA[ and OCCUPANCY = #{params.occupancy} ]]></if>
+						
+			<if test="params.frameName != null and params.frameName != '' ">  <![CDATA[ and FRAME_NAME = #{params.frameName} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="hhId != null and hhId != '' ">  <![CDATA[  HH_ID = #{hhId } ,]]></if>
+						
+			<if test="useType != null and useType != '' ">  <![CDATA[  USE_TYPE = #{useType } ,]]></if>
+						
+			<if test="distribution != null and distribution != '' ">  <![CDATA[  DISTRIBUTION = #{distribution } ,]]></if>
+						
+			<if test="occupancy != null and occupancy != '' ">  <![CDATA[  OCCUPANCY = #{occupancy } ,]]></if>
+						
+			<if test="frameName != null and frameName != '' ">  <![CDATA[  FRAME_NAME = #{frameName } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="hhId != null and hhId != '' ">  <![CDATA[ HH_ID , ]]></if>
+				
+		<if test="useType != null and useType != '' ">  <![CDATA[ USE_TYPE , ]]></if>
+				
+		<if test="distribution != null and distribution != '' ">  <![CDATA[ DISTRIBUTION , ]]></if>
+				
+		<if test="occupancy != null and occupancy != '' ">  <![CDATA[ OCCUPANCY , ]]></if>
+				
+		<if test="frameName != null and frameName != '' ">  <![CDATA[ FRAME_NAME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="hhId != null and hhId != '' ">  <![CDATA[ #{hhId } , ]]></if>
+				
+		<if test="useType != null and useType != '' ">  <![CDATA[ #{useType } , ]]></if>
+				
+		<if test="distribution != null and distribution != '' ">  <![CDATA[ #{distribution } , ]]></if>
+				
+		<if test="occupancy != null and occupancy != '' ">  <![CDATA[ #{occupancy } , ]]></if>
+				
+		<if test="frameName != null and frameName != '' ">  <![CDATA[ #{frameName } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,HH_ID,USE_TYPE,DISTRIBUTION,OCCUPANCY,FRAME_NAME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.hhId},#{item.useType},#{item.distribution},#{item.occupancy},#{item.frameName}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

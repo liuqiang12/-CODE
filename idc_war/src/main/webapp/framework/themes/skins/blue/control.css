@@ -1,0 +1,143 @@
+﻿.paramContent{
+	background:#FFF;
+	padding-top:5px;
+	height:25px;
+	border-width: 1px 0 0 0;
+}
+
+
+.param-input{
+	display: block;
+	padding: 2px 6px;
+	font-size: 12px;
+	line-height: 1.42857143;
+	color: #555;
+	border-radius: 3px;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #CCC;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.param-input:focus{
+	border: 1px solid #118AFE;
+	border-radius: 3px;
+}
+
+.param-fieldset > .param-input{
+	width:100px;
+}
+
+
+.paramContent > .param-fieldset{
+	margin-left:5px;
+	float:left;
+}
+.paramContent > .param-fieldset:first-child{
+	margin-left:5px!important;
+}
+
+.param-fieldset > label,.param-input{
+	float:left;
+}
+.param-fieldset > label{
+	margin-top:2px;
+}
+
+.paramContent .param-actionset{
+	float:right;
+	padding-right:5px;
+}
+
+
+
+.paramContent .btn-cls-add,.btn-cls-edit,.btn-cls-delete,.btn-cls-search,.btn-cls-reset,.btn-cls-common{
+	float:left;
+	margin-left:5px;
+}
+
+
+.btn-cls-add{
+	background:url(control/btn-cls-add.png) no-repeat left top;
+	height:21px;
+	cursor:pointer;
+	width:65px; 
+}
+.btn-cls-add:hover{
+	background:url(control/btn-cls-add-hover.png) no-repeat left top;
+}
+.btn-cls-add:active{
+	background:url(control/btn-cls-add-active.png) no-repeat left top;
+}
+
+.btn-cls-edit{
+	background:url(control/btn-cls-edit.png) no-repeat left top;
+	height:21px;
+	cursor:pointer;
+	width:65px; 
+}
+.btn-cls-edit:hover{
+	background:url(control/btn-cls-edit-hover.png) no-repeat left top;
+}
+.btn-cls-edit:active{
+	background:url(control/btn-cls-edit-active.png) no-repeat left top;
+}
+
+.btn-cls-delete{
+	background:url(control/btn-cls-delete.png) no-repeat left top;
+	height:21px;
+	cursor:pointer;
+	width:65px; 
+}
+.btn-cls-delete:hover{
+	background:url(control/btn-cls-delete-hover.png) no-repeat left top;
+}
+.btn-cls-delete:active{
+	background:url(control/btn-cls-delete-active.png) no-repeat left top;
+}
+
+.btn-cls-search{
+    background: url(control/new_btn-cls-search.png) no-repeat left top;
+	height:21px;
+	cursor:pointer;
+	width:65px; 
+}
+.btn-cls-search:hover{
+    background: url(control/new_btn-cls-search-hover.png) no-repeat left top;
+}
+.btn-cls-search:active{
+    background: url(control/new_btn-cls-search-active.png) no-repeat left top;
+}
+
+.btn-cls-reset{
+	background:url(control/btn-cls-reset.png) no-repeat left top;
+	height:21px;
+	cursor:pointer;
+	width:65px; 
+}
+.btn-cls-reset:hover{
+	background:url(control/btn-cls-reset-hover.png) no-repeat left top;
+}
+.btn-cls-reset:active{
+	background:url(control/btn-cls-reset-active.png) no-repeat left top;
+}
+.btn-cls-common{
+	background:url(control/btn-cls-common.png) repeat-x left top;
+	border: 1px solid #a6a8a5;
+	border-radius:3px;
+	text-align:center;
+	height:19px;
+	line-height:19px;
+	cursor:pointer;
+	padding: 0px 8px;
+}
+.btn-cls-common:hover{
+	background:url(control/btn-cls-common-hover.png) repeat-x left top;
+}
+.btn-cls-common:active{
+	background:url(control/btn-cls-common-active.png) repeat-x left top;
+}

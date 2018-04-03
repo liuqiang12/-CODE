@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspFrameInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspFrameInfoMap" type="FrameInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="ID" property="id" />
+		<result column="USE_TYPE" property="useType" />
+		<result column="DISTRIBUTION" property="distribution" />
+		<result column="OCCUPANCY" property="occupancy" />
+		<result column="FRAME_NAME" property="frameName" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="FK_HOUSE_INFO_ID" property="fkHouseInfoId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+	</resultMap>
+</mapper>

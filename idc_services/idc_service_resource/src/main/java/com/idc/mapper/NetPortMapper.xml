@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetPortMapper">
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="NetPort">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT where PORTID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="NetPort"
+			parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="NetPort">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="NetPort">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="NetPort"
+			parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="NetPort" fetchSize="256">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录   map -->
+	<select id="queryListByObjectMap" parameterType="NetPort" resultType="Map">
+		select
+		<include refid="netPortAndDevice" />
+        from NET_PORT p LEFT JOIN IDC_DEVICE d ON (d.deviceid = p.deviceid)
+		<where>
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ and p.deviceid = #{deviceid} ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ and p.status = #{status} ]]></if>
+			<if test="portname != null and portname != '' ">
+				<![CDATA[ and upper(p.portname) like '%'||upper(#{portname})||'%' ]]></if>
+		</where>
+        ORDER BY p.portindex
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="NetPort">
+		select
+		<include refid="baseColumn" />
+		from NET_PORT
+		<include refid="wherePageParam" />
+	</select>
+
+	<!-- 分页查询 map-->
+	<select id="queryListPageMap" parameterType="PageBean" resultType="map">
+		select
+		<include refid="netPortAndDevice" />
+        from NET_PORT p LEFT JOIN IDC_DEVICE d ON (d.deviceid = p.deviceid)
+		<include refid="whereLikePageParam" />
+        ORDER BY p.deviceid,p.portindex
+	</select>
+
+	<!--查询设备列表-->
+	<select id="getNetDeviceModel" resultType="map">
+		select
+		d.deviceid as id,
+		d.name as name
+        from IDC_DEVICE d where d.deviceclass = 1 and d.isdelete = 0
+	</select>
+
+	<!--根据机架ID查询此机架上的所有端口-->
+	<select id="getNetPortListByRackId" resultType="java.util.List">
+		select
+		<include refid="netPortAndDevice"/>
+        from NET_PORT p INNER JOIN IDC_DEVICE d ON (d.deviceid = p.deviceid)
+		INNER JOIN IDC_RACK r ON (r.id=d.rack_id)
+        WHERE r.isdelete = 0 and d.isdelete = 0 and r.id in
+		<foreach collection="list" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getNetPortListInfoIdsByRackId" resultType="Long">
+        select p.PORTID as portid from NET_PORT p
+		 INNER JOIN IDC_DEVICE d ON d.deviceid = p.deviceid
+		 INNER JOIN IDC_RACK r ON r.id = d.rack_id
+        WHERE r.id=#{0} and r.isdelete = 0 and d.isdelete = 0
+	</select>
+
+	<select id="getNetportsByRoomId" parameterType="Map" resultType="Map">
+		select
+		<include refid="netPortAndDevice"/>
+		from NET_PORT p
+		inner join idc_device d
+		on (p.deviceid = d.deviceid)
+		inner join idc_rack r
+		on (r.id = d.rack_id)
+		where p.status=40 and r.isdelete = 0 and d.isdelete = 0
+		<if test="roomId!=null and roomId != '' "><![CDATA[ and r.roomid=#{roomId} ]]></if>
+        <if test="name != null and name != ''"><![CDATA[ and upper(p.PORTNAME) like '%'||upper(#{name})||'%' ]]></if>
+        ORDER BY p.portindex
+    </select>
+
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="NetPort">
+		update NET_PORT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="singleUpdateInfoById">
+		update NET_PORT SET PORTACTIVE = #{status} WHERE PORTID = #{resourceId}
+	</update>
+
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_PORT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 修改端口状态 map中key:id-端口ID，status-状态，customerId-客户ID，customerName-客户名称，ticketId-工单号 -->
+	<update id="updatePortStatusByPortIds" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close="end;">
+			UPDATE NET_PORT t
+			<set>
+				<if test="item.status!=null and item.status!='' ">
+					t.status = ${item.status},
+				</if>
+				<choose>
+					<when test="item.ticketId!=null and item.ticketId!='' ">
+						t.TICKET_ID = ${item.ticketId},
+					</when>
+					<otherwise>
+						t.TICKET_ID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerId!=null and item.customerId!='' ">
+						t.CUSTOMERID = ${item.customerId},
+					</when>
+					<otherwise>
+						t.CUSTOMERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerName!=null and item.customerName!='' ">
+						t.CUSTOMERNAME = '${item.customerName}',
+					</when>
+					<otherwise>
+						t.CUSTOMERNAME = null
+					</otherwise>
+				</choose>
+			</set>
+			<where>
+				t.PORTID = ${item.id}
+				<if test="item.releaseReourceByTicketId!=null and item.releaseReourceByTicketId!='' ">
+					and t.TICKET_ID = ${item.releaseReourceByTicketId}
+				</if>
+				;
+			</where>
+		</foreach>
+	</update>
+
+	<!-- 修改端口分配带宽  流程上选择端口后填入分配带宽值   调用接口 -->
+	<update id="updateNetPortAssignations" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=" end;">
+			UPDATE NET_PORT t set t.assignation = ${item.assignation} where t.portid = ${item.portid};
+		</foreach>
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_PORT
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_PORT where PORTID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="NetPort">
+		delete from NET_PORT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_PORT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_PORT where PORTID in
+		<foreach collection="list" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="NetPort"
+			useGeneratedKeys="true" keyProperty="PORTID">
+		INSERT INTO NET_PORT
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_PORT (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+				 separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+		<![CDATA[
+		  	PORTID as portid,
+			DEVICEID as deviceid,
+			PORTTYPE as porttype,
+			PORTACTIVE as portactive,
+			SIDEDEVICE as sidedevice,
+			NOTE as note,
+			IP as ip,
+			MAC as mac,
+			NETMASK as netmask,
+			PORTNAME as portname,
+			ALIAS as alias,
+			DESCR as descr,
+			BANDWIDTH as bandwidth,
+			ASSIGNATION as assignation,
+			PORTPLTYPE as portpltype,
+			MEDIATYPE as mediatype,
+			ADMINSTATUS as adminstatus,
+			TICKET_ID as ticketId,
+			CUSTOMERID as customerid,
+			CUSTOMERNAME as customername,
+			STATUS as status
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+
+			<if test="portid != null and portid != '' ">  <![CDATA[ and PORTID = #{portid} ]]></if>
+
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ and DEVICEID = #{deviceid} ]]></if>
+
+			<if test="porttype != null and porttype != '' ">  <![CDATA[ and PORTTYPE = #{porttype} ]]></if>
+
+			<if test="portactive != null and portactive != '' ">  <![CDATA[ and PORTACTIVE = #{portactive} ]]></if>
+
+			<if test="sidedevice != null and sidedevice != '' ">  <![CDATA[ and SIDEDEVICE = #{sidedevice} ]]></if>
+
+			<if test="note != null and note != '' ">  <![CDATA[ and NOTE = #{note} ]]></if>
+
+			<if test="ip != null and ip != '' ">  <![CDATA[ and IP = #{ip} ]]></if>
+
+			<if test="mac != null and mac != '' ">  <![CDATA[ and MAC = #{mac} ]]></if>
+
+			<if test="netmask != null and netmask != '' ">  <![CDATA[ and NETMASK = #{netmask} ]]></if>
+
+			<if test="portname != null and portname != '' ">  <![CDATA[ and PORTNAME = #{portname} ]]></if>
+
+			<if test="alias != null and alias != '' ">  <![CDATA[ and ALIAS = #{alias} ]]></if>
+
+			<if test="descr != null and descr != '' ">  <![CDATA[ and DESCR = #{descr} ]]></if>
+
+			<if test="bandwidth != null and bandwidth != '' ">  <![CDATA[ and BANDWIDTH = #{bandwidth} ]]></if>
+
+			<if test="assignation != null and assignation != '' ">  <![CDATA[ and ASSIGNATION = #{assignation} ]]></if>
+
+			<if test="portpltype != null and portpltype != '' ">  <![CDATA[ and PORTPLTYPE = #{portpltype} ]]></if>
+
+			<if test="mediatype != null and mediatype != '' ">  <![CDATA[ and MEDIATYPE = #{mediatype} ]]></if>
+
+			<if test="adminstatus != null and adminstatus != '' ">  <![CDATA[ and ADMINSTATUS = #{adminstatus} ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ and CUSTOMERID = #{customerid} ]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{customername} ]]></if>
+
+			<if test="status != null and status != '' "><![CDATA[ and STATUS = #{status} ]]></if>
+
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+
+			<if test="params.portid != null and params.portid != '' ">  <![CDATA[ and PORTID = #{params.portid} ]]></if>
+
+			<if test="params.deviceid != null and params.deviceid != '' ">  <![CDATA[ and DEVICEID = #{params.deviceid} ]]></if>
+
+			<if test="params.porttype != null and params.porttype != '' ">  <![CDATA[ and PORTTYPE = #{params.porttype} ]]></if>
+
+			<if test="params.portactive != null and params.portactive != '' ">  <![CDATA[ and PORTACTIVE = #{params.portactive} ]]></if>
+
+			<if test="params.sidedevice != null and params.sidedevice != '' ">  <![CDATA[ and SIDEDEVICE = #{params.sidedevice} ]]></if>
+
+			<if test="params.note != null and params.note != '' ">  <![CDATA[ and NOTE = #{params.note} ]]></if>
+
+			<if test="params.ip != null and params.ip != '' ">  <![CDATA[ and IP = #{params.ip} ]]></if>
+
+			<if test="params.mac != null and params.mac != '' ">  <![CDATA[ and MAC = #{params.mac} ]]></if>
+
+			<if test="params.netmask != null and params.netmask != '' ">  <![CDATA[ and NETMASK = #{params.netmask} ]]></if>
+
+			<if test="params.portname != null and params.portname != '' ">  <![CDATA[ and PORTNAME = #{params.portname} ]]></if>
+
+			<if test="params.alias != null and params.alias != '' ">  <![CDATA[ and ALIAS = #{params.alias} ]]></if>
+
+			<if test="params.descr != null and params.descr != '' ">  <![CDATA[ and DESCR = #{params.descr} ]]></if>
+
+			<if test="params.bandwidth != null and params.bandwidth != '' ">  <![CDATA[ and BANDWIDTH = #{params.bandwidth} ]]></if>
+
+			<if test="params.assignation != null and params.assignation != '' ">  <![CDATA[ and ASSIGNATION = #{params.assignation} ]]></if>
+
+			<if test="params.portpltype != null and params.portpltype != '' ">  <![CDATA[ and PORTPLTYPE = #{params.portpltype} ]]></if>
+
+			<if test="params.mediatype != null and params.mediatype != '' ">  <![CDATA[ and MEDIATYPE = #{params.mediatype} ]]></if>
+
+			<if test="params.adminstatus != null and params.adminstatus != '' ">  <![CDATA[ and ADMINSTATUS = #{params.adminstatus} ]]></if>
+
+			<if test="params.ticketId != null and params.ticketId != '' ">  <![CDATA[ and TICKET_ID = #{params.ticketId} ]]></if>
+
+			<if test="params.customerid != null and params.customerid != '' ">
+				<![CDATA[ and CUSTOMERID = #{params.customerid} ]]></if>
+
+			<if test="params.customername != null and params.customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{params.customername} ]]></if>
+
+			<if test="params.status != null and params.status != '' "><![CDATA[ and STATUS = #{params.status} ]]></if>
+
+		</where>
+	</sql>
+
+	<sql id="whereLikePageParam">
+		<where>
+			<if test="params.deviceid != null and params.deviceid != '' ">  <![CDATA[ and p.deviceid = #{params.deviceid} ]]></if>
+			<if test="params.status != null and params.status != '' "><![CDATA[ and p.status = #{params.status} ]]></if>
+			<if test="params.portname != null and params.portname != '' ">
+				<![CDATA[ and upper(p.portname) like '%'||upper(#{params.portname})||'%' ]]></if>
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+
+			<if test="portid != null and portid != '' ">  <![CDATA[  PORTID = #{portid } ,]]></if>
+
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[  DEVICEID = #{deviceid } ,]]></if>
+
+			<if test="porttype != null and porttype != '' ">  <![CDATA[  PORTTYPE = #{porttype } ,]]></if>
+
+			<if test="portactive != null and portactive != '' ">  <![CDATA[  PORTACTIVE = #{portactive } ,]]></if>
+
+			<if test="sidedevice != null and sidedevice != '' ">  <![CDATA[  SIDEDEVICE = #{sidedevice } ,]]></if>
+
+			<if test="note != null and note != '' ">  <![CDATA[  NOTE = #{note } ,]]></if>
+
+			<if test="ip != null and ip != '' ">  <![CDATA[  IP = #{ip } ,]]></if>
+
+			<if test="mac != null and mac != '' ">  <![CDATA[  MAC = #{mac } ,]]></if>
+
+			<if test="netmask != null and netmask != '' ">  <![CDATA[  NETMASK = #{netmask } ,]]></if>
+
+			<if test="portname != null and portname != '' ">  <![CDATA[  PORTNAME = #{portname } ,]]></if>
+
+			<if test="alias != null and alias != '' ">  <![CDATA[  ALIAS = #{alias } ,]]></if>
+
+			<if test="descr != null and descr != '' ">  <![CDATA[  DESCR = #{descr } ,]]></if>
+
+			<if test="bandwidth != null and bandwidth != '' ">  <![CDATA[  BANDWIDTH = #{bandwidth } ,]]></if>
+
+			<if test="assignation != null and assignation != '' ">  <![CDATA[  ASSIGNATION = #{assignation } ,]]></if>
+
+			<if test="portpltype != null and portpltype != '' ">  <![CDATA[  PORTPLTYPE = #{portpltype } ,]]></if>
+
+			<if test="mediatype != null and mediatype != '' ">  <![CDATA[  MEDIATYPE = #{mediatype } ,]]></if>
+
+			<if test="adminstatus != null and adminstatus != '' ">  <![CDATA[  ADMINSTATUS = #{adminstatus } ,]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[  TICKET_ID = #{ticketId } ,]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[  CUSTOMERID = #{customerid } ,]]></if>
+
+			<if test="customername != null and customername != '' "><![CDATA[  CUSTOMERNAME = #{customername } ,]]></if>
+
+			<if test="status != null and status != '' "><![CDATA[  STATUS = #{status } ,]]></if>
+
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="portid != null and portid != '' ">  <![CDATA[ PORTID , ]]></if>
+
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ DEVICEID , ]]></if>
+
+			<if test="porttype != null and porttype != '' ">  <![CDATA[ PORTTYPE , ]]></if>
+
+			<if test="portactive != null and portactive != '' ">  <![CDATA[ PORTACTIVE , ]]></if>
+
+			<if test="sidedevice != null and sidedevice != '' ">  <![CDATA[ SIDEDEVICE , ]]></if>
+
+			<if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+
+			<if test="ip != null and ip != '' ">  <![CDATA[ IP , ]]></if>
+
+			<if test="mac != null and mac != '' ">  <![CDATA[ MAC , ]]></if>
+
+			<if test="netmask != null and netmask != '' ">  <![CDATA[ NETMASK , ]]></if>
+
+			<if test="portname != null and portname != '' ">  <![CDATA[ PORTNAME , ]]></if>
+
+			<if test="alias != null and alias != '' ">  <![CDATA[ ALIAS , ]]></if>
+
+			<if test="descr != null and descr != '' ">  <![CDATA[ DESCR , ]]></if>
+
+			<if test="bandwidth != null and bandwidth != '' ">  <![CDATA[ BANDWIDTH , ]]></if>
+
+			<if test="assignation != null and assignation != '' ">  <![CDATA[ ASSIGNATION , ]]></if>
+
+			<if test="portpltype != null and portpltype != '' ">  <![CDATA[ PORTPLTYPE , ]]></if>
+
+			<if test="mediatype != null and mediatype != '' ">  <![CDATA[ MEDIATYPE , ]]></if>
+
+			<if test="adminstatus != null and adminstatus != '' ">  <![CDATA[ ADMINSTATUS , ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ TICKET_ID , ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID , ]]></if>
+
+			<if test="customername != null and customername != '' ">  <![CDATA[ CUSTOMERNAME , ]]></if>
+
+			<if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="portid != null and portid != '' ">  <![CDATA[ #{portid } , ]]></if>
+
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ #{deviceid } , ]]></if>
+
+			<if test="porttype != null and porttype != '' ">  <![CDATA[ #{porttype } , ]]></if>
+
+			<if test="portactive != null and portactive != '' ">  <![CDATA[ #{portactive } , ]]></if>
+
+			<if test="sidedevice != null and sidedevice != '' ">  <![CDATA[ #{sidedevice } , ]]></if>
+
+			<if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+
+			<if test="ip != null and ip != '' ">  <![CDATA[ #{ip } , ]]></if>
+
+			<if test="mac != null and mac != '' ">  <![CDATA[ #{mac } , ]]></if>
+
+			<if test="netmask != null and netmask != '' ">  <![CDATA[ #{netmask } , ]]></if>
+
+			<if test="portname != null and portname != '' ">  <![CDATA[ #{portname } , ]]></if>
+
+			<if test="alias != null and alias != '' ">  <![CDATA[ #{alias } , ]]></if>
+
+			<if test="descr != null and descr != '' ">  <![CDATA[ #{descr } , ]]></if>
+
+			<if test="bandwidth != null and bandwidth != '' ">  <![CDATA[ #{bandwidth } , ]]></if>
+
+			<if test="assignation != null and assignation != '' ">  <![CDATA[ #{assignation } , ]]></if>
+
+			<if test="portpltype != null and portpltype != '' ">  <![CDATA[ #{portpltype } , ]]></if>
+
+			<if test="mediatype != null and mediatype != '' ">  <![CDATA[ #{mediatype } , ]]></if>
+
+			<if test="adminstatus != null and adminstatus != '' ">  <![CDATA[ #{adminstatus } , ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ #{ticketId } , ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ #{customerid } , ]]></if>
+
+			<if test="customername != null and customername != '' ">  <![CDATA[ #{customername } , ]]></if>
+
+			<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		PORTID,DEVICEID,PORTTYPE,PORTACTIVE,SIDEDEVICE,NOTE,IP,MAC,NETMASK,PORTNAME,ALIAS,
+		DESCR,BANDWIDTH,ASSIGNATION,PORTPLTYPE,MEDIATYPE,ADMINSTATUS,TICKET_ID,CUSTOMERID,CUSTOMERNAME,STATUS
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.portid},#{item.deviceid},#{item.porttype},#{item.portactive},#{item.sidedevice},#{item.note},#{item.ip},#{item.mac},#{item.netmask},#{item.portname},
+		#{item.alias},#{item.descr},#{item.bandwidth},#{item.assignation},#{item.portpltype},#{item.mediatype},#{item.adminstatus},#{item.ticketId},#{customerid},#{customername},#{status}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+	<sql id="netPortAndDevice">
+		<![CDATA[
+		  	p.PORTID as portid,
+			p.DEVICEID as deviceid,
+			p.PORTTYPE as porttype,
+			p.PORTACTIVE as portactive,
+			p.SIDEDEVICE as sidedevice,
+			p.NOTE as note,
+			p.IP as ip,
+			p.MAC as mac,
+			p.NETMASK as netmask,
+			p.PORTNAME as portname,
+			p.ALIAS as alias,
+			p.DESCR as descr,
+			p.BANDWIDTH as bandwidth,
+			p.ASSIGNATION as assignation,
+			p.PORTPLTYPE as portpltype,
+			p.MEDIATYPE as mediatype,
+			p.ADMINSTATUS as adminstatus,
+			p.TICKET_ID as ticketId,
+			p.CUSTOMERID as customerid,
+			p.CUSTOMERNAME as customername,
+			p.STATUS as status,
+			d.name as dname
+	  ]]>
+	</sql>
+
+	<!-- 统计核心接口总数及使用率 -->
+	<select id="getNetPortNum" parameterType="java.lang.Long" resultType="Map">
+		select (case when hportNum=0 then 0 else
+             	round((husedPortNum/hportNum)*100,2) end ) as hportusge,
+			   husedPortNum,hportNum,
+			  (case when jportNum=0 then 0 else
+			  round((jusedPortNum/jportNum)*100,2) end) as jportusge,
+			  jusedPortNum,jportNum
+	  from (select (select count(1)
+		from NET_PORT p
+		where p.status in(50,60)
+		and exists
+		(select 1
+		from idc_device d
+			where d.deviceclass = 1 and d.isdelete = 0
+		and d.deviceid = p.deviceid
+		and exists (select 1
+		from net_device n
+		where n.networklayer = '核心'
+		and n.deviceid = d.deviceid)
+		and exists
+		(select 1
+		from idc_rack r
+			where r.id = d.rack_id and r.isdelete = 0
+		and exists
+		(select 1
+		from zb_machineroom m
+			where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+		and exists
+		(select 1
+		from idc_building b
+			where b.id = m.buildingid and b.isdelete = 0
+		and b.locationid = #{0}))))) husedPortNum,
+		(select count(1)
+		from NET_PORT p
+		where exists
+		(select 1
+		from idc_device d
+			where d.deviceclass = 1 and d.isdelete = 0
+		and d.deviceid = p.deviceid
+		and exists (select 1
+		from net_device n
+		where n.networklayer = '核心'
+		and n.deviceid = d.deviceid)
+		and exists
+		(select 1
+		from idc_rack r
+			where r.id = d.rack_id and r.isdelete = 0
+		and exists
+		(select 1
+		from zb_machineroom m
+			where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+		and exists
+		(select 1
+		from idc_building b
+			where b.id = m.buildingid and b.isdelete = 0
+		and b.locationid = #{0}))))) hportNum,
+		(select count(1)
+		from NET_PORT p
+		where p.status in(50,60)
+		and exists
+		(select 1
+		from idc_device d
+			where d.deviceclass = 1 and d.isdelete = 0
+		and d.deviceid = p.deviceid
+		and exists (select 1
+		from net_device n
+		where n.networklayer = '接入'
+		and n.deviceid = d.deviceid)
+		and exists
+		(select 1
+		from idc_rack r
+			where r.id = d.rack_id and r.isdelete = 0
+		and exists
+		(select 1
+		from zb_machineroom m
+			where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+		and exists
+		(select 1
+		from idc_building b
+			where b.id = m.buildingid and b.isdelete = 0
+		and b.locationid = #{0}))))) jusedPortNum,
+		(select count(1)
+		from NET_PORT p
+		where exists
+		(select 1
+		from idc_device d
+			where d.deviceclass = 1 and d.isdelete = 0
+		and d.deviceid = p.deviceid
+		and exists (select 1
+		from net_device n
+		where n.networklayer = '接入'
+		and n.deviceid = d.deviceid)
+		and exists
+		(select 1
+		from idc_rack r
+			where r.id = d.rack_id and r.isdelete = 0
+		and exists
+		(select 1
+		from zb_machineroom m
+			where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+		and exists
+		(select 1
+		from idc_building b
+			where b.id = m.buildingid and b.isdelete = 0
+		and b.locationid = #{0}))))) jportNum
+		from dual)
+	</select>
+
+	<!--获取客户所有占用端口-->
+	<select id="queryUseredPortByCustomerId" parameterType="Map" resultType="Map">
+		select *
+		from (select hh.serial_number as serialNumber,
+		<include refid="netPortAndDevice"/>
+		from NET_PORT P
+        INNER JOIN IDC_DEVICE d
+		ON (d.deviceid = p.deviceid)
+		left join idc_his_ticket hh
+		on (hh.ticket_inst_id = p.ticket_id)
+        where p.customerid = #{cusId} and d.isdelete = 0
+        order by p.portindex)
+		<if test="rowNum!=null and rowNum!=''"> <![CDATA[  where  rownum<#{rowNum} ]]> </if>
+	</select>
+	<!--获取客户所有占用端口  page-->
+	<select id="queryUseredPortByCustomerIdPage" parameterType="PageBean" resultType="Map">
+		select hh.serial_number as serialNumber,
+		<include refid="netPortAndDevice"/>
+        from NET_PORT P INNER JOIN IDC_DEVICE d ON (d.deviceid = p.deviceid)
+		left join idc_his_ticket hh on (hh.ticket_inst_id = p.ticket_id)
+        where p.customerid = #{params.cusId} and d.isdelete = 0
+		<if test="params.selectKey!=null and params.selectKey!=''">
+			<![CDATA[ and upper(p.portname) like '%'||upper(#{params.selectKey})||'%']]>
+		</if>
+        order by p.portindex
+	</select>
+
+    <!-- 获取当前节点已经绑定的端口 -->
+	<select id="queryBindedPortList" parameterType="PageBean" resultType="NetPort">
+        select
+        <include refid="baseColumn"/>
+		from NET_PORT P
+        <where>
+			<if test="params.portIds!=null">
+				and p.portid in
+				<foreach collection="params.portIds" index="index" item="item" open="("
+						 separator="," close=")">
+					${item}
+				</foreach>
+			</if>
+            <if test="params.name!=null and params.name!=''">
+                <![CDATA[  and upper(p.portname) like '%'||upper(#{params.name})||'%' ]]> </if>
+        </where>
+        ORDER BY p.portindex
+    </select>
+
+	<!-- 通过设备ID查看端口占用情况 -->
+	<select id="queryPortTotalAndFreePortByDeviceId" resultType="Map">
+		select (select count(1) from net_port p where p.deviceid=#{deviceId}) portCount,
+			(select count(1) from net_port p where p.deviceid=#{deviceId} and p.status=40) freePortNum
+		from dual
+	</select>
+</mapper>

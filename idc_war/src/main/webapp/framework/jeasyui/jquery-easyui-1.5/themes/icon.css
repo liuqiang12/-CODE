@@ -1,0 +1,237 @@
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat center center;
+}
+.icon-add{ 
+	background:url('icons/edit_add.png') no-repeat center center;
+}
+.icon-apply_ic{
+	background:url('icons/apply_ic.png') no-repeat center center;
+}
+.icon-add-ext {
+    background: url('icons/edit_add_ext.png') no-repeat center center;
+}
+.icon-add-my{
+	background:url('icons/edit_add.png') no-repeat center left;
+	padding: 0px 0px 0px 15px;
+	color: darkblue;
+}
+.icon-add-attach{
+	background:url('icons/attach.png') no-repeat center center;
+}
+.icon-del_attach{
+	background:url('icons/del_attach.png') no-repeat center center;
+}
+
+.icon-reload-my{
+	background:url('icons/reload.png') no-repeat center left;
+	padding: 0px 0px 0px 15px;
+	color: darkblue;
+}
+.icon-jw{
+	background:url('icons/jw.png') no-repeat top left;
+}
+.icon-scqd{
+	background:url('icons/scqd.png') no-repeat center left !important;
+}
+.icon-scqd-resource{
+	 background:url('icons/scqd_resource.png') no-repeat center left;
+ }
+
+.icon-scqd-resource:hover{
+	background:url('icons/scqd_resource_hover.png') no-repeat center left;
+}
+.icon-scqd-resource-over-d:hover {
+	color: #d81e06;
+}
+.icon-hsxx{
+	background:url('icons/hsxx.png') no-repeat top left;
+}
+.icon-kycx{
+	background:url('icons/kycx.png') no-repeat top left;
+}
+.icon-dlg{
+	background:url('icons/dlg.png') no-repeat top left;
+}
+.icon-ywbg{
+	background:url('icons/ywbg.png') no-repeat top left;
+}
+.apply_ffcc00{
+	background:url('icons/apply_ffcc00.png') no-repeat top left;
+}
+
+.icon-bgkt{
+	background:url('icons/bgkt.png') no-repeat top left;
+}
+.icon-tj{
+	background:url('icons/tj.png') no-repeat top left;
+}
+.icon-ft{
+	background:url('icons/ft.png') no-repeat top left;
+}
+.icon-xx{
+	background:url('icons/xx.png') no-repeat top left;
+}
+.icon-ls{
+	background:url('icons/ls.png') no-repeat top left;
+}
+.icon-edit{
+	background:url('icons/pencil.png') no-repeat center center;
+}
+.icon-start{
+	background:url('icons/start.png') no-repeat center center;
+}
+.start_ing{
+	background: url(icons/start_ing.png) no-repeat top left;
+}
+.icon-apply{
+	background:url('icons/apply.png') no-repeat center center;
+}
+.icon_item_apply{
+	background: url(icons/item_apply.png) no-repeat top left;
+	padding: 0px 0 0px 24px;
+	color: darkblue;
+}
+.ticket_create{
+	background:url('icons/ticket-create.png') no-repeat center center;
+}
+.icon_list_grid{
+	background:url('icons/list_grid.png') no-repeat center left;
+}
+.icon_chage{
+	background:url('icons/chage.png') no-repeat center left;
+}
+.icon_pause{
+	background:url('icons/pause.png') no-repeat center left;
+}
+.icon_resover{
+	background:url('icons/resover.png') no-repeat center left;
+}
+.icon_halt{
+	background:url('icons/halt.png') no-repeat center left;
+}
+.icon_test{
+	background:url('icons/test.png') no-repeat center left;
+}
+.icon_list_menu{
+	background:url('icons/list_menu.png') no-repeat top left;
+}
+.tiketing{
+	background:url('icons/ticketing.gif') no-repeat center center;
+}
+.icon-end{
+	background:url('icons/end.png') no-repeat top left;
+}
+.icon-starting{
+	background:url('icons/starting.png') no-repeat center center;
+}
+.author_pre_apply{
+	background:url('icons/author_pre_apply.png') no-repeat center center;
+}
+.icon-clear{
+	background:url('icons/clear.png') no-repeat center center;
+}
+.icon-remove{
+	background:url('icons/edit_remove.png') no-repeat center center;
+}
+.icon-save{
+	background:url('icons/filesave.png') no-repeat center center;
+}
+.icon-cut{
+	background:url('icons/cut.png') no-repeat center center;
+}
+.icon-ok{
+	background:url('icons/ok.png') no-repeat center center;
+}
+.icon-no{
+	background:url('icons/no.png') no-repeat center center;
+}
+.icon-cancel{
+	background:url('icons/cancel.png') no-repeat center center;
+}
+.icon-reload{
+	background:url('icons/reload.png') no-repeat center center;
+}
+.icon-search{
+	background:url('icons/search.png') no-repeat center center;
+}
+.icon-print{
+	background:url('icons/print.png') no-repeat center center;
+}
+.icon-help{
+	background:url('icons/help.png') no-repeat center center;
+}
+.icon-undo{
+	background:url('icons/undo.png') no-repeat center center;
+}
+.icon-redo{
+	background:url('icons/redo.png') no-repeat center center;
+}
+.icon-back{
+	background:url('icons/back.png') no-repeat center center;
+}
+.icon-sum{
+	background:url('icons/sum.png') no-repeat center center;
+}
+.icon-tip{
+	background:url('icons/tip.png') no-repeat center center;
+}
+.icon-filter{
+	background:url('icons/filter.png') no-repeat center center;
+}
+.icon-man{
+	background:url('icons/man.png') no-repeat center center;
+}
+.icon-lock{
+	background:url('icons/lock.png') no-repeat center center;
+}
+.icon-more{
+	background:url('icons/more.png') no-repeat center center;
+}
+
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh{
+	background:url('icons/mini_refresh.png') no-repeat center center;
+}
+
+.icon-large-picture{
+	background:url('icons/large_picture.png') no-repeat center center;
+}
+.icon-large-clipart{
+	background:url('icons/large_clipart.png') no-repeat center center;
+}
+.icon-large-shapes{
+	background:url('icons/large_shapes.png') no-repeat center center;
+}
+.icon-large-smartart{
+	background:url('icons/large_smartart.png') no-repeat center center;
+}
+.icon-large-chart{
+	background:url('icons/large_chart.png') no-repeat center center;
+}
+.icon-xls{
+	background:url('icons/xls.gif') no-repeat center center;
+}
+.his_line{
+	background:url('icons/his_line.png') no-repeat center center;
+}.mydefined_reset{
+	 background:url('icons/reset.png') no-repeat center center;
+ }
+.icon-settting{
+	background:url('icons/settting.png') no-repeat center center;
+}
+.icon-look{
+	background:url('icons/look.png') no-repeat center center;
+}
+.icon-design{
+	background:url('icons/design.png') no-repeat center center;
+}
+.legend-cls{
+	padding:0 3px 0 22px;
+	cursor: pointer;
+}

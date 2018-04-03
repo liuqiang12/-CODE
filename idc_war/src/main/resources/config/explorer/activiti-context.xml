@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+					    http://www.springframework.org/schema/tx
+					    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+
+
+					    http://www.springframework.org/schema/aop
+					     http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+    <!-- 扫描activiti在线编辑器的跳转@RestController -->
+    <!--加入Spring Activiti-Modeler的运行配置 org.activiti.rest.service -->
+    <context:component-scan base-package="org.activiti.conf,com.bpm,org.activiti.process,org.activiti.rest.service,org.activiti.explorer.servlet,org.activiti.explorer.conf,com.bpm">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 单例json对象 -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager_activiti" order="2"/>
+    <!-- spring负责创建流程引擎的配置文件 -->
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource_activiti" />
+        <!-- 配置事务管理器，统一事务 -->
+        <property name="transactionManager" ref="transactionManager_activiti" />
+        <!-- 设置建表策略，如果没有表，自动创建表 -->
+        <property name="databaseSchemaUpdate" value="true" />
+        <!--<property name="databaseSchema" value="ACT"/>-->
+        <!-- 是否启动jobExecutor -->
+        <property name="jobExecutorActivate" value="false" />
+        <property name="processDefinitionCacheLimit" value="10"/>
+        <property name="enableDatabaseEventLogging" value="false" />
+        <!-- 历史级别 -->
+        <!--<property name="history" value="full" />-->
+
+        <property name="databaseType" value="oracle" />
+        <!-- 生成流程图的字体 -->
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
+        <!--不创建identity表 -->
+        <property name="dbIdentityUsed" value="false"/>
+        <!-- 自动部署
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:/diagrams/*</value>
+            </list>
+        </property>-->
+        <!--自定义用户和组
+        <property name="customSessionFactories">
+            <list>
+                <bean class="org.activiti.process.factory.CustomUserEntityServiceFactory"></bean>
+                <bean class="org.activiti.process.factory.CustomGroupEntityServiceFactory"></bean>
+            </list>
+        </property>-->
+    </bean>
+
+    <!-- 创建流程引擎对象 -->
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+    <!-- 创建activiti提供的各种服务 -->
+    <!-- 工作流仓储服务 -->
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+    <!-- 工作流运行服务 -->
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+    <!-- 工作流任务服务-->
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+    <!-- 工作流历史数据服务-->
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+    <!-- 工作流管理服务-->
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+    <!-- 工作流唯一服务 -->
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+
+    <bean id="activitiLoginHandler" class="org.activiti.explorer.ui.login.DefaultLoginHandler">
+        <property name="identityService" ref="identityService" />
+    </bean>
+    <bean id="dataSource_activiti" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url.salve}"></property>
+        <property name="username" value="${jdbc.username.salve}"></property>
+        <property name="password" value="${jdbc.password.salve}"></property>
+    </bean>
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager_activiti"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="dataSource_activiti" />
+    </bean>
+    <!--  集成REST服务需要的bean -->
+    <bean id="restResponseFactory" class="org.activiti.rest.service.api.RestResponseFactory" />
+    <bean id="contentTypeResolver" class="org.activiti.rest.common.application.DefaultContentTypeResolver" />
+
+</beans>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.JbpmTaskAuthorizeMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultJbpmTaskAuthorizeMap" type="JbpmTaskAuthorize">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="USER_TASK_ID" property="userTaskId" />
+				
+		<result column="TARGET_ID" property="targetId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="JbpmTaskAuthorize">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="JbpmTaskAuthorize"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="JbpmTaskAuthorize">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="JbpmTaskAuthorize">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="JbpmTaskAuthorize"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="JbpmTaskAuthorize">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="JbpmTaskAuthorize">
+		select
+		<include refid="baseColumn" />
+		from JBPM_TASK_AUTHORIZE
+		<include refid="wherePageParam" />
+	</select>
+
+	<select id="queryActModelWithRoleKeyRoleId" parameterType="JbpmResourceModelVo" resultType="JbpmResourceModelVo">
+		select tmp.id ,tmp.name ,tmp.parentId from
+		(
+		select 'model_'||t1.id as id, t1.name, null as parentId from jbpm_resource_model t1
+		union
+		select 'shape_'||t2.id  as id, t2.task_name ,'model_'||t2.resource_id as parentId from jbpm_resource_childshape t2
+		)tmp left join jbpm_task_authorize tmp1 on tmp.id = 'shape_'||tmp1.user_task_id
+		<where>
+			<if test="targetId != null and targetId != '' ">  <![CDATA[ and tmp1.target_id = #{targetId} ]]></if>
+		</where>
+	</select>
+
+
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="JbpmTaskAuthorize">
+		update JBPM_TASK_AUTHORIZE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update JBPM_TASK_AUTHORIZE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from JBPM_TASK_AUTHORIZE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from JBPM_TASK_AUTHORIZE where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="JbpmTaskAuthorize">
+		delete from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from JBPM_TASK_AUTHORIZE
+		<include refid="whereParam" />
+	</delete>
+	<delete id="deleteByResource" >
+		delete from JBPM_TASK_AUTHORIZE
+		where RESOURCE_ID = #{0}
+	</delete>
+
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from JBPM_TASK_AUTHORIZE where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="JbpmTaskAuthorize"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO JBPM_TASK_AUTHORIZE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<insert id="createJbpmTaskAuthorize" parameterType="JbpmTaskAuthorize" >
+		INSERT INTO JBPM_TASK_AUTHORIZE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO JBPM_TASK_AUTHORIZE (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			USER_TASK_ID as userTaskId,
+			TARGET_ID as targetId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="userTaskId != null and userTaskId != '' ">  <![CDATA[ and USER_TASK_ID = #{userTaskId} ]]></if>
+						
+			<if test="targetId != null and targetId != '' ">  <![CDATA[ and TARGET_ID = #{targetId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.userTaskId != null and params.userTaskId != '' ">  <![CDATA[ and USER_TASK_ID = #{params.userTaskId} ]]></if>
+						
+			<if test="params.targetId != null and params.targetId != '' ">  <![CDATA[ and TARGET_ID = #{params.targetId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="userTaskId != null and userTaskId != '' ">  <![CDATA[  USER_TASK_ID = #{userTaskId } ,]]></if>
+						
+			<if test="targetId != null and targetId != '' ">  <![CDATA[  TARGET_ID = #{targetId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+			<if test="userTaskId != null and userTaskId != '' ">  <![CDATA[ USER_TASK_ID , ]]></if>
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[ RESOURCE_ID , ]]></if>
+			<if test="targetId != null and targetId != '' ">  <![CDATA[ TARGET_ID , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+			<if test="userTaskId != null and userTaskId != '' ">  <![CDATA[ #{userTaskId } , ]]></if>
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[ #{resourceId} , ]]></if>
+			<if test="targetId != null and targetId != '' ">  <![CDATA[ #{targetId } , ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,USER_TASK_ID,TARGET_ID
+	</sql>
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.userTaskId},#{item.targetId}
+	</sql>
+</mapper>

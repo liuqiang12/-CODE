@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspIpSegMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspIpSegMap" type="LocalIspIpSeg">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="IP_ID" property="ipId" />
+				
+		<result column="START_IP" property="startIp" />
+				
+		<result column="END_IP" property="endIp" />
+				
+		<result column="TYPE_" property="type" />
+				
+		<result column="USER_" property="user" />
+				
+		<result column="ID_TYPE" property="idType" />
+				
+		<result column="ID_NUMBER" property="idNumber" />
+				
+		<result column="SOURCE_UNIT" property="sourceUnit" />
+				
+		<result column="ALLOCATION_UNIT" property="allocationUnit" />
+				
+		<result column="USE_TIME" property="useTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspIpSeg">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspIpSeg"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspIpSeg">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspIpSeg">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspIpSeg"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspIpSeg">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspIpSeg">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_SEG
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspIpSeg">
+		update LOCAL_ISP_IP_SEG
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_IP_SEG
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_IP_SEG
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_IP_SEG where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspIpSeg">
+		delete from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_IP_SEG
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_IP_SEG where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspIpSeg"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO LOCAL_ISP_IP_SEG
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_IP_SEG (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,			IP_ID as ipId,			START_IP as startIp,			END_IP as endIp,			TYPE_ as type,			USER_ as user,			ID_TYPE as idType,			ID_NUMBER as idNumber,			SOURCE_UNIT as sourceUnit,			ALLOCATION_UNIT as allocationUnit,			USE_TIME as useTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="ipId != null and ipId != '' ">  <![CDATA[ and IP_ID = #{ipId} ]]></if>
+						
+			<if test="startIp != null and startIp != '' ">  <![CDATA[ and START_IP = #{startIp} ]]></if>
+						
+			<if test="endIp != null and endIp != '' ">  <![CDATA[ and END_IP = #{endIp} ]]></if>
+						
+			<if test="type != null and type != '' ">  <![CDATA[ and TYPE_ = #{type} ]]></if>
+						
+			<if test="user != null and user != '' ">  <![CDATA[ and USER_ = #{user} ]]></if>
+						
+			<if test="idType != null and idType != '' ">  <![CDATA[ and ID_TYPE = #{idType} ]]></if>
+						
+			<if test="idNumber != null and idNumber != '' ">  <![CDATA[ and ID_NUMBER = #{idNumber} ]]></if>
+						
+			<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[ and SOURCE_UNIT = #{sourceUnit} ]]></if>
+						
+			<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[ and ALLOCATION_UNIT = #{allocationUnit} ]]></if>
+						
+			<if test="useTime != null and useTime != '' ">  <![CDATA[ and USE_TIME = #{useTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.ipId != null and params.ipId != '' ">  <![CDATA[ and IP_ID = #{params.ipId} ]]></if>
+						
+			<if test="params.startIp != null and params.startIp != '' ">  <![CDATA[ and START_IP = #{params.startIp} ]]></if>
+						
+			<if test="params.endIp != null and params.endIp != '' ">  <![CDATA[ and END_IP = #{params.endIp} ]]></if>
+						
+			<if test="params.type != null and params.type != '' ">  <![CDATA[ and TYPE_ = #{params.type} ]]></if>
+						
+			<if test="params.user != null and params.user != '' ">  <![CDATA[ and USER_ = #{params.user} ]]></if>
+						
+			<if test="params.idType != null and params.idType != '' ">  <![CDATA[ and ID_TYPE = #{params.idType} ]]></if>
+						
+			<if test="params.idNumber != null and params.idNumber != '' ">  <![CDATA[ and ID_NUMBER = #{params.idNumber} ]]></if>
+						
+			<if test="params.sourceUnit != null and params.sourceUnit != '' ">  <![CDATA[ and SOURCE_UNIT = #{params.sourceUnit} ]]></if>
+						
+			<if test="params.allocationUnit != null and params.allocationUnit != '' ">  <![CDATA[ and ALLOCATION_UNIT = #{params.allocationUnit} ]]></if>
+						
+			<if test="params.useTime != null and params.useTime != '' ">  <![CDATA[ and USE_TIME = #{params.useTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="ipId != null and ipId != '' ">  <![CDATA[  IP_ID = #{ipId } ,]]></if>
+						
+			<if test="startIp != null and startIp != '' ">  <![CDATA[  START_IP = #{startIp } ,]]></if>
+						
+			<if test="endIp != null and endIp != '' ">  <![CDATA[  END_IP = #{endIp } ,]]></if>
+						
+			<if test="type != null and type != '' ">  <![CDATA[  TYPE_ = #{type } ,]]></if>
+						
+			<if test="user != null and user != '' ">  <![CDATA[  USER_ = #{user } ,]]></if>
+						
+			<if test="idType != null and idType != '' ">  <![CDATA[  ID_TYPE = #{idType } ,]]></if>
+						
+			<if test="idNumber != null and idNumber != '' ">  <![CDATA[  ID_NUMBER = #{idNumber } ,]]></if>
+						
+			<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[  SOURCE_UNIT = #{sourceUnit } ,]]></if>
+						
+			<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[  ALLOCATION_UNIT = #{allocationUnit } ,]]></if>
+						
+			<if test="useTime != null and useTime != '' ">  <![CDATA[  USE_TIME = #{useTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="ipId != null and ipId != '' ">  <![CDATA[ IP_ID , ]]></if>
+				
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ START_IP , ]]></if>
+				
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ END_IP , ]]></if>
+				
+		<if test="type != null and type != '' ">  <![CDATA[ TYPE_ , ]]></if>
+				
+		<if test="user != null and user != '' ">  <![CDATA[ USER_ , ]]></if>
+				
+		<if test="idType != null and idType != '' ">  <![CDATA[ ID_TYPE , ]]></if>
+				
+		<if test="idNumber != null and idNumber != '' ">  <![CDATA[ ID_NUMBER , ]]></if>
+				
+		<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[ SOURCE_UNIT , ]]></if>
+				
+		<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[ ALLOCATION_UNIT , ]]></if>
+				
+		<if test="useTime != null and useTime != '' ">  <![CDATA[ USE_TIME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="ipId != null and ipId != '' ">  <![CDATA[ #{ipId } , ]]></if>
+				
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ #{startIp } , ]]></if>
+				
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ #{endIp } , ]]></if>
+				
+		<if test="type != null and type != '' ">  <![CDATA[ #{type } , ]]></if>
+				
+		<if test="user != null and user != '' ">  <![CDATA[ #{user } , ]]></if>
+				
+		<if test="idType != null and idType != '' ">  <![CDATA[ #{idType } , ]]></if>
+				
+		<if test="idNumber != null and idNumber != '' ">  <![CDATA[ #{idNumber } , ]]></if>
+				
+		<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[ #{sourceUnit } , ]]></if>
+				
+		<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[ #{allocationUnit } , ]]></if>
+				
+		<if test="useTime != null and useTime != '' ">  <![CDATA[ #{useTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,IP_ID,START_IP,END_IP,TYPE_,USER_,ID_TYPE,ID_NUMBER,SOURCE_UNIT,ALLOCATION_UNIT,USE_TIME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.ipId},#{item.startIp},#{item.endIp},#{item.type},#{item.user},#{item.idType},#{item.idNumber},#{item.sourceUnit},#{item.allocationUnit},#{item.useTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

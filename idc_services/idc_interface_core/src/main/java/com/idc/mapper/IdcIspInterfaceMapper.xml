@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspInterfaceMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspInterfaceMap" type="InterfaceInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="IDC_ID" property="idcId" />
+		<result column="IDC_NAME" property="idcName" />
+		<result column="IDC_ADD" property="idcAdd" />
+		<result column="IDC_ZIP" property="idcZip" />
+		<result column="CORP" property="corp" />
+		<result column="BASIC_INFO_ID" property="basicInfoId" />
+		<result column="FK_COFFICER_INFO_ID" property="fkCofficerInfoId" />
+		<result column="FK_EMERGENCY_CONTACT" property="fkEmergencyContact" />
+		<result column="HOUSE_COUNT" property="houseCount" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<!-- 获取 网络信息安全责任人信息 -->
+		<association property="idcOfficer" javaType="IdcOfficer"  column="{fkCofficerInfoId=FK_COFFICER_INFO_ID}" select="getIdcOfficer">
+		</association>
+		<!-- 单位应急联系人信息与联系方式 -->
+		<association property="emergencyContact" javaType="IdcOfficer" column="{fkCofficerInfoId=FK_EMERGENCY_CONTACT}" select="getEmergencyContact">
+		</association>
+		<!-- houseInfos：明天继续，获取数据中心的所有信息 -->
+		<!--<collection property="houseInfos" javaType="java.util.ArrayList"
+					select="selectHouseInfoByFkNewInfoId" column="{fkNewInfoId=aid}">
+		</collection>-->
+		<!-- userInfos -->
+		<!--<collection property="userInfos" javaType="java.util.ArrayList"
+					select="selectUserInfoByFkNewInfoId" column="{fkNewInfoId=aid}">
+		</collection>-->
+	</resultMap>
+	<!-- 同时获取相应的updateData属性 -->
+	<resultMap id="resultIdcIspUpdateInterfaceMap" type="InterfaceInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="IDC_ID" property="idcId" />
+		<result column="IDC_NAME" property="idcName" />
+		<result column="IDC_ADD" property="idcAdd" />
+		<result column="IDC_ZIP" property="idcZip" />
+		<result column="CORP" property="corp" />
+		<result column="BASIC_INFO_ID" property="basicInfoId" />
+		<result column="FK_COFFICER_INFO_ID" property="fkCofficerInfoId" />
+		<result column="FK_EMERGENCY_CONTACT" property="fkEmergencyContact" />
+		<result column="HOUSE_COUNT" property="houseCount" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<!-- 获取 网络信息安全责任人信息 -->
+		<association property="idcOfficer" javaType="IdcOfficer"  column="{fkCofficerInfoId=FK_COFFICER_INFO_ID}" select="getIdcOfficer">
+		</association>
+		<!-- 单位应急联系人信息与联系方式 -->
+		<association property="emergencyContact" javaType="IdcOfficer" column="{fkCofficerInfoId=FK_EMERGENCY_CONTACT}" select="getEmergencyContact">
+		</association>
+		<association property="updateData" javaType="UpdateData" column="{fkNewInfoId=AID}" select="getUpdateData">
+		</association>
+	</resultMap>
+	<!-- 同时获取相应的updateData属性 -->
+	<resultMap id="resultIdcIspDeleteInterfaceMap" type="InterfaceInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="IDC_ID" property="idcId" />
+		<result column="IDC_NAME" property="idcName" />
+		<result column="IDC_ADD" property="idcAdd" />
+		<result column="IDC_ZIP" property="idcZip" />
+		<result column="CORP" property="corp" />
+		<result column="BASIC_INFO_ID" property="basicInfoId" />
+		<result column="FK_COFFICER_INFO_ID" property="fkCofficerInfoId" />
+		<result column="FK_EMERGENCY_CONTACT" property="fkEmergencyContact" />
+		<result column="HOUSE_COUNT" property="houseCount" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<association property="deleteData" javaType="DeleteData" column="{fkNewInfoId=AID}" select="getDeleteData">
+		</association>
+	</resultMap>
+
+	<resultMap id="resultIdcIspUpdateInfoMap" type="UpdateData">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="FK_NEW_INFO_ID" property="fkNewInfoId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+	</resultMap>
+
+	<resultMap id="resultIdcIspDeleteInfoMap" type="DeleteData">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="FK_NEW_INFO_ID" property="fkNewInfoId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+	</resultMap>
+
+	<select id="getIsHaveChangeNum" resultType="Boolean">
+		<![CDATA[ select
+		count('X') isHaveChange from idc_run_ticket_resource t1
+		where t1.status <> 2 and t1.category = '100' and t1.TICKET_INST_ID = #{0}
+		]]>
+	</select>
+	<insert id="insertTest">
+		  insert into INSERTTEST (aid,ZIPBYTE,AESENCODE)values(sys_guid(),#{zipByte,jdbcType=CLOB},#{aesEncode})
+	</insert>
+	<select id="getIsHaveChangeWithIpNum" resultType="Boolean">
+		<![CDATA[ select
+		count('X') isHaveChange
+		from idc_run_ticket_resource t1
+		where t1.status <> 2
+		and t1.category = '300'
+		and t1.TICKET_INST_ID = #{0}
+		]]>
+	</select>
+
+	<select id="getIdcOfficer" resultMap="com.idc.mapper.IdcIspCofficerInfoMapper.resultIdcIspCofficerInfoMap">
+			select
+				   t1.EMAIL,
+				   t1.TICKET_INST_ID,
+				   t1.AID,
+				   t1.NAME,
+				   t1.ID_TYPE,
+				   t1.ID,
+				   t1.TEL,
+				   t1.MOBILE
+				  from IDC_ISP_COFFICER_INFO t1
+			where t1.AID = #{fkCofficerInfoId}
+	</select>
+
+	<select id="getEmergencyContact" resultMap="com.idc.mapper.IdcIspCofficerInfoMapper.resultIdcIspCofficerInfoMap">
+		select
+		t1.EMAIL,
+		t1.TICKET_INST_ID,
+		t1.AID,
+		t1.NAME,
+		t1.ID_TYPE,
+		t1.ID,
+		t1.TEL,
+		t1.MOBILE
+		from IDC_ISP_COFFICER_INFO t1
+		where t1.AID = #{fkCofficerInfoId}
+	</select>
+	<!-- 获取数据中心的相关数据  通过新增信息的ID -->
+	<select id="selectHouseInfoForAddByFkNewInfoId" resultMap="com.idc.mapper.IdcIspHouseInfoMapper.resultIdcIspHouseInfoMap">
+		select
+			 t1.AID,
+			 t1.HOUSE_ID,
+			 t1.HOUSE_NAME,
+			 t1.HOUSE_TYPE,
+			 t1.HOUSE_PROVINCE,
+			 t1.HOUSE_CITY,
+			 t1.HOUSE_COUNTY,
+			 t1.HOUSE_ADD,
+			 t1.HOUSE_ZIP,
+			 t1.FK_NEW_INFO_ID,
+			 t1.FK_IDC_OFFICER_ID,
+			 t1.TICKET_INST_ID
+		from IDC_ISP_HOUSE_INFO t1
+		where t1.fk_new_info_id = #{fkNewInfoId}
+			  and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<!-- 获取数据中心的相关数据  通过新增信息的ID -->
+	<select id="selectHouseInfoForUpdateByFkNewInfoId" resultMap="com.idc.mapper.IdcIspHouseInfoMapper.resultIdcIspHouseInfoMap">
+		select
+		t1.AID,
+		t1.HOUSE_ID,
+		t1.HOUSE_NAME,
+		t1.HOUSE_TYPE,
+		t1.HOUSE_PROVINCE,
+		t1.HOUSE_CITY,
+		t1.HOUSE_COUNTY,
+		t1.HOUSE_ADD,
+		t1.HOUSE_ZIP,
+		t1.FK_NEW_INFO_ID,
+		t1.FK_IDC_OFFICER_ID,
+		t1.TICKET_INST_ID
+		from IDC_ISP_HOUSE_INFO t1
+		where t1.FK_UPDATEDATA_ID = #{fkNewInfoId}
+		and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+
+	<select id="selectHouseInfoForDeleteByFkNewInfoId" resultMap="com.idc.mapper.IdcIspHouseInfoMapper.resultIdcIspDeleteHouseInfoMap">
+		select
+			t1.AID,
+			t1.HOUSE_ID,
+			t1.GATEWAY_ID,
+			t1.IPSEG_ID
+		from IDC_ISP_HOUSE_INFO t1
+		where t1.FK_DELETEDATA_ID = #{fkNewInfoId}
+		and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<!-- 删除的用户信息 -->
+	<select id="selectUserInfoForDeleteByFkNewInfoId" resultMap="com.idc.mapper.IdcIspUserInfoMapper.resultIdcIspDeleteUserInfoMap">
+		select
+		t1.AID ,
+		t1.ID ,
+		t1.NATURE ,
+		t1.FK_NEW_INFO_ID ,
+		t1.TICKET_INST_ID
+		from IDC_ISP_USER_INFO t1
+		where t1.FK_DELETEDATA_ID = #{fkNewInfoId}
+		and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+
+	<select id="selectUserInfoForUpdateByFkNewInfoId" resultMap="com.idc.mapper.IdcIspUserInfoMapper.resultIdcIspUserInfoMap">
+		select
+		t1.AID ,
+		t1.ID ,/*userid*/
+		t1.NATURE ,
+		t1.FK_NEW_INFO_ID ,
+		t1.TICKET_INST_ID
+		from IDC_ISP_USER_INFO t1
+		where t1.FK_UPDATEDATA_ID = #{fkNewInfoId}
+		and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<select id="selectUserInfoForAddByFkNewInfoId" resultMap="com.idc.mapper.IdcIspUserInfoMapper.resultIdcIspUserInfoMap">
+		select
+			  t1.AID ,
+			  t1.ID ,
+			  t1.NATURE ,
+			  t1.FK_NEW_INFO_ID ,
+			  t1.TICKET_INST_ID
+		from IDC_ISP_USER_INFO t1
+		where t1.fk_new_info_id = #{fkNewInfoId}
+			  and t1.TICKET_INST_ID = #{ticketInstId}
+	</select>
+
+	<select id="getUpdateData" resultMap="resultIdcIspUpdateInfoMap">
+		select
+		t1.AID ,
+		t1.FK_NEW_INFO_ID,
+		t1.TICKET_INST_ID
+		from IDC_ISP_UPDATEDATA t1
+		where t1.fk_new_info_id = #{fkNewInfoId}
+	</select>
+
+
+	<select id="getDeleteData" resultMap="resultIdcIspDeleteInfoMap">
+		select
+		t1.AID ,
+		t1.FK_NEW_INFO_ID,
+		t1.TICKET_INST_ID
+		from IDC_ISP_DELETE_INFO t1
+		where t1.fk_new_info_id = #{fkNewInfoId}
+	</select>
+
+	<select id="getUserverItems" resultType="Long">
+		select
+		t1.ITEM_ID
+		from IDC_ISP_USERVER_ITEM t1
+		where t1.FK_SERVICE_ID = #{fkServiceId}
+			and t1.ITEM_FLAG = #{itemFlag}
+	</select>
+
+
+
+</mapper>

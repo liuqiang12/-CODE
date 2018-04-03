@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcOuterCodeMapper">
+    <!-- 批量保存 -->
+    <resultMap id="idcOuterCodeMap" type="com.idc.model.IdcOuterCode">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <id column="ID" property="idcPdfDayPowerInfoId" jdbcType="VARCHAR"/>
+
+        <result column="OUTER_CODE" property="outerCode" jdbcType="VARCHAR"/>
+
+        <result column="SYS_CODE" property="sysCode" jdbcType="VARCHAR"/>
+
+        <result column="OUTER_CODE_TYPE" property="outerCodeType"/>
+
+    </resultMap>
+
+    <select id="getByOuterCode" resultType="com.idc.model.IdcOuterCode">
+         SELECT
+        ID AS ID,
+        OUTER_CODE AS OUTERCODE,
+        SYS_CODE AS SYSCODE,
+        OUTER_CODE_TYPE AS OUTERCODETYPE,
+        FROM IDC_OUTER_CODE
+        WHERE
+           OUTER_CODE=#{outercode}
+    </select>
+    <select id="getBySysCode" resultType="com.idc.model.IdcOuterCode">
+        SELECT
+        ID AS ID,
+        OUTER_CODE AS OUTERCODE,
+        SYS_CODE AS SYSCODE,
+        OUTER_CODE_TYPE AS OUTERCODETYPE,
+        FROM IDC_OUTER_CODE
+        WHERE
+        SYS_CODE=#{syscode}
+    </select>
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="com.idc.model.IdcOuterCode">
+        SELECT
+        ID AS ID,
+        OUTER_CODE AS OUTERCODE,
+        SYS_CODE AS SYSCODE,
+        OUTER_CODE_TYPE AS OUTERCODETYPE
+        FROM IDC_OUTER_CODE
+        <where>
+            <if test="outercode!=null and outercode!=''">
+                and OUTER_CODE=#{outercode}
+            </if>
+            <if test="syscode!=null and syscode!=''">
+                and SYS_CODE=#{syscode}
+            </if>
+            <if test="outercodetype!=null and outercodetype!=''">
+                and OUTER_CODE_TYPE=#{outercodetype}
+            </if>
+        </where>
+    </select>
+
+</mapper>

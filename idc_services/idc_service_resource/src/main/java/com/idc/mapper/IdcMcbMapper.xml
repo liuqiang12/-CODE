@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcMcbMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcMcbMap" type="IdcMcb">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+
+		<result column="NAME" property="name" />
+				
+		<result column="PWR_PWRSTATUS" property="pwrPwrstatus" />
+				
+		<result column="PWR_MCBNO" property="pwrMcbno" />
+				
+		<result column="PWR_INSTALLEDRACK_ID" property="pwrInstalledrackId" />
+				
+		<result column="SYSDESCR" property="sysdescr" />
+
+		<result column="PWR_SERVICERACK_ID" property="pwrServicerackId" />
+
+		<result column="CUSTOMERID" property="customerid"/>
+
+		<result column="CUSTOMERNAME" property="customername"/>
+
+		<result column="TICKET_ID" property="ticketId"/>
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+        from IDC_MCB where ID= #{0} and isdelete = 0
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcMcb"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+        from IDC_MCB where isdelete = 0
+	</select>
+
+	<!--导出MCB信息-->
+	<select id="getAllMcbInfos" resultType="map">
+		select
+		<include refid="exportExcelSql" />
+        from IDC_MCB where isdelete = 0
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcMcb"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+		<include refid="whereParam1" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+		<include refid="whereParam" />
+		order by to_number(substr(name, 16, instr(name, '-') - 16)),
+		to_number(substr(name,instr(name,'-')+1))
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 map-->
+	<select id="queryListByObjectMap" resultType="map">
+		select
+		<include refid="likeBaseColumn" />
+		from IDC_MCB m
+		<include refid="whereLikePageParam1"/>
+        order by to_number(substr(m.pwr_mcbno,4)) desc
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+		<include refid="wherePageParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPageMap" parameterType="PageBean" resultType="map">
+		select
+		<include refid="likeBaseColumn" />
+		from IDC_MCB m
+		<include refid="whereLikePageParam" />
+        order by to_number(substr(m.pwr_mcbno,4)) desc
+	</select>
+
+	<!-- 分页模糊查询 -->
+	<select id="queryListPageByName" parameterType="PageBean" resultType="IdcMcb">
+		select
+		<include refid="baseColumn" />
+		from IDC_MCB
+        where isdelete = 0 and upper(name) like '%'||upper(#{params.name})||'%'
+        order by to_number(substr(pwr_mcbno,4)) desc
+	</select>
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcMcb">
+		update IDC_MCB
+		<include refid="updateParam" />
+        WHERE ID=#{id} and isdelete = 0
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_MCB
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 通过mcbId  解除客户机架与mcb的绑定关系 -->
+	<update id="unbindServiceRackById">
+		UPDATE IDC_MCB set PWR_SERVICERACK_ID = null,pwr_pwrstatus=20,customerid=null,customername=null,ticket_id=null
+		where id = #{0}
+	</update>
+
+	<!-- 通过mcbIds  绑定客户机架与mcb的绑定关系 -->
+	<update id="bindServiceRackById" parameterType="Map">
+		UPDATE IDC_MCB set PWR_SERVICERACK_ID = #{serviceRackId} where id IN
+		<foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+        delete from IDC_MCB where isdelete = 0
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_MCB where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcMcb">
+		delete from IDC_MCB
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_MCB
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_MCB where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcMcb"
+		useGeneratedKeys="true" keyProperty="DEVICEID">
+		<selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+			select idc_mcb_seq.nextval from dual
+		</selectKey>
+		INSERT INTO IDC_MCB
+		(id,
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=DECIMAL},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_MCB (
+		<include refid="batchInsertColumn" />
+		)
+		select idc_mcb_seq.nextval,mcb.* from (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+			<include refid="batchInsertColumnParam" />
+			from dual
+		</foreach>
+		) mcb
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+		  	NAME as name,
+			PWR_PWRSTATUS as pwrPwrstatus,
+			PWR_MCBNO as pwrMcbno,
+			PWR_INSTALLEDRACK_ID as pwrInstalledrackId,
+			SYSDESCR as sysdescr,
+			PWR_SERVICERACK_ID as pwrServicerackId,
+			CUSTOMERID as customerid,
+			CUSTOMERNAME as customername,
+			TICKET_ID as ticketId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+            isdelete = 0
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+						
+			<if test="pwrPwrstatus != null and pwrPwrstatus != '' ">  <![CDATA[ and PWR_PWRSTATUS = #{pwrPwrstatus} ]]></if>
+						
+			<if test="pwrMcbno != null and pwrMcbno != '' ">  <![CDATA[ and PWR_MCBNO = #{pwrMcbno} ]]></if>
+						
+			<if test="pwrInstalledrackId != null and pwrInstalledrackId != '' ">  <![CDATA[ and PWR_INSTALLEDRACK_ID = #{pwrInstalledrackId} ]]></if>
+						
+			<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ and SYSDESCR = #{sysdescr} ]]></if>
+
+			<if test="pwrServicerackId != null and pwrServicerackId != '' ">  <![CDATA[ and PWR_SERVICERACK_ID = #{pwrServicerackId} ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ and CUSTOMERID = #{customerid} ]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{customername} ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+
+		</where>
+	</sql>
+	<sql id="whereParam1">
+		<where>
+			isdelete = 0
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+			<if test="pwrPwrstatus != null and pwrPwrstatus != '' ">  <![CDATA[ and PWR_PWRSTATUS = #{pwrPwrstatus} ]]></if>
+
+			<if test="pwrMcbno != null and pwrMcbno != '' ">  <![CDATA[ and PWR_MCBNO = #{pwrMcbno} ]]></if>
+
+			<if test="pwrInstalledrackId != null and pwrInstalledrackId != '' ">  <![CDATA[ and PWR_INSTALLEDRACK_ID = #{pwrInstalledrackId} ]]></if>
+
+			<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ and SYSDESCR = #{sysdescr} ]]></if>
+
+			<if test="pwrServicerackId != null and pwrServicerackId != '' ">  <![CDATA[ and PWR_SERVICERACK_ID = #{pwrServicerackId} ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ and CUSTOMERID = #{customerid} ]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{customername} ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+			<if test="ids != null and ids.size>0">
+				and PWR_SERVICERACK_ID in
+				<foreach collection="ids" index="index" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+            isdelete = 0
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+						
+			<if test="params.pwrPwrstatus != null and params.pwrPwrstatus != '' ">  <![CDATA[ and PWR_PWRSTATUS = #{params.pwrPwrstatus} ]]></if>
+						
+			<if test="params.pwrMcbno != null and params.pwrMcbno != '' ">  <![CDATA[ and PWR_MCBNO = #{params.pwrMcbno} ]]></if>
+						
+			<if test="params.pwrInstalledrackId != null and params.pwrInstalledrackId != '' ">  <![CDATA[ and PWR_INSTALLEDRACK_ID = #{params.pwrInstalledrackId} ]]></if>
+						
+			<if test="params.sysdescr != null and params.sysdescr != '' ">  <![CDATA[ and SYSDESCR = #{params.sysdescr} ]]></if>
+
+			<if test="params.pwrServicerackId != null and params.pwrServicerackId != '' ">  <![CDATA[ and PWR_SERVICERACK_ID = #{params.pwrServicerackId} ]]></if>
+
+			<if test="params.customerid != null and params.customerid != '' ">
+				<![CDATA[ and CUSTOMERID = #{params.customerid} ]]></if>
+
+			<if test="params.customername != null and params.customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{params.customername} ]]></if>
+
+			<if test="params.ticketId != null and params.ticketId != '' ">
+				<![CDATA[ and TICKET_ID = #{params.ticketId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<sql id="whereLikePageParam">
+		<where>
+            m.isdelete = 0
+			<if test="params.pwrInstalledrackId != null and params.pwrInstalledrackId != '' ">  <![CDATA[ and m.pwr_installedrack_id = #{params.pwrInstalledrackId,jdbcType=DECIMAL} ]]></if>
+			<if test="params.name != null and params.name != '' ">
+				<![CDATA[ and upper(m.NAME) like '%'||upper(#{params.name})||'%' ]]></if>
+		</where>
+	</sql>
+	<sql id="whereLikePageParam1">
+		<where>
+            m.isdelete = 0
+			<if test="pwrPwrstatus != null or pwrPwrstatus == '0' ">
+				<![CDATA[ and m.pwr_pwrstatus = #{pwrPwrstatus,jdbcType=INTEGER} ]]></if>
+			<if test="pwrInstalledrackId != null or pwrInstalledrackId == '0' ">
+				<![CDATA[ and m.pwr_installedrack_id = #{pwrInstalledrackId,jdbcType=DECIMAL} ]]></if>
+			<if test="name != null and name != '' ">  <![CDATA[ and upper(m.NAME) like '%'||upper(#{name})||'%' ]]></if>
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+						
+			<if test="pwrPwrstatus != null and pwrPwrstatus != '' ">  <![CDATA[  PWR_PWRSTATUS = #{pwrPwrstatus } ,]]></if>
+						
+			<if test="pwrMcbno != null and pwrMcbno != '' ">  <![CDATA[  PWR_MCBNO = #{pwrMcbno } ,]]></if>
+						
+			<if test="pwrInstalledrackId != null and pwrInstalledrackId != '' ">  <![CDATA[  PWR_INSTALLEDRACK_ID = #{pwrInstalledrackId } ,]]></if>
+						
+			<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[  SYSDESCR = #{sysdescr } ,]]></if>
+
+			<if test="pwrServicerackId != null and pwrServicerackId != '' ">  <![CDATA[  PWR_SERVICERACK_ID = #{pwrServicerackId } ,]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[  CUSTOMERID = #{customerid } ,]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[  CUSTOMERNAME = #{customername } ,]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[  TICKET_ID = #{ticketId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<!--<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>-->
+
+		<if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+				
+		<if test="pwrPwrstatus != null and pwrPwrstatus != '' ">  <![CDATA[ PWR_PWRSTATUS , ]]></if>
+				
+		<if test="pwrMcbno != null and pwrMcbno != '' ">  <![CDATA[ PWR_MCBNO , ]]></if>
+				
+		<if test="pwrInstalledrackId != null and pwrInstalledrackId != '' ">  <![CDATA[ PWR_INSTALLEDRACK_ID , ]]></if>
+				
+		<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ SYSDESCR , ]]></if>
+
+		<if test="pwrServicerackId != null and pwrServicerackId != '' ">  <![CDATA[ PWR_SERVICERACK_ID , ]]></if>
+
+            <if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID , ]]></if>
+
+            <if test="customername != null and customername != '' ">  <![CDATA[ CUSTOMERNAME , ]]></if>
+
+            <if test="ticketId != null and ticketId != '' ">  <![CDATA[ TICKET_ID , ]]></if>
+
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+		<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+				
+		<if test="pwrPwrstatus != null and pwrPwrstatus != '' ">  <![CDATA[ #{pwrPwrstatus } , ]]></if>
+				
+		<if test="pwrMcbno != null and pwrMcbno != '' ">  <![CDATA[ #{pwrMcbno } , ]]></if>
+				
+		<if test="pwrInstalledrackId != null and pwrInstalledrackId != '' ">  <![CDATA[ #{pwrInstalledrackId } , ]]></if>
+				
+		<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ #{sysdescr } , ]]></if>
+
+		<if test="pwrServicerackId != null and pwrServicerackId != '' ">  <![CDATA[ #{pwrServicerackId } , ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ #{customerid } , ]]></if>
+
+			<if test="customername != null and customername != '' ">  <![CDATA[ #{customername } , ]]></if>
+
+			<if test="ticketId != null and ticketId != '' ">  <![CDATA[ #{ticketId } , ]]></if>
+
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		ID,NAME,PWR_PWRSTATUS,PWR_MCBNO,PWR_INSTALLEDRACK_ID,SYSDESCR,PWR_SERVICERACK_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.name,jdbcType=VARCHAR},#{item.pwrPwrstatus,jdbcType=INTEGER},#{item.pwrMcbno,jdbcType=VARCHAR},
+		#{item.pwrInstalledrackId,jdbcType=BIGINT},#{item.sysdescr,jdbcType=VARCHAR},#{item.pwrServicerackId,jdbcType=BIGINT}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+	<sql id="likeBaseColumn">
+		<![CDATA[
+		  	m.ID as id,
+		  	m.NAME as name,
+			m.PWR_PWRSTATUS as pwrPwrstatus,
+			m.PWR_MCBNO as pwrMcbno,
+			m.PWR_INSTALLEDRACK_ID as pwrInstalledrackId,
+			m.CUSTOMERID as customerid,
+			m.CUSTOMERNAME as customername,
+			m.TICKET_ID as ticketId,
+			(select r.name from idc_rack r where r.id=m.pwr_installedrack_id and r.isdelete = 0) as installName,
+			m.SYSDESCR as sysdescr,
+			m.PWR_SERVICERACK_ID as pwrServicerackId,
+			(select r.name from idc_rack r where r.id=m.pwr_servicerack_id  and r.isdelete = 0) as serviceName
+	  ]]>
+	</sql>
+	<!-- 导出SQL-->
+	<sql id="exportExcelSql">
+		<![CDATA[
+			ID as id,
+		  	NAME as name,
+			decode(PWR_PWRSTATUS ,'20', '可用','50','预占','55','预释','60','在服','110','不可用') as pwrPwrstatus,
+			PWR_MCBNO as pwrMcbno,
+			(select r.name from idc_rack r where r.id=pwr_installedrack_id  and r.isdelete = 0) as installName,
+			SYSDESCR as sysdescr,
+			(select r.name from idc_rack r where r.id=pwr_servicerack_id  and r.isdelete = 0) as serviceName
+	  ]]>
+	</sql>
+
+	<!--  修改MCB状态并绑定客户架 map中key:id-MCBID，status-状态，customerId-客户ID，customerName-客户名称，ticketId-工单号-->
+	<update id="updateMcbStatusByIds" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=" end;">
+			UPDATE IDC_MCB t
+			<set>
+				<if test="item.status!=null and item.status!='' ">
+					t.PWR_PWRSTATUS = ${item.status},
+				</if>
+				<choose>
+					<when test="item.ticketId!=null and item.ticketId!='' ">
+						t.TICKET_ID = ${item.ticketId},
+					</when>
+					<otherwise>
+						t.TICKET_ID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerId!=null and item.customerId!='' ">
+						t.CUSTOMERID = ${item.customerId},
+					</when>
+					<otherwise>
+						t.CUSTOMERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerName!=null and item.customerName!='' ">
+						t.CUSTOMERNAME = '${item.customerName}',
+					</when>
+					<otherwise>
+						t.CUSTOMERNAME = null
+					</otherwise>
+				</choose>
+			</set>
+			<where>
+				t.ID = ${item.id}
+				<if test="item.releaseReourceByTicketId!=null and item.releaseReourceByTicketId!='' ">
+					and t.TICKET_ID = ${item.releaseReourceByTicketId}
+				</if>
+				;
+			</where>
+
+		</foreach>
+	</update>
+
+	<!---  获取当前PDF架mcb总数及空闲mcb数  -->
+	<select id="queryMcbTotalAndFreeMcbByPdfId" resultType="Map">
+		select
+			(select count(1)
+        from idc_mcb t where t.pwr_installedrack_id=#{0} and t.isdelete = 0)as mcbTotal,
+			(select count(1)
+        from idc_mcb t where t.pwr_pwrstatus=20 and t.pwr_installedrack_id=#{0} and t.isdelete = 0) as freeMcbNum
+		from dual
+	</select>
+</mapper>

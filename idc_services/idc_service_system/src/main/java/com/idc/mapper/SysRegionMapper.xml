@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysRegionMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysRegionMap" type="SysRegion">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="name" property="name" />
+				
+		<result column="code" property="code" />
+				
+		<result column="remark" property="remark" />
+
+		<result column="parentid" property="parentid"/>
+
+		<!--<collection property="children" ofType="SysRegion"  javaType="java.util.ArrayList" select="selectByPid" column="{pid=id}">-->
+        <!--</collection>-->
+        <!--<result column="children" property="children"  />-->
+    </resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysRegion">
+		select
+		<include refid="baseColumn" />
+		from sys_region where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysRegion"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_region
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysRegion">
+		select
+		<include refid="baseColumn" />
+		from sys_region
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysRegion">
+		select
+		<include refid="baseColumn" />
+		from sys_region order by id
+	</select>
+
+	<!-- 根据用户ID查询区域信息 -->
+	<select id="getRegionListByUserId" parameterType="java.lang.Integer" resultType="SysRegion">
+		select t1.* FROM sys_region t1 LEFT join sys_ln_user_region t2 on t1.id= t2.region_id
+		where t2.user_id= #{0}
+	</select>
+
+	<!-- 获取第一级节点 -->
+	<select id="queryFirstNode" resultType="TreeModel">
+		select tmp.id ,tmp.`name` as text, 1 as isparent from sys_region tmp
+		where EXISTS
+		(
+			select t1.descendant from sys_region_tree_closure t1
+			where t1.isRootNode = 1
+			and tmp.id = t1.descendant
+		)
+	</select>
+	
+	<select id="getHomeCityNodes" resultType="TreeModel">
+	<![CDATA[  
+		 SELECT sr1.id,sr1.`name` as text, 1 as isparent, sr1.id as homeCityId FROM sys_region sr1
+			INNER JOIN sys_region_tree_closure sr2 on sr1.id = sr2.descendant 
+		where sr2.ancestor = (select srtc.ancestor from sys_region_tree_closure srtc where srtc.isRootNode =1 and srtc.isParentNode = 1 and srtc.distance=0) and sr2.ancestor <> sr2.descendant and sr2.distance = 1
+	 ]]>
+	</select>
+	<select id="getNextCityNodes" resultType="TreeModel">
+	<![CDATA[  
+		SELECT t1.id,t1.`name` text,t2.isParentNode as isparent,t2.home_city_id as homeCityId FROM sys_region t1
+		    INNER JOIN sys_region_tree_closure t2 on t1.id = t2.descendant
+		    WHERE t2.ancestor = #{0} and t2.distance = 1 
+		order by t1.`name`
+	 ]]>
+	</select>
+	
+	
+	
+	<!-- 获取下一级节点 -->
+	<select id="queryNodes" resultType="TreeModel">
+		SELECT t1.id,t1.`name` text,t2.isParentNode as isparent FROM sys_region t1
+		    INNER JOIN sys_region_tree_closure t2 on t1.id = t2.descendant
+		    WHERE t2.ancestor = #{0} and t2.distance = 1 
+		order by t1.`name`
+	</select>
+    <!--获取跟-->
+    <select id="getRootNodes" resultType="SysRegion">
+    	select * from sys_region tmp
+		where EXISTS
+		(
+			select t1.descendant from sys_region_tree_closure t1
+			where t1.isRootNode = 1
+			and tmp.id = t1.descendant
+		)
+    </select>
+
+    <select id="getNodesByPid" resultType="SysRegion">
+    SELECT * FROM sys_region t1
+		    INNER JOIN sys_region_tree_closure t2 on t1.id = t2.descendant
+		    WHERE t2.ancestor = #{0} and t2.distance = 1
+		order by t1.`name`
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysRegion"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_region
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysRegion">
+		select
+		<include refid="baseColumn" />
+		from sys_region
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysRegion">
+		select
+        a.id as id,
+        a.name as name,
+        a.code as code,
+		a.remark as remark,
+		a.parentid as parentid
+		from sys_region as a
+        <if test="params.pid != null and params.pid != '' ">
+            LEFT JOIN sys_region_tree_closure as b  on a.id = b.descendant
+        </if>
+        <where>
+            <!--<if test="params.ids != null and params.ids.size()>0">-->
+                <!--a.id in #{params.ids.size()}-->
+                <!--<foreach collection="params.ids" item="v" open="(" close=")" separator=",">-->
+                    <!--#{v}-->
+                <!--</foreach>-->
+            <!--</if>-->
+
+            <if test="params.pid != null and params.pid != '' ">  <![CDATA[ and b.ancestor = #{params.pid} and a.id!= #{params.pid} ]]></if>
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and a.id = #{params.id} ]]></if>
+
+            <if test="params.name != null and params.name != '' ">  <![CDATA[ and a.name = #{params.name} ]]></if>
+
+            <if test="params.code != null and params.code != '' ">  <![CDATA[ and a.code = #{params.code} ]]></if>
+
+            <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and a.remark = #{params.remark} ]]></if>
+
+			<if test="params.parentid != null and params.parentid != '' ">
+				<![CDATA[ and a.parentid = #{params.parentid} ]]></if>
+        </where>
+	</select>
+    <!--<select id="queryListPage" parameterType="PageBean" resultType="SysRegion">-->
+        <!--select-->
+        <!--<include refid="baseColumn" />-->
+        <!--from sys_region-->
+        <!--<include refid="wherePageParam" />-->
+    <!--</select>-->
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysRegion">
+		update sys_region
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_region
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_region
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_region where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysRegion">
+		delete from sys_region
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_region
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_region where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysRegion" keyProperty="id">
+		INSERT INTO sys_region
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_region (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			name as name,
+			code as code,
+			remark as remark,
+			parentid as parentid
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[ and name = #{name} ]]></if>
+						
+			<if test="code != null and code != '' ">  <![CDATA[ and code = #{code} ]]></if>
+						
+			<if test="remark != null and remark != '' ">  <![CDATA[ and remark = #{remark} ]]></if>
+
+			<if test="parentid != null and parentid != '' ">  <![CDATA[ and parentid = #{parentid} ]]></if>
+
+			<if test="ids != null ">
+                and id in  (
+                <foreach collection="ids" item="item" index="index"
+                         separator=",">
+                     #{item}
+                </foreach>
+                )
+            </if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and name = #{params.name} ]]></if>
+						
+			<if test="params.code != null and params.code != '' ">  <![CDATA[ and code = #{params.code} ]]></if>
+						
+			<if test="params.remark != null and params.remark != '' ">  <![CDATA[ and remark = #{params.remark} ]]></if>
+
+			<if test="params.parentid != null and params.parentid != '' ">
+				<![CDATA[ and parentid = #{params.parentid} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<trim suffix="" suffixOverrides=",">
+			<set>
+
+				<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+
+				<if test="name != null and name != '' ">  <![CDATA[  name = #{name } ,]]></if>
+
+				<if test="code != null and code != '' ">  <![CDATA[  code = #{code } ,]]></if>
+
+				<if test="remark != null and remark != '' ">  <![CDATA[  remark = #{remark } ,]]></if>
+
+				<if test="parentid != null and parentid != '' ">  <![CDATA[  parentid = #{parentid } ,]]></if>
+
+			</set>
+		</trim>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="id != null and id != '' ">  <![CDATA[ id  , ]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[ name  , ]]></if>
+
+			<if test="code != null and code != '' ">  <![CDATA[ code  , ]]></if>
+
+			<if test="remark != null and remark != '' ">  <![CDATA[ remark , ]]></if>
+
+			<if test="parentid != null and parentid != '' ">  <![CDATA[ parentid , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } ,]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[ #{name } ,]]></if>
+
+			<if test="code != null and code != '' ">  <![CDATA[ #{code } ,]]></if>
+
+			<if test="remark != null and remark != '' ">  <![CDATA[ #{remark }, ]]></if>
+
+			<if test="parentid != null and parentid != '' ">  <![CDATA[ #{parentid }, ]]></if>
+
+		</trim>
+				
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		id,name,code,remark,parentid
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.id},#{item.name},#{item.code},#{item.remark},#{item.parentid}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

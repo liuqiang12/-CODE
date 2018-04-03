@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcLinkOutportMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultIdcLinkOutportMap" type="IdcLinkOutport">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="IDC_TRANSMISSION_ID" property="idcTransmissionId"/>
+
+        <result column="IDC_LINK_INFO_ID" property="idcLinkInfoId"/>
+
+        <result column="IDC_LINK_FROM_AREA" property="idcLinkFromArea"/>
+
+        <result column="IDC_LINK_ROOM_NAME" property="idcLinkRoomName"/>
+
+        <result column="IDC_LINK_LOCAL_ROUTE_NAME" property="idcLinkLocalRouteName"/>
+
+        <result column="IDC_LINK_CABINET_POSITION" property="idcLinkCabinetPosition"/>
+
+        <result column="IDC_LINK_DEVICE_MODEL" property="idcLinkDeviceModel"/>
+
+        <result column="IDC_LINK_TAPE_WIDTH" property="idcLinkTapeWidth"/>
+
+        <result column="IDC_LINK_LOCAL_ODF_PORT" property="idcLinkLocalOdfPort"/>
+
+        <result column="IDC_LINK_LOCAL_DEVICE_PORT" property="idcLinkLocalDevicePort"/>
+
+        <result column="IDC_LINK_TARGET_ROOM_NAME" property="idcLinkTargetRoomName"/>
+
+        <result column="IDC_LINK_TARGET_ROUTE_NAME" property="idcLinkTargetRouteName"/>
+
+        <result column="IDC_LINK_TARGET_DEVICE_MODEL" property="idcLinkTargetDeviceModel"/>
+
+        <result column="IDC_LINK_TARGET_DEVICE_PORT" property="idcLinkTargetDevicePort"/>
+
+        <result column="IDC_LINK_TARGET_ODF_PORT" property="idcLinkTargetOdfPort"/>
+
+        <result column="NOTE" property="note"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="IdcLinkOutport">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT where IDC_LINK_INFO_ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="IdcLinkOutport"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="IdcLinkOutport">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="IdcLinkOutport">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="IdcLinkOutport"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="IdcLinkOutport">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="IdcLinkOutport">
+        select
+        <include refid="baseColumn"/>
+        from IDC_LINK_OUTPORT
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="IdcLinkOutport">
+        update IDC_LINK_OUTPORT
+        <include refid="updateParam"/>
+        WHERE IDC_LINK_INFO_ID = #{idcLinkInfoId}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update IDC_LINK_OUTPORT
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from IDC_LINK_OUTPORT
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from IDC_LINK_OUTPORT where IDC_LINK_INFO_ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="IdcLinkOutport">
+        delete from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from IDC_LINK_OUTPORT
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from IDC_LINK_OUTPORT where IDC_LINK_INFO_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="IdcLinkOutport"
+            useGeneratedKeys="true" keyProperty="IDC_LINK_INFO_ID">
+        INSERT INTO IDC_LINK_OUTPORT
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_LINK_OUTPORT (IDC_LINK_INFO_ID,
+        <include refid="batchInsertColumn"/>
+        )
+        select IDC_LINK_OUTPORT_seq.nextval,t.* from(
+        <foreach collection="list" item="item" index="index" separator="union">
+            select
+            <include refid="batchInsertColumnParam"/>
+            from dual
+        </foreach>
+        ) t
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	IDC_TRANSMISSION_ID as idcTransmissionId,
+			IDC_LINK_INFO_ID as idcLinkInfoId,
+			IDC_LINK_FROM_AREA as idcLinkFromArea,
+			IDC_LINK_ROOM_NAME as idcLinkRoomName,
+			IDC_LINK_LOCAL_ROUTE_NAME as idcLinkLocalRouteName,
+			IDC_LINK_CABINET_POSITION as idcLinkCabinetPosition,
+			IDC_LINK_DEVICE_MODEL as idcLinkDeviceModel,
+			IDC_LINK_TAPE_WIDTH as idcLinkTapeWidth,
+			IDC_LINK_LOCAL_ODF_PORT as idcLinkLocalOdfPort,
+			IDC_LINK_LOCAL_DEVICE_PORT as idcLinkLocalDevicePort,
+			IDC_LINK_TARGET_ROOM_NAME as idcLinkTargetRoomName,
+			IDC_LINK_TARGET_ROUTE_NAME as idcLinkTargetRouteName,
+			IDC_LINK_TARGET_DEVICE_MODEL as idcLinkTargetDeviceModel,
+			IDC_LINK_TARGET_DEVICE_PORT as idcLinkTargetDevicePort,
+			IDC_LINK_TARGET_ODF_PORT as idcLinkTargetOdfPort,
+			NOTE as note
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_ID = #{idcTransmissionId} ]]></if>
+
+            <if test="idcLinkInfoId != null and idcLinkInfoId != '' ">
+                <![CDATA[ and IDC_LINK_INFO_ID = #{idcLinkInfoId} ]]></if>
+
+            <if test="idcLinkFromArea != null and idcLinkFromArea != '' ">
+                <![CDATA[ and IDC_LINK_FROM_AREA = #{idcLinkFromArea} ]]></if>
+
+            <if test="idcLinkRoomName != null and idcLinkRoomName != '' ">
+                <![CDATA[ and IDC_LINK_ROOM_NAME = #{idcLinkRoomName} ]]></if>
+
+            <if test="idcLinkLocalRouteName != null and idcLinkLocalRouteName != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_ROUTE_NAME = #{idcLinkLocalRouteName} ]]></if>
+
+            <if test="idcLinkCabinetPosition != null and idcLinkCabinetPosition != '' ">
+                <![CDATA[ and IDC_LINK_CABINET_POSITION = #{idcLinkCabinetPosition} ]]></if>
+
+            <if test="idcLinkDeviceModel != null and idcLinkDeviceModel != '' ">
+                <![CDATA[ and IDC_LINK_DEVICE_MODEL = #{idcLinkDeviceModel} ]]></if>
+
+            <if test="idcLinkTapeWidth != null and idcLinkTapeWidth != '' ">
+                <![CDATA[ and IDC_LINK_TAPE_WIDTH = #{idcLinkTapeWidth} ]]></if>
+
+            <if test="idcLinkLocalOdfPort != null and idcLinkLocalOdfPort != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_ODF_PORT = #{idcLinkLocalOdfPort} ]]></if>
+
+            <if test="idcLinkLocalDevicePort != null and idcLinkLocalDevicePort != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_DEVICE_PORT = #{idcLinkLocalDevicePort} ]]></if>
+
+            <if test="idcLinkTargetRoomName != null and idcLinkTargetRoomName != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ROOM_NAME = #{idcLinkTargetRoomName} ]]></if>
+
+            <if test="idcLinkTargetRouteName != null and idcLinkTargetRouteName != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ROUTE_NAME = #{idcLinkTargetRouteName} ]]></if>
+
+            <if test="idcLinkTargetDeviceModel != null and idcLinkTargetDeviceModel != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_DEVICE_MODEL = #{idcLinkTargetDeviceModel} ]]></if>
+
+            <if test="idcLinkTargetDevicePort != null and idcLinkTargetDevicePort != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_DEVICE_PORT = #{idcLinkTargetDevicePort} ]]></if>
+
+            <if test="idcLinkTargetOdfPort != null and idcLinkTargetOdfPort != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ODF_PORT = #{idcLinkTargetOdfPort} ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ and NOTE = #{note} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.idcTransmissionId != null and params.idcTransmissionId != '' ">
+                <![CDATA[ and IDC_TRANSMISSION_ID = #{params.idcTransmissionId} ]]></if>
+
+            <if test="params.idcLinkInfoId != null and params.idcLinkInfoId != '' ">
+                <![CDATA[ and IDC_LINK_INFO_ID = #{params.idcLinkInfoId} ]]></if>
+
+            <if test="params.idcLinkFromArea != null and params.idcLinkFromArea != '' ">
+                <![CDATA[ and upper(IDC_LINK_FROM_AREA) like '%'||upper(#{params.idcLinkFromArea})||'%' ]]></if>
+
+            <if test="params.idcLinkRoomName != null and params.idcLinkRoomName != '' ">
+                <![CDATA[ and IDC_LINK_ROOM_NAME = #{params.idcLinkRoomName} ]]></if>
+
+            <if test="params.idcLinkLocalRouteName != null and params.idcLinkLocalRouteName != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_ROUTE_NAME = #{params.idcLinkLocalRouteName} ]]></if>
+
+            <if test="params.idcLinkCabinetPosition != null and params.idcLinkCabinetPosition != '' ">
+                <![CDATA[ and IDC_LINK_CABINET_POSITION = #{params.idcLinkCabinetPosition} ]]></if>
+
+            <if test="params.idcLinkDeviceModel != null and params.idcLinkDeviceModel != '' ">
+                <![CDATA[ and IDC_LINK_DEVICE_MODEL = #{params.idcLinkDeviceModel} ]]></if>
+
+            <if test="params.idcLinkTapeWidth != null and params.idcLinkTapeWidth != '' ">
+                <![CDATA[ and IDC_LINK_TAPE_WIDTH = #{params.idcLinkTapeWidth} ]]></if>
+
+            <if test="params.idcLinkLocalOdfPort != null and params.idcLinkLocalOdfPort != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_ODF_PORT = #{params.idcLinkLocalOdfPort} ]]></if>
+
+            <if test="params.idcLinkLocalDevicePort != null and params.idcLinkLocalDevicePort != '' ">
+                <![CDATA[ and IDC_LINK_LOCAL_DEVICE_PORT = #{params.idcLinkLocalDevicePort} ]]></if>
+
+            <if test="params.idcLinkTargetRoomName != null and params.idcLinkTargetRoomName != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ROOM_NAME = #{params.idcLinkTargetRoomName} ]]></if>
+
+            <if test="params.idcLinkTargetRouteName != null and params.idcLinkTargetRouteName != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ROUTE_NAME = #{params.idcLinkTargetRouteName} ]]></if>
+
+            <if test="params.idcLinkTargetDeviceModel != null and params.idcLinkTargetDeviceModel != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_DEVICE_MODEL = #{params.idcLinkTargetDeviceModel} ]]></if>
+
+            <if test="params.idcLinkTargetDevicePort != null and params.idcLinkTargetDevicePort != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_DEVICE_PORT = #{params.idcLinkTargetDevicePort} ]]></if>
+
+            <if test="params.idcLinkTargetOdfPort != null and params.idcLinkTargetOdfPort != '' ">
+                <![CDATA[ and IDC_LINK_TARGET_ODF_PORT = #{params.idcLinkTargetOdfPort} ]]></if>
+
+            <if test="params.note != null and params.note != '' ">  <![CDATA[ and NOTE = #{params.note} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">
+                <![CDATA[  IDC_TRANSMISSION_ID = #{idcTransmissionId } ,]]></if>
+
+            <if test="idcLinkInfoId != null and idcLinkInfoId != '' ">
+                <![CDATA[  IDC_LINK_INFO_ID = #{idcLinkInfoId } ,]]></if>
+
+            <if test="idcLinkFromArea != null and idcLinkFromArea != '' ">
+                <![CDATA[  IDC_LINK_FROM_AREA = #{idcLinkFromArea } ,]]></if>
+
+            <if test="idcLinkRoomName != null and idcLinkRoomName != '' ">
+                <![CDATA[  IDC_LINK_ROOM_NAME = #{idcLinkRoomName } ,]]></if>
+
+            <if test="idcLinkLocalRouteName != null and idcLinkLocalRouteName != '' ">
+                <![CDATA[  IDC_LINK_LOCAL_ROUTE_NAME = #{idcLinkLocalRouteName } ,]]></if>
+
+            <if test="idcLinkCabinetPosition != null and idcLinkCabinetPosition != '' ">
+                <![CDATA[  IDC_LINK_CABINET_POSITION = #{idcLinkCabinetPosition } ,]]></if>
+
+            <if test="idcLinkDeviceModel != null and idcLinkDeviceModel != '' ">
+                <![CDATA[  IDC_LINK_DEVICE_MODEL = #{idcLinkDeviceModel } ,]]></if>
+
+            <if test="idcLinkTapeWidth != null and idcLinkTapeWidth != '' ">
+                <![CDATA[  IDC_LINK_TAPE_WIDTH = #{idcLinkTapeWidth } ,]]></if>
+
+            <if test="idcLinkLocalOdfPort != null and idcLinkLocalOdfPort != '' ">
+                <![CDATA[  IDC_LINK_LOCAL_ODF_PORT = #{idcLinkLocalOdfPort } ,]]></if>
+
+            <if test="idcLinkLocalDevicePort != null and idcLinkLocalDevicePort != '' ">
+                <![CDATA[  IDC_LINK_LOCAL_DEVICE_PORT = #{idcLinkLocalDevicePort } ,]]></if>
+
+            <if test="idcLinkTargetRoomName != null and idcLinkTargetRoomName != '' ">
+                <![CDATA[  IDC_LINK_TARGET_ROOM_NAME = #{idcLinkTargetRoomName } ,]]></if>
+
+            <if test="idcLinkTargetRouteName != null and idcLinkTargetRouteName != '' ">
+                <![CDATA[  IDC_LINK_TARGET_ROUTE_NAME = #{idcLinkTargetRouteName } ,]]></if>
+
+            <if test="idcLinkTargetDeviceModel != null and idcLinkTargetDeviceModel != '' ">
+                <![CDATA[  IDC_LINK_TARGET_DEVICE_MODEL = #{idcLinkTargetDeviceModel } ,]]></if>
+
+            <if test="idcLinkTargetDevicePort != null and idcLinkTargetDevicePort != '' ">
+                <![CDATA[  IDC_LINK_TARGET_DEVICE_PORT = #{idcLinkTargetDevicePort } ,]]></if>
+
+            <if test="idcLinkTargetOdfPort != null and idcLinkTargetOdfPort != '' ">
+                <![CDATA[  IDC_LINK_TARGET_ODF_PORT = #{idcLinkTargetOdfPort } ,]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[  NOTE = #{note } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">  <![CDATA[ IDC_TRANSMISSION_ID , ]]></if>
+
+            <if test="idcLinkInfoId != null and idcLinkInfoId != '' ">  <![CDATA[ IDC_LINK_INFO_ID , ]]></if>
+
+            <if test="idcLinkFromArea != null and idcLinkFromArea != '' ">  <![CDATA[ IDC_LINK_FROM_AREA , ]]></if>
+
+            <if test="idcLinkRoomName != null and idcLinkRoomName != '' ">  <![CDATA[ IDC_LINK_ROOM_NAME , ]]></if>
+
+            <if test="idcLinkLocalRouteName != null and idcLinkLocalRouteName != '' ">
+                <![CDATA[ IDC_LINK_LOCAL_ROUTE_NAME , ]]></if>
+
+            <if test="idcLinkCabinetPosition != null and idcLinkCabinetPosition != '' ">
+                <![CDATA[ IDC_LINK_CABINET_POSITION , ]]></if>
+
+            <if test="idcLinkDeviceModel != null and idcLinkDeviceModel != '' ">
+                <![CDATA[ IDC_LINK_DEVICE_MODEL , ]]></if>
+
+            <if test="idcLinkTapeWidth != null and idcLinkTapeWidth != '' ">  <![CDATA[ IDC_LINK_TAPE_WIDTH , ]]></if>
+
+            <if test="idcLinkLocalOdfPort != null and idcLinkLocalOdfPort != '' ">
+                <![CDATA[ IDC_LINK_LOCAL_ODF_PORT , ]]></if>
+
+            <if test="idcLinkLocalDevicePort != null and idcLinkLocalDevicePort != '' ">
+                <![CDATA[ IDC_LINK_LOCAL_DEVICE_PORT , ]]></if>
+
+            <if test="idcLinkTargetRoomName != null and idcLinkTargetRoomName != '' ">
+                <![CDATA[ IDC_LINK_TARGET_ROOM_NAME , ]]></if>
+
+            <if test="idcLinkTargetRouteName != null and idcLinkTargetRouteName != '' ">
+                <![CDATA[ IDC_LINK_TARGET_ROUTE_NAME , ]]></if>
+
+            <if test="idcLinkTargetDeviceModel != null and idcLinkTargetDeviceModel != '' ">
+                <![CDATA[ IDC_LINK_TARGET_DEVICE_MODEL , ]]></if>
+
+            <if test="idcLinkTargetDevicePort != null and idcLinkTargetDevicePort != '' ">
+                <![CDATA[ IDC_LINK_TARGET_DEVICE_PORT , ]]></if>
+
+            <if test="idcLinkTargetOdfPort != null and idcLinkTargetOdfPort != '' ">
+                <![CDATA[ IDC_LINK_TARGET_ODF_PORT , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="idcTransmissionId != null and idcTransmissionId != '' ">
+                <![CDATA[ #{idcTransmissionId } , ]]></if>
+
+            <if test="idcLinkInfoId != null and idcLinkInfoId != '' ">  <![CDATA[ #{idcLinkInfoId } , ]]></if>
+
+            <if test="idcLinkFromArea != null and idcLinkFromArea != '' ">  <![CDATA[ #{idcLinkFromArea } , ]]></if>
+
+            <if test="idcLinkRoomName != null and idcLinkRoomName != '' ">  <![CDATA[ #{idcLinkRoomName } , ]]></if>
+
+            <if test="idcLinkLocalRouteName != null and idcLinkLocalRouteName != '' ">
+                <![CDATA[ #{idcLinkLocalRouteName } , ]]></if>
+
+            <if test="idcLinkCabinetPosition != null and idcLinkCabinetPosition != '' ">
+                <![CDATA[ #{idcLinkCabinetPosition } , ]]></if>
+
+            <if test="idcLinkDeviceModel != null and idcLinkDeviceModel != '' ">
+                <![CDATA[ #{idcLinkDeviceModel } , ]]></if>
+
+            <if test="idcLinkTapeWidth != null and idcLinkTapeWidth != '' ">  <![CDATA[ #{idcLinkTapeWidth } , ]]></if>
+
+            <if test="idcLinkLocalOdfPort != null and idcLinkLocalOdfPort != '' ">
+                <![CDATA[ #{idcLinkLocalOdfPort } , ]]></if>
+
+            <if test="idcLinkLocalDevicePort != null and idcLinkLocalDevicePort != '' ">
+                <![CDATA[ #{idcLinkLocalDevicePort } , ]]></if>
+
+            <if test="idcLinkTargetRoomName != null and idcLinkTargetRoomName != '' ">
+                <![CDATA[ #{idcLinkTargetRoomName } , ]]></if>
+
+            <if test="idcLinkTargetRouteName != null and idcLinkTargetRouteName != '' ">
+                <![CDATA[ #{idcLinkTargetRouteName } , ]]></if>
+
+            <if test="idcLinkTargetDeviceModel != null and idcLinkTargetDeviceModel != '' ">
+                <![CDATA[ #{idcLinkTargetDeviceModel } , ]]></if>
+
+            <if test="idcLinkTargetDevicePort != null and idcLinkTargetDevicePort != '' ">
+                <![CDATA[ #{idcLinkTargetDevicePort } , ]]></if>
+
+            <if test="idcLinkTargetOdfPort != null and idcLinkTargetOdfPort != '' ">
+                <![CDATA[ #{idcLinkTargetOdfPort } , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			IDC_TRANSMISSION_ID,IDC_LINK_FROM_AREA,IDC_LINK_ROOM_NAME,IDC_LINK_LOCAL_ROUTE_NAME,IDC_LINK_CABINET_POSITION,IDC_LINK_DEVICE_MODEL,IDC_LINK_TAPE_WIDTH,IDC_LINK_LOCAL_ODF_PORT,IDC_LINK_LOCAL_DEVICE_PORT,IDC_LINK_TARGET_ROOM_NAME,IDC_LINK_TARGET_ROUTE_NAME,IDC_LINK_TARGET_DEVICE_MODEL,IDC_LINK_TARGET_DEVICE_PORT,IDC_LINK_TARGET_ODF_PORT,NOTE
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.idcTransmissionId},#{item.idcLinkFromArea},#{item.idcLinkRoomName},#{item.idcLinkLocalRouteName},#{item.idcLinkCabinetPosition},#{item.idcLinkDeviceModel},#{item.idcLinkTapeWidth},#{item.idcLinkLocalOdfPort},#{item.idcLinkLocalDevicePort},#{item.idcLinkTargetRoomName},#{item.idcLinkTargetRouteName},#{item.idcLinkTargetDeviceModel},#{item.idcLinkTargetDevicePort},#{item.idcLinkTargetOdfPort},#{item.note}
+	</sql>
+
+    <!-- 获取链路基本信息及调单号、附件  page -->
+    <select id="queryLinkOutportListPage" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="linkOutportAndAttachColumn"/>
+        from idc_link_outport t
+        left join idc_transmission_form f
+        on (f.idc_transmission_id = t.idc_transmission_id)
+        left join asset_attachmentinfo i
+        on (i.relational_value = f.idc_transmission_id)
+        and i.logic_tablename = 'IDC_TRANSMISSION_FORM'
+        and i.logic_column = 'IDC_TRANSMISSION_ID'
+        <where>
+            <if test="params.name != null and params.name != '' ">
+                <![CDATA[ and upper(IDC_LINK_FROM_AREA) like '%'||upper(#{params.name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取链路基本信息及调单号、附件 -->
+    <select id="queryLinkOutportList" parameterType="Map" resultType="Map">
+        select
+        <include refid="linkOutportAndAttachColumn"/>
+        from idc_link_outport t
+        left join idc_transmission_form f
+        on (f.idc_transmission_id = t.idc_transmission_id)
+        left join asset_attachmentinfo i
+        on (i.relational_value = f.idc_transmission_id)
+        and i.logic_tablename = 'IDC_TRANSMISSION_FORM'
+        and i.logic_column = 'IDC_TRANSMISSION_ID'
+        <where>
+            <if test="name != null and name != '' ">
+                <![CDATA[ and upper(IDC_LINK_FROM_AREA) like '%'||upper(#{name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取链路基本信息及调单号、附件 的相关字段 -->
+    <sql id="linkOutportAndAttachColumn">
+        <![CDATA[
+            t.IDC_TRANSMISSION_ID as idcTransmissionId,
+            t.IDC_LINK_INFO_ID as idcLinkInfoId,
+            t.IDC_LINK_FROM_AREA as idcLinkFromArea,
+            t.IDC_LINK_ROOM_NAME as idcLinkRoomName,
+            t.IDC_LINK_LOCAL_ROUTE_NAME as idcLinkLocalRouteName,
+            t.IDC_LINK_CABINET_POSITION as idcLinkCabinetPosition,
+            t.IDC_LINK_DEVICE_MODEL as idcLinkDeviceModel,
+            t.IDC_LINK_TAPE_WIDTH as idcLinkTapeWidth,
+            t.IDC_LINK_LOCAL_ODF_PORT as idcLinkLocalOdfPort,
+            t.IDC_LINK_LOCAL_DEVICE_PORT as idcLinkLocalDevicePort,
+            t.IDC_LINK_TARGET_ROOM_NAME as idcLinkTargetRoomName,
+            t.IDC_LINK_TARGET_ROUTE_NAME as idcLinkTargetRouteName,
+            t.IDC_LINK_TARGET_DEVICE_MODEL as idcLinkTargetDeviceModel,
+            t.IDC_LINK_TARGET_DEVICE_PORT as idcLinkTargetDevicePort,
+            t.IDC_LINK_TARGET_ODF_PORT as idcLinkTargetOdfPort,
+            t.NOTE as note,
+            f.IDC_TRANSMISSION_CODE as idcTransmissionCode,
+            i.attach_name as attachName
+         ]]>
+    </sql>
+
+</mapper>

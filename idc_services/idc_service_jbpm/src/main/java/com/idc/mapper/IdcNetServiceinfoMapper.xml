@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcNetServiceinfoMapper">
+	<resultMap id="resultIdcNetServiceinfoMap" type="IdcNetServiceinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="ICPDOMAIN" property="icpdomain" />
+		<result column="ICPSRVNAME" property="icpsrvname" />
+		<result column="ICPSRVCONTENTCODE" property="icpsrvcontentcode" />
+		<result column="ICPRECORDTYPE" property="icprecordtype" />
+		<result column="ICPRECORDNO" property="icprecordno" />
+		<result column="ICPACCESSTYPE" property="icpaccesstype" />
+		<result column="ICPBUSINESSTYPE" property="icpbusinesstype" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="OPEN_TIME" property="openTime" />
+		<result column="VM_NAME" property="vmName" />
+		<result column="VM_STATUS" property="vmStatus" />
+		<result column="VM_CATEGORY" property="vmCategory" />
+		<result column="VM_NET_ADDR" property="vmNetAddr" />
+		<result column="VM_MANAGER_ADDR" property="vmManagerAddr" />
+		<result column="DOMAIN_STATUS" property="domainStatus" />
+	</resultMap>
+
+	<select id="getIdcNetServiceinfoByCustomerId" resultType="IdcNetServiceinfo">
+		select
+		(5000000400 + t1.id) as id,
+		t1.ICPRECORDNO as icprecordno,
+		t1.CUSTOMER_NAME as customerName,
+		t1.CUSTOMER_ID as customerId,
+		to_char(t1.OPEN_TIME, 'yyyy-MM-dd HH24:mi:ss') as openTimeStr,
+		t1.VM_NAME as vmName,
+		t1.VM_STATUS as vmStatus,
+		case when t1.VM_STATUS = '1' then '可用'
+		when t1.VM_STATUS = '-1' then '不可用'
+		end vmStatusName,
+		t1.VM_CATEGORY as vmCategory,
+		-- 1-共享式/2-专用式/3-云虚拟
+		case when t1.VM_CATEGORY = '1' then '共享试'
+		when t1.VM_CATEGORY = '2' then '专用式'
+		when t1.VM_CATEGORY = '3' then '云虚拟'
+		end vmCategoryName,
+		t1.VM_NET_ADDR as vmNetAddr,
+		t1.VM_MANAGER_ADDR as vmManagerAddr,
+		t1.TICKET_INST_ID as ticketInstId,
+		t1.ICPDOMAIN as icpdomain,
+		t1.ICPSRVNAME as icpsrvname,
+		t1.ICPSRVCONTENTCODE as icpsrvcontentcode,
+		case when t1.ICPSRVCONTENTCODE = 1 then '即时通信'
+		when t1.ICPSRVCONTENTCODE = 0 then '---'
+		end icpsrvcontentcodeName,/*服务内容代码*/
+		t1.ICPRECORDTYPE as icprecordtype,
+		case when t1.ICPRECORDTYPE = '0' then '专线'
+		when t1.ICPRECORDTYPE = '1' then '虚拟主机'
+		when t1.ICPRECORDTYPE = '2' then '主机托管'
+		when t1.ICPRECORDTYPE = '3' then '整机租用'
+		when t1.ICPRECORDTYPE = '99' then '其它'
+		end icprecordtypeName,
+		t1.ICPACCESSTYPE as icpaccesstype,
+		t1.ICPBUSINESSTYPE as icpbusinesstype,
+		t1.DOMAIN_STATUS as domainStatus,
+		case when t1.ICPBUSINESSTYPE = '1' then 'IDC业务'
+		when t1.ICPBUSINESSTYPE = '2' then 'ISP业务'
+		end icpbusinesstypeName,
+		to_char(t1.CREATE_TIME, 'yyyy-MM-dd HH24:mi:ss') as createTime
+		from IDC_NET_SERVICEINFO t1
+		where t1.CUSTOMER_ID = #{0}
+	</select>
+
+
+	<select id="getIdcNetServiceinfoByTicketInstId" resultType="IdcNetServiceinfo">
+		select
+			  t1.ID as id,
+			  t1.CUSTOMER_NAME as customerName,
+			  t1.CUSTOMER_ID as customerId,
+			  to_char(t1.OPEN_TIME, 'yyyy-MM-dd HH24:mi:ss') as openTimeStr,
+			  t1.VM_NAME as vmName,
+			  t1.VM_STATUS as vmStatus,
+			  case when t1.VM_STATUS = '1' then '可用'
+				   when t1.VM_STATUS = '-1' then '不可用'
+			  end vmStatusName,
+			  t1.VM_CATEGORY as vmCategory,
+			  -- 1-共享式/2-专用式/3-云虚拟
+			  case when t1.VM_CATEGORY = '1' then '共享试'
+				   when t1.VM_CATEGORY = '2' then '专用式'
+				   when t1.VM_CATEGORY = '3' then '云虚拟'
+			  end vmCategoryName,
+			  t1.VM_NET_ADDR as vmNetAddr,
+			  t1.VM_MANAGER_ADDR as vmManagerAddr,
+			  t1.TICKET_INST_ID as ticketInstId,
+			  t1.ICPDOMAIN as icpdomain,
+			  t1.ICPSRVNAME as icpsrvname,
+			  t1.ICPSRVCONTENTCODE as icpsrvcontentcode,
+			  t1.ICPRECORDTYPE as icprecordtype,
+			  case when t1.ICPRECORDTYPE = '0' then '专线'
+				   when t1.ICPRECORDTYPE = '1' then '虚拟主机'
+				   when t1.ICPRECORDTYPE = '2' then '主机托管'
+				   when t1.ICPRECORDTYPE = '3' then '整机租用'
+				   when t1.ICPRECORDTYPE = '99' then '其它'
+			  end icprecordtypeName,
+			  t1.ICPRECORDNO as icprecordno,
+			  t1.ICPACCESSTYPE as icpaccesstype,
+			  t1.ICPBUSINESSTYPE as icpbusinesstype,
+			  t1.DOMAIN_STATUS as domainStatus,
+			  case when t1.ICPBUSINESSTYPE = '1' then 'IDC业务'
+				   when t1.ICPBUSINESSTYPE = '2' then 'ISP业务'
+			  end icpbusinesstypeName,
+			  to_char(t1.CREATE_TIME, 'yyyy-MM-dd HH24:mi:ss') as createTime
+		from IDC_NET_SERVICEINFO t1
+      where t1.id in(select max(t.id) from IDC_NET_SERVICEINFO t where t.ticket_inst_id=#{0})
+	</select>
+
+	<update id="updateByDNS" parameterType="Long">
+
+		UPDATE IDC_NET_SERVICEINFO SET
+			ICPSRVNAME=NULL ,
+			ICPSRVCONTENTCODE=NULL,
+			ICPRECORDTYPE=NULL,
+			ICPRECORDNO=NULL,
+			ICPACCESSTYPE=NULL,
+			ICPDOMAIN=NULL,
+			ICPBUSINESSTYPE=NULL,
+			OPEN_TIME=NULL,
+			VM_NAME=NULL,
+			DOMAIN_STATUS=NULL,
+			VM_STATUS=NULL,
+			VM_CATEGORY=NULL,
+			VM_NET_ADDR=NULL,
+			VM_MANAGER_ADDR=NULL
+		where TICKET_INST_ID=#{0}
+
+	</update>
+	<delete id="deleteByContractId">
+		delete from IDC_NET_SERVICEINFO t where t.TICKET_INST_ID = #{0}
+	</delete>
+	<insert id="insertIdcNetServiceinfo">
+		insert into IDC_NET_SERVICEINFO t
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+			<if test="openTime != null  ">  <![CDATA[ OPEN_TIME , ]]></if>
+			<if test="vmName != null and vmName != '' ">  <![CDATA[ VM_NAME , ]]></if>
+			<if test="vmStatus != null and vmStatus != '' ">  <![CDATA[ VM_STATUS , ]]></if>
+			<if test="vmCategory != null and vmCategory != '' ">  <![CDATA[ VM_CATEGORY , ]]></if>
+			<if test="vmNetAddr != null and vmNetAddr != '' ">  <![CDATA[ VM_NET_ADDR , ]]></if>
+			<if test="vmManagerAddr != null and vmManagerAddr != '' ">  <![CDATA[ VM_MANAGER_ADDR , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="icpdomain != null and icpdomain != '' ">  <![CDATA[ ICPDOMAIN , ]]></if>
+			<if test="icpsrvname != null and icpsrvname != '' ">  <![CDATA[ ICPSRVNAME , ]]></if>
+			<if test="icpsrvcontentcode != null and icpsrvcontentcode != '' ">  <![CDATA[ ICPSRVCONTENTCODE , ]]></if>
+			<if test="icprecordtype != null and icprecordtype != '' ">  <![CDATA[ ICPRECORDTYPE , ]]></if>
+			<if test="icprecordno != null and icprecordno != '' ">  <![CDATA[ ICPRECORDNO , ]]></if>
+			<if test="icpaccesstype != null and icpaccesstype != '' ">  <![CDATA[ ICPACCESSTYPE , ]]></if>
+			<if test="icpbusinesstype != null and icpbusinesstype != '' ">  <![CDATA[ ICPBUSINESSTYPE , ]]></if>
+			<if test="domainStatus != null  ">  <![CDATA[ DOMAIN_STATUS , ]]></if>
+			<if test="contractId != null and contractId != '' ">  <![CDATA[ CONTRACT_ID , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ #{customerName,jdbcType=VARCHAR } , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ #{customerId } , ]]></if>
+			<if test="openTime != null  ">  <![CDATA[ #{openTime} , ]]></if>
+			<if test="vmName != null and vmName != '' ">  <![CDATA[ #{vmName} , ]]></if>
+			<if test="vmStatus != null and vmStatus != '' ">  <![CDATA[ #{vmStatus} , ]]></if>
+			<if test="vmCategory != null and vmCategory != '' ">  <![CDATA[ #{vmCategory} , ]]></if>
+			<if test="vmNetAddr != null and vmNetAddr != '' ">  <![CDATA[ #{vmNetAddr} , ]]></if>
+			<if test="vmManagerAddr != null and vmManagerAddr != '' ">  <![CDATA[ #{vmManagerAddr} , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+			<if test="icpdomain != null and icpdomain != '' ">  <![CDATA[ #{icpdomain } , ]]></if>
+			<if test="icpsrvname != null and icpsrvname != '' ">  <![CDATA[ #{icpsrvname } , ]]></if>
+			<if test="icpsrvcontentcode != null and icpsrvcontentcode != '' ">  <![CDATA[ #{icpsrvcontentcode } , ]]></if>
+			<if test="icprecordtype != null and icprecordtype != '' ">  <![CDATA[ #{icprecordtype } , ]]></if>
+			<if test="icprecordno != null and icprecordno != '' ">  <![CDATA[ #{icprecordno } , ]]></if>
+			<if test="icpaccesstype != null and icpaccesstype != '' ">  <![CDATA[ #{icpaccesstype } , ]]></if>
+			<if test="icpbusinesstype != null and icpbusinesstype != '' ">  <![CDATA[ #{icpbusinesstype } , ]]></if>
+			<if test="domainStatus != null  ">  <![CDATA[ #{domainStatus } , ]]></if>
+			<if test="contractId != null and contractId != '' ">  <![CDATA[ #{contractId } , ]]></if>
+		</trim>
+	</insert>
+	<!-- 合体方法 -->
+	<update id="mergeInto" parameterType="IdcNetServiceinfo" >
+		merge into IDC_NET_SERVICEINFO t
+		using (SELECT #{id ,jdbcType=NUMERIC} as id  from dual) t1
+		on( t1.id = t.id )
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+			<if test="openTime != null  ">  <![CDATA[ OPEN_TIME , ]]></if>
+			<if test="vmName != null and vmName != '' ">  <![CDATA[ VM_NAME , ]]></if>
+			<if test="vmStatus != null and vmStatus != '' ">  <![CDATA[ VM_STATUS , ]]></if>
+			<if test="vmCategory != null and vmCategory != '' ">  <![CDATA[ VM_CATEGORY , ]]></if>
+			<if test="vmNetAddr != null and vmNetAddr != '' ">  <![CDATA[ VM_NET_ADDR , ]]></if>
+			<if test="vmManagerAddr != null and vmManagerAddr != '' ">  <![CDATA[ VM_MANAGER_ADDR , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="icpdomain != null and icpdomain != '' ">  <![CDATA[ ICPDOMAIN , ]]></if>
+			<if test="icpsrvname != null and icpsrvname != '' ">  <![CDATA[ ICPSRVNAME , ]]></if>
+			<if test="icpsrvcontentcode != null and icpsrvcontentcode != '' ">  <![CDATA[ ICPSRVCONTENTCODE , ]]></if>
+			<if test="icprecordtype != null and icprecordtype != '' ">  <![CDATA[ ICPRECORDTYPE , ]]></if>
+			<if test="icprecordno != null and icprecordno != '' ">  <![CDATA[ ICPRECORDNO , ]]></if>
+			<if test="icpaccesstype != null and icpaccesstype != '' ">  <![CDATA[ ICPACCESSTYPE , ]]></if>
+			<if test="icpbusinesstype != null and icpbusinesstype != '' ">  <![CDATA[ ICPBUSINESSTYPE , ]]></if>
+			<if test="domainStatus != null   ">  <![CDATA[ DOMAIN_STATUS , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ #{customerName,jdbcType=VARCHAR } , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ #{customerId } , ]]></if>
+			<if test="openTime != null  ">  <![CDATA[ #{openTime} , ]]></if>
+			<if test="vmName != null and vmName != '' ">  <![CDATA[ #{vmName} , ]]></if>
+			<if test="vmStatus != null and vmStatus != '' ">  <![CDATA[ #{vmStatus} , ]]></if>
+			<if test="vmCategory != null and vmCategory != '' ">  <![CDATA[ #{vmCategory} , ]]></if>
+			<if test="vmNetAddr != null and vmNetAddr != '' ">  <![CDATA[ #{vmNetAddr} , ]]></if>
+			<if test="vmManagerAddr != null and vmManagerAddr != '' ">  <![CDATA[ #{vmManagerAddr} , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+			<if test="icpdomain != null and icpdomain != '' ">  <![CDATA[ #{icpdomain } , ]]></if>
+			<if test="icpsrvname != null and icpsrvname != '' ">  <![CDATA[ #{icpsrvname } , ]]></if>
+			<if test="icpsrvcontentcode != null and icpsrvcontentcode != '' ">  <![CDATA[ #{icpsrvcontentcode } , ]]></if>
+			<if test="icprecordtype != null and icprecordtype != '' ">  <![CDATA[ #{icprecordtype } , ]]></if>
+			<if test="icprecordno != null and icprecordno != '' ">  <![CDATA[ #{icprecordno } , ]]></if>
+			<if test="icpaccesstype != null and icpaccesstype != '' ">  <![CDATA[ #{icpaccesstype } , ]]></if>
+			<if test="icpbusinesstype != null and icpbusinesstype != '' ">  <![CDATA[ #{icpbusinesstype } , ]]></if>
+			<if test="domainStatus != null  ">  <![CDATA[ #{domainStatus } , ]]></if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[  CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR } ,]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId } ,]]></if>
+			<if test="openTime != null  ">  <![CDATA[  OPEN_TIME = #{openTime} ,]]></if>
+			<if test="vmName != null and vmName != '' ">  <![CDATA[VM_NAME = #{vmName ,jdbcType=VARCHAR} , ]]></if>
+			<if test="vmStatus != null and vmStatus != '' ">  <![CDATA[ VM_STATUS = #{vmStatus} , ]]></if>
+			<if test="vmCategory != null and vmCategory != '' ">  <![CDATA[ VM_CATEGORY = #{vmCategory} , ]]></if>
+			<if test="vmNetAddr != null and vmNetAddr != '' ">  <![CDATA[ VM_NET_ADDR = #{vmNetAddr} , ]]></if>
+			<if test="vmManagerAddr != null and vmManagerAddr != '' ">  <![CDATA[ VM_MANAGER_ADDR = #{vmManagerAddr} , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID = #{ticketInstId } , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID = #{prodInstId } , ]]></if>
+			<if test="icpdomain != null and icpdomain != '' ">  <![CDATA[ ICPDOMAIN = #{icpdomain } , ]]></if>
+			<if test="icpsrvname != null and icpsrvname != '' ">  <![CDATA[ ICPSRVNAME = #{icpsrvname } , ]]></if>
+			<if test="icpsrvcontentcode != null and icpsrvcontentcode != '' ">  <![CDATA[ ICPSRVCONTENTCODE = #{icpsrvcontentcode } , ]]></if>
+			<if test="icprecordtype != null and icprecordtype != '' ">  <![CDATA[ ICPRECORDTYPE = #{icprecordtype } , ]]></if>
+			<if test="icprecordno != null and icprecordno != '' ">  <![CDATA[ ICPRECORDNO = #{icprecordno } , ]]></if>
+			<if test="icpaccesstype != null and icpaccesstype != '' ">  <![CDATA[ ICPACCESSTYPE = #{icpaccesstype } , ]]></if>
+			<if test="icpbusinesstype != null and icpbusinesstype != '' ">  <![CDATA[ ICPBUSINESSTYPE = #{icpbusinesstype } , ]]></if>
+			<if test="domainStatus != null  ">  <![CDATA[ DOMAIN_STATUS = #{domainStatus } , ]]></if>
+		</set>
+		where id = #{id,jdbcType=NUMERIC}
+	</update>
+
+ </mapper>

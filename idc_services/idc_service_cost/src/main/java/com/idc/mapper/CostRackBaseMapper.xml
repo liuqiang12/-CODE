@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.CostRackBaseMapper">
+  <resultMap id="BaseResultMap" type="com.idc.model.CostRackBase">
+    <id column="COST_RACK_ID" jdbcType="VARCHAR" property="costRackId" />
+    <result column="COST_FIXED_ID" jdbcType="VARCHAR" property="costFixedId" />
+    <result column="RACK_CODE" jdbcType="VARCHAR" property="rackCode" />
+    <result column="ROOM_CODE" jdbcType="VARCHAR" property="roomCode" />
+    <result column="COST_TIME_UNIT" jdbcType="VARCHAR" property="costTimeUnit" />
+    <result column="COST_DEPRECIATION" jdbcType="DECIMAL" property="costDepreciation" />
+    <result column="COST_MAINTENANCE_FEE" jdbcType="DECIMAL" property="costMaintenanceFee" />
+    <result column="COST_INVEST" jdbcType="DECIMAL" property="costInvest" />
+    <result column="COST_CREATE_TIME" jdbcType="DATE" property="costCreateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    COST_RACK_ID, COST_FIXED_ID, RACK_CODE, ROOM_CODE, COST_TIME_UNIT, COST_DEPRECIATION, 
+    COST_MAINTENANCE_FEE, COST_INVEST, COST_CREATE_TIME
+  </sql>
+  <select id="selectByExample" parameterType="com.idc.model.CostRackBaseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from COST_RACK_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from COST_RACK_BASE
+    where COST_RACK_ID = #{costRackId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from COST_RACK_BASE
+    where COST_RACK_ID = #{costRackId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.idc.model.CostRackBaseExample">
+    delete from COST_RACK_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.idc.model.CostRackBase">
+    insert into COST_RACK_BASE (COST_RACK_ID, COST_FIXED_ID, RACK_CODE, 
+      ROOM_CODE, COST_TIME_UNIT, COST_DEPRECIATION, 
+      COST_MAINTENANCE_FEE, COST_INVEST, COST_CREATE_TIME
+      )
+    values (#{costRackId,jdbcType=VARCHAR}, #{costFixedId,jdbcType=VARCHAR}, #{rackCode,jdbcType=VARCHAR}, 
+      #{roomCode,jdbcType=VARCHAR}, #{costTimeUnit,jdbcType=VARCHAR}, #{costDepreciation,jdbcType=DECIMAL}, 
+      #{costMaintenanceFee,jdbcType=DECIMAL}, #{costInvest,jdbcType=DECIMAL}, #{costCreateTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.idc.model.CostRackBase">
+    insert into COST_RACK_BASE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costRackId != null">
+        COST_RACK_ID,
+      </if>
+      <if test="costFixedId != null">
+        COST_FIXED_ID,
+      </if>
+      <if test="rackCode != null">
+        RACK_CODE,
+      </if>
+      <if test="roomCode != null">
+        ROOM_CODE,
+      </if>
+      <if test="costTimeUnit != null">
+        COST_TIME_UNIT,
+      </if>
+      <if test="costDepreciation != null">
+        COST_DEPRECIATION,
+      </if>
+      <if test="costMaintenanceFee != null">
+        COST_MAINTENANCE_FEE,
+      </if>
+      <if test="costInvest != null">
+        COST_INVEST,
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costRackId != null">
+        #{costRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedId != null">
+        #{costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="rackCode != null">
+        #{rackCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null">
+        #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costTimeUnit != null">
+        #{costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="costDepreciation != null">
+        #{costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costMaintenanceFee != null">
+        #{costMaintenanceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costInvest != null">
+        #{costInvest,jdbcType=DECIMAL},
+      </if>
+      <if test="costCreateTime != null">
+        #{costCreateTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.idc.model.CostRackBaseExample" resultType="java.lang.Long">
+    select count(*) from COST_RACK_BASE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update COST_RACK_BASE
+    <set>
+      <if test="record.costRackId != null">
+        COST_RACK_ID = #{record.costRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costFixedId != null">
+        COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rackCode != null">
+        RACK_CODE = #{record.rackCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomCode != null">
+        ROOM_CODE = #{record.roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costTimeUnit != null">
+        COST_TIME_UNIT = #{record.costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costDepreciation != null">
+        COST_DEPRECIATION = #{record.costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costMaintenanceFee != null">
+        COST_MAINTENANCE_FEE = #{record.costMaintenanceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costInvest != null">
+        COST_INVEST = #{record.costInvest,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costCreateTime != null">
+        COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update COST_RACK_BASE
+    set COST_RACK_ID = #{record.costRackId,jdbcType=VARCHAR},
+      COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      RACK_CODE = #{record.rackCode,jdbcType=VARCHAR},
+      ROOM_CODE = #{record.roomCode,jdbcType=VARCHAR},
+      COST_TIME_UNIT = #{record.costTimeUnit,jdbcType=VARCHAR},
+      COST_DEPRECIATION = #{record.costDepreciation,jdbcType=DECIMAL},
+      COST_MAINTENANCE_FEE = #{record.costMaintenanceFee,jdbcType=DECIMAL},
+      COST_INVEST = #{record.costInvest,jdbcType=DECIMAL},
+      COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.idc.model.CostRackBase">
+    update COST_RACK_BASE
+    <set>
+      <if test="costFixedId != null">
+        COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="rackCode != null">
+        RACK_CODE = #{rackCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roomCode != null">
+        ROOM_CODE = #{roomCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costTimeUnit != null">
+        COST_TIME_UNIT = #{costTimeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="costDepreciation != null">
+        COST_DEPRECIATION = #{costDepreciation,jdbcType=DECIMAL},
+      </if>
+      <if test="costMaintenanceFee != null">
+        COST_MAINTENANCE_FEE = #{costMaintenanceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costInvest != null">
+        COST_INVEST = #{costInvest,jdbcType=DECIMAL},
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE},
+      </if>
+    </set>
+    where COST_RACK_ID = #{costRackId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.idc.model.CostRackBase">
+    update COST_RACK_BASE
+    set COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR},
+      RACK_CODE = #{rackCode,jdbcType=VARCHAR},
+      ROOM_CODE = #{roomCode,jdbcType=VARCHAR},
+      COST_TIME_UNIT = #{costTimeUnit,jdbcType=VARCHAR},
+      COST_DEPRECIATION = #{costDepreciation,jdbcType=DECIMAL},
+      COST_MAINTENANCE_FEE = #{costMaintenanceFee,jdbcType=DECIMAL},
+      COST_INVEST = #{costInvest,jdbcType=DECIMAL},
+      COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE}
+    where COST_RACK_ID = #{costRackId,jdbcType=VARCHAR}
+  </update>
+</mapper>

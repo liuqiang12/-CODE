@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.JbpmResourceModelMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultJbpmResourceModelMap" type="JbpmResourceModel">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="MODEL_ID" property="modelId" />
+				
+		<result column="NAME" property="name" />
+				
+		<result column="KEY" property="key" />
+				
+		<result column="EDITOR_SOURCE_VALUE_ID" property="editorSourceValueId" />
+				
+		<result column="EDITOR_SOURCE_EXTRA_VALUE_ID" property="editorSourceExtraValueId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="JbpmResourceModel">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="JbpmResourceModel"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="JbpmResourceModel">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</select>
+
+	<delete id="deleteByResource" >
+		delete from JBPM_RESOURCE_MODEL
+		where ID = #{0}
+	</delete>
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="JbpmResourceModel">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+	</select>
+	<select id="getJbpmResourceModelId" resultType="Long">
+		select id from JBPM_RESOURCE_MODEL
+		WHERE name = #{0}
+	</select>
+
+
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="JbpmResourceModel"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="JbpmResourceModel">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="JbpmResourceModel">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_MODEL
+		<include refid="wherePageParam" />
+	</select>
+
+	<delete id="callClearJbpmResourceModel"  >
+		call clear_jbpm_resource_model(#{0})
+	</delete>
+	<!-- update -->
+	<update id="updateByObject" parameterType="JbpmResourceModel">
+		update JBPM_RESOURCE_MODEL
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update JBPM_RESOURCE_MODEL
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from JBPM_RESOURCE_MODEL
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from JBPM_RESOURCE_MODEL where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="JbpmResourceModel">
+		delete from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from JBPM_RESOURCE_MODEL
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from JBPM_RESOURCE_MODEL where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+
+	<!-- insert保存方法 -->
+	<insert id="createJbpmResourceModel" parameterType="JbpmResourceModel" >
+		<selectKey  keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_JBPM_RESOURCE_MODEL.CURRVAL AS id FROM DUAL
+		</selectKey>
+		INSERT INTO JBPM_RESOURCE_MODEL
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="JbpmResourceModel"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO JBPM_RESOURCE_MODEL
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO JBPM_RESOURCE_MODEL (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			MODEL_ID as modelId,
+			NAME as name,
+			KEY as key,
+			EDITOR_SOURCE_VALUE_ID as editorSourceValueId,
+			EDITOR_SOURCE_EXTRA_VALUE_ID as editorSourceExtraValueId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="modelId != null and modelId != '' ">  <![CDATA[ and MODEL_ID = #{modelId} ]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+						
+			<if test="key != null and key != '' ">  <![CDATA[ and KEY = #{key} ]]></if>
+						
+			<if test="editorSourceValueId != null and editorSourceValueId != '' ">  <![CDATA[ and EDITOR_SOURCE_VALUE_ID = #{editorSourceValueId} ]]></if>
+						
+			<if test="editorSourceExtraValueId != null and editorSourceExtraValueId != '' ">  <![CDATA[ and EDITOR_SOURCE_EXTRA_VALUE_ID = #{editorSourceExtraValueId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.modelId != null and params.modelId != '' ">  <![CDATA[ and MODEL_ID = #{params.modelId} ]]></if>
+						
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+						
+			<if test="params.key != null and params.key != '' ">  <![CDATA[ and KEY = #{params.key} ]]></if>
+						
+			<if test="params.editorSourceValueId != null and params.editorSourceValueId != '' ">  <![CDATA[ and EDITOR_SOURCE_VALUE_ID = #{params.editorSourceValueId} ]]></if>
+						
+			<if test="params.editorSourceExtraValueId != null and params.editorSourceExtraValueId != '' ">  <![CDATA[ and EDITOR_SOURCE_EXTRA_VALUE_ID = #{params.editorSourceExtraValueId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="modelId != null and modelId != '' ">  <![CDATA[  MODEL_ID = #{modelId } ,]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+						
+			<if test="key != null and key != '' ">  <![CDATA[  KEY = #{key } ,]]></if>
+						
+			<if test="editorSourceValueId != null and editorSourceValueId != '' ">  <![CDATA[  EDITOR_SOURCE_VALUE_ID = #{editorSourceValueId } ,]]></if>
+						
+			<if test="editorSourceExtraValueId != null and editorSourceExtraValueId != '' ">  <![CDATA[  EDITOR_SOURCE_EXTRA_VALUE_ID = #{editorSourceExtraValueId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+			<if test="modelId != null and modelId != '' ">  <![CDATA[ MODEL_ID , ]]></if>
+			<if test="name != null and name != '' ">  <![CDATA[ "NAME" , ]]></if>
+			<if test="key != null and key != '' ">  <![CDATA[ "KEY" , ]]></if>
+			<if test="editorSourceValueId != null and editorSourceValueId != '' ">  <![CDATA[ EDITOR_SOURCE_VALUE_ID , ]]></if>
+			<if test="editorSourceExtraValueId != null and editorSourceExtraValueId != '' ">  <![CDATA[ EDITOR_SOURCE_EXTRA_VALUE_ID , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+			<if test="modelId != null and modelId != '' ">  <![CDATA[ #{modelId } , ]]></if>
+			<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+			<if test="key != null and key != '' ">  <![CDATA[ #{key } , ]]></if>
+			<if test="editorSourceValueId != null and editorSourceValueId != '' ">  <![CDATA[ #{editorSourceValueId } , ]]></if>
+			<if test="editorSourceExtraValueId != null and editorSourceExtraValueId != '' ">  <![CDATA[ #{editorSourceExtraValueId } , ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,MODEL_ID,NAME,KEY,EDITOR_SOURCE_VALUE_ID,EDITOR_SOURCE_EXTRA_VALUE_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.modelId},#{item.name},#{item.key},#{item.editorSourceValueId},#{item.editorSourceExtraValueId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

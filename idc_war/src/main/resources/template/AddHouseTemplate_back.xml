@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<newInfo>
+		<idcId>$ispSolidData.idcId</idcId>
+		<idcName>$ispSolidData.idcName</idcName>
+		<idcAdd>$ispSolidData.idcAdd</idcAdd>
+		<idcZip>$ispSolidData.idcZip</idcZip>
+		<corp>$ispSolidData.corp</corp>
+		#foreach($item in $idcOfficerList)#*foreach=$idcOfficerList:9*#
+		#if($item.category=='1')#*从list中判断,是否是网络安全负责人*#
+		<idcOfficer>
+			<name>$item.name</name>
+			<idType>$item.idType</idType>
+			<id>$item.id</id>
+			<tel>$item.tel</tel>
+			<mobile>$item.mobile</mobile>
+			<email>$item.email</email>
+		</idcOfficer>
+		#end#*从list中判断,是否是网络安全负责人*#
+		#if($item.category=='2')#*从list中判断,是否是应急联系人信息*#
+		<emergencyContact>
+			<name>$item.name</name>
+			<idType>$item.idType</idType>
+			<id>$item.id</id>
+			<tel>$item.tel</tel>
+			<mobile>$item.mobile</mobile>
+			<email>$item.email</email>
+		</emergencyContact>
+		#end#*从list中判断,是否是应急联系人信息*#
+		#end#*//foreach=$idcOfficerList:9*#
+		<houseCount>$ispSolidData.houseCount</houseCount>
+		<houseInfo>
+			<houseId>$ispSolidData.houseId</houseId>
+			<houseName>$ispSolidData.houseName</houseName>
+			<houseType>$ispSolidData.houseType</houseType>
+			<houseProvince>$ispSolidData.houseProvincel</houseProvince>
+			<houseCity>$ispSolidData.houseCity</houseCity>
+			<houseCounty>$ispSolidData.houseCounty</houseCounty>
+			<houseAdd>$ispSolidData.houseAdd</houseAdd>
+			<houseZip>$ispSolidData.houseZip</houseZip>
+			#foreach($item in $idcOfficerList)#*41foreach=$idcOfficerList*#
+			#if($item.category=='1')#*42从list中判断,是否是网络安全负责人*#
+			<idcOfficer>
+				<name>$item.name</name>
+				<idType>$item.idType</idType>
+				<id>$item.id</id>
+				<tel>$item.tel</tel>
+				<mobile>$item.mobile</mobile>
+				<email>$item.email</email>
+			</idcOfficer>
+			#end#*//42从list中判断,是否是网络安全负责人***#
+			#end#*//41foreach=$idcOfficerList*#
+			#foreach($item in $gatewayInfoList)#*54#*链路信息:通过表中数据固化*#
+			<gatewayInfo>
+				<id>$item.id</id>
+				<bandWidth>$item.bandWidth</bandWidth>
+				<linkType>$item.linkType</linkType>
+				<accessUnit>$item.accessUnit</accessUnit>
+				<gatewayIp>$item.gatewayIp</gatewayIp>
+			</gatewayInfo>
+			#end#*//54*#
+			#foreach($item in $ipSegInfoList)#*62ip地址:通过表中数据固化*#
+			<ipSegInfo>
+				<id>$item.id</id>
+				<startIp>$item.startIp</startIp>
+				<endIp>$item.endIp</endIp>
+				<type>$item.type</type>
+				<user>$item.user</user>
+				<idType>$item.idType</idType>
+				<idNumber>$item.idNumber</idNumber>
+				<sourceUnit>$item.sourceUnit</sourceUnit>
+				<allocationUnit>$item.allocationUnit</allocationUnit>
+				<useTime>$item.useTime</useTime>
+			</ipSegInfo>
+			#end#*//62ip地址:通过表中数据固化*#
+			#foreach($item in $frameInfoList)#*76机架信息*#
+			<frameInfo>
+				<id>$item.id</id>
+				<useType>$item.useType</useType>
+				<distribution>$item.distribution</distribution>
+				<occupancy>$item.occupancy</occupancy>
+				<frameName>$item.frameName</frameName>
+			</frameInfo>
+			#end#*//76机架信息*#
+		</houseInfo>
+		#foreach($item in $idcReCustomerList)#*86客户信息*#
+		<userInfo>
+			<id>$item.id</id>
+			<nature>$item.nature</nature>
+			<info>
+				<unitName>$item.unitName</unitName>
+				<unitNature>$item.unitNature</unitNature>
+				<idType>$item.idType</idType>
+				<idNumber>$item.idNumber</idNumber>
+				#foreach($item in $idcOfficerList)#*95foreach=$idcOfficerList*#
+				#if($item.category=='1')#*96从list中判断,是否是网络安全负责人*#
+				<idcOfficer>
+					<name>$item.name</name>
+					<idType>$item.idType</idType>
+					<id>$item.id</id>
+					<tel>$item.tel</tel>
+					<mobile>$item.mobile</mobile>
+					<email>$item.email</email>
+				</idcOfficer>
+				#end#*//96从list中判断,是否是网络安全负责人***#
+				#end#*//95foreach=$idcOfficerList*#
+				<add>$item.add</add>
+				<zipCode>$item.zipCode</zipCode>
+				#if($item.nature=='1')#*109:1提供互联网应用服务的用户*#
+				#foreach($userServiceItem in $idcReCustomer_server.get($item.aid))#*110遍历服务信息*#
+				<serviceInfo>
+					<serviceId>$userServiceItem.serviceId</serviceId>
+					#foreach( $serviceContentItem in $userServiceItem.serviceContent.split("[,]"))#* 113遍历服务项 *#
+					<serviceContent>$serviceContentItem</serviceContent>
+					#end#* //113遍历服务项 *#
+					#if($userServiceItem.regType)<regType>$userServiceItem.regType</regType>#end#* 判断非空 *#
+					#if($userServiceItem.regId)<regId>$userServiceItem.regId</regId>#end#* 判断非空 *#
+					#if($userServiceItem.setMode)<setMode>$userServiceItem.setMode</setMode>#end#* 判断非空 *#
+					#if($userServiceItem.business)<business>$userServiceItem.business</business>#end#* 判断非空 *#
+					#if($userServiceItem.domainName)<domain>
+					<id>$userServiceItem.domainId</id>
+					<name>$userServiceItem.domainName</name>
+				</domain>#end#* 判断非空 *#
+					#foreach($serverHousesHoldInfoItem in $server_housesHoldInfo.get($userServiceItem.aid))#*124 占用机房信息*#
+					<housesHoldInfo>
+						<hhId>$userServiceItem.hhid</hhId>
+						<houseId>$ispSolidData.houseId</houseId>
+						<distributeTime>$resourceAttrMap.get($userServiceItem.aid)</distributeTime>
+						#if($serverHousesHoldInfoItem.frameInfoId)#* 129机架可能是空 *#
+						<frameInfoId>$serverHousesHoldInfoItem.frameInfoId</frameInfoId>
+						#end#* //129机架可能是空 *#
+						#if($userServiceItem.bandWidth)#* 132带宽 *#
+						<bandWidth>$userServiceItem.bandWidth</bandWidth>
+						#end#* //132带宽 *#
+						#foreach($serverHousesHoldInfoIpTransItem in $server_housesHoldInfo_ipAttr.get($userServiceItem.aid))#*135 ip资源服务*#
+						<ipTrans>
+							<internetIp>
+								<startIp>$serverHousesHoldInfoIpTransItem.startIp</startIp>
+								<endIp>$serverHousesHoldInfoIpTransItem.endIp</endIp>
+							</internetIp>
+						</ipTrans>
+						#end#*//135 ip资源服务*#
+					</housesHoldInfo>
+					#end#*//124 占用机房信息*#
+				</serviceInfo>
+				#end#*//110遍历服务信息*#
+				#end#*//109:1提供互联网应用服务的用户*#
+				#if($item.nature=='2')#*148: 其他用户*#
+
+				#end#*148: 其他用户*#
+				<registerTime>$item.registerTime</registerTime>
+			</info>
+		</userInfo>
+		#end#*#*//86客户信息*#
+	</newInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

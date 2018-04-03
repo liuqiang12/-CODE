@@ -1,0 +1,66 @@
+/*
+ * @(#)ExecutiveResult.java 12/23/2011
+ *
+ * Copyright 2011 Zone, All rights reserved.
+ */
+package com.zone.ics.frame.gathercontrol.result;
+
+import java.io.Serializable;
+
+import com.zone.ics.frame.globaldata.TaskRunFlag;
+
+/**
+ * <code>ExecutiveResult</code> 任务执行后所得的结果 采集和分析过程中的中间结果也属于它的子类
+ * 
+ * @author Wang Xuedan
+ * @version 1.0, 12/23/2011
+ */
+public abstract class ExecutiveResult implements Serializable {
+	/* add @author gamesdoa
+	 * @email gamesdoa@gmail.com
+	 * @date 2012-10-29
+	 */
+	private static final long serialVersionUID = -6628272750200070684L;
+	private int successSize = 1;//完成成功对象的个数
+	private String errMsg;//记录失败信息
+
+	private int runTask = TaskRunFlag.WAITING;//任务执行状态
+
+	public ExecutiveResult(int successSize) {
+		this.successSize = successSize;
+	}
+	
+//	public ExecutiveResult(String errMsg) {
+//		this.successSize = 0;
+//		this.setErrMsg(errMsg);
+//
+//	}
+
+	public void setSuccessSize(int successSize) {
+		this.successSize = successSize;
+	}
+
+	public int getSuccessSize() {
+		return successSize;
+	}
+
+	public int getRunTask() {
+		return runTask;
+	}
+
+	public void setRunTask(int runTask) {
+		this.runTask = runTask;
+	}
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.successSize = 0;
+		if((this.errMsg!=null)&&(!this.errMsg.trim().equals("")))
+			this.errMsg = this.errMsg+errMsg;
+		else
+			this.errMsg = errMsg;
+	}
+
+}

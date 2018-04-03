@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LnRolePermissioninfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLnRolePermissioninfoMap" type="LnRolePermissioninfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="permit_id" property="permitId" />
+				
+		<result column="role_id" property="roleId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LnRolePermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo where permit_id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LnRolePermissioninfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LnRolePermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LnRolePermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LnRolePermissioninfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LnRolePermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LnRolePermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_permissioninfo
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LnRolePermissioninfo">
+		update sys_ln_role_permissioninfo
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_ln_role_permissioninfo
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_ln_role_permissioninfo
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_ln_role_permissioninfo where permit_id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LnRolePermissioninfo">
+		delete from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_ln_role_permissioninfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_ln_role_permissioninfo where permit_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <delete id="deleteByListByRoles" parameterType="java.util.List">
+        delete from sys_ln_role_permissioninfo where role_id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LnRolePermissioninfo"
+		useGeneratedKeys="true" keyProperty="permit_id">
+		INSERT INTO sys_ln_role_permissioninfo
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_ln_role_permissioninfo (
+		<include refid="batchInsertColumn" />
+		)
+		select slp.* from (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+				<include refid="batchInsertColumnParam" />
+			from dual
+		</foreach>
+		) slp
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	permit_id as permitId,
+			role_id as roleId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="permitId != null and permitId != '' ">  <![CDATA[ and permit_id = #{permitId} ]]></if>
+						
+			<if test="roleId != null and roleId != '' ">  <![CDATA[ and role_id = #{roleId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.permitId != null and params.permitId != '' ">  <![CDATA[ and permit_id = #{params.permitId} ]]></if>
+						
+			<if test="params.roleId != null and params.roleId != '' ">  <![CDATA[ and role_id = #{params.roleId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="permitId != null and permitId != '' ">  <![CDATA[  permit_id = #{permitId } ,]]></if>
+						
+			<if test="roleId != null and roleId != '' ">  <![CDATA[  role_id = #{roleId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+				
+		<if test="permitId != null and permitId != '' ">  <![CDATA[ permit_id  , ]]></if>
+				
+		<if test="roleId != null and roleId != '' ">  <![CDATA[ role_id   ]]></if>
+				
+	</sql>
+
+	<sql id="insertColumnParam">
+		
+		<if test="permitId != null and permitId != '' ">  <![CDATA[ #{permitId } ,]]></if>
+		
+		<if test="roleId != null and roleId != '' ">  <![CDATA[ #{roleId } ]]></if>
+				
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			permit_id,role_id
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.permitId},#{item.roleId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

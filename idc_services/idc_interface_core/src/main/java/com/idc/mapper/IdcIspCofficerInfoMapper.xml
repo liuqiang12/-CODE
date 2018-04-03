@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspCofficerInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspCofficerInfoMap" type="IdcOfficer">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="EMAIL" property="email" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="NAME" property="name" />
+		<result column="ID_TYPE" property="idType" />
+		<result column="ID" property="id" />
+		<result column="TEL" property="tel" />
+		<result column="MOBILE" property="mobile" />
+	</resultMap>
+</mapper>

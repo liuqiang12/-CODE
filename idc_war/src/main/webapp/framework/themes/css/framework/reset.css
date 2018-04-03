@@ -1,0 +1,26 @@
+/*body ul li dl dt dd ol */
+body {
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+	line-height: 200%;/*行高*/
+	height: 100%;
+	border: 0;
+	text-align: left;
+} 
+body,form,ul,li,dl,dt,dd,ol {
+	margin: 0;
+	padding: 0;
+}
+li { 
+	list-style-type: none;
+} 
+img {
+	border: 0;
+}
+
+a {
+	cursor: pointer;
+	cursor: hand;
+	text-decoration:none;/* 无下划线*/
+}

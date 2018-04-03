@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcRackunitMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcRackunitMap" type="IdcRackunit">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="MODIFYTIME" property="modifytime" />
+				
+		<result column="ROOMID" property="roomid" />
+				
+		<result column="ORDERNO" property="orderno" />
+				
+		<result column="IDCNO" property="idcno" />
+				
+		<result column="ORDERID" property="orderid" />
+				
+		<result column="ID" property="id" />
+				
+		<result column="CODE" property="code" />
+				
+		<result column="RACKID" property="rackid" />
+				
+		<result column="DEVICEID" property="deviceid" />
+				
+		<result column="STATUS" property="status" />
+				
+		<result column="USEFOR" property="usefor" />
+				
+		<result column="UNO" property="uno" />
+
+		<result column="CUSTOMERID" property="customerid"/>
+
+		<result column="CUSTOMERNAME" property="customername"/>
+
+		<result column="CONTRACTID" property="contractid"/>
+
+		<result column="NETWORKDEVICEID" property="networkdeviceid"/>
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcRackunit">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcRackunit"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcRackunit">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcRackunit">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcRackunit"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcRackunit">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过机架Id获取机位 map page -->
+	<select id="queryIdcRackunitInfoListPage" parameterType="PageBean" resultType="Map">
+		select
+		<include refid="rackunitAndRackColumn"/>
+		from idc_rackunit t left join idc_rack r on (t.rackid = r.id)
+		left join idc_device d on (t.deviceid = d.deviceid)
+		left join zb_machineroom m on(t.roomid=m.id)
+		<where>
+			<if test="params.code!=null and params.code!=''">
+				<![CDATA[ and upper(t.code) like '%'||upper(#{params.code})||'%']]></if>
+			<if test="params.status!=null and params.status!=''"><![CDATA[ and t.status = #{params.status}]]></if>
+			<if test="params.rackid!=null or params.rackid=='0'"><![CDATA[ and t.rackid = #{params.rackid}]]></if>
+		</where>
+		order by t.uno
+	</select>
+	<!-- 通过机架Id获取机位 map-->
+	<select id="queryIdcRackunitInfoList" parameterType="IdcRackunit" resultType="Map">
+		select
+		<include refid="rackunitAndRackColumn"/>
+		from idc_rackunit t left join idc_rack r on (t.rackid = r.id)
+		left join idc_device d on (t.deviceid = d.deviceid)
+		left join zb_machineroom m on(t.roomid=m.id)
+		<where>
+			<if test="code!=null and code!=''">
+				<![CDATA[ and upper(t.code) like '%'||upper(#{code})||'%']]></if>
+			<if test="status!=null and status!=''"><![CDATA[ and t.status = #{status}]]></if>
+			<if test="rackid!=null or rackid =='0'"><![CDATA[ and t.rackid = #{rackid}]]></if>
+		</where>
+		order by t.uno
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcRackunit">
+		select
+		<include refid="baseColumn" />
+		from IDC_RACKUNIT
+		<include refid="wherePageParam" />
+	</select>
+    <select id="queryListByRackID" resultType="Map">
+        select
+        a.ID as ID,
+        a.CODE as code,
+        a.UNO as uno,
+        a.IDCNO as idcno,
+        a.USEFOR as usefor,
+        a.STATUS as status,
+        a.DEVICEID as DEVICEID,
+		a.customerid as customerid,
+		a.customername as customername,
+        b.NAME
+        from IDC_RACKUNIT a
+		LEFT JOIN idc_device b on (a.deviceid = b.DeviceId)
+        where a.rackid=#{0}
+    </select>
+	<!-- 快速上架，检测安装位置到安装高度之间的机位是否足够 -->
+	<select id="getRackunitNumByUheightAndRack" resultType="java.lang.Integer">
+		<![CDATA[
+
+		select (case
+				when (select max(t.uno) from idc_rackunit t where t.rackid = #{rackId}) < #{uinstall} + #{uheight} then
+					0
+				else
+				(select count(1) from idc_rackunit t
+					where t.uno >= #{uinstall}
+					and t.uno < #{uinstall} + #{uheight}
+					and t.status = 20
+					and t.rackid = #{rackId})
+					end) unitNum
+		from dual
+
+		]]>
+	</select>
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcRackunit">
+		update IDC_RACKUNIT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_RACKUNIT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+	<!--设备上架-->
+    <update id="online">
+        update IDC_RACKUNIT
+        set DEVICEID=#{deviceid},
+        STATUS = 60
+        where RACKID=#{rackid}
+        and UNO &gt;#{startu} and UNO &lt;=#{endu}
+    </update>
+	<!--设备下架-->
+    <update id="down" >
+        update IDC_RACKUNIT
+        set DEVICEID= null,
+        STATUS = 20
+        where RACKID=#{rackid}
+        and DEVICEID=#{deviceid}
+    </update>
+
+	<!-- 修改机位状态 map中key:id-机位ID，status-状态，customerId-客户ID，customerName-客户名称，ticketId-工单号 -->
+	<update id="updateRackunitStatusByIds" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=" end;">
+			UPDATE IDC_RACKUNIT t
+			<set>
+				<if test="item.status!=null and item.status!='' ">
+					t.STATUS = ${item.status},
+				</if>
+				<choose>
+					<when test="item.ticketId!=null and item.ticketId!='' ">
+						t.ORDERID = ${item.ticketId},
+					</when>
+					<otherwise>
+						t.ORDERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerId!=null and item.customerId!='' ">
+						t.CUSTOMERID = ${item.customerId},
+					</when>
+					<otherwise>
+						t.CUSTOMERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerName!=null and item.customerName!='' ">
+						t.CUSTOMERNAME = '${item.customerName}',
+					</when>
+					<otherwise>
+						t.CUSTOMERNAME = null
+					</otherwise>
+				</choose>
+			</set>
+			<where>
+				t.ID = ${item.id}
+				<if test="item.releaseReourceByTicketId!=null and item.releaseReourceByTicketId!='' ">
+					and t.ORDERID = ${item.releaseReourceByTicketId}
+				</if>
+				;
+			</where>
+		</foreach>
+	</update>
+
+	<!-- 解除客户与机位的绑定关系 -->
+	<update id="unbindCustomerWithRackunit">
+		UPDATE IDC_RACKUNIT t set t.STATUS=#{status},t.ORDERID = null,t.CUSTOMERID = null,t.CUSTOMERNAME = null
+		where t.rackid=#{rackId} and t.ORDERID = #{ticketId}
+	</update>
+
+	<!-- 根据机架ID修改机位状态 -->
+    <update id="updateStatusByRackId">
+		update IDC_RACKUNIT t set t.status=#{status},t.CUSTOMERID=null,t.CUSTOMERNAME=null where t.rackid= #{rackId}
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_RACKUNIT
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_RACKUNIT where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcRackunit">
+		delete from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_RACKUNIT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_RACKUNIT where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcRackunit"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_RACKUNIT
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+
+        INSERT INTO IDC_RACKUNIT(
+           <include refid="batchInsertColumn" />
+        )
+        select IDC_RACKUNIT_SEQ.NEXTVAL,cd.* from(
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+             <include refid="batchInsertColumnParam" />
+            from dual
+        </foreach>
+        ) cd
+	</insert>
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	MODIFYTIME as modifytime,
+			ROOMID as roomid,
+			ORDERNO as orderno,
+			IDCNO as idcno,
+			ORDERID as orderid,
+			ID as id,
+			CODE as code,
+			RACKID as rackid,
+			DEVICEID as deviceid,
+			STATUS as status,
+			USEFOR as usefor,
+			UNO as uno,
+			CUSTOMERID as customerid,
+			CUSTOMERNAME as customername,
+			CONTRACTID as contractid,
+			NETWORKDEVICEID as networkdeviceid
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="modifytime != null and modifytime != '' ">  <![CDATA[ and MODIFYTIME = #{modifytime} ]]></if>
+						
+			<if test="roomid != null and roomid != '' ">  <![CDATA[ and ROOMID = #{roomid} ]]></if>
+						
+			<if test="orderno != null and orderno != '' ">  <![CDATA[ and ORDERNO = #{orderno} ]]></if>
+						
+			<if test="idcno != null and idcno != '' ">  <![CDATA[ and IDCNO = #{idcno} ]]></if>
+						
+			<if test="orderid != null and orderid != '' ">  <![CDATA[ and ORDERID = #{orderid} ]]></if>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+						
+			<if test="rackid != null and rackid != '' ">  <![CDATA[ and RACKID = #{rackid} ]]></if>
+						
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ and DEVICEID = #{deviceid} ]]></if>
+						
+			<if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+						
+			<if test="usefor != null and usefor != '' ">  <![CDATA[ and USEFOR = #{usefor} ]]></if>
+						
+			<if test="uno != null and uno != '' ">  <![CDATA[ and UNO = #{uno} ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ and CUSTOMERID = #{customerid} ]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{customername} ]]></if>
+
+			<if test="contractid != null and contractid != '' ">  <![CDATA[ and CONTRACTID = #{contractid} ]]></if>
+
+			<if test="networkdeviceid != null and networkdeviceid != '' ">
+				<![CDATA[ and NETWORKDEVICEID = #{networkdeviceid} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.modifytime != null and params.modifytime != '' ">  <![CDATA[ and MODIFYTIME = #{params.modifytime} ]]></if>
+						
+			<if test="params.roomid != null and params.roomid != '' ">  <![CDATA[ and ROOMID = #{params.roomid} ]]></if>
+						
+			<if test="params.orderno != null and params.orderno != '' ">  <![CDATA[ and ORDERNO = #{params.orderno} ]]></if>
+						
+			<if test="params.idcno != null and params.idcno != '' ">  <![CDATA[ and IDCNO = #{params.idcno} ]]></if>
+						
+			<if test="params.orderid != null and params.orderid != '' ">  <![CDATA[ and ORDERID = #{params.orderid} ]]></if>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+						
+			<if test="params.rackid != null and params.rackid != '' ">  <![CDATA[ and RACKID = #{params.rackid} ]]></if>
+						
+			<if test="params.deviceid != null and params.deviceid != '' ">  <![CDATA[ and DEVICEID = #{params.deviceid} ]]></if>
+						
+			<if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+						
+			<if test="params.usefor != null and params.usefor != '' ">  <![CDATA[ and USEFOR = #{params.usefor} ]]></if>
+						
+			<if test="params.uno != null and params.uno != '' ">  <![CDATA[ and UNO = #{params.uno} ]]></if>
+
+			<if test="params.customerid != null and params.customerid != '' ">
+				<![CDATA[ and CUSTOMERID = #{params.customerid} ]]></if>
+
+			<if test="params.customername != null and params.customername != '' ">
+				<![CDATA[ and CUSTOMERNAME = #{params.customername} ]]></if>
+
+			<if test="params.contractid != null and params.contractid != '' ">
+				<![CDATA[ and CONTRACTID = #{params.contractid} ]]></if>
+
+			<if test="params.networkdeviceid != null and params.networkdeviceid != '' ">
+				<![CDATA[ and NETWORKDEVICEID = #{params.networkdeviceid} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="modifytime != null and modifytime != '' ">  <![CDATA[  MODIFYTIME = #{modifytime } ,]]></if>
+						
+			<if test="roomid != null and roomid != '' ">  <![CDATA[  ROOMID = #{roomid } ,]]></if>
+						
+			<if test="orderno != null and orderno != '' ">  <![CDATA[  ORDERNO = #{orderno } ,]]></if>
+						
+			<if test="idcno != null and idcno != '' ">  <![CDATA[  IDCNO = #{idcno } ,]]></if>
+						
+			<if test="orderid != null and orderid != '' ">  <![CDATA[  ORDERID = #{orderid } ,]]></if>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+						
+			<if test="rackid != null and rackid != '' ">  <![CDATA[  RACKID = #{rackid } ,]]></if>
+						
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[  DEVICEID = #{deviceid } ,]]></if>
+						
+			<if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+						
+			<if test="usefor != null and usefor != '' ">  <![CDATA[  USEFOR = #{usefor } ,]]></if>
+						
+			<if test="uno != null and uno != '' ">  <![CDATA[  UNO = #{uno } ,]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID = #{customerid } ,]]></if>
+
+			<if test="customername != null and customername != '' ">
+				<![CDATA[ CUSTOMERNAME = #{customername } ,]]></if>
+
+			<if test="contractid != null and contractid != '' ">  <![CDATA[ CONTRACTID = #{contractid } ,]]></if>
+
+			<if test="networkdeviceid != null and networkdeviceid != '' ">
+				<![CDATA[ NETWORKDEVICEID = #{networkdeviceid } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="modifytime != null and modifytime != '' ">  <![CDATA[ MODIFYTIME , ]]></if>
+				
+		<if test="roomid != null and roomid != '' ">  <![CDATA[ ROOMID , ]]></if>
+				
+		<if test="orderno != null and orderno != '' ">  <![CDATA[ ORDERNO , ]]></if>
+				
+		<if test="idcno != null and idcno != '' ">  <![CDATA[ IDCNO , ]]></if>
+				
+		<if test="orderid != null and orderid != '' ">  <![CDATA[ ORDERID , ]]></if>
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+				
+		<if test="rackid != null and rackid != '' ">  <![CDATA[ RACKID , ]]></if>
+				
+		<if test="deviceid != null and deviceid != '' ">  <![CDATA[ DEVICEID , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+				
+		<if test="usefor != null and usefor != '' ">  <![CDATA[ USEFOR , ]]></if>
+				
+		<if test="uno != null and uno != '' ">  <![CDATA[ UNO , ]]></if>
+
+			<if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID, ]]></if>
+
+			<if test="customername != null and customername != '' ">  <![CDATA[ CUSTOMERNAME, ]]></if>
+
+			<if test="contractid != null and contractid != '' ">  <![CDATA[ CONTRACTID, ]]></if>
+
+			<if test="networkdeviceid != null and networkdeviceid != '' ">  <![CDATA[ NETWORKDEVICEID, ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="modifytime != null and modifytime != '' ">  <![CDATA[ #{modifytime } , ]]></if>
+				
+		<if test="roomid != null and roomid != '' ">  <![CDATA[ #{roomid } , ]]></if>
+				
+		<if test="orderno != null and orderno != '' ">  <![CDATA[ #{orderno } , ]]></if>
+				
+		<if test="idcno != null and idcno != '' ">  <![CDATA[ #{idcno } , ]]></if>
+				
+		<if test="orderid != null and orderid != '' ">  <![CDATA[ #{orderid } , ]]></if>
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+				
+		<if test="rackid != null and rackid != '' ">  <![CDATA[ #{rackid } , ]]></if>
+				
+		<if test="deviceid != null and deviceid != '' ">  <![CDATA[ #{deviceid } , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+				
+		<if test="usefor != null and usefor != '' ">  <![CDATA[ #{usefor } , ]]></if>
+				
+		<if test="uno != null and uno != '' ">  <![CDATA[ #{uno } , ]]></if>
+
+			<if test="params.customerid != null and params.customerid != '' ">  <![CDATA[ #{params.customerid}, ]]></if>
+
+			<if test="params.customername != null and params.customername != '' ">
+				<![CDATA[ #{params.customername}, ]]></if>
+
+			<if test="params.contractid != null and params.contractid != '' ">  <![CDATA[ #{params.contractid}, ]]></if>
+
+			<if test="params.networkdeviceid != null and params.networkdeviceid != '' ">
+				<![CDATA[ #{params.networkdeviceid}, ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		ID,CODE,RACKID,STATUS,UNO,CUSTOMERID,CUSTOMERNAME,CONTRACTID,NETWORKDEVICEID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.code},#{item.rackid},#{item.status},#{item.uno},#{item.customerid},#{item.customername},#{item.contractid},#{item.networkdeviceid}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+	<sql id="rackunitAndRackColumn">
+		<![CDATA[
+
+		  	t.MODIFYTIME as modifytime,
+			t.ROOMID as roomid,
+			t.ORDERNO as orderno,
+			t.IDCNO as idcno,
+			t.ORDERID as orderid,
+			t.ID as id,
+			t.CODE as code,
+			t.RACKID as rackid,
+			t.DEVICEID as deviceid,
+			t.STATUS as status,
+			t.USEFOR as usefor,
+			t.UNO as uno,
+			t.CUSTOMERID as customerid,
+			t.CUSTOMERNAME as customername,
+			t.CONTRACTID as contractid,
+			t.NETWORKDEVICEID as networkdeviceid,
+			r.name as rname,
+			m.sitename as sitename,
+			d.name as dname,
+			d.deviceclass as deviceclass
+
+		]]>
+	</sql>
+	<!-- 自动维护机位信息 -->
+	<select id="autoVindicateRackunit" statementType="CALLABLE">
+		call idc_auto_create_rackunit()
+	</select>
+
+	<!-- 获取客户所有机位信息 -->
+	<select id="queryUseredRackunitinfoByCustomerIdPage" parameterType="PageBean" resultType="Map">
+		select hh.serial_number as serialNumber,
+		<include refid="rackunitAndRackColumn"/>
+		from idc_rackunit t left join idc_rack r on (t.rackid = r.id)
+		left join idc_device d on (t.deviceid = d.deviceid)
+		left join zb_machineroom m on(t.roomid=m.id)
+		left join idc_his_ticket hh on (hh.ticket_inst_id = t.orderid)
+		where t.customerid = #{params.cusId}
+		<if test="params.selectKey!=null and params.selectKey!=''">
+			<![CDATA[ and upper(t.code) like '%'||upper(#{params.selectKey})||'%']]>
+		</if>
+		order by t.orderid,t.rackid,t.uno
+	</select>
+
+    <select id="queryUnitTotalAndFreeUnitByRackId" resultType="Map">
+        select
+        (select count(1)
+        from idc_rackunit t where t.rackid=#{0})as unitTotal,
+        (select count(1)
+        from idc_rackunit t where t.status=20 and t.rackid=#{0}) as freeUnitNum
+        from dual
+    </select>
+
+	<!-- 修改整个机架机位的状态，并记录客户、工单信息 -->
+	<update id="updateStatusByParamsMap" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin" close=" end;">
+			UPDATE IDC_RACKUNIT t
+			<set>
+				<if test="item.status!=null and item.status!='' ">
+					t.STATUS = ${item.status},
+				</if>
+				<choose>
+					<when test="item.ticketId!=null and item.ticketId!='' ">
+						t.ORDERID = ${item.ticketId},
+					</when>
+					<otherwise>
+						t.ORDERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerId!=null and item.customerId!='' ">
+						t.CUSTOMERID = ${item.customerId},
+					</when>
+					<otherwise>
+						t.CUSTOMERID = null,
+					</otherwise>
+				</choose>
+				<choose>
+					<when test="item.customerName!=null and item.customerName!='' ">
+						t.CUSTOMERNAME = '${item.customerName}',
+					</when>
+					<otherwise>
+						t.CUSTOMERNAME = null
+					</otherwise>
+				</choose>
+			</set>
+			<where>
+				t.rackid = ${item.id};
+			</where>
+		</foreach>
+	</update>
+</mapper>

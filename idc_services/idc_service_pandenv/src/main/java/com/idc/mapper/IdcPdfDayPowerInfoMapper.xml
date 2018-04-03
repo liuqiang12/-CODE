@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcPdfDayPowerInfoMapper">
+    <!-- 批量保存 -->
+    <resultMap id="idcPdfDayPowerInfoMap" type="IdcPdfDayPowerInfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <id column="IDC_PDF_DAY_POWER_INFO_ID" property="idcPdfDayPowerInfoId" jdbcType="VARCHAR"/>
+
+        <result column="IDC_ROOM_CODE" property="idcRoomCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_PDF_CODE" property="idcPdfCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_MCB_CODE" property="idcMcbCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_START_TIME" property="idcStartTime" jdbcType="DATE"/>
+
+        <result column="IDC_AMOUT" property="idcAmout" jdbcType="NUMERIC"/>
+
+        <result column="IDC_STATUS" property="idcStatus" jdbcType="VARCHAR"/>
+
+        <result column="IDC_CREATE_TIME" property="idcCreateTime" jdbcType="DATE"/>
+
+        <result column="IDC_END_TIME" property="idcEndTime" jdbcType="DATE"/>
+
+        <result column="IDC_ONLY_CODE" property="idcOnlyCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_BEFORE_DIFF" property="idcBeforeDiff" jdbcType="NUMERIC"/>
+
+    </resultMap>
+    <!--<insert id="insertList" parameterType="java.util.List">-->
+    <!--INSERT INTO IDC_PDF_DAY_POWER_INFO (-->
+    <!--<include refid="insertColumn"/>-->
+    <!--)-->
+    <!--VALUES-->
+    <!--<foreach collection="list" item="item" index=""-->
+    <!--separator="union all">-->
+    <!--(-->
+    <!--<include refid="columnParam"/>-->
+    <!--)-->
+    <!--</foreach>-->
+    <!--</insert>-->
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_POWER_PDF_INFO( IDC_PDF_DAY_POWER_INFO_ID,
+        IDC_ROOM_CODE,
+        IDC_PDF_CODE,
+        IDC_MCB_CODE,
+        IDC_START_TIME,
+        IDC_AMOUT,
+        IDC_STATUS,
+        IDC_CREATE_TIME,
+        IDC_END_TIME,
+        IDC_ONLY_CODE,
+        IDC_BEFORE_DIFF)
+        (
+        <foreach collection="list" index="" item="item"
+                 separator="union all">
+            select
+            #{item.idcPdfDayPowerInfoId},
+            #{item.idcRoomCode},
+            #{item.idcPdfCode},
+            #{item.idcMcbCode},
+            #{item.idcStartTime},
+            #{item.idcAmout},
+            #{item.idcStatus},
+            #{item.idcCreateTime},
+            #{item.idcEndTime},
+            #{item.idcOnlyCode},
+            #{item.idcBeforeDiff}
+            from dual
+        </foreach>
+        )
+    </insert>
+    <!-- 批量保存 -->
+    <sql id="insertColumn">
+        <![CDATA[
+
+
+
+
+
+
+
+            IDC_PDF_DAY_POWER_INFO_ID,
+            IDC_ROOM_CODE,
+            IDC_PDF_CODE,
+            IDC_MCB_CODE,
+            IDC_START_TIME,
+            IDC_AMOUT,
+            IDC_STATUS,
+            IDC_CREATE_TIME,
+            IDC_END_TIME,
+            IDC_ONLY_CODE,
+            IDC_BEFORE_DIFF
+
+
+
+
+
+
+
+        ]]>
+    </sql>
+
+    <sql id="columnParam">
+        <![CDATA[
+
+
+
+
+
+
+
+            #{item.idcPdfDayPowerInfoId},
+            #{item.idcRoomCode},
+            #{item.idcPdfCode},
+            #{item.idcMcbCode},
+            #{item.idcStartTime},
+            #{item.idcAmout},
+            #{item.idcStatus},
+            #{item.idcCreateTime},
+            #{item.idcEndTime},
+            #{item.idcOnlyCode},
+            #{item.idcBeforeDiff}
+
+
+
+
+
+
+
+        ]]>
+    </sql>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="com.idc.model.IdcPdfDayPowerInfo"
+            parameterType="Map">
+        select
+        <include refid="insertColumn"/>
+        from IDC_POWER_PDF_INFO
+        where to_date(to_char(IDC_CREATE_TIME,'yyyy-mm-dd'),'yyyy-mm-dd')= to_date( #{idcCreateTime},'yyyy-mm-dd')
+    </select>
+    <select id="queryListByTime" resultType="com.idc.model.IdcPdfDayPowerInfo">
+        SELECT
+        idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        idc_Room_Code idcRoomCode,
+        idc_Pdf_Code idcPdfCode,
+        idc_Mcb_Code idcMcbCode,
+        idc_Start_Time idcStartTime,
+        idc_Amout idcAmout,
+        idc_Status idcStatus,
+        idc_Create_Time idcCreateTime,
+        idc_End_Time idcEndTime,
+        idc_Only_Code idcOnlyCode
+        FROM
+        IDC_POWER_PDF_INFO
+        WHERE
+        TO_DATE (
+        TO_CHAR (
+        IDC_CREATE_TIME,
+        'yyyy-mm-dd'
+        ),
+        'yyyy-mm-dd'
+        ) = TO_DATE (
+        TO_CHAR (SYSDATE - 1, 'yyyy-mm-dd'),
+        'yyyy-mm-dd'
+        )
+        <if test="idc_room_code!=null and idc_room_code!=''">
+            and idc_Room_Code=#{idc_Room_Code}
+        </if>
+        <if test="mcb!=null and mcb!=''">
+            and idc_Mcb_Code=#{mcb}
+        </if>
+        <if test="pdf!=null and pdf!=''">
+            and idc_Pdf_Code=#{pdf}
+        </if>
+    </select>
+    <select id="getPowerDay" resultType="com.idc.bo.IdcPdfDayPowerInfoVo">
+        SELECT
+        idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        idc_Room_Code idcRoomCode,
+        idc_Pdf_Code idcPdfCode,
+        idc_Mcb_Code idcMcbCode,
+        idc_Start_Time idcStartTime,
+        idc_Amout idcAmout,
+        idc_before_diff idcBeforeDiff,
+        idc_Status idcStatus,
+        idc_Create_Time idcCreateTime,
+        idc_End_Time idcEndTime,
+        idc_Only_Code idcOnlyCode
+        FROM
+       	idc_rack A INNER join idc_power_pdf_info b ON A .code = b.idc_pdf_code
+        WHERE
+        a.roomid=#{0}
+        and
+        TO_DATE (
+        TO_CHAR (
+        IDC_CREATE_TIME,
+        'yyyy-mm-dd'
+        ),
+        'yyyy-mm-dd'
+        ) = TO_DATE (
+        TO_CHAR (SYSDATE - 1, 'yyyy-mm-dd'),
+        'yyyy-mm-dd'
+        )
+    </select>
+    <select id="getHisMonth" resultType="com.idc.bo.IdcPdfDayPowerInfoVo">
+       SELECT
+	    c.idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        c.idc_Room_Code idcRoomCode,
+        c.idc_Pdf_Code idcPdfCode,
+        c.idc_Mcb_Code idcMcbCode,
+        c.idc_Start_Time idcStartTime,
+        c.idc_before_diff idcbeforediff,
+        c.idc_Amout idcAmout,
+        c.idc_Status idcStatus,
+        c.idc_Create_Time idcCreateTime,
+        c.idc_End_Time idcEndTime,
+        c.idc_Only_Code idcOnlyCode
+FROM
+	idc_mcb A
+inner JOIN idc_rack b ON A .pwr_installedrack_id = b. ID
+inner JOIN idc_power_pdf_info c ON (
+	UPPER (b.code) = UPPER (c.idc_pdf_code)
+	AND A .pwr_mcbno = c.idc_mcb_code
+)
+WHERE
+	pwr_servicerack_id = #{0}
+        and
+        TO_DATE (
+        TO_CHAR (
+        IDC_CREATE_TIME,
+        'yyyy-mm-dd'
+        ),
+        'yyyy-mm-dd'
+        ) >= TO_DATE (
+        TO_CHAR (SYSDATE - 30, 'yyyy-mm-dd'),
+        'yyyy-mm-dd'
+        )
+    </select>
+    <select id="getHisMonthBtTime" resultType="com.idc.bo.IdcPdfDayPowerInfoVo">
+        SELECT
+        c.idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        c.idc_Room_Code idcRoomCode,
+        c.idc_Pdf_Code idcPdfCode,
+        c.idc_Mcb_Code idcMcbCode,
+        c.idc_Start_Time idcStartTime,
+        c.idc_before_diff idcbeforediff,
+        c.idc_Amout idcAmout,
+        c.idc_Status idcStatus,
+        c.idc_Create_Time idcCreateTime,
+        c.idc_End_Time idcEndTime,
+        c.idc_Only_Code idcOnlyCode
+        FROM
+        idc_mcb A
+        inner JOIN idc_rack b ON A .pwr_installedrack_id = b. ID
+        inner JOIN idc_power_pdf_info c ON (
+        UPPER (b.code) = UPPER (c.idc_pdf_code)
+        AND A .pwr_mcbno = c.idc_mcb_code
+        )
+        WHERE
+        pwr_servicerack_id = #{rackid}
+        and
+        IDC_CREATE_TIME>= to_date(#{startTime},'yyyy-MM-dd')
+        and IDC_CREATE_TIME &lt;= to_date(#{endTime},'yyyy-MM-dd')
+
+    </select>
+
+    <select id="getPowerByDate" resultType="com.idc.bo.IdcPdfDayPowerInfoVo">
+        SELECT
+        idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        idc_Room_Code idcRoomCode,
+        idc_Pdf_Code idcPdfCode,
+        idc_Mcb_Code idcMcbCode,
+        idc_Start_Time idcStartTime,
+        idc_Amout idcAmout,
+        idc_before_diff idcBeforeDiff,
+        idc_Status idcStatus,
+        idc_Create_Time idcCreateTime,
+        idc_End_Time idcEndTime,
+        idc_Only_Code idcOnlyCode
+        FROM
+        idc_rack A INNER join idc_power_pdf_info b ON A .code = b.idc_pdf_code
+        <where>
+
+
+            <if test="roomid!=null and roomid!=''">
+                a.roomid=#{roomid}
+            </if>
+            <if test="userid!=null and userid!=''">
+                a.actualcustomerid=#{userid}
+            </if>
+            <if test="dateTime!=null and dateTime!=''">
+                and IDC_CREATE_TIME = to_date(#{dateTime},'yyyy-mm-dd')
+            </if>
+            <if test="dateTime==null or dateTime==''">
+                and
+                TO_DATE (
+                TO_CHAR (
+                IDC_CREATE_TIME,
+                'yyyy-mm-dd'
+                ),
+                'yyyy-mm-dd'
+                ) = TO_DATE (
+                TO_CHAR (SYSDATE - 1, 'yyyy-mm-dd'),
+                'yyyy-mm-dd'
+                )
+            </if>
+        </where>
+    </select>
+    <select id="getPowerByDateRange" resultType="com.idc.bo.IdcPdfDayPowerInfoVo">
+        SELECT
+        idc_Pdf_Day_Power_Info_Id idcPdfDayPowerInfoId,
+        idc_Room_Code idcRoomCode,
+        idc_Pdf_Code idcPdfCode,
+        idc_Mcb_Code idcMcbCode,
+        idc_Start_Time idcStartTime,
+        idc_Amout idcAmout,
+        idc_before_diff idcBeforeDiff,
+        idc_Status idcStatus,
+        idc_Create_Time idcCreateTime,
+        idc_End_Time idcEndTime,
+        idc_Only_Code idcOnlyCode
+        FROM
+        idc_rack A INNER join idc_power_pdf_info b ON A .code = b.idc_pdf_code
+        <where>
+
+
+            <if test="roomid!=null and roomid!=''">
+                a.roomid=#{roomid}
+            </if>
+            <if test="userid!=null and userid!=''">
+                a.actualcustomerid=#{userid}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and IDC_CREATE_TIME >= to_date(#{startTime},'yyyy-mm-dd')
+                and IDC_CREATE_TIME &lt;= to_date(#{endTime},'yyyy-mm-dd')
+            </if>
+
+        </where>
+    </select>
+</mapper>

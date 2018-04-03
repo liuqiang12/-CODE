@@ -1,0 +1,36 @@
+﻿@charset "utf-8";
+.on{
+    background-position: 0 0;
+}
+.checkbackgrd{
+    display: inline-block;
+    width: 99px;
+    height: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+    text-align: center;
+    background-image:url(../image/checkbox_01.gif);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+.on_not_check{
+    background-position: 0 0;
+}
+.on_check{
+    background-position: 0 -21px;
+}
+.on_check_disabled{
+    background-position: 0 -41px;
+}
+.disabled_not_check{
+    background-position: 0 -63px;
+}
+.opacity_default_0{
+    opacity: 0;
+    cursor: pointer;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+    filter:alpha(opacity=0);
+}
+
+
+/*信息界面*/

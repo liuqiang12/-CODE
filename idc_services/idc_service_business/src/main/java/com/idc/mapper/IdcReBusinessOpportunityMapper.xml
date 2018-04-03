@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReBusinessOpportunityMapper">
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcReBusinessOpportunity">
+		select
+		<include refid="baseColumn" />
+		from IDC_RE_BUSINESS_OPPORTUNITY where ID= #{0}
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcReBusinessOpportunity">
+		select
+		<include refid="baseColumn" />
+		from IDC_RE_BUSINESS_OPPORTUNITY
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcReBusinessOpportunity">
+		select
+		<include refid="baseColumn" />
+		from IDC_RE_BUSINESS_OPPORTUNITY
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcReBusinessOpportunity">
+		select
+		<include refid="baseColumn" />
+		from IDC_RE_BUSINESS_OPPORTUNITY
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcReBusinessOpportunity">
+		update IDC_RE_BUSINESS_OPPORTUNITY
+		<include refid="updateParam" />
+		WHERE id = #{id}
+	</update>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_RE_BUSINESS_OPPORTUNITY where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcReBusinessOpportunity"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_RE_BUSINESS_OPPORTUNITY
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_RE_BUSINESS_OPPORTUNITY (
+		<include refid="insertColumn" />
+		)
+		select opportunity.* from(
+		<foreach collection="list" item="item" index="index" separator="union">
+			select
+			<include refid="batchInsertColumnParam"/>
+			from dual
+		</foreach>
+		) opportunity
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			BUSINESS_NAME as businessName,
+			CUSTOMER_ID as customerId,
+			ORDER_PREDICT_TIME as orderPredictTime,
+			ISORDERED as isordered,
+			CUSTOMER_NAME as customerName,
+			USER_NAME as userName,
+			USER_ID as userId,
+			CREATE_TIME as createTime,
+			REMARK as remark
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="businessName != null and businessName != '' ">  <![CDATA[ and upper(BUSINESS_NAME) like '%'||upper(#{businessName})||'%' ]]></if>
+						
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ and CUSTOMER_ID = #{customerId} ]]></if>
+						
+			<if test="orderPredictTime != null">  <![CDATA[ and ORDER_PREDICT_TIME = #{orderPredictTime} ]]></if>
+						
+			<if test="isordered != null and isordered != '' ">  <![CDATA[ and ISORDERED = #{isordered} ]]></if>
+						
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ and CUSTOMER_NAME = #{customerName} ]]></if>
+
+			<if test="userName != null and userName != '' ">  <![CDATA[ and USER_NAME = #{userName} ]]></if>
+
+			<if test="userId != null and userId != '' ">  <![CDATA[ and USER_ID = #{userId} ]]></if>
+						
+			<if test="createTime != null">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+						
+			<if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+
+            <if test="beginOrderPredictTime != null and beginOrderPredictTime != '' ">
+                <![CDATA[ and ORDER_PREDICT_TIME >= to_date(#{beginOrderPredictTime},'yyyy-mm-dd hh24:mi:ss') ]]>
+            </if>
+
+            <if test="endOrderPredictTime != null and endOrderPredictTime != '' ">
+                <![CDATA[ and ORDER_PREDICT_TIME <= to_date(#{endOrderPredictTime},'yyyy-mm-dd hh24:mi:ss') ]]>
+            </if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.businessName != null and params.businessName != '' ">  <![CDATA[ and upper(BUSINESS_NAME) like '%'||upper(#{params.businessName})||'%'  ]]></if>
+						
+			<if test="params.customerId != null and params.customerId != '' ">  <![CDATA[ and CUSTOMER_ID = #{params.customerId} ]]></if>
+						
+			<if test="params.orderPredictTime != null">  <![CDATA[ and ORDER_PREDICT_TIME = #{params.orderPredictTime} ]]></if>
+						
+			<if test="params.isordered != null and params.isordered != '' ">  <![CDATA[ and ISORDERED = #{params.isordered} ]]></if>
+						
+			<if test="params.customerName != null and params.customerName != '' ">  <![CDATA[ and CUSTOMER_NAME = #{params.customerName} ]]></if>
+
+			<if test="params.userName != null and params.userName != '' ">  <![CDATA[ and USER_NAME = #{params.userName} ]]></if>
+
+			<if test="params.userId != null and params.userId != '' ">  <![CDATA[ and USER_ID = #{params.userId} ]]></if>
+
+			<if test="params.createTime != null">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+						
+			<if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+            <if test="params.beginOrderPredictTime != null and params.beginOrderPredictTime != '' ">
+                <![CDATA[ and ORDER_PREDICT_TIME >= to_date(#{params.beginOrderPredictTime},'yyyy-mm-dd hh24:mi:ss') ]]>
+            </if>
+
+            <if test="params.endOrderPredictTime != null and params.endOrderPredictTime != '' ">
+                <![CDATA[ and ORDER_PREDICT_TIME <= to_date(#{params.endOrderPredictTime},'yyyy-mm-dd hh24:mi:ss') ]]>
+            </if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="businessName != null and businessName != '' ">  <![CDATA[  BUSINESS_NAME = #{businessName } ,]]></if>
+						
+			<if test="customerId != null and customerId != '' ">  <![CDATA[  CUSTOMER_ID = #{customerId } ,]]></if>
+						
+			<if test="orderPredictTime != null ">  <![CDATA[  ORDER_PREDICT_TIME = #{orderPredictTime } ,]]></if>
+						
+			<if test="isordered != null and isordered != '' ">  <![CDATA[  ISORDERED = #{isordered } ,]]></if>
+						
+			<if test="customerName != null and customerName != '' ">  <![CDATA[  CUSTOMER_NAME = #{customerName } ,]]></if>
+
+			<if test="userName != null and userName != '' ">  <![CDATA[ USER_NAME = #{userName} ]]></if>
+
+			<if test="userId != null and userId != '' ">  <![CDATA[ USER_ID = #{userId} ]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+						
+			<if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="businessName != null and businessName != '' ">  <![CDATA[ BUSINESS_NAME , ]]></if>
+				
+		<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+				
+		<if test="orderPredictTime != null ">  <![CDATA[ ORDER_PREDICT_TIME , ]]></if>
+				
+		<if test="isordered != null and isordered != '' ">  <![CDATA[ ISORDERED , ]]></if>
+				
+		<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+
+		<if test="userName != null and userName != '' ">  <![CDATA[ USER_NAME ,]]></if>
+
+		<if test="userId != null and userId != '' ">  <![CDATA[ USER_ID , ]]></if>
+				
+		<if test="createTime != null ">  <![CDATA[ CREATE_TIME , ]]></if>
+				
+		<if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="businessName != null and businessName != '' ">  <![CDATA[ #{businessName } , ]]></if>
+				
+		<if test="customerId != null and customerId != '' ">  <![CDATA[ #{customerId } , ]]></if>
+				
+		<if test="orderPredictTime != null ">  <![CDATA[ #{orderPredictTime } , ]]></if>
+				
+		<if test="isordered != null and isordered != '' ">  <![CDATA[ #{isordered } , ]]></if>
+				
+		<if test="customerName != null and customerName != '' ">  <![CDATA[ #{customerName } , ]]></if>
+
+		<if test="userName != null and userName != '' ">  <![CDATA[ #{userName } ,]]></if>
+
+		<if test="userId != null and userId != '' ">  <![CDATA[ #{userId } , ]]></if>
+				
+		<if test="createTime != null ">  <![CDATA[ #{createTime } , ]]></if>
+				
+		<if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,BUSINESS_NAME,CUSTOMER_ID,ORDER_PREDICT_TIME,ISORDERED,CUSTOMER_NAME,USER_NAME,USER_ID,CREATE_TIME,REMARK
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.businessName},#{item.customerId},#{item.orderPredictTime},#{item.isordered},#{item.customerName},#{item.userName},#{item.userId},#{item.createTime},#{item.remark}
+	</sql>
+
+</mapper>

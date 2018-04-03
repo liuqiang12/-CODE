@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspLocalIpMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspLocalIpMap" type="IdcIspLocalIp">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="AID" property="aid" />
+		<result column="FK_HHID_ID" property="fkHhidId" />
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcIspLocalIp">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcIspLocalIp"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcIspLocalIp">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcIspLocalIp">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcIspLocalIp"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcIspLocalIp">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcIspLocalIp">
+		select
+		<include refid="baseColumn" />
+		from IDC_ISP_LOCAL_IP
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcIspLocalIp">
+		update IDC_ISP_LOCAL_IP
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_ISP_LOCAL_IP
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_ISP_LOCAL_IP
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_ISP_LOCAL_IP where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcIspLocalIp">
+		delete from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_ISP_LOCAL_IP
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_ISP_LOCAL_IP where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcIspLocalIp"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO IDC_ISP_LOCAL_IP
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_ISP_LOCAL_IP (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,
+			FK_HHID_ID as fkHhidId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="fkHhidId != null and fkHhidId != '' ">  <![CDATA[ and FK_HHID_ID = #{fkHhidId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.fkHhidId != null and params.fkHhidId != '' ">  <![CDATA[ and FK_HHID_ID = #{params.fkHhidId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="fkHhidId != null and fkHhidId != '' ">  <![CDATA[  FK_HHID_ID = #{fkHhidId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="fkHhidId != null and fkHhidId != '' ">  <![CDATA[ FK_HHID_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="fkHhidId != null and fkHhidId != '' ">  <![CDATA[ #{fkHhidId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,FK_HHID_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.fkHhidId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,157 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.JH.gather</groupId>
+    <artifactId>itGather</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>itBusi</artifactId>
+   <version>1.0</version>
+  <name>itBusi</name>
+  <dependencies>
+  	<dependency>
+	  <groupId>redis.clients</groupId>
+	  <artifactId>jedis</artifactId>
+	  <version>2.9.0</version>
+	</dependency>
+  
+  <dependency>
+	  <groupId>com.JH.gather</groupId>
+	  <artifactId>itFrame</artifactId>
+	  <version>1.0.0-SNAPSHOT</version>
+	  <type>jar</type>
+  </dependency>
+
+
+
+  <dependency>
+
+	  <groupId>com.JH.gather</groupId>
+	  <artifactId>zookeeper</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	  <type>jar</type>
+  </dependency>
+  </dependencies>
+
+  <build>
+   <plugins>
+  	  <!-- 生成可执行jar，包括所有依赖以�?config main class -->
+  <!-- 将依赖的JAR输出到工程目录下�?lib -->
+	 <plugin>   
+	    <groupId>org.apache.maven.plugins</groupId>  
+	    <artifactId>maven-dependency-plugin</artifactId> 
+	     <version>2.8</version>  
+	    <executions> 
+		 <execution>  
+		   <id>copy-dependencies</id>  
+		    <phase>install</phase>  
+		   <goals>  
+	        <goal>copy-dependencies</goal>  
+		    </goals>  
+		    <configuration> 
+		   <outputDirectory>${project.build.directory}/lib</outputDirectory>   
+	       <overWriteReleases>false</overWriteReleases>   
+	       <overWriteSnapshots>false</overWriteSnapshots>   
+	       <overWriteIfNewer>true</overWriteIfNewer>   
+		   
+		   </configuration>  
+		    </execution>    
+	     </executions>  
+		</plugin> 
+		<plugin>   
+		    <groupId>org.apache.maven.plugins</groupId>   
+		    <artifactId>maven-resources-plugin</artifactId>   
+		    <version>2.5</version> 
+		    <configuration>   
+                <encoding>UTF-8</encoding>   
+            </configuration>   
+		    <executions>   
+		        <execution>   
+		            <id>copy-resources</id>   
+		            <phase>package</phase>   
+		            <goals>   
+		                <goal>copy-resources</goal>   
+		            </goals>   
+		            <configuration>   
+		                <encoding>UTF-8</encoding>   
+		                <outputDirectory>${project.build.directory}/config</outputDirectory><!-- 把配置文件拷到和jar包同一个路径下 -->   
+		             	 <resources>   
+		                    <resource>   
+		                        <directory>src/main/resources/</directory>   
+		                        <includes>   
+		                            <include>log4j.properties</include>   
+		                            <include>sys.properties</include> 
+		                            <includ>taskgc.xml</includ>
+		                            <includ>TableColumnOID_v3.xml</includ>
+		                        </includes>   
+		                        <filtering>true</filtering>   
+		                    </resource>   
+		                </resources>   
+		            </configuration>   
+		        </execution>   
+		    </executions>   
+		</plugin>		  
+		<plugin>   
+		    <groupId>org.apache.maven.plugins</groupId>   
+		    <artifactId>maven-jar-plugin</artifactId>   
+		    <executions>   
+		        <execution>  
+		           <id>default-jar</id> 
+		            <phase>package</phase>   
+		            <goals>   
+		                <goal>jar</goal>   
+		            </goals>   
+		            <configuration> 
+					    <archive>  
+					    <manifest>  
+					   <addClasspath>true</addClasspath>  
+					    <classpathPrefix>lib/</classpathPrefix>  
+					    <mainClass>com.JH.itBusi.MainClass</mainClass> 
+					    </manifest>
+					    <addMavenDescriptor>false</addMavenDescriptor>
+					    </archive>  
+		                <excludes>   
+		                    <exclude>log4j.properties</exclude>   
+                             <exclude>sys.properties</exclude>
+		                </excludes>   		               
+		            </configuration>
+		        </execution>   
+		    </executions>   
+		</plugin> 
+		</plugins>
+   <pluginManagement>
+   	<plugins>
+   		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+   		<plugin>
+   			<groupId>org.eclipse.m2e</groupId>
+   			<artifactId>lifecycle-mapping</artifactId>
+   			<version>1.0.0</version>
+   			<configuration>
+   				<lifecycleMappingMetadata>
+   					<pluginExecutions>
+   						<pluginExecution>
+   							<pluginExecutionFilter>
+   								<groupId>
+   									org.apache.maven.plugins
+   								</groupId>
+   								<artifactId>
+   									maven-compiler-plugin
+   								</artifactId>
+   								<versionRange>[2.5.1,)</versionRange>
+   								<goals>
+   									<goal>compile</goal>
+   								</goals>
+   							</pluginExecutionFilter>
+   							<action>
+   								<ignore></ignore>
+   							</action>
+   						</pluginExecution>
+   					</pluginExecutions>
+   				</lifecycleMappingMetadata>
+   			</configuration>
+   		</plugin>
+   	</plugins>
+   </pluginManagement>
+   </build>  
+  
+</project>

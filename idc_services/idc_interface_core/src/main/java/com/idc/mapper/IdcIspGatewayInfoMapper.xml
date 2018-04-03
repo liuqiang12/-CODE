@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspGatewayInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspGatewayInfoMap" type="GatewayInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="ID" property="id" />
+		<result column="BAND_WIDTH" property="bandWidth" />
+		<result column="LINK_TYPE" property="linkType" />
+		<result column="ACCESS_UNIT" property="accessUnit" />
+		<result column="GATEWAY_IP" property="gatewayIp" />
+		<result column="FK_HOUSE_INFO_ID" property="fkHouseInfoId" />
+	</resultMap>
+ </mapper>

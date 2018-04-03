@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspBasicInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspUpdateBasicInfoMap" type="BasicInfo" autoMapping="true">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROV_ID" property="provID" />
+		<result column="TIME_STAMP" property="timeStamp" />
+		<association property="updateInfo" javaType="InterfaceInfo"  column="AID" select="getUpdateInterfaceInfo">
+		</association>
+	</resultMap>
+
+	<resultMap id="resultIdcIspDeleteBasicInfoMap" type="BasicInfo" autoMapping="true">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROV_ID" property="provID" />
+		<result column="TIME_STAMP" property="timeStamp" />
+		<association property="deleteInfo" javaType="InterfaceInfo"  column="AID" select="getDeleteInterfaceInfo">
+		</association>
+	</resultMap>
+	<resultMap id="resultIdcIspAddBasicInfoMap" type="BasicInfo" autoMapping="true">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROV_ID" property="provID" />
+		<result column="TIME_STAMP" property="timeStamp" />
+		<association property="newInfo" javaType="InterfaceInfo"  column="AID" select="getAddInterfaceInfo">
+		</association>
+	</resultMap>
+
+
+	<!--  loadNewInfoData  -->
+	<select id="loadAssetBasicInfo" resultMap="resultIdcIspAddBasicInfoMap" useCache="false">
+		select
+		t1.aid,
+		t1.prov_id,
+		t1.time_stamp,
+		t1.ticket_inst_id
+		from IDC_ISP_BASIC_INFO t1
+		where t1.ticket_inst_id = #{ticketInstId}
+		and t1.IDC_ISP_STATUS = #{idcIspStatus}
+	</select>
+
+	<!--  loadNewInfoData  -->
+	<select id="loadInterfaceAddData" resultMap="resultIdcIspAddBasicInfoMap" useCache="false">
+			select
+				t1.aid,
+				t1.prov_id,
+				t1.time_stamp,
+				t1.ticket_inst_id
+			from IDC_ISP_BASIC_INFO t1
+			where t1.ticket_inst_id = #{ticketInstId}
+				  and t1.IDC_ISP_STATUS = #{idcIspStatus}
+				  and t1.IDC_ISP_FLAG  = #{idcIspFlag}
+	</select>
+
+	<insert id="createInfo" parameterType="Info">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_USER_EXTEND.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_USER_EXTEND
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="unitName != null and unitName != '' ">  <![CDATA[ UNIT_NAME  , ]]></if>
+				<if test="unitNature != null and unitNature != '' ">  <![CDATA[ UNIT_NATURE  , ]]></if>
+				<if test="idType != null and idType != '' ">  <![CDATA[ ID_TYPE  , ]]></if>
+				<if test="idNumber != null and idNumber != '' ">  <![CDATA[ ID_NUMBER  , ]]></if>
+				<if test="add != null and add != '' ">  <![CDATA[ "ADD"  , ]]></if>
+				<if test="zipCode != null and zipCode != '' ">  <![CDATA[ ZIP_CODE  , ]]></if>
+				<if test="fkUserInfoId != null and fkUserInfoId != '' ">  <![CDATA[ FK_USER_INFO_ID  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+				<if test="fkOfficerId != null and fkOfficerId != '' ">  <![CDATA[ FK_OFFICER_ID  , ]]></if>
+				<if test="registerTime != null and registerTime != '' ">  <![CDATA[ REGISTER_TIME  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="unitName != null and unitName != '' ">  <![CDATA[ #{unitName}  , ]]></if>
+				<if test="unitNature != null and unitNature != '' ">  <![CDATA[ #{unitNature}  , ]]></if>
+				<if test="idType != null and idType != '' ">  <![CDATA[ #{idType}  , ]]></if>
+				<if test="idNumber != null and idNumber != '' ">  <![CDATA[ #{idNumber}  , ]]></if>
+				<if test="add != null and add != '' ">  <![CDATA[ #{add}  , ]]></if>
+				<if test="zipCode != null and zipCode != '' ">  <![CDATA[ #{zipCode}  , ]]></if>
+				<if test="fkUserInfoId != null and fkUserInfoId != '' ">  <![CDATA[ #{fkUserInfoId}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+				<if test="fkOfficerId != null and fkOfficerId != '' ">  <![CDATA[ #{fkOfficerId}  , ]]></if>
+				<if test="registerTime != null and registerTime != '' ">  <![CDATA[ #{registerTime}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+	<insert id="createHousesHoldInfo" parameterType="HousesHoldInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_HOUSESHOLD_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_HOUSESHOLD_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="hhId != null and hhId != '' ">  <![CDATA[ HHID  , ]]></if>
+				<if test="houseId != null and houseId != '' ">  <![CDATA[ HOUSE_ID  , ]]></if>
+				<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ BAND_WIDTH  , ]]></if>
+				<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[ FRAMEINFO_ID  , ]]></if>
+				<if test="fkServiceInfoId != null and fkServiceInfoId != '' ">  <![CDATA[ FK_SERVICE_INFO_ID  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+				<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[ DISTRIBUTE_TIME  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="hhId != null and hhId != '' ">  <![CDATA[ #{hhId}  , ]]></if>
+				<if test="houseId != null and houseId != '' ">  <![CDATA[ #{houseId}  , ]]></if>
+				<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ #{bandWidth}  , ]]></if>
+				<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[ #{frameInfoId}  , ]]></if>
+				<if test="fkServiceInfoId != null and fkServiceInfoId != '' ">  <![CDATA[ #{fkServiceInfoId}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+				<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[ #{distributeTime}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+	<insert id="createDomain" parameterType="Domain">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_DOMAIN.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_DOMAIN
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="id != null and id != '' ">  <![CDATA[ ID  , ]]></if>
+				<if test="name != null and name != '' ">  <![CDATA[ "NAME"  , ]]></if>
+				<if test="fkServiceInfoId != null and fkServiceInfoId != '' ">  <![CDATA[ FK_SERVICE_INFO_ID  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="id != null and id != '' ">  <![CDATA[ #{id}  , ]]></if>
+				<if test="name != null and name != '' ">  <![CDATA[ #{name}  , ]]></if>
+				<if test="fkServiceInfoId != null and fkServiceInfoId != '' ">  <![CDATA[ #{fkServiceInfoId}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+
+	<insert id="createServiceInfo" parameterType="ServiceInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_SERVICE_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_SERVICE_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="serviceId != null and serviceId != '' ">  <![CDATA[ SERVICE_ID  , ]]></if>
+				<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[ SERVICE_CONTENT  , ]]></if>
+				<if test="regType != null and regType != '' ">  <![CDATA[ REG_TYPE  , ]]></if>
+				<if test="regId != null and regId != '' ">  <![CDATA[ REG_ID  , ]]></if>
+				<if test="setMode != null and setMode != '' ">  <![CDATA[ SET_MODE  , ]]></if>
+				<if test="business != null and business != '' ">  <![CDATA[ BUSINESS  , ]]></if>
+				<if test="fkUserExtendId != null and fkUserExtendId != '' ">  <![CDATA[ FK_USER_EXTEND_ID  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="serviceId != null and serviceId != '' ">  <![CDATA[ #{serviceId}  , ]]></if>
+				<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[ #{serviceContent}  , ]]></if>
+				<if test="regType != null and regType != '' ">  <![CDATA[ #{regType}  , ]]></if>
+				<if test="regId != null and regId != '' ">  <![CDATA[ #{regId}  , ]]></if>
+				<if test="setMode != null and setMode != '' ">  <![CDATA[ #{setMode}  , ]]></if>
+				<if test="business != null and business != '' ">  <![CDATA[ #{business}  , ]]></if>
+				<if test="fkUserExtendId != null and fkUserExtendId != '' ">  <![CDATA[ #{fkUserExtendId}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+
+	<insert id="createUserInfo" parameterType="UserInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_USER_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_USER_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="id != null and id != '' ">  <![CDATA[ ID  , ]]></if>
+				<if test="nature != null and nature != '' ">  <![CDATA[ NATURE  , ]]></if>
+				<if test="fkNewInfoId != null and fkNewInfoId != '' ">  <![CDATA[ FK_NEW_INFO_ID  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="id != null and id != '' ">  <![CDATA[ #{id}  , ]]></if>
+				<if test="nature != null and nature != '' ">  <![CDATA[ #{nature}  , ]]></if>
+				<if test="fkNewInfoId != null and fkNewInfoId != '' ">  <![CDATA[ #{fkNewInfoId}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+	<insert id="createBasicInfo" parameterType="BasicInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_BASIC_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_BASIC_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="provID != null and provID != '' ">  <![CDATA[ PROV_ID  , ]]></if>
+				<if test="idcIspStatus != null and idcIspStatus != '' ">  <![CDATA[ IDC_ISP_STATUS  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+				<if test="timeStamp != null and timeStamp != '' ">  <![CDATA[ TIME_STAMP  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="provID != null and provID != '' ">  <![CDATA[ #{provID }  , ]]></if>
+				<if test="idcIspStatus != null and idcIspStatus != '' ">  <![CDATA[ #{idcIspStatus }  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+				<if test="timeStamp != null and timeStamp != '' ">  <![CDATA[ #{timeStamp}  , ]]></if>
+			</trim>
+		)
+	</insert>
+	<insert id="createNewInfo" parameterType="InterfaceInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_NEW_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_INTERFACE_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="idcId != null and idcId != '' ">  <![CDATA[ IDC_ID  , ]]></if>
+				<if test="idcName != null and idcName != '' ">  <![CDATA[ IDC_NAME  , ]]></if>
+				<if test="idcAdd != null and idcAdd != '' ">  <![CDATA[ IDC_ADD  , ]]></if>
+				<if test="idcZip != null and idcZip != '' ">  <![CDATA[ IDC_ZIP  , ]]></if>
+				<if test="corp != null and corp != '' ">  <![CDATA[ CORP  , ]]></if>
+				<if test="basicInfoId != null and basicInfoId != '' ">  <![CDATA[ BASIC_INFO_ID  , ]]></if>
+				<if test="fkCofficerInfoId != null and fkCofficerInfoId != '' ">  <![CDATA[ FK_COFFICER_INFO_ID  , ]]></if>
+				<if test="fkEmergencyContact != null and fkEmergencyContact != '' ">  <![CDATA[ FK_EMERGENCY_CONTACT  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="idcId != null and idcId != '' ">  <![CDATA[ #{idcId}  , ]]></if>
+				<if test="idcName != null and idcName != '' ">  <![CDATA[ #{idcName}  , ]]></if>
+				<if test="idcAdd != null and idcAdd != '' ">  <![CDATA[ #{idcAdd}  , ]]></if>
+				<if test="idcZip != null and idcZip != '' ">  <![CDATA[ #{idcZip}  , ]]></if>
+				<if test="corp != null and corp != '' ">  <![CDATA[ #{corp}  , ]]></if>
+				<if test="basicInfoId != null and basicInfoId != '' ">  <![CDATA[ #{basicInfoId}  , ]]></if>
+				<if test="fkCofficerInfoId != null and fkCofficerInfoId != '' ">  <![CDATA[ #{fkCofficerInfoId}  , ]]></if>
+				<if test="fkEmergencyContact != null and fkEmergencyContact != '' ">  <![CDATA[ #{fkEmergencyContact}  , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+			</trim>
+		)
+	</insert>
+	<insert id="createHouseInfo" parameterType="HouseInfo">
+		<selectKey  keyProperty="aid" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_ISP_HOUSE_INFO.CURRVAL AS aid FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_ISP_HOUSE_INFO
+		(
+			<trim suffix="" suffixOverrides=",">
+			<if test="houseId != null and houseId != '' ">  <![CDATA[ HOUSE_ID  , ]]></if>
+			<if test="houseName != null and houseName != '' ">  <![CDATA[ HOUSE_NAME  , ]]></if>
+			<if test="houseType != null and houseType != '' ">  <![CDATA[ HOUSE_TYPE  , ]]></if>
+			<if test="houseProvince != null and houseProvince != '' ">  <![CDATA[ HOUSE_PROVINCE  , ]]></if>
+			<if test="houseCity != null and houseCity != '' ">  <![CDATA[ HOUSE_CITY  , ]]></if>
+			<if test="houseCounty != null and houseCounty != '' ">  <![CDATA[ HOUSE_COUNTY  , ]]></if>
+			<if test="houseAdd != null and houseAdd != '' ">  <![CDATA[ HOUSE_ADD  , ]]></if>
+			<if test="houseZip != null and houseZip != '' ">  <![CDATA[ HOUSE_ZIP  , ]]></if>
+			<if test="fkNewInfoId != null and fkNewInfoId != '' ">  <![CDATA[ FK_NEW_INFO_ID  , ]]></if>
+			<if test="fkIdcOfficerId != null and fkIdcOfficerId != '' ">  <![CDATA[ FK_IDC_OFFICER_ID  , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+			<if test="houseId != null and houseId != '' ">  <![CDATA[ #{houseId}  , ]]></if>
+			<if test="houseName != null and houseName != '' ">  <![CDATA[ #{houseName}  , ]]></if>
+			<if test="houseType != null and houseType != '' ">  <![CDATA[ #{houseType}  , ]]></if>
+			<if test="houseProvince != null and houseProvince != '' ">  <![CDATA[ #{houseProvince}  , ]]></if>
+			<if test="houseCity != null and houseCity != '' ">  <![CDATA[ #{houseCity}  , ]]></if>
+			<if test="houseCounty != null and houseCounty != '' ">  <![CDATA[ #{houseCounty}  , ]]></if>
+			<if test="houseAdd != null and houseAdd != '' ">  <![CDATA[ #{houseAdd}  , ]]></if>
+			<if test="houseZip != null and houseZip != '' ">  <![CDATA[ #{houseZip}  , ]]></if>
+			<if test="fkNewInfoId != null and fkNewInfoId != '' ">  <![CDATA[ #{fkNewInfoId}  , ]]></if>
+			<if test="fkIdcOfficerId != null and fkIdcOfficerId != '' ">  <![CDATA[ #{fkIdcOfficerId}  , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+			</trim>
+		)
+	</insert>
+
+
+	<insert id="createGatewayInfo" parameterType="GatewayInfo">
+		INSERT INTO IDC_ISP_GATEWAY_INFO
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ BAND_WIDTH  , ]]></if>
+		<if test="linkType != null and linkType != '' ">  <![CDATA[ LINK_TYPE  , ]]></if>
+		<if test="accessUnit != null and accessUnit != '' ">  <![CDATA[ ACCESS_UNIT  , ]]></if>
+		<if test="gatewayIp != null and gatewayIp != '' ">  <![CDATA[ GATEWAY_IP  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ FK_HOUSE_INFO_ID  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ #{bandWidth}  , ]]></if>
+		<if test="linkType != null and linkType != '' ">  <![CDATA[ #{linkType}  , ]]></if>
+		<if test="accessUnit != null and accessUnit != '' ">  <![CDATA[ #{accessUnit}  , ]]></if>
+		<if test="gatewayIp != null and gatewayIp != '' ">  <![CDATA[ #{gatewayIp}  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ #{fkHouseInfoId}  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+		</trim>
+		)
+	</insert>
+
+
+
+	<select id="getHouseInfoIdByTicketInstId" resultType="Long">
+		select t.aid from idc_isp_house_info t where t.ticket_inst_id = #{0}
+	</select>
+
+
+	<select id="getBaseParamIsAsset" resultType="Boolean" >
+			select count('X') as cnt from Idc_Isp_Basic_Info where TICKET_INST_ID = #{0}
+	</select>
+
+	<insert id="createFrameInfo" parameterType="FrameInfo">
+		INSERT INTO IDC_ISP_FRAME_INFO
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ ID  , ]]></if>
+		<if test="useType != null and useType != '' ">  <![CDATA[ USE_TYPE  , ]]></if>
+		<if test="distribution != null and distribution != '' ">  <![CDATA[ DISTRIBUTION  , ]]></if>
+		<if test="occupancy != null and occupancy != '' ">  <![CDATA[ OCCUPANCY  , ]]></if>
+		<if test="frameName != null and frameName != '' ">  <![CDATA[ FRAME_NAME  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ FK_HOUSE_INFO_ID  , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ #{id}  , ]]></if>
+		<if test="useType != null and useType != '' ">  <![CDATA[ #{useType}  , ]]></if>
+		<if test="distribution != null and distribution != '' ">  <![CDATA[ #{distribution}  , ]]></if>
+		<if test="occupancy != null and occupancy != '' ">  <![CDATA[ #{occupancy}  , ]]></if>
+		<if test="frameName != null and frameName != '' ">  <![CDATA[ #{frameName}  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ #{fkHouseInfoId}  , ]]></if>
+		</trim>
+		)
+	</insert>
+
+
+	<insert id="createIpSegInfo" parameterType="IpSegInfo">
+		INSERT INTO IDC_ISP_IPSEG_INFO
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ ID  , ]]></if>
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ START_IP  , ]]></if>
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ END_IP  , ]]></if>
+		<if test="type != null and type != '' ">  <![CDATA[ "TYPE"  , ]]></if>
+		<if test="useTime != null and useTime != '' ">  <![CDATA[ USE_TIME  , ]]></if>
+		<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[ SOURCE_UNIT  , ]]></if>
+		<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[ ALLOCATION_UNIT  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ FK_HOUSE_INFO_ID  , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ #{id}  , ]]></if>
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ #{startIp}  , ]]></if>
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ #{endIp}  , ]]></if>
+		<if test="type != null and type != '' ">  <![CDATA[ #{type} , ]]></if>
+		<if test="useTime != null and useTime != '' ">  <![CDATA[ #{useTime}  , ]]></if>
+		<if test="sourceUnit != null and sourceUnit != '' ">  <![CDATA[ #{sourceUnit}  , ]]></if>
+		<if test="allocationUnit != null and allocationUnit != '' ">  <![CDATA[ #{allocationUnit}  , ]]></if>
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId}  , ]]></if>
+		<if test="fkHouseInfoId != null and fkHouseInfoId != '' ">  <![CDATA[ #{fkHouseInfoId}  , ]]></if>
+		</trim>
+		)
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+	<select id="loadInterfaceDeleteData" resultMap="resultIdcIspDeleteBasicInfoMap" useCache="false">
+		select
+		t1.aid,
+		t1.prov_id,
+		t1.time_stamp,
+		t1.ticket_inst_id
+		from IDC_ISP_BASIC_INFO t1
+		where t1.ticket_inst_id = #{ticketInstId}
+		and t1.IDC_ISP_STATUS = #{idcIspStatus}
+	</select>
+
+	<select id="loadInterfaceUpdateData" resultMap="resultIdcIspUpdateBasicInfoMap" useCache="false">
+		select
+		t1.aid,
+		t1.prov_id,
+		t1.time_stamp,
+		t1.ticket_inst_id
+		from IDC_ISP_BASIC_INFO t1
+		where t1.ticket_inst_id = #{ticketInstId}
+		and t1.IDC_ISP_STATUS = #{idcIspStatus}
+	</select>
+
+	<select id="getAddInterfaceInfo" parameterType="Long" resultMap="com.idc.mapper.IdcIspInterfaceMapper.resultIdcIspInterfaceMap">
+			select
+			   t1.AID,
+			   t1.IDC_ID,
+			   t1.IDC_NAME,
+			   t1.IDC_ADD,
+			   t1.IDC_ZIP,
+			   t1.CORP,
+			   t1.BASIC_INFO_ID,
+			   t1.FK_COFFICER_INFO_ID,
+			   t1.FK_EMERGENCY_CONTACT,
+			   t1.HOUSE_COUNT,
+			   t1.TICKET_INST_ID
+			  from IDC_ISP_INTERFACE_INFO t1
+			  where t1.BASIC_INFO_ID = #{aid}
+	</select>
+
+	<select id="getUpdateInterfaceInfo" parameterType="Long" resultMap="com.idc.mapper.IdcIspInterfaceMapper.resultIdcIspUpdateInterfaceMap">
+		select
+		t1.AID,
+		t1.IDC_ID,
+		t1.IDC_NAME,
+		t1.IDC_ADD,
+		t1.IDC_ZIP,
+		t1.CORP,
+		t1.BASIC_INFO_ID,
+		t1.FK_COFFICER_INFO_ID,
+		t1.FK_EMERGENCY_CONTACT,
+		t1.HOUSE_COUNT,
+		t1.TICKET_INST_ID
+		from IDC_ISP_INTERFACE_INFO t1
+		where t1.BASIC_INFO_ID = #{aid}
+	</select>
+
+	<select id="getDeleteInterfaceInfo" parameterType="Long" resultMap="com.idc.mapper.IdcIspInterfaceMapper.resultIdcIspDeleteInterfaceMap">
+		select
+		t1.AID,
+		t1.IDC_ID,
+		t1.IDC_NAME,
+		t1.IDC_ADD,
+		t1.IDC_ZIP,
+		t1.CORP,
+		t1.BASIC_INFO_ID,
+		t1.FK_COFFICER_INFO_ID,
+		t1.FK_EMERGENCY_CONTACT,
+		t1.HOUSE_COUNT,
+		t1.TICKET_INST_ID
+		from IDC_ISP_INTERFACE_INFO t1
+		where t1.BASIC_INFO_ID = #{aid}
+	</select>
+</mapper>

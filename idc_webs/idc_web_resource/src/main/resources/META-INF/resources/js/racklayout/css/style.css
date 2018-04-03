@@ -1,0 +1,235 @@
+ .switch {
+        width: 200px;
+        height: 30px;
+    }
+    
+    .status_open {
+        background: black
+    }
+    
+    .status_close {
+        background: red
+    }
+    
+    .status_no {
+        background: darkblue
+    }
+    
+    .toggle {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        width: 70px;
+        height: 26px;
+        color: white;
+        outline: 0;
+        text-decoration: none;
+        border-radius: 100px;
+        border: 2px solid #546E7A;
+
+        -webkit-transition: all 500ms;
+        -moz-transition: all 500ms;
+        -o-transition: all 500ms;
+        transition: all 500ms;
+    }
+    .toggle:after {
+        display: block;
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        width: calc(50% - 4px);
+        line-height: 20px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: white;
+        background-color: #37474F;
+        border: 2px solid;
+        -webkit-transition: all 500ms;
+        -moz-transition: all 500ms;
+        -o-transition: all 500ms;
+        transition: all 500ms;
+    }
+    
+    .toggle--on:after {
+        content: 'On';
+        border-radius: 50px 5px 5px 50px;
+        color: #66BB6A;
+    }
+    
+    .toggle--off:after {
+        content: 'Off';
+        border-radius: 5px 50px 50px 5px;
+        float: right;
+        color:lightgray;
+        -webkit-transform: translate(100%, 0);
+        -moz-transform: translate(100%, 0);
+        -o-transform: translate(100%, 0);
+        transform: translate(100%, 0);
+    }
+    
+/* end .slideTwo */
+/* .slideThree */
+.slideThree {
+  width: 80px;
+  height: 26px;
+  border:1px solid black;
+  /*background: #333;*/
+  /*margin: 1px auto;*/
+  position: relative;
+  /*-moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;*/
+  -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+}
+.slideThree .title {
+  height: 26px;
+  border-right: 2px solid black;
+  font: 14px/26px Arial, sans-serif;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
+}
+.slideThree:after {
+  content: 'OFF';
+  color: #000;
+  position: absolute;
+  right: 10px;
+  z-index: 0;
+  font: 12px/26px Arial, sans-serif;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
+}
+.slideThree:before {
+  content: 'ON';
+  color: #00bf00;
+  position: absolute;
+  left: 10px;
+  z-index: 0;
+  font: 12px/26px Arial, sans-serif;
+  font-weight: bold;
+}
+.slideThree label {
+  /*display: block;*/
+  width: 26px;
+  height: 20px;
+  /*cursor: pointer;*/
+  position: absolute;
+  top: 3px;
+  /*left: 5px;*/
+  z-index: 1;
+  background: #fcfff4;
+  background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  -moz-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+}
+.slideThree_label_open {
+   left: 5px;
+}
+.slideThree_label_close {
+   left: 45px;
+   background:#222
+}
+.slideThree_label_no {
+   display: none;
+    left: 90px;
+}
+.slideThree_bus_one {
+  background: #b0bbb0
+}
+.slideThree_bus_two {
+   background:#e29d9d
+}
+.slideThree_bus_three {
+   background:#333
+}
+/*
+.slideThree_label {
+  left: 38px;
+}*/
+.jijia >div{
+  height: 500px
+}
+.jijiadiv>div{
+  width:100%;
+  position: absolute;
+  line-height: 12px;
+  height:12px;
+  border-top:1px solid black;
+}
+.jijiadiv>div:hover{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.available {
+}
+.inservice {
+  background: #75771e;
+}
+.occupied {
+  background: #f77878;
+
+}
+.reserviced {
+  background: #bcf0b8;
+}
+.notavailable {
+  background: #cbcbcb;
+}
+.legend{
+  width: 80px;
+  height: 16px;
+  border:1px solid black;
+  position: relative;
+  -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+  -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+}
+/*属性样式*/
+.progrid div{
+  height: 28px;
+  margin-left:10px
+}
+.progrid .title{
+  float: left; width: 100px;
+}
+.progrid .title span{
+
+  line-height: 28px;
+}
+
+._context-menu{
+  width: 200px;
+  height: 100px;
+  position:absolute;
+  left: 0px;
+  top:0px;
+  display: none;
+  z-index: 999
+}
+.jiweipro{
+  background: rgb(236, 236, 236);
+  margin-top: 1px;
+  padding-left: 3px;
+}
+.jiweipro .title{
+  float: left; width: 100px;
+}
+.jiweipro .title span{
+  line-height: 28px;
+}
+.jiweipro  div{
+  height: 28px;margin-left:10px
+}

@@ -1,0 +1,21 @@
+﻿.box-margin10#waittodo{
+	border-top:10px solid transparent;
+	border-left:10px solid transparent;
+	border-right:5px solid transparent;
+	border-bottom:10px solid transparent;
+}
+
+.box-margin10#quickarea{
+	border-left:5px solid transparent;
+	border-right:10px solid transparent;
+	border-bottom:5px solid transparent;
+	border-top:10px solid transparent;
+}
+
+.box-margin10#chartarea{
+	border-left:5px solid transparent;
+	border-right:10px solid transparent;
+	border-bottom:10px solid transparent;
+	border-top:5px solid transparent;
+}
+

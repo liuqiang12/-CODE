@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetTopoObjLinkMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetTopoObjLinkMap" type="com.idc.model.NetTopoObjLink">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="TOPOLINKID" property="topoLinkID" />
+				
+		<result column="DESDEVICEID" property="desdeviceid" />
+				
+		<result column="DESID" property="desid" />
+				
+		<result column="DESPORTNAME" property="desportname" />
+
+		<result column="SRCDEVICEID" property="srcdeviceid" />
+				
+		<result column="SRCID" property="srcid" />
+				
+		<result column="SRCPORTNAME" property="srcportname" />
+				
+		<result column="VIEWID" property="viewid" />
+				
+		<result column="DESCRIPTION" property="description" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.NetTopoObjLink">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK where TOPOLINKID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.NetTopoObjLink"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.NetTopoObjLink">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.NetTopoObjLink">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.NetTopoObjLink"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.NetTopoObjLink">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetTopoObjLink">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPO_OBJ_LINK
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.NetTopoObjLink">
+		update NET_TOPO_OBJ_LINK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_TOPO_OBJ_LINK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_TOPO_OBJ_LINK
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_TOPO_OBJ_LINK where TOPOLINKID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.NetTopoObjLink">
+		delete from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_TOPO_OBJ_LINK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_TOPO_OBJ_LINK where TOPOLINKID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.topoLinkID}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.NetTopoObjLink"
+		useGeneratedKeys="true" keyProperty="TOPOLINKID">
+        <selectKey keyProperty="topoLinkID" resultType="java.lang.Long" order="BEFORE">
+            select NET_TOPO_OBJ_LINK_seq.nextval from dual
+        </selectKey>
+		INSERT INTO NET_TOPO_OBJ_LINK
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_TOPO_OBJ_LINK (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	TOPOLINKID as topoLinkID,
+			DESDEVICEID as desdeviceid,
+			DESID as desid,
+			DESPORTNAME as desportname,
+			SRCDEVICEID as srcdeviceid,
+			SRCID as srcid,
+			SRCPORTNAME as srcportname,
+			VIEWID as viewid,
+			DESCRIPTION as description
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="topoLinkID != null and topoLinkID != '' ">  <![CDATA[ and TOPOLINKID = #{topoLinkID} ]]></if>
+						
+			<if test="desdeviceid != null and desdeviceid != '' ">  <![CDATA[ and DESDEVICEID = #{desdeviceid} ]]></if>
+						
+			<if test="desid != null and desid != '' ">  <![CDATA[ and DESID = #{desid} ]]></if>
+						
+			<if test="desportname != null and desportname != '' ">  <![CDATA[ and DESPORTNAME = #{desportname} ]]></if>
+
+						
+			<if test="srcdeviceid != null and srcdeviceid != '' ">  <![CDATA[ and SRCDEVICEID = #{srcdeviceid} ]]></if>
+						
+			<if test="srcid != null and srcid != '' ">  <![CDATA[ and SRCID = #{srcid} ]]></if>
+						
+			<if test="srcportname != null and srcportname != '' ">  <![CDATA[ and SRCPORTNAME = #{srcportname} ]]></if>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[ and VIEWID = #{viewid} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and DESCRIPTION = #{description} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.topoLinkID != null and params.topoLinkID != '' ">  <![CDATA[ and TOPOLINKID = #{params.topoLinkID} ]]></if>
+						
+			<if test="params.desdeviceid != null and params.desdeviceid != '' ">  <![CDATA[ and DESDEVICEID = #{params.desdeviceid} ]]></if>
+						
+			<if test="params.desid != null and params.desid != '' ">  <![CDATA[ and DESID = #{params.desid} ]]></if>
+						
+			<if test="params.desportname != null and params.desportname != '' ">  <![CDATA[ and DESPORTNAME = #{params.desportname} ]]></if>
+						
+			<if test="params.srcdeviceid != null and params.srcdeviceid != '' ">  <![CDATA[ and SRCDEVICEID = #{params.srcdeviceid} ]]></if>
+						
+			<if test="params.srcid != null and params.srcid != '' ">  <![CDATA[ and SRCID = #{params.srcid} ]]></if>
+						
+			<if test="params.srcportname != null and params.srcportname != '' ">  <![CDATA[ and SRCPORTNAME = #{params.srcportname} ]]></if>
+						
+			<if test="params.viewid != null and params.viewid != '' ">  <![CDATA[ and VIEWID = #{params.viewid} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and DESCRIPTION = #{params.description} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="topoLinkID != null and topoLinkID != '' ">  <![CDATA[  TOPOLINKID = #{topoLinkID } ,]]></if>
+						
+			<if test="desdeviceid != null and desdeviceid != '' ">  <![CDATA[  DESDEVICEID = #{desdeviceid } ,]]></if>
+						
+			<if test="desid != null and desid != '' ">  <![CDATA[  DESID = #{desid } ,]]></if>
+						
+			<if test="desportname != null and desportname != '' ">  <![CDATA[  DESPORTNAME = #{desportname } ,]]></if>
+
+						
+			<if test="srcdeviceid != null and srcdeviceid != '' ">  <![CDATA[  SRCDEVICEID = #{srcdeviceid } ,]]></if>
+						
+			<if test="srcid != null and srcid != '' ">  <![CDATA[  SRCID = #{srcid } ,]]></if>
+						
+			<if test="srcportname != null and srcportname != '' ">  <![CDATA[  SRCPORTNAME = #{srcportname } ,]]></if>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[  VIEWID = #{viewid } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  DESCRIPTION = #{description } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="topoLinkID != null and topoLinkID != '' ">  <![CDATA[ TOPOLINKID , ]]></if>
+				
+		<if test="desdeviceid != null and desdeviceid != '' ">  <![CDATA[ DESDEVICEID , ]]></if>
+				
+		<if test="desid != null and desid != '' ">  <![CDATA[ DESID , ]]></if>
+				
+		<if test="desportname != null and desportname != '' ">  <![CDATA[ DESPORTNAME , ]]></if>
+
+				
+		<if test="srcdeviceid != null and srcdeviceid != '' ">  <![CDATA[ SRCDEVICEID , ]]></if>
+				
+		<if test="srcid != null and srcid != '' ">  <![CDATA[ SRCID , ]]></if>
+				
+		<if test="srcportname != null and srcportname != '' ">  <![CDATA[ SRCPORTNAME , ]]></if>
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ VIEWID , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ DESCRIPTION , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="topoLinkID != null and topoLinkID != '' ">  <![CDATA[ #{topoLinkID } , ]]></if>
+				
+		<if test="desdeviceid != null and desdeviceid != '' ">  <![CDATA[ #{desdeviceid } , ]]></if>
+				
+		<if test="desid != null and desid != '' ">  <![CDATA[ #{desid } , ]]></if>
+				
+		<if test="desportname != null and desportname != '' ">  <![CDATA[ #{desportname } , ]]></if>
+
+		<if test="srcdeviceid != null and srcdeviceid != '' ">  <![CDATA[ #{srcdeviceid } , ]]></if>
+				
+		<if test="srcid != null and srcid != '' ">  <![CDATA[ #{srcid } , ]]></if>
+				
+		<if test="srcportname != null and srcportname != '' ">  <![CDATA[ #{srcportname } , ]]></if>
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ #{viewid } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			TOPOLINKID,DESDEVICEID,DESID,DESPORTNAME,SRCDEVICEID,SRCID,SRCPORTNAME,VIEWID,DESCRIPTION
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.topoLinkID},#{item.desdeviceid},#{item.desid},#{item.desportname},#{item.srcdeviceid},#{item.srcid},#{item.srcportname},#{item.viewid},#{item.description}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

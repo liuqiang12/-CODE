@@ -1,0 +1,157 @@
+<div name="topo_node_template">
+    <!--图片节点窗口-->
+    <div name="topo_image_node" class='panel panel-primary '>
+        <div name='head' class='panel-heading'>
+            <span>图片节点</span>
+            <button type="button" class="close" aria-hidden="true">
+                &times;
+            </button>
+        </div>
+        <div class='panel-body '>
+            <form class='form-horizontal ' role='form'>
+                <div class='form-group ' name="id_group">
+                    <label class='col-sm-4 control-label'>ID</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="id">
+                        <span class="input-group-addon">
+                            <input type="checkbox" name="id_check">
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="name_group">
+                    <label class='col-sm-4 control-label'>名称</label>
+
+                    <div class='col-sm-7'>
+                        <input type='text' class='form-control' name="name">
+                    </div>
+                </div>
+                <div class='form-group' name="position_group">
+                    <label class='col-sm-4 control-label'>名称位置</label>
+
+                    <div class='col-sm-7'>
+                        <select name="position" class='form-control'>
+                            <option value='Bottom_Center'>底部</option>
+                            <option value='Top_Center'>顶部</option>
+                            <option value='Middle_Left'>左部</option>
+                            <option value='Middle_Right'>右侧</option>
+                            <option value='Hidden'>隐藏</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group' name="image_group">
+                    <label class='col-sm-4 control-label'>图标</label>
+
+                    <div class='col-sm-7'>
+                        <img name="image" src='img/mo/wlan_4.png'>
+                        <button name="find_image" class='btn btn-primary' type='button'>
+                            <span class='glyphicon glyphicon-search'></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class='col-sm-offset-3 col-sm-10' name="group">
+                <button name="ok" class='btn btn-primary' type='button'>确定</button>
+                <button name="cancel" class='btn btn-primary' type='button'>关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--图片节点窗口子窗口-->
+    <div name="image_select" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        选择图形
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-group" name="topo_node_selected_image" role="tablist" aria-multiselectable="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="ok" type="button" class="btn btn-primary">
+                        确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <!--文字节点窗口-->
+    <div name='topo_text_node' class='panel panel-primary '>
+        <div name='head' class='panel-heading'>
+            <span>文本节点</span>
+            <button type="button" class="close" aria-hidden="true">
+                &times;
+            </button>
+        </div>
+        <div class='panel-body '>
+            <form class='form-horizontal ' role='form'>
+                <div class='form-group' name="text_group">
+                    <label for='text' class='col-sm-4 control-label'>文本内容</label>
+
+                    <div class='col-sm-7'>
+                        <textarea class="form-control" rows="2" name="text"></textarea>
+                    </div>
+                </div>
+                <div class='form-group' name="color_group">
+                    <label class='col-sm-4 control-label'>字体颜色</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input type='text' class='form-control' name="color" readonly="true">
+                        <span class="input-group-btn">
+                            <button class='btn btn-primary' type='button' data-toggle="dropdown">
+                                <span class='glyphicon glyphicon-search'></span>
+                            </button>
+                             <ul class="dropdown-menu color_selected">
+                                 <li>
+                                     <div name="color_palette"></div>
+                                 </li>
+                             </ul>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="size_group">
+                    <label class='col-sm-4 control-label'>字体大小</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="size_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="size_num" type="text" class="form-control" value="16" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="size_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class='col-sm-offset-3 col-sm-10' name="group">
+                <button name="ok" class='btn btn-primary' type='button'>确定</button>
+                <button name="cancel" class='btn btn-primary' type='button'>关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

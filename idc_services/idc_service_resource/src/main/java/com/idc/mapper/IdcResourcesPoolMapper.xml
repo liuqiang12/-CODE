@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcResourcesPoolMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcResourcesPoolMap" type="com.idc.model.IdcResourcesPool">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="IDC_RESOURCES_POOL_ID" property="idcResourcesPoolId" />
+				
+		<result column="IDC_RESOURCES_POOL_CODE" property="idcResourcesPoolCode" />
+				
+		<result column="IDC_RESOURCES_POOL_NAME" property="idcResourcesPoolName" />
+				
+		<result column="IDC_RESOURCES_POOL_PARENT" property="idcResourcesPoolParent" />
+				
+		<result column="IDC_MAX_NUM" property="idcMaxNum" />
+				
+		<result column="IDC_RESOURCES_USE_RATE" property="idcResourcesUseRate" />
+				
+		<result column="IDC_RESOURCES_CPU_NUM" property="idcResourcesCpuNum" />
+				
+		<result column="IDC_RESOURCES_MEM_SIZE" property="idcResourcesMemSize" />
+				
+		<result column="IDC_RESOURCES_DISK_SIZE" property="idcResourcesDiskSize" />
+				
+		<result column="IDC_RESOURCES_MEM_USE_RATE" property="idcResourcesMemUseRate" />
+				
+		<result column="IDC_RESOURCES_CPU_USE_RATE" property="idcResourcesCpuUseRate" />
+				
+		<result column="IDC_RESOURCES_DISK_USE_RATE" property="idcResourcesDiskUseRate" />
+				
+		<result column="IDC_RESOURCES_POOL_STATUS" property="idcResourcesPoolStatus" />
+				
+		<result column="IDC_CREATE_USER" property="idcCreateUser" />
+				
+		<result column="IDC_UPDATE_USER" property="idcUpdateUser" />
+				
+		<result column="IDC_UPDATE_TIME" property="idcUpdateTime" />
+				
+		<result column="IDC_CREATE_TIME" property="idcCreateTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.IdcResourcesPool">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL where IDC_RESOURCES_POOL_ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.IdcResourcesPool"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.IdcResourcesPool">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.IdcResourcesPool">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.IdcResourcesPool"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.IdcResourcesPool">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.IdcResourcesPool">
+		select
+		<include refid="baseColumn" />
+		from IDC_RESOURCES_POOL
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.IdcResourcesPool">
+		update IDC_RESOURCES_POOL
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_RESOURCES_POOL
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_RESOURCES_POOL
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_RESOURCES_POOL where IDC_RESOURCES_POOL_ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.IdcResourcesPool">
+		delete from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_RESOURCES_POOL
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_RESOURCES_POOL where IDC_RESOURCES_POOL_ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.IdcResourcesPool"
+		useGeneratedKeys="true" keyProperty="idcResourcesPoolId">
+        <selectKey keyProperty="idcResourcesPoolId" resultType="java.lang.Long" order="BEFORE">
+            select IDC_RESOURCES_POOL_SEQ.nextval from dual
+        </selectKey>
+		INSERT INTO IDC_RESOURCES_POOL
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_RESOURCES_POOL (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	IDC_RESOURCES_POOL_ID as idcResourcesPoolId,
+			IDC_RESOURCES_POOL_CODE as idcResourcesPoolCode,
+			IDC_RESOURCES_POOL_NAME as idcResourcesPoolName,
+			IDC_RESOURCES_POOL_PARENT as idcResourcesPoolParent,
+			IDC_MAX_NUM as idcMaxNum,
+			IDC_RESOURCES_USE_RATE as idcResourcesUseRate,
+			IDC_RESOURCES_CPU_NUM as idcResourcesCpuNum,
+			IDC_RESOURCES_MEM_SIZE as idcResourcesMemSize,
+			IDC_RESOURCES_DISK_SIZE as idcResourcesDiskSize,
+			IDC_RESOURCES_MEM_USE_RATE as idcResourcesMemUseRate,
+			IDC_RESOURCES_CPU_USE_RATE as idcResourcesCpuUseRate,
+			IDC_RESOURCES_DISK_USE_RATE as idcResourcesDiskUseRate,
+			IDC_RESOURCES_POOL_STATUS as idcResourcesPoolStatus,
+			IDC_CREATE_USER as idcCreateUser,
+			IDC_UPDATE_USER as idcUpdateUser,
+			IDC_UPDATE_TIME as idcUpdateTime,
+			IDC_CREATE_TIME as idcCreateTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId} ]]></if>
+						
+			<if test="idcResourcesPoolCode != null and idcResourcesPoolCode != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_CODE = #{idcResourcesPoolCode} ]]></if>
+						
+			<if test="idcResourcesPoolName != null and idcResourcesPoolName != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_NAME = #{idcResourcesPoolName} ]]></if>
+						
+			<if test="idcResourcesPoolParent != null and idcResourcesPoolParent != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_PARENT = #{idcResourcesPoolParent} ]]></if>
+						
+			<if test="idcMaxNum != null and idcMaxNum != '' ">  <![CDATA[ and IDC_MAX_NUM = #{idcMaxNum} ]]></if>
+						
+			<if test="idcResourcesUseRate != null and idcResourcesUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_USE_RATE = #{idcResourcesUseRate} ]]></if>
+						
+			<if test="idcResourcesCpuNum != null and idcResourcesCpuNum != '' ">  <![CDATA[ and IDC_RESOURCES_CPU_NUM = #{idcResourcesCpuNum} ]]></if>
+						
+			<if test="idcResourcesMemSize != null and idcResourcesMemSize != '' ">  <![CDATA[ and IDC_RESOURCES_MEM_SIZE = #{idcResourcesMemSize} ]]></if>
+						
+			<if test="idcResourcesDiskSize != null and idcResourcesDiskSize != '' ">  <![CDATA[ and IDC_RESOURCES_DISK_SIZE = #{idcResourcesDiskSize} ]]></if>
+						
+			<if test="idcResourcesMemUseRate != null and idcResourcesMemUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_MEM_USE_RATE = #{idcResourcesMemUseRate} ]]></if>
+						
+			<if test="idcResourcesCpuUseRate != null and idcResourcesCpuUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_CPU_USE_RATE = #{idcResourcesCpuUseRate} ]]></if>
+						
+			<if test="idcResourcesDiskUseRate != null and idcResourcesDiskUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_DISK_USE_RATE = #{idcResourcesDiskUseRate} ]]></if>
+						
+			<if test="idcResourcesPoolStatus != null and idcResourcesPoolStatus != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_STATUS = #{idcResourcesPoolStatus} ]]></if>
+						
+			<if test="idcCreateUser != null and idcCreateUser != '' ">  <![CDATA[ and IDC_CREATE_USER = #{idcCreateUser} ]]></if>
+						
+			<if test="idcUpdateUser != null and idcUpdateUser != '' ">  <![CDATA[ and IDC_UPDATE_USER = #{idcUpdateUser} ]]></if>
+						
+			<if test="idcUpdateTime != null and idcUpdateTime != '' ">  <![CDATA[ and IDC_UPDATE_TIME = #{idcUpdateTime} ]]></if>
+						
+			<if test="idcCreateTime != null and idcCreateTime != '' ">  <![CDATA[ and IDC_CREATE_TIME = #{idcCreateTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.idcResourcesPoolId != null and params.idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{params.idcResourcesPoolId} ]]></if>
+						
+			<if test="params.idcResourcesPoolCode != null and params.idcResourcesPoolCode != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_CODE = #{params.idcResourcesPoolCode} ]]></if>
+						
+			<if test="params.idcResourcesPoolName != null and params.idcResourcesPoolName != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_NAME = #{params.idcResourcesPoolName} ]]></if>
+						
+			<if test="params.idcResourcesPoolParent != null and params.idcResourcesPoolParent != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_PARENT = #{params.idcResourcesPoolParent} ]]></if>
+						
+			<if test="params.idcMaxNum != null and params.idcMaxNum != '' ">  <![CDATA[ and IDC_MAX_NUM = #{params.idcMaxNum} ]]></if>
+						
+			<if test="params.idcResourcesUseRate != null and params.idcResourcesUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_USE_RATE = #{params.idcResourcesUseRate} ]]></if>
+						
+			<if test="params.idcResourcesCpuNum != null and params.idcResourcesCpuNum != '' ">  <![CDATA[ and IDC_RESOURCES_CPU_NUM = #{params.idcResourcesCpuNum} ]]></if>
+						
+			<if test="params.idcResourcesMemSize != null and params.idcResourcesMemSize != '' ">  <![CDATA[ and IDC_RESOURCES_MEM_SIZE = #{params.idcResourcesMemSize} ]]></if>
+						
+			<if test="params.idcResourcesDiskSize != null and params.idcResourcesDiskSize != '' ">  <![CDATA[ and IDC_RESOURCES_DISK_SIZE = #{params.idcResourcesDiskSize} ]]></if>
+						
+			<if test="params.idcResourcesMemUseRate != null and params.idcResourcesMemUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_MEM_USE_RATE = #{params.idcResourcesMemUseRate} ]]></if>
+						
+			<if test="params.idcResourcesCpuUseRate != null and params.idcResourcesCpuUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_CPU_USE_RATE = #{params.idcResourcesCpuUseRate} ]]></if>
+						
+			<if test="params.idcResourcesDiskUseRate != null and params.idcResourcesDiskUseRate != '' ">  <![CDATA[ and IDC_RESOURCES_DISK_USE_RATE = #{params.idcResourcesDiskUseRate} ]]></if>
+						
+			<if test="params.idcResourcesPoolStatus != null and params.idcResourcesPoolStatus != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_STATUS = #{params.idcResourcesPoolStatus} ]]></if>
+						
+			<if test="params.idcCreateUser != null and params.idcCreateUser != '' ">  <![CDATA[ and IDC_CREATE_USER = #{params.idcCreateUser} ]]></if>
+						
+			<if test="params.idcUpdateUser != null and params.idcUpdateUser != '' ">  <![CDATA[ and IDC_UPDATE_USER = #{params.idcUpdateUser} ]]></if>
+						
+			<if test="params.idcUpdateTime != null and params.idcUpdateTime != '' ">  <![CDATA[ and IDC_UPDATE_TIME = #{params.idcUpdateTime} ]]></if>
+						
+			<if test="params.idcCreateTime != null and params.idcCreateTime != '' ">  <![CDATA[ and IDC_CREATE_TIME = #{params.idcCreateTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[  IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId } ,]]></if>
+						
+			<if test="idcResourcesPoolCode != null and idcResourcesPoolCode != '' ">  <![CDATA[  IDC_RESOURCES_POOL_CODE = #{idcResourcesPoolCode } ,]]></if>
+						
+			<if test="idcResourcesPoolName != null and idcResourcesPoolName != '' ">  <![CDATA[  IDC_RESOURCES_POOL_NAME = #{idcResourcesPoolName } ,]]></if>
+						
+			<if test="idcResourcesPoolParent != null and idcResourcesPoolParent != '' ">  <![CDATA[  IDC_RESOURCES_POOL_PARENT = #{idcResourcesPoolParent } ,]]></if>
+						
+			<if test="idcMaxNum != null and idcMaxNum != '' ">  <![CDATA[  IDC_MAX_NUM = #{idcMaxNum } ,]]></if>
+						
+			<if test="idcResourcesUseRate != null and idcResourcesUseRate != '' ">  <![CDATA[  IDC_RESOURCES_USE_RATE = #{idcResourcesUseRate } ,]]></if>
+						
+			<if test="idcResourcesCpuNum != null and idcResourcesCpuNum != '' ">  <![CDATA[  IDC_RESOURCES_CPU_NUM = #{idcResourcesCpuNum } ,]]></if>
+						
+			<if test="idcResourcesMemSize != null and idcResourcesMemSize != '' ">  <![CDATA[  IDC_RESOURCES_MEM_SIZE = #{idcResourcesMemSize } ,]]></if>
+						
+			<if test="idcResourcesDiskSize != null and idcResourcesDiskSize != '' ">  <![CDATA[  IDC_RESOURCES_DISK_SIZE = #{idcResourcesDiskSize } ,]]></if>
+						
+			<if test="idcResourcesMemUseRate != null and idcResourcesMemUseRate != '' ">  <![CDATA[  IDC_RESOURCES_MEM_USE_RATE = #{idcResourcesMemUseRate } ,]]></if>
+						
+			<if test="idcResourcesCpuUseRate != null and idcResourcesCpuUseRate != '' ">  <![CDATA[  IDC_RESOURCES_CPU_USE_RATE = #{idcResourcesCpuUseRate } ,]]></if>
+						
+			<if test="idcResourcesDiskUseRate != null and idcResourcesDiskUseRate != '' ">  <![CDATA[  IDC_RESOURCES_DISK_USE_RATE = #{idcResourcesDiskUseRate } ,]]></if>
+						
+			<if test="idcResourcesPoolStatus != null and idcResourcesPoolStatus != '' ">  <![CDATA[  IDC_RESOURCES_POOL_STATUS = #{idcResourcesPoolStatus } ,]]></if>
+						
+			<if test="idcCreateUser != null and idcCreateUser != '' ">  <![CDATA[  IDC_CREATE_USER = #{idcCreateUser } ,]]></if>
+						
+			<if test="idcUpdateUser != null and idcUpdateUser != '' ">  <![CDATA[  IDC_UPDATE_USER = #{idcUpdateUser } ,]]></if>
+						
+			<if test="idcUpdateTime != null and idcUpdateTime != '' ">  <![CDATA[  IDC_UPDATE_TIME = #{idcUpdateTime } ,]]></if>
+						
+			<if test="idcCreateTime != null and idcCreateTime != '' ">  <![CDATA[  IDC_CREATE_TIME = #{idcCreateTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ IDC_RESOURCES_POOL_ID , ]]></if>
+				
+		<if test="idcResourcesPoolCode != null and idcResourcesPoolCode != '' ">  <![CDATA[ IDC_RESOURCES_POOL_CODE , ]]></if>
+				
+		<if test="idcResourcesPoolName != null and idcResourcesPoolName != '' ">  <![CDATA[ IDC_RESOURCES_POOL_NAME , ]]></if>
+				
+		<if test="idcResourcesPoolParent != null and idcResourcesPoolParent != '' ">  <![CDATA[ IDC_RESOURCES_POOL_PARENT , ]]></if>
+				
+		<if test="idcMaxNum != null and idcMaxNum != '' ">  <![CDATA[ IDC_MAX_NUM , ]]></if>
+				
+		<if test="idcResourcesUseRate != null and idcResourcesUseRate != '' ">  <![CDATA[ IDC_RESOURCES_USE_RATE , ]]></if>
+				
+		<if test="idcResourcesCpuNum != null and idcResourcesCpuNum != '' ">  <![CDATA[ IDC_RESOURCES_CPU_NUM , ]]></if>
+				
+		<if test="idcResourcesMemSize != null and idcResourcesMemSize != '' ">  <![CDATA[ IDC_RESOURCES_MEM_SIZE , ]]></if>
+				
+		<if test="idcResourcesDiskSize != null and idcResourcesDiskSize != '' ">  <![CDATA[ IDC_RESOURCES_DISK_SIZE , ]]></if>
+				
+		<if test="idcResourcesMemUseRate != null and idcResourcesMemUseRate != '' ">  <![CDATA[ IDC_RESOURCES_MEM_USE_RATE , ]]></if>
+				
+		<if test="idcResourcesCpuUseRate != null and idcResourcesCpuUseRate != '' ">  <![CDATA[ IDC_RESOURCES_CPU_USE_RATE , ]]></if>
+				
+		<if test="idcResourcesDiskUseRate != null and idcResourcesDiskUseRate != '' ">  <![CDATA[ IDC_RESOURCES_DISK_USE_RATE , ]]></if>
+				
+		<if test="idcResourcesPoolStatus != null and idcResourcesPoolStatus != '' ">  <![CDATA[ IDC_RESOURCES_POOL_STATUS , ]]></if>
+				
+		<if test="idcCreateUser != null and idcCreateUser != '' ">  <![CDATA[ IDC_CREATE_USER , ]]></if>
+				
+		<if test="idcUpdateUser != null and idcUpdateUser != '' ">  <![CDATA[ IDC_UPDATE_USER , ]]></if>
+				
+		<if test="idcUpdateTime != null and idcUpdateTime != '' ">  <![CDATA[ IDC_UPDATE_TIME , ]]></if>
+				
+		<if test="idcCreateTime != null and idcCreateTime != '' ">  <![CDATA[ IDC_CREATE_TIME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ #{idcResourcesPoolId } , ]]></if>
+				
+		<if test="idcResourcesPoolCode != null and idcResourcesPoolCode != '' ">  <![CDATA[ #{idcResourcesPoolCode } , ]]></if>
+				
+		<if test="idcResourcesPoolName != null and idcResourcesPoolName != '' ">  <![CDATA[ #{idcResourcesPoolName } , ]]></if>
+				
+		<if test="idcResourcesPoolParent != null and idcResourcesPoolParent != '' ">  <![CDATA[ #{idcResourcesPoolParent } , ]]></if>
+				
+		<if test="idcMaxNum != null and idcMaxNum != '' ">  <![CDATA[ #{idcMaxNum } , ]]></if>
+				
+		<if test="idcResourcesUseRate != null and idcResourcesUseRate != '' ">  <![CDATA[ #{idcResourcesUseRate } , ]]></if>
+				
+		<if test="idcResourcesCpuNum != null and idcResourcesCpuNum != '' ">  <![CDATA[ #{idcResourcesCpuNum } , ]]></if>
+				
+		<if test="idcResourcesMemSize != null and idcResourcesMemSize != '' ">  <![CDATA[ #{idcResourcesMemSize } , ]]></if>
+				
+		<if test="idcResourcesDiskSize != null and idcResourcesDiskSize != '' ">  <![CDATA[ #{idcResourcesDiskSize } , ]]></if>
+				
+		<if test="idcResourcesMemUseRate != null and idcResourcesMemUseRate != '' ">  <![CDATA[ #{idcResourcesMemUseRate } , ]]></if>
+				
+		<if test="idcResourcesCpuUseRate != null and idcResourcesCpuUseRate != '' ">  <![CDATA[ #{idcResourcesCpuUseRate } , ]]></if>
+				
+		<if test="idcResourcesDiskUseRate != null and idcResourcesDiskUseRate != '' ">  <![CDATA[ #{idcResourcesDiskUseRate } , ]]></if>
+				
+		<if test="idcResourcesPoolStatus != null and idcResourcesPoolStatus != '' ">  <![CDATA[ #{idcResourcesPoolStatus } , ]]></if>
+				
+		<if test="idcCreateUser != null and idcCreateUser != '' ">  <![CDATA[ #{idcCreateUser } , ]]></if>
+				
+		<if test="idcUpdateUser != null and idcUpdateUser != '' ">  <![CDATA[ #{idcUpdateUser } , ]]></if>
+				
+		<if test="idcUpdateTime != null and idcUpdateTime != '' ">  <![CDATA[ #{idcUpdateTime } , ]]></if>
+				
+		<if test="idcCreateTime != null and idcCreateTime != '' ">  <![CDATA[ #{idcCreateTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			IDC_RESOURCES_POOL_ID,IDC_RESOURCES_POOL_CODE,IDC_RESOURCES_POOL_NAME,IDC_RESOURCES_POOL_PARENT,IDC_MAX_NUM,IDC_RESOURCES_USE_RATE,IDC_RESOURCES_CPU_NUM,IDC_RESOURCES_MEM_SIZE,IDC_RESOURCES_DISK_SIZE,IDC_RESOURCES_MEM_USE_RATE,IDC_RESOURCES_CPU_USE_RATE,IDC_RESOURCES_DISK_USE_RATE,IDC_RESOURCES_POOL_STATUS,IDC_CREATE_USER,IDC_UPDATE_USER,IDC_UPDATE_TIME,IDC_CREATE_TIME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.idcResourcesPoolId},#{item.idcResourcesPoolCode},#{item.idcResourcesPoolName},#{item.idcResourcesPoolParent},#{item.idcMaxNum},#{item.idcResourcesUseRate},#{item.idcResourcesCpuNum},#{item.idcResourcesMemSize},#{item.idcResourcesDiskSize},#{item.idcResourcesMemUseRate},#{item.idcResourcesCpuUseRate},#{item.idcResourcesDiskUseRate},#{item.idcResourcesPoolStatus},#{item.idcCreateUser},#{item.idcUpdateUser},#{item.idcUpdateTime},#{item.idcCreateTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

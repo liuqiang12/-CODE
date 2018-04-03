@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.commer.app.mapper.IdcPdfDayPowerInfoMapper">
+    <!-- 批量保存 -->
+    <resultMap id="idcPdfDayPowerInfoMap" type="com.commer.app.mode.IdcPdfDayPowerInfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <id column="IDC_PDF_DAY_POWER_INFO_ID" property="idcPdfDayPowerInfoId" jdbcType="VARCHAR"/>
+
+        <result column="IDC_ROOM_CODE" property="idcRoomCode" jdbcType="VARCHAR" />
+
+        <result column="IDC_PDF_CODE" property="idcPdfCode" jdbcType="VARCHAR" />
+
+        <result column="IDC_MCB_CODE" property="idcMcbCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_START_TIME" property="idcStartTime" jdbcType="DATE"/>
+
+        <result column="IDC_AMOUT" property="idcAmout" jdbcType="NUMERIC"/>
+
+        <result column="IDC_STATUS" property="idcStatus" jdbcType="VARCHAR"/>
+
+        <result column="IDC_CREATE_TIME" property="idcCreateTime" jdbcType="DATE" />
+
+        <result column="IDC_END_TIME" property="idcEndTime" jdbcType="DATE"/>
+
+        <result column="IDC_ONLY_CODE" property="idcOnlyCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_BEFORE_DIFF" property="idcBeforeDiff" jdbcType="NUMERIC"/>
+
+    </resultMap>
+    <!--<insert id="insertList" parameterType="java.util.List">-->
+        <!--INSERT INTO IDC_PDF_DAY_POWER_INFO (-->
+        <!--<include refid="insertColumn"/>-->
+        <!--)-->
+        <!--VALUES-->
+        <!--<foreach collection="list" item="item" index=""-->
+                 <!--separator="union all">-->
+            <!--(-->
+            <!--<include refid="columnParam"/>-->
+            <!--)-->
+        <!--</foreach>-->
+    <!--</insert>-->
+    <insert id="insertList" parameterType="java.util.List">
+                INSERT INTO IDC_POWER_PDF_INFO( IDC_PDF_DAY_POWER_INFO_ID,
+                IDC_ROOM_CODE,
+                IDC_PDF_CODE,
+                IDC_MCB_CODE,
+                IDC_START_TIME,
+                IDC_AMOUT,
+                IDC_STATUS,
+                IDC_CREATE_TIME,
+                IDC_END_TIME,
+                IDC_ONLY_CODE,
+                IDC_BEFORE_DIFF)
+               (
+                <foreach collection="list" index="" item="item"
+                    separator="union all">
+                    select
+                    #{item.idcPdfDayPowerInfoId,jdbcType=VARCHAR},
+                    #{item.idcRoomCode,jdbcType=VARCHAR},
+                    #{item.idcPdfCode,jdbcType=VARCHAR},
+                    #{item.idcMcbCode,jdbcType=VARCHAR},
+                    #{item.idcStartTime,jdbcType=DATE},
+                    #{item.idcAmout,jdbcType=NUMERIC},
+                    #{item.idcStatus,jdbcType=VARCHAR},
+                    #{item.idcCreateTime,jdbcType=DATE},
+                    #{item.idcEndTime,jdbcType=DATE},
+                    #{item.idcOnlyCode,jdbcType=VARCHAR},
+                    #{item.idcBeforeDiff,jdbcType=NUMERIC}
+                    from dual
+                </foreach>
+            )
+         </insert>
+    <!-- 批量保存 -->
+    <sql id="insertColumn">
+        <![CDATA[
+            IDC_PDF_DAY_POWER_INFO_ID,
+            IDC_ROOM_CODE,
+            IDC_PDF_CODE,
+            IDC_MCB_CODE,
+            IDC_START_TIME,
+            IDC_AMOUT,
+            IDC_STATUS,
+            IDC_CREATE_TIME,
+            IDC_END_TIME,
+            IDC_ONLY_CODE,
+            IDC_BEFORE_DIFF
+        ]]>
+    </sql>
+
+    <sql id="columnParam">
+        <![CDATA[
+            #{item.idcPdfDayPowerInfoId},
+            #{item.idcRoomCode},
+            #{item.idcPdfCode},
+            #{item.idcMcbCode},
+            #{item.idcStartTime},
+            #{item.idcAmout},
+            #{item.idcStatus},
+            #{item.idcCreateTime},
+            #{item.idcEndTime},
+            #{item.idcOnlyCode},
+            #{item.idcBeforeDiff}
+        ]]>
+    </sql>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap"   resultMap="idcPdfDayPowerInfoMap"
+            parameterType="Map">
+        select
+        <include refid="insertColumn"/>
+        from IDC_POWER_PDF_INFO
+        where IDC_CREATE_TIME= to_date( #{idcCreateTime},'yyyy-mm-dd')
+    </select>
+</mapper>

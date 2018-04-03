@@ -1,0 +1,64 @@
+﻿ol,ul {list-style:none;}
+li{list-style-type:none;}
+img{vertical-align:top;border:0;}
+h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight:normal;}
+address,cite,code,em,th,i{font-weight:normal; font-style:normal;}
+.clearfix{*zoom:1;}
+.clearfix:after{display:block; overflow:hidden; clear:both; height:0; visibility:hidden; content:"";}
+a:link,a:visited
+{
+	color:#000;
+	text-decoration: none;
+}
+input
+{
+	outline: 0;
+}
+
+.swiper_wrap{
+	position: relative;
+	width: auto;
+	height: 30px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.swiper_wrap ul{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: auto;
+	float: right;
+	color: #444;
+	font-size: 14px;
+	margin-top: 1px;
+}
+.swiper_wrap ul li{
+	line-height: 30px;
+	padding-left: 24px;
+	padding-right: 24px;
+	font-family: '微软雅黑';
+	color: #808080;
+	font-size: 12px;
+}
+.swiper_wrap .lt{
+	position: absolute;
+	left: 0px;
+	top: 13px;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #AAAAAA;
+}
+.swiper_wrap .gt{
+	position: absolute;
+	right: 0px;
+	top: 13px;
+	font-family: "宋体";
+	font-weight: bold;
+	color: #AAAAAA;
+}
+ .swiper_wrap .font_inner a{
+	color: #444;
+}
+ .swiper_wrap a:hover{
+	color: #FA9101;
+}

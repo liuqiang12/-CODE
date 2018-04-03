@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<deleteInfo>
+		<deleteData>
+			#foreach($item in $localIspCustomerList)#*5客户服务数据*#
+			<user>
+				#if($item.aid)<userId>$item.aid</userId>#end#* 判断非空 *#
+
+			</user>
+			#end#*//5客户服务数据*#
+		</deleteData>
+	</deleteInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

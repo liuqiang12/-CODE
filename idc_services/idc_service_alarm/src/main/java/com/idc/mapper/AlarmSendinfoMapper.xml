@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.AlarmSendinfoMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultAlarmSendinfoMap" type="NetAlarmSendinfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id" />
+
+        <result column="sendType" property="sendtype" />
+
+        <result column="SendResult" property="sendresult" />
+
+        <result column="SendTime" property="sendtime" />
+
+        <result column="SendMembers" property="sendmembers" />
+
+        <result column="UnSendMembers" property="unsendmembers" />
+
+        <result column="sendInfo" property="sendinfo" />
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="NetAlarmSendinfo">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo where ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="NetAlarmSendinfo"
+            parameterType="Map">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+        <include refid="whereParam" />
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="NetAlarmSendinfo">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+        <include refid="whereParam" />
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="NetAlarmSendinfo">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="NetAlarmSendinfo"
+            parameterType="Map">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+        <include refid="whereParam" />
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="NetAlarmSendinfo">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+        <include refid="whereParam" />
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="NetAlarmSendinfo">
+        select
+        <include refid="baseColumn" />
+        from alarm_sendinfo
+        <include refid="wherePageParam" />
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="NetAlarmSendinfo">
+        update alarm_sendinfo
+        <include refid="updateParam" />
+        WHERE  id=#{id}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update alarm_sendinfo
+        <include refid="updateParam" />
+        <include refid="whereParam" />
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from alarm_sendinfo
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from alarm_sendinfo where ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="NetAlarmSendinfo">
+        delete from alarm_sendinfo
+        <include refid="whereParam" />
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from alarm_sendinfo
+        <include refid="whereParam" />
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from alarm_sendinfo where ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="NetAlarmSendinfo"
+            useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select alarm_sendinfo_seq.nextval from dual
+        </selectKey>
+        INSERT INTO alarm_sendinfo
+        (id,
+        <include refid="insertColumn" />
+        ) VALUES
+        (
+        <include refid="insertColumnParam" />
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO alarm_sendinfo (
+        <include refid="insertColumn" />
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam" />
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			sendType as sendtype,
+			SendResult as sendresult,
+			SendTime as sendtime,
+			SendMembers as sendmembers,
+			UnSendMembers as unsendmembers,
+			sendInfo as sendinfo
+	  ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+            <if test="sendtype != null and sendtype != '' ">  <![CDATA[ and sendType = #{sendtype} ]]></if>
+
+            <if test="sendresult != null and sendresult != '' ">  <![CDATA[ and SendResult = #{sendresult} ]]></if>
+
+            <if test="sendtime != null and sendtime != '' ">  <![CDATA[ and SendTime = #{sendtime} ]]></if>
+
+            <if test="sendmembers != null and sendmembers != '' ">  <![CDATA[ and SendMembers = #{sendmembers} ]]></if>
+
+            <if test="unsendmembers != null and unsendmembers != '' ">  <![CDATA[ and UnSendMembers = #{unsendmembers} ]]></if>
+
+            <if test="sendinfo != null and sendinfo != '' ">  <![CDATA[ and sendInfo = #{sendinfo} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+            <if test="params.sendtype != null and params.sendtype != '' ">  <![CDATA[ and sendType = #{params.sendtype} ]]></if>
+
+            <if test="params.sendresult != null and params.sendresult != '' ">  <![CDATA[ and SendResult = #{params.sendresult} ]]></if>
+            <if test="params.keyword != null and params.keyword != '' ">
+                <![CDATA[ and (sendinfo like CONCAT('%',#{params.keyword } ,'%') or
+                               sendmembers like CONCAT('%',#{params.keyword } ,'%'))]]>
+            </if>
+            <if test="params.starttime != null and params.starttime != '' ">
+                <![CDATA[ and SendTime>=#{params.starttime}]]>
+            </if>
+            <if test="params.endtime != null and params.endtime != '' ">
+                <![CDATA[ and SendTime<=#{params.endtime}]]>
+            </if>
+
+            <if test="params.sendtime != null ">  <![CDATA[ and SendTime = #{params.sendtime} ]]></if>
+
+            <if test="params.sendmembers != null and params.sendmembers != '' ">  <![CDATA[ and SendMembers = #{params.sendmembers} ]]></if>
+
+            <if test="params.unsendmembers != null and params.unsendmembers != '' ">  <![CDATA[ and UnSendMembers = #{params.unsendmembers} ]]></if>
+
+            <if test="params.sendinfo != null and params.sendinfo != '' ">  <![CDATA[ and sendInfo = #{params.sendinfo} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+            <if test="sendtype != null and sendtype != '' ">  <![CDATA[  sendType = #{sendtype } ,]]></if>
+
+            <if test="sendresult != null and sendresult != '' ">  <![CDATA[  SendResult = #{sendresult } ,]]></if>
+
+            <if test="sendtime != null and sendtime != '' ">  <![CDATA[  SendTime = #{sendtime } ,]]></if>
+
+            <if test="sendmembers != null and sendmembers != '' ">  <![CDATA[  SendMembers = #{sendmembers } ,]]></if>
+
+            <if test="unsendmembers != null and unsendmembers != '' ">  <![CDATA[  UnSendMembers = #{unsendmembers } ,]]></if>
+
+            <if test="sendinfo != null and sendinfo != '' ">  <![CDATA[  sendInfo = #{sendinfo } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+
+            <if test="sendtype != null and sendtype != '' ">  <![CDATA[ sendType , ]]></if>
+
+            <if test="sendresult != null and sendresult != '' ">  <![CDATA[ SendResult , ]]></if>
+
+            <if test="sendtime != null and sendtime != '' ">  <![CDATA[ SendTime , ]]></if>
+
+            <if test="sendmembers != null and sendmembers != '' ">  <![CDATA[ SendMembers , ]]></if>
+
+            <if test="unsendmembers != null and unsendmembers != '' ">  <![CDATA[ UnSendMembers , ]]></if>
+
+            <if test="sendinfo != null and sendinfo != '' ">  <![CDATA[ sendInfo , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+
+            <if test="sendtype != null and sendtype != '' ">  <![CDATA[ #{sendtype } , ]]></if>
+
+            <if test="sendresult != null and sendresult != '' ">  <![CDATA[ #{sendresult } , ]]></if>
+
+            <if test="sendtime != null and sendtime != '' ">  <![CDATA[ #{sendtime } , ]]></if>
+
+            <if test="sendmembers != null and sendmembers != '' ">  <![CDATA[ #{sendmembers } , ]]></if>
+
+            <if test="unsendmembers != null and unsendmembers != '' ">  <![CDATA[ #{unsendmembers } , ]]></if>
+
+            <if test="sendinfo != null and sendinfo != '' ">  <![CDATA[ #{sendinfo } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			ID,sendType,SendResult,SendTime,SendMembers,UnSendMembers,sendInfo
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.id},#{item.sendtype},#{item.sendresult},#{item.sendtime},#{item.sendmembers},#{item.unsendmembers},#{item.sendinfo}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

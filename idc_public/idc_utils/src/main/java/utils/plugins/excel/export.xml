@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 配置导出的复杂表头情况 -->
+<export>
+	<Workbook id="qsndnhhbfx" name="全省年度能耗环比分析">
+		<sheet id="0" name="能耗环比报告_全省年度能耗环比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总能耗" id="100001_1"  cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map -->
+					<cell foreach="${yearsMap}" id="100002_1" cellIndex_from="#{100001_1}"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	<!-- 通信机房 -->
+	<Workbook id="qsndnhhbfx_txjf" name="全省年度能耗环比分析">
+		<sheet id="0" name="能耗环比报告_全省年度能耗环比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_txjf_0" fieldName="regionName"></cell>
+					<cell foreach="${yearsMap}" id="100001_txjf_1" cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_txjf_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100002_txjf_1" cellIndex_from="#{100001_txjf_1}"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	<!-- 全省月度能耗环比分析 -->
+	<Workbook id="qsndnhhbfx_qsydnhhbfx" name="全省月度能耗环比分析">
+		<sheet id="0" name="能耗环比报告_全省月度能耗环比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_qsydnhhbfx_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总能耗" id="100001_qsydnhhbfx_1"  cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_qsydnhhbfx_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map -->
+					<cell foreach="${yearsMap}" id="100002_qsydnhhbfx_1" cellIndex_from="#{100001_qsydnhhbfx_1}"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	<!-- 通信机房 -->
+	<Workbook id="qsydnhhbfx_txjf" name="全省月度能耗环比分析">
+		<sheet id="0" name="能耗环比报告_全省月度能耗环比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_qsydnhhbfx_txjf_0" fieldName="regionName"></cell>
+					<cell foreach="${yearsMap}" id="100001_qsydnhhbfx_txjf_1" cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_qsydnhhbfx_txjf_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100002_qsydnhhbfx_txjf_1" cellIndex_from="#{100001_qsydnhhbfx_txjf_1}"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	
+	<!-- 各场所年度能耗分析 -->
+	<Workbook id="qsndnhhbfx_gcsndnhfx" name="各场所年度能耗分析">
+		<sheet id="0" name="能耗环比报告_各场所年度能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_gcsndnhfx_0" fieldName="machName"></cell>
+					<cell fieldDispName="总能耗" id="100001_gcsndnhfx_1"  cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_gcsndnhfx_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map -->
+					<cell foreach="${yearsMap}" id="100002_gcsndnhfx_1" cellIndex_from="#{100001_gcsndnhfx_1}"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="gcsndnhfx_txjf" name="各场所年度能耗分析">
+		<sheet id="0" name="能耗环比报告_各场所年度能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_gcsndnhfx_txjf_0" fieldName="machName"></cell>
+					<cell foreach="${yearsMap}" id="100001_gcsndnhfx_txjf_1" cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_gcsndnhfx_txjf_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100002_gcsndnhfx_txjf_1" cellIndex_from="#{100001_gcsndnhfx_txjf_1}"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	
+	<!-- 全省用能同比分析 -->
+	<Workbook id="yntbfx_qsyntbfx" name="全省用能同比分析">
+		<sheet id="0" name="能耗环比报告_全省用能同比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_yntbfx_qsyntbfx_0" fieldName="regionName"></cell>
+					<cell foreach="${yearsMap}" id="100001_yntbfx_qsyntbfx_1" cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_yntbfx_qsyntbfx_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100002_yntbfx_qsyntbfx_1" cellIndex_from="#{100001_yntbfx_qsyntbfx_1}"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	<!-- 全省用能同比分析:三层 -->
+	<Workbook id="yntbfx_qsyntbfx_upLevel" name="全省用能同比分析">
+		<sheet id="0" name="能耗环比报告_全省用能同比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_yntbfx_qsyntbfx_upLevel_0" fieldName="regionName"></cell>
+					<cell foreach="${monthMap}" id="100001_yntbfx_qsyntbfx_upLevel_1" cols="${monthLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_yntbfx_qsyntbfx_upLevel_0"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachYearMap}" id="100002_yntbfx_qsyntbfx_upLevel_1" cellIndex_from="#{100001_yntbfx_qsyntbfx_upLevel_1}" cols="${yearLen}"></cell> 
+				</row>
+				<!-- 第三行 -->
+				<row id="1">
+					<cell id="100003_yntbfx_qsyntbfx_upLevel_0" cellRangeAddress_rows="$A$1:$A$3"></cell>
+<!-- 					传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100003_yntbfx_qsyntbfx_upLevel_1" cellIndex_from="#{100002_yntbfx_qsyntbfx_upLevel_1}" level="3"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<!-- 场所用能同比分析[] -->
+	<Workbook id="yntbfx_csyntbfx" name="场所用能同比分析">
+		<sheet id="0" name="能耗环比报告_场所用能同比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_yntbfx_csyntbfx_0" fieldName="resouceName"></cell>
+					<cell foreach="${yearsMap}" id="100001_yntbfx_csyntbfx_1" cols="${yearsLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_yntbfx_csyntbfx_0" cellRangeAddress_rows="$A$1:$A$2"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100002_yntbfx_csyntbfx_1" cellIndex_from="#{100001_yntbfx_csyntbfx_1}"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="yntbfx_csyntbfx_upLevel" name="场所用能同比分析">
+		<sheet id="0" name="能耗环比报告_场所用能同比分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_yntbfx_csyntbfx_upLevel_0" fieldName="resouceName"></cell>
+					<cell foreach="${monthMap}" id="100001_yntbfx_csyntbfx_upLevel_1" cols="${monthLen}"></cell>
+				</row>
+				<!-- 第二行 -->
+				<row id="1">
+					<cell id="100002_yntbfx_csyntbfx_upLevel_0"></cell>
+					<!-- 传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachYearMap}" id="100002_yntbfx_csyntbfx_upLevel_1" cellIndex_from="#{100001_yntbfx_csyntbfx_upLevel_1}" cols="${yearLen}"></cell> 
+				</row>
+				<!-- 第三行 -->
+				<row id="1">
+					<cell id="100003_yntbfx_csyntbfx_upLevel_0" cellRangeAddress_rows="$A$1:$A$3"></cell>
+<!-- 					传递一个map：循环对应的又是循环情况 -->
+ 					<cell foreach="${foreachElcMap}" id="100003_yntbfx_csyntbfx_upLevel_1" cellIndex_from="#{100002_yntbfx_csyntbfx_upLevel_1}" level="3"></cell> 
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	<Workbook id="qsddknhfx" name="全省单端口能耗分析">
+		<sheet id="0" name="全省单端口能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_qsddknhfx_upLevel_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_qsddknhfx_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单端口能耗(千瓦时)" id="100001_qsddknhfx_upLevel_2" fieldName="totalWBport"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="dsddknhfx" name="地市单端口能耗分析">
+		<sheet id="0" name="地市单端口能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_dsddknhfx_upLevel_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_dsddknhfx_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单端口能耗(千瓦时)" id="100001_dsddknhfx_upLevel_2" fieldName="totalWBport"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="jzdknhddknhfx" name="基站端口能耗">
+		<sheet id="0" name="基站端口能耗">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="名称" id="100001_jzdknhddknhfx_upLevel_0" fieldName="btsname"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_jzdknhddknhfx_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单端口能耗(千瓦时)" id="100001_jzdknhddknhfx_upLevel_2" fieldName="totalWBport"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="qsddknhfx_zp" name="全省单载频能耗分析">
+		<sheet id="0" name="全省单载频能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_qsddknhfx_zp_upLevel_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_qsddknhfx_zp_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单载频能耗(千瓦时)" id="100001_qsddknhfx_zp_upLevel_2" fieldName="totalCarrier"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="dsddknhfx_zp" name="地市单载频能耗分析">
+		<sheet id="0" name="地市单载频能耗分析">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="区域" id="100001_dsddknhfx_zp_upLevel_0" fieldName="regionName"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_dsddknhfx_zp_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单载频能耗(千瓦时)" id="100001_dsddknhfx_zp_upLevel_2" fieldName="totalCarrier"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+	
+	<Workbook id="jzdknhddknhfx_zp" name="基站载频能耗">
+		<sheet id="0" name="基站载频能耗">
+			<rows>
+				<!-- 第一行 -->
+				<row id="0">
+					<cell fieldDispName="名称" id="100001_jzdknhddknhfx_zp_upLevel_0" fieldName="btsname"></cell>
+					<cell fieldDispName="总耗电量(千瓦时)" id="100001_jzdknhddknhfx_zp_upLevel_1" fieldName="totalUsage"></cell>
+					<cell fieldDispName="单载频能耗(千瓦时)" id="100001_jzdknhddknhfx_zp_upLevel_2" fieldName="totalCarrier"></cell>
+				</row>
+			</rows>
+		</sheet>
+	</Workbook>
+</export>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisTicketCommnetMapper">
+	<insert id="createHisTicketCommnet" parameterType="IdcHisTicketCommnet" >
+		INSERT INTO IDC_HIS_TICKET_COMMNET
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="satisfaction != null and satisfaction != '' ">  <![CDATA[ SATISFACTION , ]]></if>
+			<if test="feedback != null and feedback != '' ">  <![CDATA[ FEEDBACK , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="satisfaction != null and satisfaction != '' ">  <![CDATA[ #{satisfaction } , ]]></if>
+			<if test="feedback != null and feedback != '' ">  <![CDATA[ #{feedback } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+		</trim>
+		)
+	</insert>
+
+	<select id="queryHisTikectCommentByTicketInstId" resultType="IdcHisTicketCommnet">
+		select
+		t.id,
+		t.ticket_inst_id as ticketInstId,
+		t.satisfaction as satisfaction,
+		t.feedback as feedback
+		from IDC_HIS_TICKET_COMMNET t
+		WHERE  t.ticket_inst_id = #{0}
+	</select>
+
+	<!-- 工单id作为条件查询 -->
+	<update id="mergeInto" parameterType="IdcHisTicketCommnet" >
+		merge into IDC_HIS_TICKET_COMMNET t
+		using ( SELECT #{ticketInstId } as ticketInstId from dual) t1
+		on( t1.ticketInstId = t.TICKET_INST_ID )
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="satisfaction != null and satisfaction != '' ">  <![CDATA[ SATISFACTION , ]]></if>
+			<if test="feedback != null and feedback != '' ">  <![CDATA[ FEEDBACK , ]]></if>
+			<if test="endTime != null ">  <![CDATA[ END_TIME , ]]></if>
+			<if test="remark != null ">  <![CDATA[ REMARK , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="satisfaction != null and satisfaction != '' ">  <![CDATA[ #{satisfaction } , ]]></if>
+			<if test="feedback != null and feedback != '' ">  <![CDATA[ #{feedback } , ]]></if>
+			<if test="endTime != null ">  <![CDATA[ #{endTime } , ]]></if>
+			<if test="remark != null ">  <![CDATA[ #{remark } , ]]></if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="satisfaction != null and satisfaction != '' ">  <![CDATA[ SATISFACTION = #{satisfaction } , ]]></if>
+			<if test="feedback != null and feedback != '' ">  <![CDATA[ FEEDBACK = #{feedback } , ]]></if>
+			<if test="endTime != null ">  <![CDATA[ END_TIME = #{endTime } , ]]></if>
+			<if test="remark != null ">  <![CDATA[ END_TIME = #{remark } , ]]></if>
+		</set>
+		where TICKET_INST_ID = #{ticketInstId }
+	</update>
+
+</mapper>

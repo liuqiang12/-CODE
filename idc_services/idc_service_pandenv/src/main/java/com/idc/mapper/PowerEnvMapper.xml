@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.PowerEnvMapper">
+
+    <select id="getPEByRoom" resultType="com.idc.bo.RoomPE">
+        SELECT
+        b. ID AS Roomid,
+        b.sitename roomName,
+        SUM (A .IDC_BEFORE_DIFF) AS electric ,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) AS IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.ID)
+        where to_date(to_char(a.IDC_CREATE_TIME,'yyyy/mm/dd'),'yyyy/mm/dd')> to_date( #{0},'yyyy-mm-dd')
+        and to_date(to_char(a.IDC_CREATE_TIME,'yyyy/mm/dd'),'yyyy/mm/dd')&lt; = to_date( #{1},'yyyy-mm-dd')
+        and b.isdelete = 0
+        <if test="roomid!=null">
+            and b .id=#{roomid}
+        </if>
+        GROUP BY
+        b. ID,
+        b.sitename,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        )
+        ORDER BY roomid,IDC_START_TIME asc
+    </select>
+    <select id="getLastPEByBuild" resultType="com.idc.bo.RoomPE">
+        SELECT
+        c. ID AS Roomid,
+        c.name as roomName,
+        SUM (A .IDC_BEFORE_DIFF) AS electric,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) as IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.sitename)
+        LEFT JOIN IDC_BUILDING c ON c.id = b. buildingid
+        <where>
+            <include refid="getYestaday"/>
+            and c.isdelete = 0 and b.isdelete = 0
+            <if test="buildid !=null and buildid!=''">
+                and c.id = #{0}
+            </if>
+        </where>
+        GROUP BY
+        c. ID,
+        c.name,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        )
+    </select>
+    <select id="getLastPEByRoom" resultType="com.idc.bo.RoomPE">
+        SELECT
+        b. ID AS Roomid,
+        b.sitename roomName,
+        SUM (A .IDC_BEFORE_DIFF) AS electric,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) as IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.sitename)
+        <where>
+            <include refid="getYestaday"/>
+            and b.isdelete = 0
+            <if test="roomid !=null and roomid!=''">
+                and b.id = #{0}
+            </if>
+        </where>
+        GROUP BY
+        b. ID,
+        b.sitename,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        )
+    </select>
+    <select id="getPETopRoom" resultType="com.idc.bo.RoomPE">
+        SELECT * from (SELECT
+        b. ID AS Roomid,
+        b.sitename roomName,
+        SUM (A .IDC_BEFORE_DIFF) AS electric ,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) as IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.ID)
+        where
+        <include refid="getYestaday"/>
+        and b.isdelete = 0
+        GROUP BY
+        b. ID,
+        b.sitename,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) ORDER BY electric  desc)
+        <if test="topN!=null">
+            WHERE ROWNUM &lt;#{topN}
+        </if>
+    </select>
+    <select id="getRoomPEByBuildid" resultType="com.idc.bo.RoomPE">
+        SELECT * from (SELECT
+        <if test="type==null or type!='build'">
+            nvl(b. ID ,0)Roomid,
+            nvl(b. sitename ,'其他')roomName,
+        </if>
+        <if test="type!=null and type=='build'">
+            nvl(c. ID ,0)Roomid,
+            nvl(c. NAME ,'其他')roomName,
+        </if>
+
+        SUM (A .IDC_BEFORE_DIFF) AS electric ,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) as IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.ID)
+        <if test="type!=null and type=='build'">
+            LEFT JOIN IDC_BUILDING c ON b .BUILDINGID = c.ID
+        </if>
+        where
+        <include refid="getYestaday"/>
+--          and b.isdelete = 0
+        <if test="buildid !=null and buildid!=''">
+--             and c.isdelete = 0
+            and b.buildingid=#{buildid}
+        </if>
+        GROUP BY
+        <if test="type==null or type!='build'">
+            b. ID ,
+            b.sitename,
+        </if>
+        <if test="type!=null and type=='build'">
+            c. ID ,
+            c.name ,
+        </if>
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) ORDER BY electric  desc)
+    </select>
+    <select id="getHisPE" resultType="com.idc.bo.RoomPE">
+        SELECT
+        <if test="type==null or type!='build'">
+            b. ID AS Roomid,
+            b.sitename roomName,
+        </if>
+        <if test="type!=null and type=='build'">
+            c. ID Roomid,
+            c.name roomName,
+        </if>
+        sum(A .IDC_BEFORE_DIFF) AS electric,
+        TO_CHAR (
+        A .IDC_CREATE_TIME,
+        'YYYY-MM-DD'
+        ) AS IDC_START_TIME
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN ZB_MACHINEROOM b ON to_char(A .IDC_ROOM_CODE) = to_char(b.ID)
+        <if test="type!=null and type=='build'">
+            LEFT JOIN IDC_BUILDING c ON b .BUILDINGID = c.ID
+        </if>
+        where to_date(to_char(a.IDC_CREATE_TIME,'yyyy/mm/dd'),'yyyy/mm/dd')> to_date( #{startTime},'yyyy-mm-dd')
+        and to_date(to_char(a.IDC_CREATE_TIME,'yyyy/mm/dd'),'yyyy/mm/dd')&lt; = to_date( #{endTime},'yyyy-mm-dd')
+        and b.isdelete = 0
+        <if test="type==null or type!='build'">
+            and b .id=#{roomid}
+            GROUP BY
+            b. ID ,
+            b.sitename,
+            TO_CHAR (
+            A .IDC_CREATE_TIME,
+            'YYYY-MM-DD'
+            )
+            ORDER BY  b .id,IDC_START_TIME asc
+        </if>
+        <if test="type!=null and type=='build'">
+            and c. ID =#{roomid}
+            and c.isdelete = 0
+            GROUP BY
+            c. ID ,
+            c. NAME ,
+            TO_CHAR (
+            A .IDC_CREATE_TIME,
+            'YYYY-MM-DD'
+            )
+            ORDER BY c.id,IDC_START_TIME asc
+        </if>
+    </select>
+    <sql id="getYestaday">
+       TO_DATE (
+            TO_CHAR (
+            a.IDC_CREATE_TIME,
+            'yyyy/mm/dd'
+            ),
+            'yyyy/mm/dd'
+            ) = TO_DATE (
+           TO_CHAR (
+            sysdate-1,
+            'yyyy/mm/dd'
+            ), 'yyyy/mm/dd'
+            )
+    </sql>
+    <select id="getLastPeByRack" resultType="com.idc.bo.RoomPE">
+        SELECT
+        nvl(b. ID,0) AS roomid,
+        nvl(b. NAME,'其他') AS roomName,
+        SUM (IDC_BEFORE_DIFF) electric
+        FROM
+        IDC_POWER_PDF_INFO A
+        LEFT JOIN IDC_RACK b ON A .IDC_MCB_CODE = b. ID
+        where
+        <include refid="getYestaday"/>
+        and b.isdelete = 0
+        GROUP BY
+        b. ID,
+        b. NAME
+    </select>
+</mapper>

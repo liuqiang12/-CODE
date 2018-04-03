@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisProcCmentMapper">
+	<resultMap id="resultIdcHisProcCmentMap" type="IdcHisProcCment">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="EXECUTIONID" property="executionid" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="ACT_NAME_" property="actName" />
+		<result column="AUTHOR" property="author" />
+		<result column="AUTHOR_ID" property="authorId" />
+		<result column="COMMENT" property="comment" />
+		<result column="STATUS" property="status" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+	</resultMap>
+
+	<!-- 查询审批信息历史 -->
+	<select id="queryHisProcCommentQueryData" resultType="IdcHisProcCment">
+		select
+		t1.ID as id,
+		t1.TICKET_INST_ID as ticketInstId,
+		t1.PROD_INST_ID as prodInstId,
+		t1.PROC_INST_ID as procInstId,
+		t1.EXECUTIONID as executionid,
+		t1.TASK_ID as taskId,
+		t1.ACT_NAME_ as actName,
+		t1.AUTHOR as author,
+		t1.AUTHOR_ID as authorId,
+		t1."COMMENT" as "comment",
+		t1.STATUS as status,
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+		from IDC_HIS_PROC_CMENT t1
+		where  t1.TICKET_INST_ID = #{ticketInstId}
+		order by t1.CREATE_TIME desc
+	</select>
+
+	<select id="getIdsByProdIdAndTicketId" resultType="Long">
+		select t1.ID as id
+		from IDC_HIS_PROC_CMENT t1
+		where t1.PROD_INST_ID = #{prodInstId}
+		and t1.TICKET_INST_ID = #{ticketInstId}
+		order by t1.CREATE_TIME desc
+	</select>
+	<insert id="insertIntoProcCment" parameterType="IdcHisProcCment" >
+		INSERT INTO IDC_HIS_PROC_CMENT
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ TASK_ID , ]]></if>
+			<if test="actName != null and actName != '' ">  <![CDATA[ ACT_NAME_ , ]]></if>
+			<if test="author != null and author != '' ">  <![CDATA[ AUTHOR , ]]></if>
+			<if test="authorId != null and authorId != '' ">  <![CDATA[ AUTHOR_ID , ]]></if>
+			<if test="comment != null and comment != '' ">  <![CDATA[ "COMMENT" , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ "STATUS" , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId} , ]]></if>
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ #{taskId} , ]]></if>
+			<if test="actName != null and actName != '' ">  <![CDATA[ #{actName} , ]]></if>
+			<if test="author != null and author != '' ">  <![CDATA[ #{author} , ]]></if>
+			<if test="authorId != null and authorId != '' ">  <![CDATA[ #{authorId} , ]]></if>
+			<if test="comment != null and comment != '' ">  <![CDATA[ #{comment} , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ #{status} , ]]></if>
+		</trim>
+		)
+	</insert>
+
+
+	<!-- 合体方法 -->
+	<update id="mergeInto" parameterType="IdcHisProcCment" >
+		merge into IDC_HIS_PROC_CMENT t
+		using (
+		SELECT
+		#{ticketInstId } as ticketInstId,
+		#{prodInstId } as prodInstId,
+		#{procInstId } as procInstId,
+		#{taskId } as taskId
+		from dual) t1
+		on(
+		t1.ticketInstId = t.TICKET_INST_ID and
+		t1.prodInstId = t.PROD_INST_ID and
+		t1.procInstId = t.PROC_INST_ID and
+		t1.taskId = t.TASK_ID
+		)
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="procInstId != null and procInstId != '' ">  <![CDATA[ PROC_INST_ID , ]]></if>
+			<if test="executionid != null and executionid != '' ">  <![CDATA[ EXECUTIONID , ]]></if>
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ TASK_ID , ]]></if>
+			<if test="actName != null and actName != '' ">  <![CDATA[ ACT_NAME_ , ]]></if>
+			<if test="author != null and author != '' ">  <![CDATA[ AUTHOR , ]]></if>
+			<if test="authorId != null and authorId != '' ">  <![CDATA[ AUTHOR_ID , ]]></if>
+			<if test="comment != null and comment != '' ">  <![CDATA[ "COMMENT" , ]]></if>
+			<if test="status != null  ">  <![CDATA[ STATUS , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+			<if test="procInstId != null and procInstId != '' ">  <![CDATA[ #{procInstId } , ]]></if>
+			<if test="executionid != null and executionid != '' ">  <![CDATA[ #{executionid } , ]]></if>
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ #{taskId } , ]]></if>
+			<if test="actName != null and actName != '' ">  <![CDATA[ #{actName } , ]]></if>
+			<if test="author != null and author != '' ">  <![CDATA[ #{author } , ]]></if>
+			<if test="authorId != null and authorId != '' ">  <![CDATA[ #{authorId } , ]]></if>
+			<if test="comment != null and comment != '' ">  <![CDATA[ #{comment } , ]]></if>
+			<if test="status != null ">  <![CDATA[ #{status } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="executionid != null and executionid != '' ">  <![CDATA[  EXECUTIONID = #{executionid } ,]]></if>
+			<if test="actName != null and actName != '' ">  <![CDATA[  ACT_NAME_ = #{actName } ,]]></if>
+			<if test="author != null and author != '' ">  <![CDATA[  AUTHOR = #{author } ,]]></if>
+			<if test="authorId != null and authorId != '' ">  <![CDATA[  AUTHOR_ID = #{authorId } ,]]></if>
+			<if test="comment != null and comment != '' ">  <![CDATA[  "COMMENT" = #{comment } ,]]></if>
+			<if test="status != null ">  <![CDATA[  STATUS = #{status } ,]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[  REV = #{rev } ,]]></if>
+		</set>
+		where TASK_ID = #{taskId}
+		and PROD_INST_ID = #{prodInstId }
+		and PROC_INST_ID = #{procInstId }
+		and TICKET_INST_ID = #{ticketInstId }
+	</update>
+
+	<select id="getDataByTicketInstId" resultType="Map">
+		select t.ticket_inst_id,
+		to_char(t.reservestart, 'yyyy-MM-dd HH24:mi:ss') reservestart,
+		to_char(t.reserveend, 'yyyy-MM-dd HH24:mi:ss') reserveend,
+		t.construct_comment,
+		t.applydesc
+		from IDC_HIS_PROC_CMENT t
+		where t.TICKET_INST_ID = #{ticketInstId}
+	</select>
+
+
+	<select id="callReturnRubbishOrDeleteTicketID" statementType="CALLABLE" parameterType="Map">
+		CALL process_resource.return_rubbish_delete_ticketID(
+		#{ticketInstId,jdbcType=INTEGER,mode=IN},
+		#{operationSign,jdbcType=INTEGER,mode=IN},
+		#{ticketid_parent,jdbcType=INTEGER,mode=OUT},
+		#{ticketcategory_parent,jdbcType=INTEGER,mode=OUT},
+		#{msg,jdbcType=VARCHAR,mode=OUT}
+		)
+	</select>
+
+	<select id="deleteTicketQuerySon"  resultType="Long">
+		select count(*)
+		  from idc_his_ticket tt
+		 where tt.prod_inst_id = #{prodInstId}
+		   and tt.ticket_inst_id > #{ticketInstId}
+		<![CDATA[
+		   and tt.ticket_status <> -3
+ 		]]>
+	</select>
+
+</mapper>

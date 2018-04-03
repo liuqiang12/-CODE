@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspServiceInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspServiceInfoMap" type="ServiceInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="SERVICE_ID" property="serviceId" />
+
+		<!--<result column="SERVICE_CONTENT" property="serviceContent" />-->
+		<result column="REG_ID" property="regId" />
+		<result column="SET_MODE" property="setMode" />
+		<result column="BUSINESS" property="business" />
+		<result column="FK_USER_EXTEND_ID" property="fkUserExtendId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<association property="domain" javaType="Domain" column="{fkServiceInfoId=AID}" select="getDomain">
+		</association>
+		<!--  housesHoldInfos -->
+		<collection property="housesHoldInfos" ofType="List"  select="getHousesHoldInfo" column="{fkServiceInfoId=AID}"   >
+		</collection>
+
+	</resultMap>
+	<!-- 获取domain域名情况:IDC_ISP_DOMAIN -->
+	<select id="getDomain" resultMap="com.idc.mapper.IdcIspDomainMapper.resultIdcIspDomainMap">
+		select t1.AID,
+			   t1.ID,
+			   t1.NAME,
+			   t1.FK_SERVICE_INFO_ID,
+			   t1.TICKET_INST_ID
+		  from IDC_ISP_DOMAIN t1
+		WHERE t1.FK_SERVICE_INFO_ID = #{fkServiceInfoId}
+	</select>
+
+	<select id="getHousesHoldInfo" resultMap="com.idc.mapper.IdcIspHousesholdInfoMapper.resultIdcIspHousesholdInfoMap">
+		<!-- 体现出相关的数据中心 -->
+		select  t1.TICKET_INST_ID,
+				t1.AID,
+				t1.HHID,
+				t1.HOUSE_ID,
+				t1.DISTRIBUTE_TIME,
+				t1.BAND_WIDTH,
+				t1.FRAMEINFO_ID,
+				t1.FK_SERVICE_INFO_ID
+				from IDC_ISP_HOUSESHOLD_INFO t1
+				where t1.fk_service_info_id = #{fkServiceInfoId}
+	</select>
+</mapper>

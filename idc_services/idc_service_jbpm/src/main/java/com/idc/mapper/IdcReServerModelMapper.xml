@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReServerModelMapper">
+	<resultMap id="resultIdcReServerModelMap" type="IdcReServerModel">
+		<!-- 数据库属性和实体类属性对应关系 -->
+
+		<id column="ID" property="id" />
+
+		<result column="REV" property="rev" />
+
+		<result column="TYPE_MODE" property="typeMode" />
+
+		<result column="BRAND" property="brand" />
+
+		<result column="CODE" property="code" />
+
+		<result column="SPEC_NUMBER" property="specNumber" />
+
+		<result column="RATED_POWER" property="ratedPower" />
+
+		<result column="NUM" property="num" />
+
+		<result column="DESC" property="desc" />
+
+		<result column="CREATE_TIME" property="createTime" />
+
+	</resultMap>
+
+	<select id="getModelByTicketInstId" resultMap="resultIdcReServerModelMap">
+		select t.id,
+			   t.rev,
+			   t.type_mode,
+			   t.brand,
+			   t.code,
+			   t.spec_number,
+			   t.rated_power,
+			   t.num,
+       		   t."DESC" as "desc",
+			   t.create_time,
+			   t.ticket_inst_id,
+			   t.prod_inst_id,
+			   t.source,
+			   t.cpu,
+			   t.mem,
+			   t.memory,
+			   t.os,
+			   t.rackunit
+			   from IDC_RE_SERVER_MODEL t
+					where t.id=(select max(x.id)
+                  from IDC_RE_SERVER_MODEL x
+                  where x.ticket_inst_id=#{0})
+	</select>
+
+	<update id="updateModel" parameterType="IdcReServerModel">
+		update IDC_RE_SERVER_MODEL
+		<trim suffix="" suffixOverrides=",">
+			<set>
+				<if test="typeMode != null and typeMode != '' ">  <![CDATA[ TYPE_MODE = #{typeMode}  , ]]></if>
+				<if test="specNumber != null and specNumber != '' ">  <![CDATA[ SPEC_NUMBER = #{specNumber}  , ]]></if>
+				<if test="num != null and num != '' ">  <![CDATA[ NUM = #{num}  , ]]></if>
+				<if test="desc != null and desc != '' ">  <![CDATA[ "DESC" = #{desc}  , ]]></if>
+				<if test="source != null and source != '' ">  <![CDATA[ SOURCE = #{source}  , ]]></if>
+				<if test="CPU != null and CPU != '' ">  <![CDATA[ CPU = #{CPU}  , ]]></if>
+				<if test="MEM != null and MEM != '' ">  <![CDATA[ MEM = #{MEM}  , ]]></if>
+				<if test="memory != null and specNumber != '' ">  <![CDATA[ memory = #{memory}  , ]]></if>
+				<if test="OS != null and OS != '' ">  <![CDATA[ OS = #{OS}  , ]]></if>
+				<if test="rackUnit != null and rackUnit != '' ">  <![CDATA[ rackUnit = #{rackUnit}  , ]]></if>
+			</set>
+		</trim>
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<!-- insert保存方法 -->
+	<insert id="insertServerModel" parameterType="IdcReServerModel" >
+		INSERT INTO IDC_RE_SERVER_MODEL
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="typeMode != null and typeMode != '' ">  <![CDATA[ TYPE_MODE , ]]></if>
+			<if test="brand != null and brand != '' ">  <![CDATA[ BRAND , ]]></if>
+			<if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+			<if test="specNumber != null and specNumber != '' ">  <![CDATA[ SPEC_NUMBER , ]]></if>
+			<if test="ratedPower != null and ratedPower != '' ">  <![CDATA[ RATED_POWER , ]]></if>
+			<if test="num != null and num != '' ">  <![CDATA[ NUM , ]]></if>
+			<if test="desc != null and desc != '' ">  <![CDATA[ "DESC" , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="typeMode != null and typeMode != '' ">  <![CDATA[ #{typeMode } , ]]></if>
+			<if test="brand != null and brand != '' ">  <![CDATA[ #{brand } , ]]></if>
+			<if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+			<if test="specNumber != null and specNumber != '' ">  <![CDATA[ #{specNumber } , ]]></if>
+			<if test="ratedPower != null and ratedPower != '' ">  <![CDATA[ #{ratedPower } , ]]></if>
+			<if test="num != null and num != '' ">  <![CDATA[ #{num } , ]]></if>
+			<if test="desc != null and desc != '' ">  <![CDATA[ #{desc } , ]]></if>
+		</trim>
+		)
+	</insert>
+</mapper>

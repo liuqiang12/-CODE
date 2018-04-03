@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.commer.app.mapper.BusPortMapper">
+
+    <!-- 返回类型 -->
+    <resultMap id="resultTestResoucesMap" type="com.commer.app.mode.NetBusiPort">
+        <!-- 数据库属性和实体类属性对应关系 -->
+        <id property="id" column="id"/>
+        <result column="desc" property="desc"/>
+        <result column="customer" property="customer"/>
+        <result column="busiportname" property="busiportname"/>
+        <result column="bandwidth" property="bandwidth"/>
+        <!--<result column="typeid" property="typeid" />-->
+        <collection property="portids" ofType="Long" javaType="list">
+            <result column="portid"/>
+            <!--<id property="portid" column="portid"/>-->
+        </collection>
+        <collection property="groups" ofType="Long" javaType="list">
+            <result column="groupid"/>
+            <!--<id property="portid" column="portid"/>-->
+        </collection>
+    </resultMap>
+    <select id="queryList" resultMap="resultTestResoucesMap">
+        SELECT
+        A . ID,
+        d .portid,
+        A .busiportname,
+        A .descr,
+        e.groupid as groupid,
+        A.CUSTOMER as customer,
+        a.bandwidth as bandwidth
+        FROM
+        NET_BUSIPORT A
+        LEFT JOIN net_busi_port D ON A . ID = D .busiid
+        LEFT JOIN net_busiport_group e ON A . ID = e .busiid
+        order by a.busiportname
+    </select>
+</mapper>

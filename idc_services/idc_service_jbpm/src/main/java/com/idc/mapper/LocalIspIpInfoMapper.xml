@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspIpInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspIpInfoMap" type="LocalIspIpInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="AID" property="aid" />
+				
+		<result column="START_IP" property="startIp" />
+				
+		<result column="END_IP" property="endIp" />
+				
+		<result column="FK_HOUSEHOLD_ID" property="fkHouseholdId" />
+				
+		<result column="FK_SERVER_ID" property="fkServerId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspIpInfo">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspIpInfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspIpInfo">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspIpInfo">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspIpInfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspIpInfo">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspIpInfo">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_IP_INFO
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspIpInfo">
+		update LOCAL_ISP_IP_INFO
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_IP_INFO
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_IP_INFO
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_IP_INFO where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspIpInfo">
+		delete from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_IP_INFO
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_IP_INFO where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspIpInfo"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO LOCAL_ISP_IP_INFO
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_IP_INFO (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,			START_IP as startIp,			END_IP as endIp,			FK_HOUSEHOLD_ID as fkHouseholdId,			FK_SERVER_ID as fkServerId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="startIp != null and startIp != '' ">  <![CDATA[ and START_IP = #{startIp} ]]></if>
+						
+			<if test="endIp != null and endIp != '' ">  <![CDATA[ and END_IP = #{endIp} ]]></if>
+						
+			<if test="fkHouseholdId != null and fkHouseholdId != '' ">  <![CDATA[ and FK_HOUSEHOLD_ID = #{fkHouseholdId} ]]></if>
+						
+			<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ and FK_SERVER_ID = #{fkServerId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.startIp != null and params.startIp != '' ">  <![CDATA[ and START_IP = #{params.startIp} ]]></if>
+						
+			<if test="params.endIp != null and params.endIp != '' ">  <![CDATA[ and END_IP = #{params.endIp} ]]></if>
+						
+			<if test="params.fkHouseholdId != null and params.fkHouseholdId != '' ">  <![CDATA[ and FK_HOUSEHOLD_ID = #{params.fkHouseholdId} ]]></if>
+						
+			<if test="params.fkServerId != null and params.fkServerId != '' ">  <![CDATA[ and FK_SERVER_ID = #{params.fkServerId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="startIp != null and startIp != '' ">  <![CDATA[  START_IP = #{startIp } ,]]></if>
+						
+			<if test="endIp != null and endIp != '' ">  <![CDATA[  END_IP = #{endIp } ,]]></if>
+						
+			<if test="fkHouseholdId != null and fkHouseholdId != '' ">  <![CDATA[  FK_HOUSEHOLD_ID = #{fkHouseholdId } ,]]></if>
+						
+			<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[  FK_SERVER_ID = #{fkServerId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ START_IP , ]]></if>
+				
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ END_IP , ]]></if>
+				
+		<if test="fkHouseholdId != null and fkHouseholdId != '' ">  <![CDATA[ FK_HOUSEHOLD_ID , ]]></if>
+				
+		<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ FK_SERVER_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="startIp != null and startIp != '' ">  <![CDATA[ #{startIp } , ]]></if>
+				
+		<if test="endIp != null and endIp != '' ">  <![CDATA[ #{endIp } , ]]></if>
+				
+		<if test="fkHouseholdId != null and fkHouseholdId != '' ">  <![CDATA[ #{fkHouseholdId } , ]]></if>
+				
+		<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ #{fkServerId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,START_IP,END_IP,FK_HOUSEHOLD_ID,FK_SERVER_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.startIp},#{item.endIp},#{item.fkHouseholdId},#{item.fkServerId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

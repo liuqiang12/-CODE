@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcTicketDemandMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcTicketDemandMap" type="IdcTicketDemand">
+		<!-- 数据库属性和实体类属性对应关系 -->
+
+		<result column="ID" property="id" />
+
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+
+		<result column="PROD_INST_ID" property="prodInstId" />
+
+		<result column="CREATE_TIME" property="createTime" />
+
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcTicketDemand">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcTicketDemand"
+			parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcTicketDemand">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</select>
+
+	<!--  -->
+	<select id="queryHisDemand" resultType="Map">
+		select t.busname,
+		   t.serial_number,
+		   t.ticket_inst_id,
+		   d.id,
+		   d.ticket_inst_id,
+		   d.prod_inst_id,
+		   d.other_msg,
+		   case
+			 when d.rack_spec is not null then
+			  (select t.name from asset_baseinfo t where t.code = d.rack_spec)
+		   end rack_spec,
+		   d.rack_num,
+		   case
+			 when d.rack_supplytype is not null then
+			  (select t.name
+				 from asset_baseinfo t
+				where t.code = d.rack_supplytype)
+		   end rack_supplytype,
+		   d.rack_desc,
+		   case
+			 when d.port_portmode is not null then
+			  (select t.name from asset_baseinfo t where t.code = d.port_portmode)
+		   end port_portmode,
+		   d.port_bandwidth,
+		   d.port_num,
+		   d.port_desc,
+		   case
+			 when d.ip_portmode is not null then
+			  (select t.name from asset_baseinfo t where t.code = d.ip_portmode)
+		   end ip_portmode,
+		   d.ip_num,
+		   d.ip_desc,
+		   case
+			 when d.server_typemode is not null then
+			  (select t.name
+				 from asset_baseinfo t
+				where t.code = d.server_typemode)
+		   end server_typemode,
+		   d.server_specnumber,
+		   d.server_num,
+		   d.server_desc,
+		   d.newly_name,
+		   case
+			 when d.newly_category is not null then
+			  (select t.name
+				 from asset_baseinfo t
+				where t.code = d.newly_category)
+		   end newly_category,
+		   d.newly_desc
+	  from idc_his_ticket t
+				left join idc_ticket_demand d
+				on t.ticket_inst_id = d.ticket_inst_id
+				where t.prod_inst_id = #{0}
+				and t.ticket_category = 900
+			<![CDATA[	and t.ticket_status <> -3  ]]>
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="queryAllByTicketInstId" resultType="IdcTicketDemand">
+		select  t.id,
+				t.ticket_inst_id as ticketInstId,
+				t.prod_inst_id as prodInstId,
+				t.create_time as createTime,
+				t.other_msg,
+				t.rack_spec,
+				t.rack_num,
+				t.rack_supplytype,
+				t.rack_desc,
+				t.port_portmode,
+				t.port_bandwidth,
+				t.port_num,
+				t.port_desc,
+				t.ip_portmode,
+				t.ip_num,
+				t.ip_desc,
+				t.server_typemode,
+				t.server_specnumber,
+				t.server_num,
+				t.server_desc,
+				t.newly_name,
+				t.newly_category,
+				t.newly_desc
+		  from IDC_TICKET_DEMAND t where t.ticket_inst_id=#{0}
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcTicketDemand">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcTicketDemand"
+			parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcTicketDemand">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcTicketDemand">
+		select
+		<include refid="baseColumn" />
+		from IDC_TICKET_DEMAND
+		<include refid="wherePageParam" />
+	</select>
+
+	<!-- update -->
+	<update id="updateByTicketInstId" parameterType="IdcTicketDemand">
+		update IDC_TICKET_DEMAND t
+		<include refid="updateParam" /> where t.ticket_inst_id=#{ticketInstId}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_TICKET_DEMAND
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateOrMerge" parameterType="IdcTicketDemand">
+		merge into IDC_TICKET_DEMAND T1
+		  using (select #{ticketInstId,jdbcType=NUMERIC} as ticketInstId from dual) t4
+		on (t1.ticket_inst_id = t4.ticketInstId)
+			when matched then
+				update
+				<set>
+					<if test="other_Msg != null and other_Msg != '' ">  <![CDATA[ OTHER_MSG = #{other_Msg}  , ]]></if>
+					<if test="rack_Spec != null and rack_Spec != '' ">  <![CDATA[ rack_Spec = #{rack_Spec}  , ]]></if>
+					<if test="rack_Num != null and rack_Num != '' ">  <![CDATA[ rack_Num = #{rack_Num}  , ]]></if>
+					<if test="rack_supplyType != null and rack_supplyType != '' ">  <![CDATA[ rack_supplyType = #{rack_supplyType}  , ]]></if>
+					<if test="rack_desc != null and rack_desc != '' ">  <![CDATA[ rack_desc = #{rack_desc}  , ]]></if>
+					<if test="port_portMode != null and port_portMode != '' ">  <![CDATA[ port_portMode = #{port_portMode}  , ]]></if>
+					<if test="port_bandwidth != null and port_bandwidth != '' ">  <![CDATA[ port_bandwidth = #{port_bandwidth}  , ]]></if>
+					<if test="port_num != null and port_num != '' ">  <![CDATA[ port_num = #{port_num}  , ]]></if>
+					<if test="port_desc != null and port_desc != '' ">  <![CDATA[ port_desc = #{port_desc}  , ]]></if>
+					<if test="ip_portMode != null and ip_portMode != '' ">  <![CDATA[ ip_portMode = #{ip_portMode}  , ]]></if>
+					<if test="ip_num != null and ip_num != '' ">  <![CDATA[ ip_num = #{ip_num}  , ]]></if>
+					<if test="ip_desc != null and ip_desc != '' ">  <![CDATA[ ip_desc = #{ip_desc}  , ]]></if>
+					<if test="server_typeMode != null and server_typeMode != '' ">  <![CDATA[ server_typeMode = #{server_typeMode}  , ]]></if>
+					<if test="server_specNumber != null and server_specNumber != '' ">  <![CDATA[ server_specNumber = #{server_specNumber}  , ]]></if>
+					<if test="server_num != null and server_num != '' ">  <![CDATA[ server_num = #{server_num}  , ]]></if>
+					<if test="server_desc != null and server_desc != '' ">  <![CDATA[ server_desc = #{server_desc}  , ]]></if>
+					<if test="newly_name != null and newly_name != '' ">  <![CDATA[ newly_name = #{newly_name}  , ]]></if>
+					<if test="newly_category != null and newly_category != '' ">  <![CDATA[ newly_category = #{newly_category}  , ]]></if>
+					<if test="newly_desc != null and newly_desc != '' ">  <![CDATA[ newly_desc = #{newly_desc}  , ]]></if>
+				</set>
+			when not matched then
+				insert
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<if test="ticketInstId != null ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+						<if test="prodInstId != null ">  <![CDATA[ PROD_INST_ID , ]]></if>
+						<if test="createTime != null">  <![CDATA[ CREATE_TIME , ]]></if>
+						<if test="rack_Spec != null and rack_Spec != '' ">  <![CDATA[ rack_Spec , ]]></if>
+						<if test="rack_Num != null and rack_Num != '' ">  <![CDATA[ rack_Num , ]]></if>
+						<if test="rack_supplyType != null and rack_supplyType != '' ">  <![CDATA[ rack_supplyType , ]]></if>
+						<if test="rack_desc != null and rack_desc != '' ">  <![CDATA[ rack_desc , ]]></if>
+						<if test="port_portMode != null and port_portMode != '' ">  <![CDATA[ port_portMode , ]]></if>
+						<if test="port_bandwidth != null and port_bandwidth != '' ">  <![CDATA[ port_bandwidth , ]]></if>
+						<if test="port_num != null and port_num != '' ">  <![CDATA[ port_num , ]]></if>
+						<if test="port_desc != null and port_desc != '' ">  <![CDATA[ port_desc , ]]></if>
+						<if test="ip_portMode != null and ip_portMode != '' ">  <![CDATA[ ip_portMode , ]]></if>
+						<if test="ip_num != null and ip_num != '' ">  <![CDATA[ ip_num , ]]></if>
+						<if test="ip_desc != null and ip_desc != '' ">  <![CDATA[ ip_desc , ]]></if>
+						<if test="server_typeMode != null and server_typeMode != '' ">  <![CDATA[ server_typeMode , ]]></if>
+						<if test="server_specNumber != null and server_specNumber != '' ">  <![CDATA[ server_specNumber , ]]></if>
+						<if test="server_num != null and server_num != '' ">  <![CDATA[ server_num , ]]></if>
+						<if test="server_desc != null and server_desc != '' ">  <![CDATA[ server_desc , ]]></if>
+						<if test="newly_name != null and newly_name != '' ">  <![CDATA[ newly_name , ]]></if>
+						<if test="newly_category != null and newly_category != '' ">  <![CDATA[ newly_category , ]]></if>
+						<if test="newly_desc != null and newly_desc != '' ">  <![CDATA[ newly_desc , ]]></if>
+					</trim>
+					<trim prefix="values (" suffix=")" suffixOverrides="," >
+						<if test="ticketInstId != null and ticketInstId != '' ">   #{ticketInstId} ,</if>
+						<if test="prodInstId != null and prodInstId != '' ">  #{prodInstId} ,</if>
+						<if test="createTime != null">   #{createTime} ,</if>
+						<if test="rack_Spec != null and rack_Spec != '' ">  <![CDATA[ #{rack_Spec}  , ]]></if>
+						<if test="rack_Num != null and rack_Num != '' ">  <![CDATA[ #{rack_Num}  , ]]></if>
+						<if test="rack_supplyType != null and rack_supplyType != '' ">  <![CDATA[ #{rack_supplyType}  , ]]></if>
+						<if test="rack_desc != null and rack_desc != '' ">  <![CDATA[ #{rack_desc}  , ]]></if>
+						<if test="port_portMode != null and port_portMode != '' ">  <![CDATA[ #{port_portMode}  , ]]></if>
+						<if test="port_bandwidth != null and port_bandwidth != '' ">  <![CDATA[ #{port_bandwidth}  , ]]></if>
+						<if test="port_num != null and port_num != '' ">  <![CDATA[ #{port_num}  , ]]></if>
+						<if test="port_desc != null and port_desc != '' ">  <![CDATA[ #{port_desc}  , ]]></if>
+						<if test="ip_portMode != null and ip_portMode != '' ">  <![CDATA[ #{ip_portMode}  , ]]></if>
+						<if test="ip_num != null and ip_num != '' ">  <![CDATA[ #{ip_num}  , ]]></if>
+						<if test="ip_desc != null and ip_desc != '' ">  <![CDATA[ #{ip_desc}  , ]]></if>
+						<if test="server_typeMode != null and server_typeMode != '' ">  <![CDATA[ #{server_typeMode}  , ]]></if>
+						<if test="server_specNumber != null and server_specNumber != '' ">  <![CDATA[ #{server_specNumber}  , ]]></if>
+						<if test="server_num != null and server_num != '' ">  <![CDATA[ #{server_num}  , ]]></if>
+						<if test="server_desc != null and server_desc != '' ">  <![CDATA[ #{server_desc}  , ]]></if>
+						<if test="newly_name != null and newly_name != '' ">  <![CDATA[ #{newly_name}  , ]]></if>
+						<if test="newly_category != null and newly_category != '' ">  <![CDATA[ #{newly_category}  , ]]></if>
+						<if test="newly_desc != null and newly_desc != '' ">  <![CDATA[ #{newly_desc}  , ]]></if>
+					</trim>
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_TICKET_DEMAND
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_TICKET_DEMAND where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcTicketDemand">
+		delete from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_TICKET_DEMAND
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_TICKET_DEMAND where ID in
+		<foreach collection="list" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcTicketDemand"
+			useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_TICKET_DEMAND
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_TICKET_DEMAND (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+				 separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+		<![CDATA[
+		  	ID as id,
+			TICKET_INST_ID as ticketInstId,
+			PROD_INST_ID as prodInstId,
+			CREATE_TIME as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{ticketInstId} ]]></if>
+
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ and PROD_INST_ID = #{prodInstId} ]]></if>
+
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+			<if test="params.ticketInstId != null and params.ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{params.ticketInstId} ]]></if>
+
+			<if test="params.prodInstId != null and params.prodInstId != '' ">  <![CDATA[ and PROD_INST_ID = #{params.prodInstId} ]]></if>
+
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[  TICKET_INST_ID = #{ticketInstId } ,]]></if>
+
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[  PROD_INST_ID = #{prodInstId } ,]]></if>
+
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ CREATE_TIME , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+		<trim suffix="" suffixOverrides=",">
+
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		ID,TICKET_INST_ID,PROD_INST_ID,DEMAND_OBJECT,CREATE_TIME,OTHER_MSG
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.id},#{item.ticketInstId},#{item.prodInstId},#{item.createTime}}
+	</sql>
+
+</mapper>

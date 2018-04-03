@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.CostFixedMapper">
+  <resultMap id="BaseResultMap" type="com.idc.model.CostFixed">
+    <id column="COST_FIXED_ID" jdbcType="VARCHAR" property="costFixedId" />
+    <result column="COST_FIXED" jdbcType="DECIMAL" property="costFixed" />
+    <result column="COST_BASE_DEV" jdbcType="DECIMAL" property="costBaseDev" />
+    <result column="COST_IT_DEV" jdbcType="DECIMAL" property="costItDev" />
+    <result column="UNIT_TIME" jdbcType="VARCHAR" property="unitTime" />
+    <result column="OBJECT_CODE" jdbcType="VARCHAR" property="objectCode" />
+    <result column="COST_FIXED_TYPE" jdbcType="VARCHAR" property="costFixedType" />
+    <result column="COST_FIXED_AVG" jdbcType="DECIMAL" property="costFixedAvg" />
+    <result column="COST_SHARE_BUILDING_YEAR" jdbcType="DECIMAL" property="costShareBuildingYear" />
+    <result column="COST_SHARE_BASE_DEV_YEAR" jdbcType="DECIMAL" property="costShareBaseDevYear" />
+    <result column="COST_SHARE_IT_DEV_YEAR" jdbcType="DECIMAL" property="costShareItDevYear" />
+    <result column="COST_SHARE_RACK_COUNT" jdbcType="DECIMAL" property="costShareRackCount" />
+    <result column="COST_BUILDING_MONTH" jdbcType="DECIMAL" property="costBuildingMonth" />
+    <result column="COST_BASE_DEV_MONTH" jdbcType="DECIMAL" property="costBaseDevMonth" />
+    <result column="COST_IT_MONTH" jdbcType="DECIMAL" property="costItMonth" />
+    <result column="COST_RACK_MONTH" jdbcType="DECIMAL" property="costRackMonth" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    COST_FIXED_ID, COST_FIXED, COST_BASE_DEV, COST_IT_DEV, UNIT_TIME, OBJECT_CODE, COST_FIXED_TYPE, 
+    COST_FIXED_AVG, COST_SHARE_BUILDING_YEAR, COST_SHARE_BASE_DEV_YEAR, COST_SHARE_IT_DEV_YEAR, 
+    COST_SHARE_RACK_COUNT, COST_BUILDING_MONTH, COST_BASE_DEV_MONTH, COST_IT_MONTH, COST_RACK_MONTH
+  </sql>
+  <select id="selectByExample" parameterType="com.idc.model.CostFixedExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from COST_FIXED
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from COST_FIXED
+    where COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from COST_FIXED
+    where COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.idc.model.CostFixedExample">
+    delete from COST_FIXED
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.idc.model.CostFixed">
+    insert into COST_FIXED (COST_FIXED_ID, COST_FIXED, COST_BASE_DEV, 
+      COST_IT_DEV, UNIT_TIME, OBJECT_CODE, 
+      COST_FIXED_TYPE, COST_FIXED_AVG, COST_SHARE_BUILDING_YEAR, 
+      COST_SHARE_BASE_DEV_YEAR, COST_SHARE_IT_DEV_YEAR, 
+      COST_SHARE_RACK_COUNT, COST_BUILDING_MONTH, 
+      COST_BASE_DEV_MONTH, COST_IT_MONTH, COST_RACK_MONTH
+      )
+    values (#{costFixedId,jdbcType=VARCHAR}, #{costFixed,jdbcType=DECIMAL}, #{costBaseDev,jdbcType=DECIMAL}, 
+      #{costItDev,jdbcType=DECIMAL}, #{unitTime,jdbcType=VARCHAR}, #{objectCode,jdbcType=VARCHAR}, 
+      #{costFixedType,jdbcType=VARCHAR}, #{costFixedAvg,jdbcType=DECIMAL}, #{costShareBuildingYear,jdbcType=DECIMAL}, 
+      #{costShareBaseDevYear,jdbcType=DECIMAL}, #{costShareItDevYear,jdbcType=DECIMAL}, 
+      #{costShareRackCount,jdbcType=DECIMAL}, #{costBuildingMonth,jdbcType=DECIMAL}, 
+      #{costBaseDevMonth,jdbcType=DECIMAL}, #{costItMonth,jdbcType=DECIMAL}, #{costRackMonth,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.idc.model.CostFixed">
+    insert into COST_FIXED
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costFixedId != null">
+        COST_FIXED_ID,
+      </if>
+      <if test="costFixed != null">
+        COST_FIXED,
+      </if>
+      <if test="costBaseDev != null">
+        COST_BASE_DEV,
+      </if>
+      <if test="costItDev != null">
+        COST_IT_DEV,
+      </if>
+      <if test="unitTime != null">
+        UNIT_TIME,
+      </if>
+      <if test="objectCode != null">
+        OBJECT_CODE,
+      </if>
+      <if test="costFixedType != null">
+        COST_FIXED_TYPE,
+      </if>
+      <if test="costFixedAvg != null">
+        COST_FIXED_AVG,
+      </if>
+      <if test="costShareBuildingYear != null">
+        COST_SHARE_BUILDING_YEAR,
+      </if>
+      <if test="costShareBaseDevYear != null">
+        COST_SHARE_BASE_DEV_YEAR,
+      </if>
+      <if test="costShareItDevYear != null">
+        COST_SHARE_IT_DEV_YEAR,
+      </if>
+      <if test="costShareRackCount != null">
+        COST_SHARE_RACK_COUNT,
+      </if>
+      <if test="costBuildingMonth != null">
+        COST_BUILDING_MONTH,
+      </if>
+      <if test="costBaseDevMonth != null">
+        COST_BASE_DEV_MONTH,
+      </if>
+      <if test="costItMonth != null">
+        COST_IT_MONTH,
+      </if>
+      <if test="costRackMonth != null">
+        COST_RACK_MONTH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costFixedId != null">
+        #{costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixed != null">
+        #{costFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="costBaseDev != null">
+        #{costBaseDev,jdbcType=DECIMAL},
+      </if>
+      <if test="costItDev != null">
+        #{costItDev,jdbcType=DECIMAL},
+      </if>
+      <if test="unitTime != null">
+        #{unitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="objectCode != null">
+        #{objectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedType != null">
+        #{costFixedType,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedAvg != null">
+        #{costFixedAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareBuildingYear != null">
+        #{costShareBuildingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareBaseDevYear != null">
+        #{costShareBaseDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareItDevYear != null">
+        #{costShareItDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareRackCount != null">
+        #{costShareRackCount,jdbcType=DECIMAL},
+      </if>
+      <if test="costBuildingMonth != null">
+        #{costBuildingMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costBaseDevMonth != null">
+        #{costBaseDevMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costItMonth != null">
+        #{costItMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costRackMonth != null">
+        #{costRackMonth,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.idc.model.CostFixedExample" resultType="java.lang.Long">
+    select count(*) from COST_FIXED
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update COST_FIXED
+    <set>
+      <if test="record.costFixedId != null">
+        COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costFixed != null">
+        COST_FIXED = #{record.costFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costBaseDev != null">
+        COST_BASE_DEV = #{record.costBaseDev,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costItDev != null">
+        COST_IT_DEV = #{record.costItDev,jdbcType=DECIMAL},
+      </if>
+      <if test="record.unitTime != null">
+        UNIT_TIME = #{record.unitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectCode != null">
+        OBJECT_CODE = #{record.objectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costFixedType != null">
+        COST_FIXED_TYPE = #{record.costFixedType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costFixedAvg != null">
+        COST_FIXED_AVG = #{record.costFixedAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costShareBuildingYear != null">
+        COST_SHARE_BUILDING_YEAR = #{record.costShareBuildingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costShareBaseDevYear != null">
+        COST_SHARE_BASE_DEV_YEAR = #{record.costShareBaseDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costShareItDevYear != null">
+        COST_SHARE_IT_DEV_YEAR = #{record.costShareItDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costShareRackCount != null">
+        COST_SHARE_RACK_COUNT = #{record.costShareRackCount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costBuildingMonth != null">
+        COST_BUILDING_MONTH = #{record.costBuildingMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costBaseDevMonth != null">
+        COST_BASE_DEV_MONTH = #{record.costBaseDevMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costItMonth != null">
+        COST_IT_MONTH = #{record.costItMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRackMonth != null">
+        COST_RACK_MONTH = #{record.costRackMonth,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update COST_FIXED
+    set COST_FIXED_ID = #{record.costFixedId,jdbcType=VARCHAR},
+      COST_FIXED = #{record.costFixed,jdbcType=DECIMAL},
+      COST_BASE_DEV = #{record.costBaseDev,jdbcType=DECIMAL},
+      COST_IT_DEV = #{record.costItDev,jdbcType=DECIMAL},
+      UNIT_TIME = #{record.unitTime,jdbcType=VARCHAR},
+      OBJECT_CODE = #{record.objectCode,jdbcType=VARCHAR},
+      COST_FIXED_TYPE = #{record.costFixedType,jdbcType=VARCHAR},
+      COST_FIXED_AVG = #{record.costFixedAvg,jdbcType=DECIMAL},
+      COST_SHARE_BUILDING_YEAR = #{record.costShareBuildingYear,jdbcType=DECIMAL},
+      COST_SHARE_BASE_DEV_YEAR = #{record.costShareBaseDevYear,jdbcType=DECIMAL},
+      COST_SHARE_IT_DEV_YEAR = #{record.costShareItDevYear,jdbcType=DECIMAL},
+      COST_SHARE_RACK_COUNT = #{record.costShareRackCount,jdbcType=DECIMAL},
+      COST_BUILDING_MONTH = #{record.costBuildingMonth,jdbcType=DECIMAL},
+      COST_BASE_DEV_MONTH = #{record.costBaseDevMonth,jdbcType=DECIMAL},
+      COST_IT_MONTH = #{record.costItMonth,jdbcType=DECIMAL},
+      COST_RACK_MONTH = #{record.costRackMonth,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.idc.model.CostFixed">
+    update COST_FIXED
+    <set>
+      <if test="costFixed != null">
+        COST_FIXED = #{costFixed,jdbcType=DECIMAL},
+      </if>
+      <if test="costBaseDev != null">
+        COST_BASE_DEV = #{costBaseDev,jdbcType=DECIMAL},
+      </if>
+      <if test="costItDev != null">
+        COST_IT_DEV = #{costItDev,jdbcType=DECIMAL},
+      </if>
+      <if test="unitTime != null">
+        UNIT_TIME = #{unitTime,jdbcType=VARCHAR},
+      </if>
+      <if test="objectCode != null">
+        OBJECT_CODE = #{objectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedType != null">
+        COST_FIXED_TYPE = #{costFixedType,jdbcType=VARCHAR},
+      </if>
+      <if test="costFixedAvg != null">
+        COST_FIXED_AVG = #{costFixedAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareBuildingYear != null">
+        COST_SHARE_BUILDING_YEAR = #{costShareBuildingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareBaseDevYear != null">
+        COST_SHARE_BASE_DEV_YEAR = #{costShareBaseDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareItDevYear != null">
+        COST_SHARE_IT_DEV_YEAR = #{costShareItDevYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costShareRackCount != null">
+        COST_SHARE_RACK_COUNT = #{costShareRackCount,jdbcType=DECIMAL},
+      </if>
+      <if test="costBuildingMonth != null">
+        COST_BUILDING_MONTH = #{costBuildingMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costBaseDevMonth != null">
+        COST_BASE_DEV_MONTH = #{costBaseDevMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costItMonth != null">
+        COST_IT_MONTH = #{costItMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="costRackMonth != null">
+        COST_RACK_MONTH = #{costRackMonth,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.idc.model.CostFixed">
+    update COST_FIXED
+    set COST_FIXED = #{costFixed,jdbcType=DECIMAL},
+      COST_BASE_DEV = #{costBaseDev,jdbcType=DECIMAL},
+      COST_IT_DEV = #{costItDev,jdbcType=DECIMAL},
+      UNIT_TIME = #{unitTime,jdbcType=VARCHAR},
+      OBJECT_CODE = #{objectCode,jdbcType=VARCHAR},
+      COST_FIXED_TYPE = #{costFixedType,jdbcType=VARCHAR},
+      COST_FIXED_AVG = #{costFixedAvg,jdbcType=DECIMAL},
+      COST_SHARE_BUILDING_YEAR = #{costShareBuildingYear,jdbcType=DECIMAL},
+      COST_SHARE_BASE_DEV_YEAR = #{costShareBaseDevYear,jdbcType=DECIMAL},
+      COST_SHARE_IT_DEV_YEAR = #{costShareItDevYear,jdbcType=DECIMAL},
+      COST_SHARE_RACK_COUNT = #{costShareRackCount,jdbcType=DECIMAL},
+      COST_BUILDING_MONTH = #{costBuildingMonth,jdbcType=DECIMAL},
+      COST_BASE_DEV_MONTH = #{costBaseDevMonth,jdbcType=DECIMAL},
+      COST_IT_MONTH = #{costItMonth,jdbcType=DECIMAL},
+      COST_RACK_MONTH = #{costRackMonth,jdbcType=DECIMAL}
+    where COST_FIXED_ID = #{costFixedId,jdbcType=VARCHAR}
+  </update>
+</mapper>

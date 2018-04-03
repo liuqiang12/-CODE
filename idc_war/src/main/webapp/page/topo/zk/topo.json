@@ -1,0 +1,4071 @@
+{
+    "WebTopo": {
+        "version": "Topo V1.0.1_20111009",
+        "toponame": "default-topo",
+        "NetView": {
+            "id": "1/switch/0100",
+            "name": "南京",
+            "pid": "1/switch/0100",
+            "type": "segment",
+            "p": [
+                {
+                    "k": "isLocked",
+                    "cls": "string",
+                    "#text": "false"
+                },
+                {
+                    "k": "obj.topo.toponame",
+                    "cls": "string",
+                    "#text": "default-topo"
+                },
+                {
+                    "k": "city_id",
+                    "cls": "string",
+                    "#text": "0100"
+                },
+                {
+                    "k": "view/befdf2ac-954b-407e-951e-850d5b48060d",
+                    "cls": "string",
+                    "#text": "查看CMN与本地网拓扑"
+                },
+                {
+                    "k": "path",
+                    "cls": "string",
+                    "#text": "综合监控拓扑@_@话音网拓扑@_@南京"
+                },
+                {
+                    "k": "pathPid",
+                    "cls": "string",
+                    "#text": "1/0@_@1/switch@_@1/switch/0100"
+                },
+                {
+                    "k": "areaIdList",
+                    "cls": "string",
+                    "#text": "[]"
+                }
+            ],
+            "Objects": {
+                "Object": [
+                    {
+                        "id": "1/893d500a-3027-480c-9740-369dcb589d2c",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "544",
+                        "y": "815",
+                        "name": "NJMSS_POOL",
+                        "width": "460",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/5a078988-ea71-4cda-ada9-e1d328f6c02f",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "924",
+                        "y": "153",
+                        "name": "NJMSS_POOL",
+                        "width": "700",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/1a803429-c275-43b8-8a9a-fe0df7f588f2",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "257",
+                        "y": "193",
+                        "name": "NJMSS_POOL",
+                        "width": "820",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/d35f970a-ec5b-4c02-b6ca-be57842db519",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "-176",
+                        "y": "830",
+                        "name": "NJMSS_POOL",
+                        "width": "560",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/5b834e6f-0d4f-4d9a-99a3-7001da4fd78b",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "538",
+                        "y": "630",
+                        "name": "NJMSS_POOL",
+                        "width": "460",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/a94bf090-7c8d-4d84-9604-ed8f93ba2b6e",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "916",
+                        "y": "346",
+                        "name": "NJMSS_POOL",
+                        "width": "700",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ae35c872-67a9-4926-a63a-a89fe2f3f21e",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "-177",
+                        "y": "616",
+                        "name": "NJMSS_POOL",
+                        "width": "560",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/8aea6bd0-a218-4ead-a347-12cd02ea4938",
+                        "type": "ztype.shape",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "222",
+                        "y": "412",
+                        "name": "NJMSS_POOL",
+                        "width": "820",
+                        "height": "118",
+                        "zindex": "-1",
+                        "p": [
+                            {
+                                "k": "shape.fill.color.start",
+                                "#text": "26214"
+                            },
+                            {
+                                "k": "shape.type",
+                                "#text": "ellipse"
+                            },
+                            {
+                                "k": "label.layout",
+                                "#text": "hide"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "shape.border.width",
+                                "#text": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "ztype.topo",
+                        "pid": "1/switch/0100",
+                        "visible": "1",
+                        "x": "105",
+                        "y": "164",
+                        "name": "IP承载网",
+                        "icon": "servicecloud.png",
+                        "width": "0",
+                        "height": "0",
+                        "zindex": "0",
+                        "p": [
+                            {
+                                "k": "obj.topo.name",
+                                "#text": "南京"
+                            },
+                            {
+                                "k": "obj.topo.id",
+                                "#text": "1/data/ipcz/0100"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Groups": {
+                "Group": [
+                    {
+                        "id": "1/bbed8180-d48c-4688-8c40-6811e6704376",
+                        "type": "group",
+                        "width": "540",
+                        "pid": "1/switch/0100",
+                        "height": "360",
+                        "visible": "1",
+                        "x": "551",
+                        "y": "728",
+                        "name": "NJ-MSC Pool-04",
+                        "zindex": "0",
+                        "p": [
+                            {
+                                "k": "shape.fill.alpha",
+                                "#text": "0"
+                            },
+                            {
+                                "k": "group.default.status",
+                                "#text": "open"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.4"
+                            }
+                        ],
+                        "Object": [
+                            {
+                                "id": "1/893d500a-3027-480c-9740-369dcb589d2c"
+                            },
+                            {
+                                "id": "1/85736b0c-708f-478f-bf8d-1c1aea01492a"
+                            },
+                            {
+                                "id": "1/5b834e6f-0d4f-4d9a-99a3-7001da4fd78b"
+                            }
+                        ],
+                        "Node": [
+                            {
+                                "id": "1/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e5"
+                            },
+                            {
+                                "id": "1/42ab62d9-1560-4a24-9176-5461f7a58911"
+                            },
+                            {
+                                "id": "1/157baaca-d579-431b-b323-ed3f6b318561"
+                            },
+                            {
+                                "id": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc471"
+                            },
+                            {
+                                "id": "1/9a8b8399-aa26-4609-8245-fd9035fd48b3"
+                            },
+                            {
+                                "id": "1/8c70fc39-936e-48da-93b7-107194483211"
+                            },
+                            {
+                                "id": "1/ce1b464b-ce66-44e0-9db7-8ed4e4259ae6"
+                            },
+                            {
+                                "id": "1/8bfb1c5e-02d7-409e-9442-a4b4e2284e05"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/150884a2-69d3-48ee-b22f-a744f588ea09",
+                        "type": "group",
+                        "width": "887",
+                        "pid": "1/switch/0100",
+                        "height": "408",
+                        "visible": "1",
+                        "x": "253",
+                        "y": "299",
+                        "name": "NJ-MSC Pool-01",
+                        "zindex": "0",
+                        "p": [
+                            {
+                                "k": "shape.fill.alpha",
+                                "#text": "0"
+                            },
+                            {
+                                "k": "group.default.status",
+                                "#text": "open"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            },
+                            {
+                                "k": "group.closed.icon",
+                                "#text": "servicecloud.png"
+                            }
+                        ],
+                        "Node": [
+                            {
+                                "id": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce"
+                            },
+                            {
+                                "id": "1/4a2a94c7-b111-4332-bada-a409214630ea"
+                            },
+                            {
+                                "id": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b"
+                            },
+                            {
+                                "id": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e"
+                            },
+                            {
+                                "id": "1/8ffff028-4e31-4789-a941-c61f21e05073"
+                            },
+                            {
+                                "id": "1/dca81366-00e3-4859-924a-b34a9f74eb12"
+                            },
+                            {
+                                "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad"
+                            },
+                            {
+                                "id": "1/68868733-c0ac-43f1-8c0b-66ce78686787"
+                            },
+                            {
+                                "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e"
+                            },
+                            {
+                                "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72"
+                            },
+                            {
+                                "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d"
+                            },
+                            {
+                                "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c"
+                            },
+                            {
+                                "id": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52"
+                            },
+                            {
+                                "id": "1/57b4d10e-895a-4247-818b-818ab04f07f1"
+                            },
+                            {
+                                "id": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad"
+                            },
+                            {
+                                "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1"
+                            }
+                        ],
+                        "Object": [
+                            {
+                                "id": "1/8aea6bd0-a218-4ead-a347-12cd02ea4938"
+                            },
+                            {
+                                "id": "1/1a803429-c275-43b8-8a9a-fe0df7f588f2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/417cada9-74b8-4cbc-8b31-5730123f3ca7",
+                        "type": "group",
+                        "width": "630",
+                        "pid": "1/switch/0100",
+                        "height": "400",
+                        "visible": "1",
+                        "x": "-167",
+                        "y": "716",
+                        "name": "NJ-MSC Pool-03",
+                        "zindex": "0",
+                        "p": [
+                            {
+                                "k": "shape.fill.alpha",
+                                "#text": "0"
+                            },
+                            {
+                                "k": "group.default.status",
+                                "#text": "open"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.4"
+                            }
+                        ],
+                        "Node": [
+                            {
+                                "id": "1/13370ea8-4666-4fa7-882a-bcae797dc0d5"
+                            },
+                            {
+                                "id": "1/ba472505-d374-42a9-a246-b10d33e0058b"
+                            },
+                            {
+                                "id": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c"
+                            },
+                            {
+                                "id": "1/468cf757-e81a-4e85-afff-c0531a6e03dc"
+                            },
+                            {
+                                "id": "1/23e9a561-f40c-4c62-93e5-89ee04124eda"
+                            },
+                            {
+                                "id": "1/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f2"
+                            },
+                            {
+                                "id": "1/665546ae-40e9-42cd-b612-6043aa12ec51"
+                            },
+                            {
+                                "id": "1/fd52280e-02a7-4f00-aaf8-e55db9535e52"
+                            },
+                            {
+                                "id": "1/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c"
+                            },
+                            {
+                                "id": "1/67842247-40b1-42b0-b6c4-35a5dd2adb60"
+                            },
+                            {
+                                "id": "1/237085b0-6c3b-4254-a610-685495f85bdf"
+                            },
+                            {
+                                "id": "1/98df4f5c-f04a-453b-a803-ee59a6011bb7"
+                            }
+                        ],
+                        "Object": [
+                            {
+                                "id": "1/85736b0c-708f-478f-bf8d-1c1aea01492a"
+                            },
+                            {
+                                "id": "1/d35f970a-ec5b-4c02-b6ca-be57842db519"
+                            },
+                            {
+                                "id": "1/ae35c872-67a9-4926-a63a-a89fe2f3f21e"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/85736b0c-708f-478f-bf8d-1c1aea01492a",
+                        "type": "group",
+                        "width": "800",
+                        "pid": "1/switch/0100",
+                        "height": "400",
+                        "visible": "1",
+                        "x": "922",
+                        "y": "253",
+                        "name": "NJ-MSC Pool-02",
+                        "zindex": "0",
+                        "p": [
+                            {
+                                "k": "shape.fill.alpha",
+                                "#text": "0"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "group.default.status",
+                                "#text": "open"
+                            },
+                            {
+                                "k": "shape.border.alpha",
+                                "#text": "0.5"
+                            }
+                        ],
+                        "Node": [
+                            {
+                                "id": "1/08739257-802d-42a9-af24-a75cf91612a4"
+                            },
+                            {
+                                "id": "1/d894f41f-741f-4656-a1e3-40e36b52ace0"
+                            },
+                            {
+                                "id": "1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc"
+                            },
+                            {
+                                "id": "1/0720b54f-8099-409a-9968-93e9781a4c6f"
+                            },
+                            {
+                                "id": "1/3987ecaf-3769-467d-a072-398c88912a7e"
+                            },
+                            {
+                                "id": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa"
+                            },
+                            {
+                                "id": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba"
+                            },
+                            {
+                                "id": "1/4af47fd2-e301-4a59-9561-d94d1c2f9a0b"
+                            },
+                            {
+                                "id": "1/952087cb-8bfd-40d9-9760-90f63b5efc04"
+                            },
+                            {
+                                "id": "1/434fb18b-aace-4d71-93b0-4e885ee7612d"
+                            },
+                            {
+                                "id": "1/80f15e46-3855-4b19-8dad-54c56f071dde"
+                            },
+                            {
+                                "id": "1/ba5a849d-6a83-4706-8cc5-47ddf5c4f299"
+                            },
+                            {
+                                "id": "1/a0d0080c-aade-4aad-b4fd-7f3bd07cd554"
+                            },
+                            {
+                                "id": "1/7415e736-6bf2-42fe-af11-09ff28eea0c0"
+                            },
+                            {
+                                "id": "1/6a77525f-e512-4d91-8ae0-85073ff209f0"
+                            },
+                            {
+                                "id": "1/9794c33e-990a-4696-94e0-755767cc787b"
+                            }
+                        ],
+                        "Object": [
+                            {
+                                "id": "1/150884a2-69d3-48ee-b22f-a744f588ea09"
+                            },
+                            {
+                                "id": "1/5a078988-ea71-4cda-ada9-e1d328f6c02f"
+                            },
+                            {
+                                "id": "1/a94bf090-7c8d-4d84-9604-ed8f93ba2b6e"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Segments": {
+                "Segment": [
+                    {
+                        "id": "1/92657e5d-25ca-49c5-a7bd-171f84e83923",
+                        "name": "MSC-Pool-02",
+                        "x": "272",
+                        "y": "629",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0"
+                    },
+                    {
+                        "id": "1/8aba08f4-b470-4e05-b3a7-4bd0a359d868",
+                        "name": "测试",
+                        "x": "-709",
+                        "y": "19",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0",
+                        "p": {
+                            "k": "isLocked",
+                            "#text": "true"
+                        }
+                    },
+                    {
+                        "id": "1/4ab72f39-b081-4a01-920a-22fedb8ef40e",
+                        "name": "MSC-Pool-04",
+                        "x": "276",
+                        "y": "735",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0"
+                    },
+                    {
+                        "id": "1/7dfb3205-559a-42c4-bda5-2627680b0baf",
+                        "name": "MSC-Pool-03",
+                        "x": "411",
+                        "y": "632",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0"
+                    },
+                    {
+                        "id": "1/149f7650-2da6-4353-9f57-500d699acc56",
+                        "name": "MSC-Pool-01",
+                        "x": "274",
+                        "y": "524",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0"
+                    },
+                    {
+                        "id": "1/726b4632-857b-4b03-99bd-40027c6b1fd4",
+                        "name": "MSS-MSC",
+                        "x": "406",
+                        "y": "525",
+                        "pid": "1/switch/0100",
+                        "visible": "0",
+                        "icon": "segment.png",
+                        "type": "segment",
+                        "zindex": "0"
+                    }
+                ]
+            },
+            "Nodes": {
+                "Node": [
+                    {
+                        "id": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "visible": "1",
+                        "name": "NJGS85",
+                        "x": "532",
+                        "y": "190",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.145"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/2004bf6c-09af-4597-8f55-192e9c68e154",
+                        "visible": "1",
+                        "name": "NJDS01",
+                        "x": "-93",
+                        "y": "-319",
+                        "pid": "1/switch/0100",
+                        "icon": "GM.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.GMSCCS.5"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e5",
+                        "visible": "1",
+                        "name": "NJGM13",
+                        "x": "412",
+                        "y": "810",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.32"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "visible": "1",
+                        "name": "NJGM24",
+                        "x": "343",
+                        "y": "411",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.97"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/42ab62d9-1560-4a24-9176-5461f7a58911",
+                        "visible": "1",
+                        "name": "NJGS41",
+                        "x": "593",
+                        "y": "625",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.62"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/13370ea8-4666-4fa7-882a-bcae797dc0d5",
+                        "visible": "1",
+                        "name": "NJGM17",
+                        "x": "-215",
+                        "y": "829",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.173"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c",
+                        "visible": "1",
+                        "name": "NJGM12",
+                        "x": "-298",
+                        "y": "830",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.31"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "visible": "1",
+                        "name": "NJGM02",
+                        "x": "-94",
+                        "y": "409",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.116"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "visible": "1",
+                        "name": "NJGM14",
+                        "x": "-15",
+                        "y": "411",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.27"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "visible": "1",
+                        "name": "NJGM29",
+                        "x": "523",
+                        "y": "413",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.153"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "visible": "1",
+                        "name": "NJGM21",
+                        "x": "258",
+                        "y": "415",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.172"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "visible": "1",
+                        "name": "NJGM27",
+                        "x": "436",
+                        "y": "414",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.197"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba",
+                        "visible": "1",
+                        "name": "NJGM23",
+                        "x": "1082",
+                        "y": "349",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.229"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/4af47fd2-e301-4a59-9561-d94d1c2f9a0b",
+                        "visible": "1",
+                        "name": "NJGM09",
+                        "x": "807",
+                        "y": "346",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.28"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/952087cb-8bfd-40d9-9760-90f63b5efc04",
+                        "visible": "1",
+                        "name": "NJGS13",
+                        "x": "769",
+                        "y": "155",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.30"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/c1848a8d-619f-450f-928b-c4532f1f057d",
+                        "visible": "1",
+                        "name": "NJGM100",
+                        "x": "356",
+                        "y": "-147",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.81"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/5821814c-d30c-4d87-bae2-16aa1ba37a83",
+                        "visible": "1",
+                        "name": "NJDM04",
+                        "x": "156",
+                        "y": "-153",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.170"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "visible": "1",
+                        "name": "NJGS19",
+                        "x": "85",
+                        "y": "186",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.34"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/09cc6498-edec-420e-9e4c-16f59ed219cc",
+                        "visible": "1",
+                        "name": "NJGS101",
+                        "x": "407",
+                        "y": "-319",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.82"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/cb8098b5-3bdc-4a01-9570-0235e03f3942",
+                        "visible": "1",
+                        "name": "NJDM02",
+                        "x": "-80",
+                        "y": "-154",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.188"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/08739257-802d-42a9-af24-a75cf91612a4",
+                        "visible": "1",
+                        "name": "NJGM30",
+                        "x": "1151",
+                        "y": "357",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.207"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/157baaca-d579-431b-b323-ed3f6b318561",
+                        "visible": "1",
+                        "name": "NJGS12",
+                        "x": "397",
+                        "y": "630",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.29"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "visible": "1",
+                        "name": "NJGS42",
+                        "x": "175",
+                        "y": "186",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.63"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/3987ecaf-3769-467d-a072-398c88912a7e",
+                        "visible": "1",
+                        "name": "NJGS51",
+                        "x": "1050",
+                        "y": "153",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.113"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa",
+                        "visible": "1",
+                        "name": "NJGS10",
+                        "x": "704",
+                        "y": "154",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.7"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "visible": "1",
+                        "name": "NJGS48",
+                        "x": "355",
+                        "y": "186",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.111"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/2e83b35b-71d7-4bf0-b2b4-cfbc1b5ef399",
+                        "visible": "1",
+                        "name": "NJGS100",
+                        "x": "306",
+                        "y": "-319",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.81"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f",
+                        "visible": "1",
+                        "name": "NJDM01",
+                        "x": "-180",
+                        "y": "-154",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.164"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c",
+                        "visible": "1",
+                        "name": "NJGS18",
+                        "x": "-310",
+                        "y": "608",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.33"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/a2d9e151-7a29-482c-aea9-dc58d282b7b1",
+                        "visible": "1",
+                        "name": "NJGM101",
+                        "x": "466",
+                        "y": "-147",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.214"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc471",
+                        "visible": "1",
+                        "name": "NJGS14",
+                        "x": "505",
+                        "y": "623",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.17"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/1f14f659-2064-4844-82b9-3c13e19c2976",
+                        "visible": "1",
+                        "name": "NJGM09",
+                        "x": "255",
+                        "y": "-151",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.28"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "visible": "1",
+                        "name": "NJGS16",
+                        "x": "-5",
+                        "y": "186",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.31"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "visible": "1",
+                        "name": "NJGS49",
+                        "x": "442",
+                        "y": "187",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.112"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/468cf757-e81a-4e85-afff-c0531a6e03dc",
+                        "visible": "1",
+                        "name": "NJGS17",
+                        "x": "-390",
+                        "y": "612",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.32"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/434fb18b-aace-4d71-93b0-4e885ee7612d",
+                        "visible": "1",
+                        "name": "NJGS44",
+                        "x": "980",
+                        "y": "150",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.65"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "visible": "1",
+                        "name": "NJGS47",
+                        "x": "265",
+                        "y": "186",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.110"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/80f15e46-3855-4b19-8dad-54c56f071dde",
+                        "visible": "1",
+                        "name": "NJGM05",
+                        "x": "737",
+                        "y": "346",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.165"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ba5a849d-6a83-4706-8cc5-47ddf5c4f299",
+                        "visible": "1",
+                        "name": "NJGM22",
+                        "x": "1017",
+                        "y": "347",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.232"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "visible": "1",
+                        "name": "NJGM19",
+                        "x": "81",
+                        "y": "414",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.69"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ce1b464b-ce66-44e0-9db7-8ed4e4259ae6",
+                        "visible": "1",
+                        "name": "NJGM03",
+                        "x": "504",
+                        "y": "809",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.24"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "visible": "1",
+                        "name": "NJGM20",
+                        "x": "171",
+                        "y": "416",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.171"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/9794c33e-990a-4696-94e0-755767cc787b",
+                        "visible": "1",
+                        "name": "NJGS86",
+                        "x": "1188",
+                        "y": "151",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.146"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/8bfb1c5e-02d7-409e-9442-a4b4e2284e05",
+                        "visible": "1",
+                        "name": "NJGM07",
+                        "x": "592",
+                        "y": "811",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.96"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/0b8915df-ed42-4281-945d-852665abcdfb",
+                        "visible": "1",
+                        "name": "NJDS04",
+                        "x": "212",
+                        "y": "-318",
+                        "pid": "1/switch/0100",
+                        "icon": "GM.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.GMSCCS.4"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ba472505-d374-42a9-a246-b10d33e0058b",
+                        "visible": "1",
+                        "name": "NJGS32",
+                        "x": "-226",
+                        "y": "611",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.36"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/d894f41f-741f-4656-a1e3-40e36b52ace0",
+                        "visible": "1",
+                        "name": "NJGS52",
+                        "x": "1117",
+                        "y": "151",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.114"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc",
+                        "visible": "1",
+                        "name": "NJGM16",
+                        "x": "947",
+                        "y": "347",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.98"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/0720b54f-8099-409a-9968-93e9781a4c6f",
+                        "visible": "1",
+                        "name": "NJGS15",
+                        "x": "839",
+                        "y": "155",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.21"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af",
+                        "visible": "1",
+                        "name": "NJDS03",
+                        "x": "107",
+                        "y": "-319",
+                        "pid": "1/switch/0100",
+                        "icon": "GM.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.GMSCCS.6"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/23e9a561-f40c-4c62-93e5-89ee04124eda",
+                        "visible": "1",
+                        "name": "NJGM25",
+                        "x": "-137",
+                        "y": "825",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.30"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f2",
+                        "visible": "1",
+                        "name": "NJGM28",
+                        "x": "24",
+                        "y": "828",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.204"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/665546ae-40e9-42cd-b612-6043aa12ec51",
+                        "visible": "1",
+                        "name": "NJGS45",
+                        "x": "-51",
+                        "y": "613",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.90"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/acabae5b-97e5-4177-8df1-0be414552f0b",
+                        "visible": "1",
+                        "name": "NJDS02",
+                        "x": "7",
+                        "y": "-319",
+                        "pid": "1/switch/0100",
+                        "icon": "GM.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.GMSCCS.3"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/fd52280e-02a7-4f00-aaf8-e55db9535e52",
+                        "visible": "1",
+                        "name": "NJGS33",
+                        "x": "-140",
+                        "y": "612",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.37"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/9a8b8399-aa26-4609-8245-fd9035fd48b3",
+                        "visible": "1",
+                        "name": "NJGS46",
+                        "x": "672",
+                        "y": "626",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.109"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/a0d0080c-aade-4aad-b4fd-7f3bd07cd554",
+                        "visible": "1",
+                        "name": "NJGS43",
+                        "x": "909",
+                        "y": "153",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.64"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/8c70fc39-936e-48da-93b7-107194483211",
+                        "visible": "1",
+                        "name": "NJGM18",
+                        "x": "686",
+                        "y": "814",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.194"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            },
+                            {
+                                "k": "view/2b618be9-f0e0-432a-b667-0ab8c9f6faea",
+                                "#text": "MSCPool下级网元连接关系"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ce959635-94a5-4149-a8f8-a951f91891d7",
+                        "visible": "1",
+                        "name": "NJDM03",
+                        "x": "20",
+                        "y": "-154",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.166"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/7415e736-6bf2-42fe-af11-09ff28eea0c0",
+                        "visible": "1",
+                        "name": "NJGM15",
+                        "x": "877",
+                        "y": "347",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.63"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/6a77525f-e512-4d91-8ae0-85073ff209f0",
+                        "visible": "1",
+                        "name": "NJGM01",
+                        "x": "667",
+                        "y": "346",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/94fa27d1-c791-4375-982c-f7b83fde1fcf",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "view/27bde7ef-442f-4d95-bec5-200f2feb3d6a",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.61"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/67842247-40b1-42b0-b6c4-35a5dd2adb60",
+                        "visible": "1",
+                        "name": "NJGS84",
+                        "x": "33",
+                        "y": "613",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.144"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/237085b0-6c3b-4254-a610-685495f85bdf",
+                        "visible": "1",
+                        "name": "NJGM11",
+                        "x": "-378",
+                        "y": "835",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.25"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "visible": "1",
+                        "name": "NJGS11",
+                        "x": "-81",
+                        "y": "187",
+                        "pid": "1/switch/0100",
+                        "icon": "MSS.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mss.8"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "view/0f681e8d-21a6-4f52-9aec-a803b3145735",
+                                "#text": "MSC Pool下级网元连接关系"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "5"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/98df4f5c-f04a-453b-a803-ee59a6011bb7",
+                        "visible": "1",
+                        "name": "NJGM26",
+                        "x": "-55",
+                        "y": "823",
+                        "pid": "1/switch/0100",
+                        "icon": "MGW.png",
+                        "type": "node",
+                        "p": [
+                            {
+                                "k": "view/8dbe4874-109e-40e1-98ad-261cac004080",
+                                "#text": "MSCPool下级网元连接关系"
+                            },
+                            {
+                                "k": "city_id",
+                                "#text": "0100"
+                            },
+                            {
+                                "k": "mo_id",
+                                "#text": "0.mgw.189"
+                            },
+                            {
+                                "k": "mo_type_id",
+                                "#text": "7"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "Links": {
+                "Link": [
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/13370ea8-4666-4fa7-882a-bcae797dc0d51/665546ae-40e9-42cd-b612-6043aa12ec511/0",
+                        "from": "1/665546ae-40e9-42cd-b612-6043aa12ec51",
+                        "pid": "1/switch/0100",
+                        "to": "1/13370ea8-4666-4fa7-882a-bcae797dc0d5",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec11/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/0b8915df-ed42-4281-945d-852665abcdfb1/0",
+                        "from": "1/0b8915df-ed42-4281-945d-852665abcdfb",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec11/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc4711/8bfb1c5e-02d7-409e-9442-a4b4e2284e05/1/0",
+                        "from": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc471",
+                        "pid": "1/switch/0100",
+                        "to": "1/8bfb1c5e-02d7-409e-9442-a4b4e2284e05",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/c1848a8d-619f-450f-928b-c4532f1f057d1/0",
+                        "from": "1/c1848a8d-619f-450f-928b-c4532f1f057d",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/5b834e6f-0d4f-4d9a-99a3-7001da4fd78b/1/0",
+                        "from": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "pid": "1/switch/0100",
+                        "to": "1/5b834e6f-0d4f-4d9a-99a3-7001da4fd78b",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/67842247-40b1-42b0-b6c4-35a5dd2adb601/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f2/1/0",
+                        "from": "1/67842247-40b1-42b0-b6c4-35a5dd2adb60",
+                        "pid": "1/switch/0100",
+                        "to": "1/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f2",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/157baaca-d579-431b-b323-ed3f6b3185611/ce1b464b-ce66-44e0-9db7-8ed4e4259ae6/1/0",
+                        "from": "1/157baaca-d579-431b-b323-ed3f6b318561",
+                        "pid": "1/switch/0100",
+                        "to": "1/ce1b464b-ce66-44e0-9db7-8ed4e4259ae6",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/8ffff028-4e31-4789-a941-c61f21e050731/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/a2d9e151-7a29-482c-aea9-dc58d282b7b11/0",
+                        "from": "1/a2d9e151-7a29-482c-aea9-dc58d282b7b1",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c1/fd52280e-02a7-4f00-aaf8-e55db9535e52/1/0",
+                        "from": "1/fd52280e-02a7-4f00-aaf8-e55db9535e52",
+                        "pid": "1/switch/0100",
+                        "to": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/ac507f82-0e24-4e03-a587-44cd32c03ec11/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/8ffff028-4e31-4789-a941-c61f21e050731/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af1/ce959635-94a5-4149-a8f8-a951f91891d71/0",
+                        "from": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af",
+                        "pid": "1/switch/0100",
+                        "to": "1/ce959635-94a5-4149-a8f8-a951f91891d7",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/cb8098b5-3bdc-4a01-9570-0235e03f39421/0",
+                        "from": "1/cb8098b5-3bdc-4a01-9570-0235e03f3942",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/68868733-c0ac-43f1-8c0b-66ce786867871/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/3987ecaf-3769-467d-a072-398c88912a7e1/ba5a849d-6a83-4706-8cc5-47ddf5c4f299/1/0",
+                        "from": "1/3987ecaf-3769-467d-a072-398c88912a7e",
+                        "pid": "1/switch/0100",
+                        "to": "1/ba5a849d-6a83-4706-8cc5-47ddf5c4f299",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/8ffff028-4e31-4789-a941-c61f21e050731/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/7415e736-6bf2-42fe-af11-09ff28eea0c01/a0d0080c-aade-4aad-b4fd-7f3bd07cd554/1/0",
+                        "from": "1/a0d0080c-aade-4aad-b4fd-7f3bd07cd554",
+                        "pid": "1/switch/0100",
+                        "to": "1/7415e736-6bf2-42fe-af11-09ff28eea0c0",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e1/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/8ffff028-4e31-4789-a941-c61f21e050731/9c283192-78ca-4150-91ed-bb5c8594b78e1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/80f15e46-3855-4b19-8dad-54c56f071dde1/952087cb-8bfd-40d9-9760-90f63b5efc04/1/0",
+                        "from": "1/952087cb-8bfd-40d9-9760-90f63b5efc04",
+                        "pid": "1/switch/0100",
+                        "to": "1/80f15e46-3855-4b19-8dad-54c56f071dde",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/1a803429-c275-43b8-8a9a-fe0df7f588f21/0",
+                        "from": "1/1a803429-c275-43b8-8a9a-fe0df7f588f2",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1",
+                        "p": [
+                            {
+                                "k": "line.color",
+                                "#text": "39321"
+                            },
+                            {
+                                "k": "link.open.type",
+                                "#text": "arc"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "1/434fb18b-aace-4d71-93b0-4e885ee7612d1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc1/0",
+                        "from": "1/434fb18b-aace-4d71-93b0-4e885ee7612d",
+                        "pid": "1/switch/0100",
+                        "to": "1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/5a078988-ea71-4cda-ada9-e1d328f6c02f/1/0",
+                        "from": "1/5a078988-ea71-4cda-ada9-e1d328f6c02f",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/98df4f5c-f04a-453b-a803-ee59a6011bb71/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c1/0",
+                        "from": "1/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c",
+                        "pid": "1/switch/0100",
+                        "to": "1/98df4f5c-f04a-453b-a803-ee59a6011bb7",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/08739257-802d-42a9-af24-a75cf91612a41/9794c33e-990a-4696-94e0-755767cc787b/1/0",
+                        "from": "1/9794c33e-990a-4696-94e0-755767cc787b",
+                        "pid": "1/switch/0100",
+                        "to": "1/08739257-802d-42a9-af24-a75cf91612a4",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa1/6a77525f-e512-4d91-8ae0-85073ff209f0/1/0",
+                        "from": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa",
+                        "pid": "1/switch/0100",
+                        "to": "1/6a77525f-e512-4d91-8ae0-85073ff209f0",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/434fb18b-aace-4d71-93b0-4e885ee7612d1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc/1/0",
+                        "from": "1/434fb18b-aace-4d71-93b0-4e885ee7612d",
+                        "pid": "1/switch/0100",
+                        "to": "1/ecaf7bdc-357d-45bc-8e37-d0712bc015cc",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2004bf6c-09af-4597-8f55-192e9c68e1541/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f1/0",
+                        "from": "1/2004bf6c-09af-4597-8f55-192e9c68e154",
+                        "pid": "1/switch/0100",
+                        "to": "1/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/42ab62d9-1560-4a24-9176-5461f7a589111/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e51/0",
+                        "from": "1/42ab62d9-1560-4a24-9176-5461f7a58911",
+                        "pid": "1/switch/0100",
+                        "to": "1/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e5",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/893d500a-3027-480c-9740-369dcb589d2c/1/0",
+                        "from": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "pid": "1/switch/0100",
+                        "to": "1/893d500a-3027-480c-9740-369dcb589d2c",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/8ffff028-4e31-4789-a941-c61f21e050731/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c1/fd52280e-02a7-4f00-aaf8-e55db9535e521/0",
+                        "from": "1/fd52280e-02a7-4f00-aaf8-e55db9535e52",
+                        "pid": "1/switch/0100",
+                        "to": "1/52ebecf7-66ea-4ef5-96df-b0f081b5398c",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/2004bf6c-09af-4597-8f55-192e9c68e1541/0",
+                        "from": "1/2004bf6c-09af-4597-8f55-192e9c68e154",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/2e83b35b-71d7-4bf0-b2b4-cfbc1b5ef3991/c1848a8d-619f-450f-928b-c4532f1f057d1/0",
+                        "from": "1/2e83b35b-71d7-4bf0-b2b4-cfbc1b5ef399",
+                        "pid": "1/switch/0100",
+                        "to": "1/c1848a8d-619f-450f-928b-c4532f1f057d",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/237085b0-6c3b-4254-a610-685495f85bdf1/ba472505-d374-42a9-a246-b10d33e0058b/1/0",
+                        "from": "1/ba472505-d374-42a9-a246-b10d33e0058b",
+                        "pid": "1/switch/0100",
+                        "to": "1/237085b0-6c3b-4254-a610-685495f85bdf",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/98df4f5c-f04a-453b-a803-ee59a6011bb71/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c/1/0",
+                        "from": "1/dfacc6ae-48c7-4710-9bf2-a1f663a98e9c",
+                        "pid": "1/switch/0100",
+                        "to": "1/98df4f5c-f04a-453b-a803-ee59a6011bb7",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/23e9a561-f40c-4c62-93e5-89ee04124eda1/468cf757-e81a-4e85-afff-c0531a6e03dc1/0",
+                        "from": "1/468cf757-e81a-4e85-afff-c0531a6e03dc",
+                        "pid": "1/switch/0100",
+                        "to": "1/23e9a561-f40c-4c62-93e5-89ee04124eda",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2004bf6c-09af-4597-8f55-192e9c68e1541/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f/1/0",
+                        "from": "1/2004bf6c-09af-4597-8f55-192e9c68e154",
+                        "pid": "1/switch/0100",
+                        "to": "1/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/68868733-c0ac-43f1-8c0b-66ce786867871/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/1f14f659-2064-4844-82b9-3c13e19c29761/0",
+                        "from": "1/1f14f659-2064-4844-82b9-3c13e19c2976",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba1/d894f41f-741f-4656-a1e3-40e36b52ace0/1/0",
+                        "from": "1/d894f41f-741f-4656-a1e3-40e36b52ace0",
+                        "pid": "1/switch/0100",
+                        "to": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/a94bf090-7c8d-4d84-9604-ed8f93ba2b6e/1/0",
+                        "from": "1/a94bf090-7c8d-4d84-9604-ed8f93ba2b6e",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af1/ce959635-94a5-4149-a8f8-a951f91891d7/1/0",
+                        "from": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af",
+                        "pid": "1/switch/0100",
+                        "to": "1/ce959635-94a5-4149-a8f8-a951f91891d7",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e1/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f1/0",
+                        "from": "1/cb5d3bfc-960f-4034-b5e0-248cb9d6d95f",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/acabae5b-97e5-4177-8df1-0be414552f0b1/cb8098b5-3bdc-4a01-9570-0235e03f39421/0",
+                        "from": "1/acabae5b-97e5-4177-8df1-0be414552f0b",
+                        "pid": "1/switch/0100",
+                        "to": "1/cb8098b5-3bdc-4a01-9570-0235e03f3942",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec11/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/8ffff028-4e31-4789-a941-c61f21e050731/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/57b4d10e-895a-4247-818b-818ab04f07f11/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/57b4d10e-895a-4247-818b-818ab04f07f11/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d521/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/3987ecaf-3769-467d-a072-398c88912a7e1/ba5a849d-6a83-4706-8cc5-47ddf5c4f2991/0",
+                        "from": "1/3987ecaf-3769-467d-a072-398c88912a7e",
+                        "pid": "1/switch/0100",
+                        "to": "1/ba5a849d-6a83-4706-8cc5-47ddf5c4f299",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/7415e736-6bf2-42fe-af11-09ff28eea0c01/a0d0080c-aade-4aad-b4fd-7f3bd07cd5541/0",
+                        "from": "1/a0d0080c-aade-4aad-b4fd-7f3bd07cd554",
+                        "pid": "1/switch/0100",
+                        "to": "1/7415e736-6bf2-42fe-af11-09ff28eea0c0",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba1/d894f41f-741f-4656-a1e3-40e36b52ace01/0",
+                        "from": "1/d894f41f-741f-4656-a1e3-40e36b52ace0",
+                        "pid": "1/switch/0100",
+                        "to": "1/bc03a7c5-fff2-4701-a7a4-6c5995790bba",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/ae35c872-67a9-4926-a63a-a89fe2f3f21e/1/0",
+                        "from": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "pid": "1/switch/0100",
+                        "to": "1/ae35c872-67a9-4926-a63a-a89fe2f3f21e",
+                        "type": "link",
+                        "visible": "1",
+                        "p": {
+                            "k": "link.bessel2.offsetV",
+                            "#text": "90"
+                        }
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/c724ead7-7992-4d23-a116-2ae6f1dd9d521/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/13370ea8-4666-4fa7-882a-bcae797dc0d51/665546ae-40e9-42cd-b612-6043aa12ec51/1/0",
+                        "from": "1/665546ae-40e9-42cd-b612-6043aa12ec51",
+                        "pid": "1/switch/0100",
+                        "to": "1/13370ea8-4666-4fa7-882a-bcae797dc0d5",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4a2a94c7-b111-4332-bada-a409214630ea1/9c283192-78ca-4150-91ed-bb5c8594b78e1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/67842247-40b1-42b0-b6c4-35a5dd2adb601/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f21/0",
+                        "from": "1/67842247-40b1-42b0-b6c4-35a5dd2adb60",
+                        "pid": "1/switch/0100",
+                        "to": "1/7a06e051-e5d0-45ca-b1e4-8dd25b9df3f2",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec11/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/8c70fc39-936e-48da-93b7-1071944832111/9a8b8399-aa26-4609-8245-fd9035fd48b31/0",
+                        "from": "1/9a8b8399-aa26-4609-8245-fd9035fd48b3",
+                        "pid": "1/switch/0100",
+                        "to": "1/8c70fc39-936e-48da-93b7-107194483211",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af1/0",
+                        "from": "1/44f4bc7d-a6c5-4dcb-a616-37cf3fa4b6af",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/8aea6bd0-a218-4ead-a347-12cd02ea49381/0",
+                        "from": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "pid": "1/switch/0100",
+                        "to": "1/8aea6bd0-a218-4ead-a347-12cd02ea4938",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/8c70fc39-936e-48da-93b7-1071944832111/9a8b8399-aa26-4609-8245-fd9035fd48b3/1/0",
+                        "from": "1/9a8b8399-aa26-4609-8245-fd9035fd48b3",
+                        "pid": "1/switch/0100",
+                        "to": "1/8c70fc39-936e-48da-93b7-107194483211",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/09cc6498-edec-420e-9e4c-16f59ed219cc1/0",
+                        "from": "1/09cc6498-edec-420e-9e4c-16f59ed219cc",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/23e9a561-f40c-4c62-93e5-89ee04124eda1/468cf757-e81a-4e85-afff-c0531a6e03dc/1/0",
+                        "from": "1/468cf757-e81a-4e85-afff-c0531a6e03dc",
+                        "pid": "1/switch/0100",
+                        "to": "1/23e9a561-f40c-4c62-93e5-89ee04124eda",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/4a2a94c7-b111-4332-bada-a409214630ea1/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/4a2a94c7-b111-4332-bada-a409214630ea",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d521/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/c724ead7-7992-4d23-a116-2ae6f1dd9d52",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/2e83b35b-71d7-4bf0-b2b4-cfbc1b5ef3991/0",
+                        "from": "1/2e83b35b-71d7-4bf0-b2b4-cfbc1b5ef399",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/0720b54f-8099-409a-9968-93e9781a4c6f1/4af47fd2-e301-4a59-9561-d94d1c2f9a0b/1/0",
+                        "from": "1/0720b54f-8099-409a-9968-93e9781a4c6f",
+                        "pid": "1/switch/0100",
+                        "to": "1/4af47fd2-e301-4a59-9561-d94d1c2f9a0b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/cf0d0405-dc67-4a88-8426-e98ae4ad9f721/0",
+                        "from": "1/cf0d0405-dc67-4a88-8426-e98ae4ad9f72",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/8ffff028-4e31-4789-a941-c61f21e050731/ac507f82-0e24-4e03-a587-44cd32c03ec11/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/8ffff028-4e31-4789-a941-c61f21e050731/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/8ffff028-4e31-4789-a941-c61f21e05073",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/ce959635-94a5-4149-a8f8-a951f91891d71/0",
+                        "from": "1/ce959635-94a5-4149-a8f8-a951f91891d7",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/5821814c-d30c-4d87-bae2-16aa1ba37a831/0",
+                        "from": "1/5821814c-d30c-4d87-bae2-16aa1ba37a83",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/68868733-c0ac-43f1-8c0b-66ce786867871/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/68868733-c0ac-43f1-8c0b-66ce78686787",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/ac507f82-0e24-4e03-a587-44cd32c03ec11/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/d35f970a-ec5b-4c02-b6ca-be57842db519/1/0",
+                        "from": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "pid": "1/switch/0100",
+                        "to": "1/d35f970a-ec5b-4c02-b6ca-be57842db519",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d1/acabae5b-97e5-4177-8df1-0be414552f0b1/0",
+                        "from": "1/acabae5b-97e5-4177-8df1-0be414552f0b",
+                        "pid": "1/switch/0100",
+                        "to": "1/06953397-27f0-4a85-ae67-f2b9ac0f015d",
+                        "type": "link",
+                        "visible": "1"
+                    },
+                    {
+                        "id": "1/9c283192-78ca-4150-91ed-bb5c8594b78e1/d8057fe8-2cf7-44ec-905e-f526169aa4ad1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/d8057fe8-2cf7-44ec-905e-f526169aa4ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/4d7759df-9c2d-42a9-8271-bac59b5cc07d",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/157baaca-d579-431b-b323-ed3f6b3185611/ce1b464b-ce66-44e0-9db7-8ed4e4259ae61/0",
+                        "from": "1/157baaca-d579-431b-b323-ed3f6b318561",
+                        "pid": "1/switch/0100",
+                        "to": "1/ce1b464b-ce66-44e0-9db7-8ed4e4259ae6",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad1/9c283192-78ca-4150-91ed-bb5c8594b78e1/0",
+                        "from": "1/9c283192-78ca-4150-91ed-bb5c8594b78e",
+                        "pid": "1/switch/0100",
+                        "to": "1/2126e5a0-e98a-4da1-86b3-ed40c55f22ad",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/57b4d10e-895a-4247-818b-818ab04f07f11/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/57b4d10e-895a-4247-818b-818ab04f07f1",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/80f15e46-3855-4b19-8dad-54c56f071dde1/952087cb-8bfd-40d9-9760-90f63b5efc041/0",
+                        "from": "1/952087cb-8bfd-40d9-9760-90f63b5efc04",
+                        "pid": "1/switch/0100",
+                        "to": "1/80f15e46-3855-4b19-8dad-54c56f071dde",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/0b8915df-ed42-4281-945d-852665abcdfb1/5821814c-d30c-4d87-bae2-16aa1ba37a831/0",
+                        "from": "1/0b8915df-ed42-4281-945d-852665abcdfb",
+                        "pid": "1/switch/0100",
+                        "to": "1/5821814c-d30c-4d87-bae2-16aa1ba37a83",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b1/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/f17950e8-dab4-43d0-9b6c-148ac81b4f1b",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa1/6a77525f-e512-4d91-8ae0-85073ff209f01/0",
+                        "from": "1/1a8b0274-72f9-4f16-97b0-2dd44dfe7bfa",
+                        "pid": "1/switch/0100",
+                        "to": "1/6a77525f-e512-4d91-8ae0-85073ff209f0",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc4711/8bfb1c5e-02d7-409e-9442-a4b4e2284e051/0",
+                        "from": "1/159e6d22-71ff-42a0-ae98-1f7eb26bc471",
+                        "pid": "1/switch/0100",
+                        "to": "1/8bfb1c5e-02d7-409e-9442-a4b4e2284e05",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/dca81366-00e3-4859-924a-b34a9f74eb121/dce8dea5-1207-4872-887c-f543f9c5d7ce1/0",
+                        "from": "1/dce8dea5-1207-4872-887c-f543f9c5d7ce",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/08739257-802d-42a9-af24-a75cf91612a41/9794c33e-990a-4696-94e0-755767cc787b1/0",
+                        "from": "1/9794c33e-990a-4696-94e0-755767cc787b",
+                        "pid": "1/switch/0100",
+                        "to": "1/08739257-802d-42a9-af24-a75cf91612a4",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/ac507f82-0e24-4e03-a587-44cd32c03ec11/dca81366-00e3-4859-924a-b34a9f74eb121/0",
+                        "from": "1/ac507f82-0e24-4e03-a587-44cd32c03ec1",
+                        "pid": "1/switch/0100",
+                        "to": "1/dca81366-00e3-4859-924a-b34a9f74eb12",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e1/0",
+                        "from": "1/477ae26f-64cd-4309-b5cd-72af8e3bf58c",
+                        "pid": "1/switch/0100",
+                        "to": "1/e9ae1fa3-fcf4-4545-80d5-4602f993ae1e",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/09cc6498-edec-420e-9e4c-16f59ed219cc1/a2d9e151-7a29-482c-aea9-dc58d282b7b11/0",
+                        "from": "1/09cc6498-edec-420e-9e4c-16f59ed219cc",
+                        "pid": "1/switch/0100",
+                        "to": "1/a2d9e151-7a29-482c-aea9-dc58d282b7b1",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/237085b0-6c3b-4254-a610-685495f85bdf1/ba472505-d374-42a9-a246-b10d33e0058b1/0",
+                        "from": "1/ba472505-d374-42a9-a246-b10d33e0058b",
+                        "pid": "1/switch/0100",
+                        "to": "1/237085b0-6c3b-4254-a610-685495f85bdf",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    },
+                    {
+                        "id": "1/42ab62d9-1560-4a24-9176-5461f7a589111/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e5/1/0",
+                        "from": "1/42ab62d9-1560-4a24-9176-5461f7a58911",
+                        "pid": "1/switch/0100",
+                        "to": "1/8c460f6b-4cc1-4b3d-89d1-4d1f0a7aa1e5",
+                        "type": "link",
+                        "visible": "0",
+                        "p": {
+                            "k": "source",
+                            "#text": "switch"
+                        }
+                    }
+                ]
+            },
+            "XY": {
+                "iMinX": "709",
+                "iMinY": "319",
+                "minX": "-709",
+                "minY": "-319",
+                "maxX": "1188",
+                "maxY": "835",
+                "centerX": "0",
+                "centerY": "0"
+            }
+        }
+    }
+}

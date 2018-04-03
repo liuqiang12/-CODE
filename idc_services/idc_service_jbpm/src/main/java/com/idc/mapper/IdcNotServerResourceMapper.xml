@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcNotServerResourceMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcNotServerResourceMap" type="IdcNotServerResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="RESOURCE_ID" property="resourceId" />
+				
+		<result column="RESOURCE_CATEGORY" property="resourceCategory" />
+				
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+				
+		<result column="PROD_INST_ID" property="prodInstId" />
+				
+		<result column="CREATE_TIME" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcNotServerResource">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcNotServerResource"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcNotServerResource">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcNotServerResource">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcNotServerResource"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcNotServerResource">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcNotServerResource">
+		select
+		<include refid="baseColumn" />
+		from IDC_NOT_SERVER_RESOURCE
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcNotServerResource">
+		update IDC_NOT_SERVER_RESOURCE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_NOT_SERVER_RESOURCE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_NOT_SERVER_RESOURCE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_NOT_SERVER_RESOURCE where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcNotServerResource">
+		delete from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_NOT_SERVER_RESOURCE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_NOT_SERVER_RESOURCE where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcNotServerResource"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_NOT_SERVER_RESOURCE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_NOT_SERVER_RESOURCE (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,			RESOURCE_ID as resourceId,			RESOURCE_CATEGORY as resourceCategory,			TICKET_INST_ID as ticketInstId,			PROD_INST_ID as prodInstId,			CREATE_TIME as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[ and RESOURCE_ID = #{resourceId} ]]></if>
+						
+			<if test="resourceCategory != null and resourceCategory != '' ">  <![CDATA[ and RESOURCE_CATEGORY = #{resourceCategory} ]]></if>
+						
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{ticketInstId} ]]></if>
+						
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ and PROD_INST_ID = #{prodInstId} ]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.resourceId != null and params.resourceId != '' ">  <![CDATA[ and RESOURCE_ID = #{params.resourceId} ]]></if>
+						
+			<if test="params.resourceCategory != null and params.resourceCategory != '' ">  <![CDATA[ and RESOURCE_CATEGORY = #{params.resourceCategory} ]]></if>
+						
+			<if test="params.ticketInstId != null and params.ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{params.ticketInstId} ]]></if>
+						
+			<if test="params.prodInstId != null and params.prodInstId != '' ">  <![CDATA[ and PROD_INST_ID = #{params.prodInstId} ]]></if>
+						
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[  RESOURCE_ID = #{resourceId } ,]]></if>
+						
+			<if test="resourceCategory != null and resourceCategory != '' ">  <![CDATA[  RESOURCE_CATEGORY = #{resourceCategory } ,]]></if>
+						
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[  TICKET_INST_ID = #{ticketInstId } ,]]></if>
+						
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[  PROD_INST_ID = #{prodInstId } ,]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="resourceId != null and resourceId != '' ">  <![CDATA[ RESOURCE_ID , ]]></if>
+				
+		<if test="resourceCategory != null and resourceCategory != '' ">  <![CDATA[ RESOURCE_CATEGORY , ]]></if>
+				
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+				
+		<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ CREATE_TIME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="resourceId != null and resourceId != '' ">  <![CDATA[ #{resourceId } , ]]></if>
+				
+		<if test="resourceCategory != null and resourceCategory != '' ">  <![CDATA[ #{resourceCategory } , ]]></if>
+				
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+				
+		<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,RESOURCE_ID,RESOURCE_CATEGORY,TICKET_INST_ID,PROD_INST_ID,CREATE_TIME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.resourceId},#{item.resourceCategory},#{item.ticketInstId},#{item.prodInstId},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

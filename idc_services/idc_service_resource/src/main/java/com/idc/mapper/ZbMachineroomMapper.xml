@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.ZbMachineroomMapper">
+  <!-- 返回类型 -->
+  <resultMap id="resultZbMachineroomMap" type="ZbMachineroom">
+    <!-- 数据库属性和实体类属性对应关系 -->
+
+    <result column="BUILDINGID" property="buildingid" />
+
+    <result column="ROOMCATEGORY" property="roomcategory" />
+
+    <result column="GRADE" property="grade" />
+
+    <result column="MAXRACKS" property="maxracks" />
+
+    <result column="DESIGNELECTRICITY" property="designelectricity" />
+
+    <result column="AREA" property="area" />
+
+    <result column="FLOORHEIGHT" property="floorheight" />
+
+    <result column="REMARK" property="remark" />
+
+    <result column="AIRCONDITIONINGRESERVE" property="airconditioningreserve" />
+
+    <result column="TOTALBANDWIDTH" property="totalbandwidth" />
+
+    <result column="WIDTH_M" property="widthM" />
+
+    <result column="HEIGHT_M" property="heightM" />
+
+    <result column="ACCESSPORTTOTAL" property="accessporttotal" />
+
+    <result column="ACCESSPORTUSAGE" property="accessportusage" />
+
+    <result column="USEFOR" property="usefor" />
+
+    <result column="MODIFYTIME" property="modifytime" />
+
+    <result column="RACKSPARE" property="rackspare" />
+
+    <result column="RESPONSIBLEUSERID" property="responsibleuserid" />
+
+    <result column="ID" property="id" />
+
+    <result column="SITENAME" property="sitename" />
+
+    <result column="SITENAMESN" property="sitenamesn" />
+
+    <result column="RACKCOUNT" property="rackcount"/>
+
+    <result column="RACKUSAGE" property="rackusage"/>
+
+    <result column="ISDELETE" property="isdelete"/>
+
+    <result column="DHCODE" property="dhcode"/>
+
+    <result column="ROOMTYPE" property="roomtype"/>
+
+  </resultMap>
+
+  <!-- 通过主键查询记录 -->
+  <select id="getModelById" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM where ID= #{0} and isdelete = 0
+  </select>
+
+  <!-- map对应的key和实体类中的属性一致 -->
+  <select id="getModelByMap" resultType="ZbMachineroom"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 通过实体类查询记录 -->
+  <select id="getModelByObject" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询所有记录 -->
+  <select id="queryList" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM where isdelete = 0
+    order by to_number(substr(sitename,instr(sitename,'-')+1))
+  </select>
+
+  <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+  <select id="queryListByMap" resultType="ZbMachineroom"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询记录:通过实体类查询多条记录 -->
+  <select id="queryListByObject" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM
+    <include refid="whereParam" />
+    ORDER by SITENAME
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="queryListPage" parameterType="PageBean" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn" />
+    from ZB_MACHINEROOM
+    <include refid="wherePageParam" />
+  </select>
+
+    <!-- 根据机房IDS查询机房信息 -->
+    <select id="queryListByRoomIds" parameterType="java.util.List" resultType="ZbMachineroom">
+        select
+        <include refid="baseColumn"/>
+        from ZB_MACHINEROOM z
+      where z.isdelete = 0 and z.id IN
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- update -->
+  <update id="updateByObject" parameterType="ZbMachineroom">
+    update ZB_MACHINEROOM
+    <include refid="updateParam" />
+    where id=#{id}
+  </update>
+
+  <update id="updateByMap" parameterType="Map">
+    update ZB_MACHINEROOM
+    <include refid="updateParam" />
+    <include refid="whereParam" />
+  </update>
+
+  <!-- 慎用此方法 -->
+  <delete id="deleteAll">
+    delete from ZB_MACHINEROOM where isdelete = 0
+  </delete>
+
+
+  <delete id="deleteById">
+    delete from ZB_MACHINEROOM where ID= #{0} and isdelete = 0
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByObject" parameterType="ZbMachineroom">
+    delete from ZB_MACHINEROOM
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByMap" parameterType="Map">
+    delete from ZB_MACHINEROOM
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByList" parameterType="java.util.List">
+    delete from ZB_MACHINEROOM where isdelete = 0 and ID in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- insert保存方法 -->
+  <insert id="insert" parameterType="ZbMachineroom"
+          useGeneratedKeys="true" keyProperty="ID">
+    <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+      select zb_machineroom_seq.nextval from dual
+    </selectKey>
+    INSERT INTO ZB_MACHINEROOM
+    (id,
+    <include refid="insertColumn" />
+    ) VALUES
+    (#{id,jdbcType=INTEGER},
+    <include refid="insertColumnParam" />
+    )
+  </insert>
+
+  <!-- 批量保存 -->
+  <insert id="insertList" parameterType="java.util.List">
+    INSERT INTO ZB_MACHINEROOM (
+    <include refid="batchInsertColumn" />
+    )
+    select zb_machineroom_seq.nextval,sol.* from (
+    <foreach collection="list" item="item" index="index" separator="union all">
+      select
+      <include refid="batchInsertColumnParam"/>
+      from dual
+    </foreach>
+    ) sol
+  </insert>
+
+  <!-- sql基本映射 -->
+  <sql id="baseColumn">
+    <![CDATA[
+		  	BUILDINGID as buildingid,
+			ROOMCATEGORY as roomcategory,
+			GRADE as grade,
+			MAXRACKS as maxracks,
+			DESIGNELECTRICITY as designelectricity,
+			AREA as area,
+			FLOORHEIGHT as floorheight,
+			REMARK as remark,
+			AIRCONDITIONINGRESERVE as airconditioningreserve,
+			TOTALBANDWIDTH as totalbandwidth,
+			WIDTH_M as widthM,
+			HEIGHT_M as heightM,
+			ACCESSPORTTOTAL as accessporttotal,
+			ACCESSPORTUSAGE as accessportusage,
+			USEFOR as usefor,
+			MODIFYTIME as modifytime,
+			RACKSPARE as rackspare,
+			RESPONSIBLEUSERID as responsibleuserid,
+			ID as id,
+			SITENAME as sitename,
+			SITENAMESN as sitenamesn,
+			RACKCOUNT as rackcount,
+			RACKUSAGE as rackusage,
+			ISDELETE as isdelete,
+			DHCODE as dhcode,
+			ROOMTYPE as roomtype
+	  ]]>
+  </sql>
+  <sql id="whereParam">
+    <where>
+      <![CDATA[ and ISDELETE = 0 ]]>
+      <if test="buildingid != null and buildingid != '' ">  <![CDATA[ and BUILDINGID = #{buildingid} ]]></if>
+
+      <if test="roomcategory != null or roomcategory == '0' ">  <![CDATA[ and ROOMCATEGORY = #{roomcategory} ]]></if>
+
+      <if test="grade != null and grade != '' ">  <![CDATA[ and GRADE = #{grade} ]]></if>
+
+      <if test="maxracks != null and maxracks != '' ">  <![CDATA[ and MAXRACKS = #{maxracks} ]]></if>
+
+      <if test="designelectricity != null and designelectricity != '' ">  <![CDATA[ and DESIGNELECTRICITY = #{designelectricity} ]]></if>
+
+      <if test="area != null and area != '' ">  <![CDATA[ and AREA = #{area} ]]></if>
+
+      <if test="floorheight != null and floorheight != '' ">  <![CDATA[ and FLOORHEIGHT = #{floorheight} ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+
+      <if test="airconditioningreserve != null and airconditioningreserve != '' ">  <![CDATA[ and AIRCONDITIONINGRESERVE = #{airconditioningreserve} ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{totalbandwidth} ]]></if>
+
+      <if test="widthM != null and widthM != '' ">  <![CDATA[ and WIDTH_M = #{widthM} ]]></if>
+
+      <if test="heightM != null and heightM != '' ">  <![CDATA[ and HEIGHT_M = #{heightM} ]]></if>
+
+      <if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ and ACCESSPORTTOTAL = #{accessporttotal} ]]></if>
+
+      <if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ and ACCESSPORTUSAGE = #{accessportusage} ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ and USEFOR = #{usefor} ]]></if>
+
+      <if test="modifytime != null">  <![CDATA[ and MODIFYTIME = #{modifytime} ]]></if>
+
+      <if test="rackspare != null and rackspare != '' ">  <![CDATA[ and RACKSPARE = #{rackspare} ]]></if>
+
+      <if test="responsibleuserid != null and responsibleuserid != '' ">  <![CDATA[ and RESPONSIBLEUSERID = #{responsibleuserid} ]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+      <if test="sitename != null and sitename != '' ">  <![CDATA[ and SITENAME = #{sitename} ]]></if>
+
+      <if test="sitenamesn != null and sitenamesn != '' ">  <![CDATA[ and SITENAMESN = #{sitenamesn} ]]></if>
+
+      <if test="rackcount != null and rackcount != '' ">  <![CDATA[ and RACKCOUNT = #{rackcount} ]]></if>
+
+      <if test="rackusage != null and rackusage != '' ">  <![CDATA[ and RACKUSAGE = #{rackusage} ]]></if>
+
+      <if test="dhcode != null and dhcode != '' ">  <![CDATA[ and DHCODE = #{dhcode} ]]></if>
+
+      <if test="roomtype != null and roomtype != '' ">  <![CDATA[ and ROOMTYPE = #{roomtype} ]]></if>
+
+    </where>
+  </sql>
+  <sql id="wherePageParam">
+    <where>
+      <![CDATA[ and ISDELETE = 0 ]]>
+      <if test="params.buildingid != null and params.buildingid != '' ">  <![CDATA[ and BUILDINGID = #{params.buildingid} ]]></if>
+
+      <if test="params.roomcategory != null or params.roomcategory == '0' ">
+        <![CDATA[ and ROOMCATEGORY = #{params.roomcategory} ]]></if>
+
+      <if test="params.grade != null and params.grade != '' ">  <![CDATA[ and GRADE = #{params.grade} ]]></if>
+
+      <if test="params.maxracks != null and params.maxracks != '' ">  <![CDATA[ and MAXRACKS = #{params.maxracks} ]]></if>
+
+      <if test="params.designelectricity != null and params.designelectricity != '' ">  <![CDATA[ and DESIGNELECTRICITY = #{params.designelectricity} ]]></if>
+
+      <if test="params.area != null and params.area != '' ">  <![CDATA[ and AREA = #{params.area} ]]></if>
+
+      <if test="params.floorheight != null and params.floorheight != '' ">  <![CDATA[ and FLOORHEIGHT = #{params.floorheight} ]]></if>
+
+      <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+      <if test="params.airconditioningreserve != null and params.airconditioningreserve != '' ">  <![CDATA[ and AIRCONDITIONINGRESERVE = #{params.airconditioningreserve} ]]></if>
+
+      <if test="params.totalbandwidth != null and params.totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{params.totalbandwidth} ]]></if>
+
+      <if test="params.widthM != null and params.widthM != '' ">  <![CDATA[ and WIDTH_M = #{params.widthM} ]]></if>
+
+      <if test="params.heightM != null and params.heightM != '' ">  <![CDATA[ and HEIGHT_M = #{params.heightM} ]]></if>
+
+      <if test="params.accessporttotal != null and params.accessporttotal != '' ">  <![CDATA[ and ACCESSPORTTOTAL = #{params.accessporttotal} ]]></if>
+
+      <if test="params.accessportusage != null and params.accessportusage != '' ">  <![CDATA[ and ACCESSPORTUSAGE = #{params.accessportusage} ]]></if>
+
+      <if test="params.usefor != null and params.usefor != '' ">  <![CDATA[ and USEFOR = #{params.usefor} ]]></if>
+
+      <if test="params.modifytime != null">  <![CDATA[ and MODIFYTIME = #{params.modifytime} ]]></if>
+
+      <if test="params.rackspare != null and params.rackspare != '' ">  <![CDATA[ and RACKSPARE = #{params.rackspare} ]]></if>
+
+      <if test="params.responsibleuserid != null and params.responsibleuserid != '' ">  <![CDATA[ and RESPONSIBLEUSERID = #{params.responsibleuserid} ]]></if>
+
+      <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+      <if test="params.sitename != null and params.sitename != '' ">  <![CDATA[ and SITENAME = #{params.sitename} ]]></if>
+
+      <if test="params.sitenamesn != null and params.sitenamesn != '' ">  <![CDATA[ and SITENAMESN = #{params.sitenamesn} ]]></if>
+
+      <if test="params.rackcount != null and params.rackcount != '' ">
+        <![CDATA[ and RACKCOUNT = #{params.rackcount} ]]></if>
+
+      <if test="params.rackusage != null and params.rackusage != '' ">
+        <![CDATA[ and RACKUSAGE = #{params.rackusage} ]]></if>
+
+      <if test="params.dhcode != null and params.dhcode != '' ">
+        <![CDATA[ and DHCODE = #{params.dhcode} ]]></if>
+
+      <if test="params.roomtype != null and params.roomtype != '' ">
+        <![CDATA[ and ROOMTYPE = #{params.roomtype} ]]></if>
+
+    </where>
+  </sql>
+
+  <!-- update sql -->
+  <sql id="updateParam">
+    <set>
+      <if test="buildingid != null and buildingid != '' ">  <![CDATA[  BUILDINGID = #{buildingid } ,]]></if>
+
+      <if test="roomcategory != null or roomcategory == '0' ">  <![CDATA[  ROOMCATEGORY = #{roomcategory } ,]]></if>
+
+      <if test="grade != null and grade != '' ">  <![CDATA[  GRADE = #{grade } ,]]></if>
+
+      <if test="maxracks != null and maxracks != '' ">  <![CDATA[  MAXRACKS = #{maxracks } ,]]></if>
+
+      <if test="designelectricity != null and designelectricity != '' ">  <![CDATA[  DESIGNELECTRICITY = #{designelectricity } ,]]></if>
+
+      <if test="area != null and area != '' ">  <![CDATA[  AREA = #{area } ,]]></if>
+
+      <if test="floorheight != null and floorheight != '' ">  <![CDATA[  FLOORHEIGHT = #{floorheight } ,]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+
+      <if test="airconditioningreserve != null and airconditioningreserve != '' ">  <![CDATA[  AIRCONDITIONINGRESERVE = #{airconditioningreserve } ,]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[  TOTALBANDWIDTH = #{totalbandwidth } ,]]></if>
+
+      <if test="widthM != null and widthM != '' ">  <![CDATA[  WIDTH_M = #{widthM } ,]]></if>
+
+      <if test="heightM != null and heightM != '' ">  <![CDATA[  HEIGHT_M = #{heightM } ,]]></if>
+
+      <if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[  ACCESSPORTTOTAL = #{accessporttotal } ,]]></if>
+
+      <if test="accessportusage != null and accessportusage != '' ">  <![CDATA[  ACCESSPORTUSAGE = #{accessportusage } ,]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[  USEFOR = #{usefor } ,]]></if>
+
+      <if test="modifytime != null">  <![CDATA[  MODIFYTIME = #{modifytime } ,]]></if>
+
+      <if test="rackspare != null and rackspare != '' ">  <![CDATA[  RACKSPARE = #{rackspare } ,]]></if>
+
+      <if test="responsibleuserid != null and responsibleuserid != '' ">  <![CDATA[  RESPONSIBLEUSERID = #{responsibleuserid } ,]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+      <if test="sitename != null and sitename != '' ">  <![CDATA[  SITENAME = #{sitename } ,]]></if>
+
+      <if test="sitenamesn != null and sitenamesn != '' ">  <![CDATA[  SITENAMESN = #{sitenamesn } ,]]></if>
+
+      <if test="rackcount != null and rackcount != '' ">  <![CDATA[  RACKCOUNT = #{rackcount } ,]]></if>
+
+      <if test="rackusage != null and rackusage != '' ">  <![CDATA[  RACKUSAGE = #{rackusage } ,]]></if>
+
+      <if test="isdelete != null or isdelete == '0' ">  <![CDATA[  ISDELETE = #{isdelete } ,]]></if>
+
+      <if test="dhcode != null and dhcode != '' ">  <![CDATA[  DHCODE = #{dhcode } ,]]></if>
+
+      <if test="roomtype != null and roomtype != '' ">  <![CDATA[  ROOMTYPE = #{roomtype } ,]]></if>
+
+    </set>
+  </sql>
+
+  <!-- insert sql -->
+  <sql id="insertColumn">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="buildingid != null and buildingid != '' ">  <![CDATA[ BUILDINGID , ]]></if>
+
+      <if test="roomcategory != null or roomcategory == '0' ">  <![CDATA[ ROOMCATEGORY , ]]></if>
+
+      <if test="grade != null and grade != '' ">  <![CDATA[ GRADE , ]]></if>
+
+      <if test="maxracks != null and maxracks != '' ">  <![CDATA[ MAXRACKS , ]]></if>
+
+      <if test="designelectricity != null and designelectricity != '' ">  <![CDATA[ DESIGNELECTRICITY , ]]></if>
+
+      <if test="area != null and area != '' ">  <![CDATA[ AREA , ]]></if>
+
+      <if test="floorheight != null and floorheight != '' ">  <![CDATA[ FLOORHEIGHT , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+
+      <if test="airconditioningreserve != null and airconditioningreserve != '' ">  <![CDATA[ AIRCONDITIONINGRESERVE , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ TOTALBANDWIDTH , ]]></if>
+
+      <if test="widthM != null and widthM != '' ">  <![CDATA[ WIDTH_M , ]]></if>
+
+      <if test="heightM != null and heightM != '' ">  <![CDATA[ HEIGHT_M , ]]></if>
+
+      <if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ ACCESSPORTTOTAL , ]]></if>
+
+      <if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ ACCESSPORTUSAGE , ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ USEFOR , ]]></if>
+
+      <if test="modifytime != null">  <![CDATA[ MODIFYTIME , ]]></if>
+
+      <if test="rackspare != null and rackspare != '' ">  <![CDATA[ RACKSPARE , ]]></if>
+
+      <if test="responsibleuserid != null and responsibleuserid != '' ">  <![CDATA[ RESPONSIBLEUSERID , ]]></if>
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>-->
+
+      <if test="sitename != null and sitename != '' ">  <![CDATA[ SITENAME , ]]></if>
+
+      <if test="sitenamesn != null and sitenamesn != '' ">  <![CDATA[ SITENAMESN , ]]></if>
+
+      <if test="rackcount != null and rackcount != '' ">  <![CDATA[ RACKCOUNT , ]]></if>
+
+      <if test="rackusage != null and rackusage != '' ">  <![CDATA[ RACKUSAGE , ]]></if>
+
+      <if test="isdelete != null or isdelete == '0' ">  <![CDATA[ ISDELETE , ]]></if>
+
+      <if test="dhcode != null and dhcode != '' ">  <![CDATA[ DHCODE , ]]></if>
+
+      <if test="roomtype != null and roomtype != '' ">  <![CDATA[ ROOMTYPE , ]]></if>
+
+    </trim>
+  </sql>
+
+  <sql id="insertColumnParam">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="buildingid != null and buildingid != '' ">  <![CDATA[ #{buildingid } , ]]></if>
+
+      <if test="roomcategory != null or roomcategory == '0' ">  <![CDATA[ #{roomcategory } , ]]></if>
+
+      <if test="grade != null and grade != '' ">  <![CDATA[ #{grade } , ]]></if>
+
+      <if test="maxracks != null and maxracks != '' ">  <![CDATA[ #{maxracks } , ]]></if>
+
+      <if test="designelectricity != null and designelectricity != '' ">  <![CDATA[ #{designelectricity } , ]]></if>
+
+      <if test="area != null and area != '' ">  <![CDATA[ #{area } , ]]></if>
+
+      <if test="floorheight != null and floorheight != '' ">  <![CDATA[ #{floorheight } , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+
+      <if test="airconditioningreserve != null and airconditioningreserve != '' ">  <![CDATA[ #{airconditioningreserve } , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ #{totalbandwidth } , ]]></if>
+
+      <if test="widthM != null and widthM != '' ">  <![CDATA[ #{widthM } , ]]></if>
+
+      <if test="heightM != null and heightM != '' ">  <![CDATA[ #{heightM } , ]]></if>
+
+      <if test="accessporttotal != null and accessporttotal != '' ">  <![CDATA[ #{accessporttotal } , ]]></if>
+
+      <if test="accessportusage != null and accessportusage != '' ">  <![CDATA[ #{accessportusage } , ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ #{usefor } , ]]></if>
+
+      <if test="modifytime != null">  <![CDATA[ #{modifytime } , ]]></if>
+
+      <if test="rackspare != null and rackspare != '' ">  <![CDATA[ #{rackspare } , ]]></if>
+
+      <if test="responsibleuserid != null and responsibleuserid != '' ">  <![CDATA[ #{responsibleuserid } , ]]></if>
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+      <if test="sitename != null and sitename != '' ">  <![CDATA[ #{sitename } , ]]></if>
+
+      <if test="sitenamesn != null and sitenamesn != '' ">  <![CDATA[ #{sitenamesn } , ]]></if>
+
+      <if test="rackcount != null and rackcount != '' ">  <![CDATA[ #{rackcount } , ]]></if>
+
+      <if test="rackusage != null and rackusage != '' ">  <![CDATA[ #{rackusage } , ]]></if>
+
+      <if test="isdelete != null or isdelete == '0' ">  <![CDATA[ #{isdelete } , ]]></if>
+
+      <if test="dhcode != null and dhcode != '' ">  <![CDATA[ #{dhcode } , ]]></if>
+
+      <if test="roomtype != null and roomtype != '' ">  <![CDATA[ #{roomtype } , ]]></if>
+
+    </trim>
+  </sql>
+
+  <!-- 批量保存 -->
+  <sql id="batchInsertColumn">
+      ID,SITENAME,SITENAMESN,BUILDINGID,ROOMCATEGORY,GRADE,MAXRACKS,DESIGNELECTRICITY,AREA,FLOORHEIGHT,REMARK,AIRCONDITIONINGRESERVE,
+      TOTALBANDWIDTH,WIDTH_M,HEIGHT_M,ACCESSPORTTOTAL,ACCESSPORTUSAGE,USEFOR,MODIFYTIME,RACKSPARE,RESPONSIBLEUSERID,RACKCOUNT,RACKUSAGE,DHCODE,ROOMTYPE
+  </sql>
+
+  <sql id="batchInsertColumnParam">
+    #{item.sitename,jdbcType=VARCHAR},#{item.sitenamesn,jdbcType=VARCHAR},#{item.buildingid,jdbcType=VARCHAR},#{item.roomcategory,jdbcType=VARCHAR},#{item.grade,jdbcType=INTEGER},
+    #{item.maxracks,jdbcType=INTEGER},#{item.designelectricity,jdbcType=VARCHAR},#{item.area,jdbcType=DECIMAL},#{item.floorheight,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},
+    #{item.airconditioningreserve,jdbcType=VARCHAR},#{item.totalbandwidth,jdbcType=BIGINT},#{item.widthM,jdbcType=DECIMAL},#{item.heightM,jdbcType=DECIMAL},#{item.accessporttotal,jdbcType=BIGINT},
+    #{item.accessportusage,jdbcType=BIGINT},#{item.usefor,jdbcType=INTEGER},#{item.modifytime,jdbcType=TIMESTAMP},#{item.rackspare,jdbcType=BIGINT},#{item.responsibleuserid,jdbcType=VARCHAR},
+      #{item.rackcount,jdbcType=BIGINT},#{item.rackusage,jdbcType=DECIMAL},#{item.dhcode,jdbcType=VARCHAR},#{item.roomtype,jdbcType=INTEGER}
+  </sql>
+
+
+  <sql id="Join_Column_List" >
+      A.ID, A.SITENAME, A.SITENAMESN, A.BUILDINGID, A.ROOMCATEGORY, A.GRADE, A.MAXRACKS, A.DESIGNELECTRICITY,A.AREA,
+      A.FLOORHEIGHT,
+      A.REMARK, A.AIRCONDITIONINGRESERVE, A.TOTALBANDWIDTH, A.WIDTH_M, A.HEIGHT_M,A.ACCESSPORTTOTAL,
+      A.ACCESSPORTUSAGE,A.USEFOR,
+      A.MODIFYTIME, A.RACKSPARE, A.RESPONSIBLEUSERID,A.RACKCOUNT,A.RACKUSAGE,A.DHCODE,A.ROOMTYPE,B.NAME,B.CODE AS BCODE,B.ID AS BID
+  </sql>
+
+  <sql id="Basic_Column_List" >
+    A.ID, A.SITENAME, A.SITENAMESN, A.BUILDINGID, A.ROOMCATEGORY, A.GRADE, A.MAXRACKS, A.DESIGNELECTRICITY,
+    A.AREA, A.FLOORHEIGHT, A.REMARK, A.AIRCONDITIONINGRESERVE, A.TOTALBANDWIDTH, A.WIDTH_M, A.HEIGHT_M,
+      A.ACCESSPORTTOTAL, A.ACCESSPORTUSAGE, A.USEFOR, A.MODIFYTIME, A.RACKSPARE,
+      A.RESPONSIBLEUSERID,A.RACKCOUNT,A.RACKUSAGE,A.DHCODE,A.ROOMTYPE
+  </sql>
+
+  <!-- 分页查询 -->
+  <select id="queryZbMachineroomgInfoListPage" parameterType="PageBean" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from ZB_MACHINEROOM A
+    LEFT JOIN IDC_BUILDING B ON  A.BUILDINGID = B.ID
+    <include refid="whereJoinParam" />
+    order by
+    A.buildingid,to_number(substr(A.sitename,instr(A.sitename,'-')+1))
+  </select>
+
+  <select id="getAllZbMachineroomInfo" resultType="map">
+    select
+    <include refid="exportExcelColumn"/>
+    from ZB_MACHINEROOM A
+    LEFT JOIN IDC_BUILDING B ON  A.BUILDINGID = B.ID
+    where A.isdelete = 0
+    <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+      <![CDATA[ and A.BUILDINGID = #{searchId} ]]>
+    </if>
+    <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+      <![CDATA[ and B.LOCATIONID = #{searchId} ]]>
+    </if>
+    order by
+    A.buildingid,to_number(substr(A.sitename,instr(A.sitename,'-')+1))
+  </select>
+
+  <select id="queryAllZbMachineroomInfoList" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from ZB_MACHINEROOM A
+    LEFT JOIN IDC_BUILDING B ON  A.BUILDINGID = B.ID
+    where B.isdelete = 0 and A.isdelete = 0
+    order by
+    A.buildingid,to_number(substr(A.sitename,instr(A.sitename,'-')+1))
+  </select>
+
+  <select id="getMapModelById" resultType="map">
+    SELECT
+    <include refid="Join_Column_List" />
+    from ZB_MACHINEROOM A
+    LEFT JOIN IDC_BUILDING B ON  A.BUILDINGID = B.ID
+    where A.id = #{0} and B.isdelete = 0 and A.isdelete = 0
+  </select>
+
+  <sql id="whereJoinParam">
+      <where>
+        A.isdelete = 0
+        <if test="params.searchType != null and params.searchType == 'building' and params.searchId != null and params.searchId != '' ">
+            <![CDATA[ and A.BUILDINGID = #{params.searchId} ]]>
+        </if>
+        <if test="params.searchType != null and params.searchType == 'location' and params.searchId != null and params.searchId != '' ">
+            <![CDATA[ and B.LOCATIONID = #{params.searchId} ]]>
+        </if>
+        <if test="params.searchKey != null and params.searchKey != '' ">
+            <![CDATA[ and (upper(A.SITENAME) like  '%'||upper(#{params.searchKey})||'%' or  upper(A.SITENAMESN) like  '%'||upper(#{params.searchKey})||'%')]]></if>
+      </where>
+  </sql>
+
+  <sql id="exportExcelColumn">
+    A.ID, A.SITENAME, A.SITENAMESN, A.BUILDINGID,
+    decode(A.ROOMCATEGORY,'0','模块化机房','1','普通机房','2','热管背板机房') as ROOMCATEGORY,
+    A.GRADE, A.MAXRACKS, A.DESIGNELECTRICITY,
+    A.AREA, A.FLOORHEIGHT, A.REMARK, A.AIRCONDITIONINGRESERVE, A.TOTALBANDWIDTH, A.WIDTH_M, A.HEIGHT_M,
+    A.ACCESSPORTTOTAL, A.ACCESSPORTUSAGE,
+    decode(A.USEFOR,'1','自有业务','2','网络核心机房','3','政企业务') as USEFOR,
+    A.MODIFYTIME, A.RACKSPARE, A.RESPONSIBLEUSERID,B.NAME,B.CODE AS BCODE,B.ID AS BID
+  </sql>
+
+    <!-- 根据机房ID获取机房机架统计信息 -->
+    <select id="getRoomStatistics" resultType="Map">
+        select (select count(1)
+        from idc_rack t
+        where t.roomid = #{0}
+        and t.isdelete = 0 and t.businesstype_id in ('equipment','cabinet')) rackCount,
+        (select count(1)
+        from idc_rack t
+        where t.roomid = #{0}
+        and t.status in (20,50,55,60)
+        and t.isdelete = 0 and t.businesstype_id in ('equipment','cabinet')) unfreeRackNum
+        from dual
+    </select>
+
+    <!-- 通过机楼IDS获取机房 -->
+    <select id="queryListByBuildingIds" parameterType="java.util.List" resultType="ZbMachineroom">
+        select
+        <include refid="baseColumn"/>
+        from ZB_MACHINEROOM
+        <where>
+          isdelete = 0
+            <if test="list!=null">
+                and BUILDINGID in
+                <foreach collection="list" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by
+       buildingid,to_number(substr(sitename,instr(sitename,'-')+1))
+    </select>
+
+    <!-- 获取当前机内所有模块 -->
+    <select id="queryAllModuleByRoomId" resultType="Map">
+        select m.id,m.name,m.code,m.roomid,m.descr from idc_module m where m.roomid=#{0} order by m.name
+    </select>
+
+  <!-- 根据机楼ID获取各个机楼的机房数量 -->
+  <select id="getRackNumByIds" parameterType="java.util.List" resultType="Map">
+    select m.id as roomId, m.sitename as roomName, count(r.id) as rackCount
+    from zb_machineroom m left join idc_rack r on (r.roomid = m.id)
+    where m.isdelete = 0 and r.isdelete = 0 and m.id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    group by m.id, m.sitename
+  </select>
+
+  <!--删除机房  对机房进行软删除-->
+  <update id="updateRoomToInvalidByIds" parameterType="java.util.List">
+    update zb_machineroom set isdelete = 1 where isdelete = 0 and id IN
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </update>
+
+  <!-- 通过机房名称获取机房 -->
+  <select id="queryZbMachineroomInfoBySitename" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn"/>
+    from ZB_MACHINEROOM where SITENAME = #{sitename}
+  </select>
+
+  <!-- 通过机房Ids获取机房数据 -->
+  <select id="queryZbMachineroomListByIds" parameterType="Map" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn"/>
+    from ZB_MACHINEROOM where isdelete = 0
+    <if test="roomIdList!=null and roomIdList.size()>0">
+      and id in
+      <foreach collection="roomIdList" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="roomName != null and roomName != '' ">
+      <![CDATA[ and upper(sitename) like '%'||upper(#{roomName})||'%' ]]>
+    </if>
+    <if test="locationId!=null and locationId!='' ">
+      <![CDATA[ and exists(select 1 from idc_building b where b.id=buildingid and b.locationid=#{locationId}) ]]>
+    </if>
+    order by to_number(substr(sitename,instr(sitename,'-')+1))
+  </select>
+
+  <!-- 通过数据中心Id查询所有的机房 -->
+  <select id="queryZbMachineroomListByLocationId" resultType="ZbMachineroom">
+    select
+    <include refid="baseColumn"/>
+    from ZB_MACHINEROOM where isdelete = 0
+      and exists (select 1 from idc_building where id = buildingid and locationid =#{locationId})
+    order by to_number(substr(sitename,instr(sitename,'-')+1))
+  </select>
+</mapper>

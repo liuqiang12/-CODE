@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcVmDiskMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcVmDiskMap" type="com.idc.model.IdcVmDisk">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="IDC_VM_HOSTS_ID" property="idcVmHostsId" />
+				
+		<result column="IDC_VM_DISK_TYPE" property="idcVmDiskType" />
+				
+		<result column="IDC_VM_DISK_ID" property="idcVmDiskId" />
+				
+		<result column="IDC_VM_DISK_AVAILABLE_SIZE" property="idcVmDiskAvailableSize" />
+				
+		<result column="IDC_VM_DISK_USE_SIZE" property="idcVmDiskUseSize" />
+				
+		<result column="IDC_RESOURCES_POOL_ID" property="idcResourcesPoolId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.IdcVmDisk">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK where IDC_VM_DISK_ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.IdcVmDisk"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.IdcVmDisk">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.IdcVmDisk">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.IdcVmDisk"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.IdcVmDisk">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.IdcVmDisk">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_DISK
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.IdcVmDisk">
+		update IDC_VM_DISK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_VM_DISK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_VM_DISK
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_VM_DISK where IDC_VM_DISK_ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.IdcVmDisk">
+		delete from IDC_VM_DISK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_VM_DISK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_VM_DISK where IDC_VM_DISK_ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.IdcVmDisk"
+		useGeneratedKeys="true" keyProperty="IDC_VM_DISK_ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select IDC_VM_DISK_seq.nextval from dual
+        </selectKey>
+		INSERT INTO IDC_VM_DISK
+		(IDC_VM_DISK_ID
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=INTEGER},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_VM_DISK (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	IDC_VM_HOSTS_ID as idcVmHostsId,			IDC_VM_DISK_TYPE as idcVmDiskType,			IDC_VM_DISK_ID as idcVmDiskId,			IDC_VM_DISK_AVAILABLE_SIZE as idcVmDiskAvailableSize,			IDC_VM_DISK_USE_SIZE as idcVmDiskUseSize,			IDC_RESOURCES_POOL_ID as idcResourcesPoolId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ and IDC_VM_HOSTS_ID = #{idcVmHostsId} ]]></if>
+						
+			<if test="idcVmDiskType != null and idcVmDiskType != '' ">  <![CDATA[ and IDC_VM_DISK_TYPE = #{idcVmDiskType} ]]></if>
+						
+			<if test="idcVmDiskId != null and idcVmDiskId != '' ">  <![CDATA[ and IDC_VM_DISK_ID = #{idcVmDiskId} ]]></if>
+						
+			<if test="idcVmDiskAvailableSize != null and idcVmDiskAvailableSize != '' ">  <![CDATA[ and IDC_VM_DISK_AVAILABLE_SIZE = #{idcVmDiskAvailableSize} ]]></if>
+						
+			<if test="idcVmDiskUseSize != null and idcVmDiskUseSize != '' ">  <![CDATA[ and IDC_VM_DISK_USE_SIZE = #{idcVmDiskUseSize} ]]></if>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.idcVmHostsId != null and params.idcVmHostsId != '' ">  <![CDATA[ and IDC_VM_HOSTS_ID = #{params.idcVmHostsId} ]]></if>
+						
+			<if test="params.idcVmDiskType != null and params.idcVmDiskType != '' ">  <![CDATA[ and IDC_VM_DISK_TYPE = #{params.idcVmDiskType} ]]></if>
+						
+			<if test="params.idcVmDiskId != null and params.idcVmDiskId != '' ">  <![CDATA[ and IDC_VM_DISK_ID = #{params.idcVmDiskId} ]]></if>
+						
+			<if test="params.idcVmDiskAvailableSize != null and params.idcVmDiskAvailableSize != '' ">  <![CDATA[ and IDC_VM_DISK_AVAILABLE_SIZE = #{params.idcVmDiskAvailableSize} ]]></if>
+						
+			<if test="params.idcVmDiskUseSize != null and params.idcVmDiskUseSize != '' ">  <![CDATA[ and IDC_VM_DISK_USE_SIZE = #{params.idcVmDiskUseSize} ]]></if>
+						
+			<if test="params.idcResourcesPoolId != null and params.idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{params.idcResourcesPoolId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[  IDC_VM_HOSTS_ID = #{idcVmHostsId } ,]]></if>
+						
+			<if test="idcVmDiskType != null and idcVmDiskType != '' ">  <![CDATA[  IDC_VM_DISK_TYPE = #{idcVmDiskType } ,]]></if>
+						
+			<if test="idcVmDiskId != null and idcVmDiskId != '' ">  <![CDATA[  IDC_VM_DISK_ID = #{idcVmDiskId } ,]]></if>
+						
+			<if test="idcVmDiskAvailableSize != null and idcVmDiskAvailableSize != '' ">  <![CDATA[  IDC_VM_DISK_AVAILABLE_SIZE = #{idcVmDiskAvailableSize } ,]]></if>
+						
+			<if test="idcVmDiskUseSize != null and idcVmDiskUseSize != '' ">  <![CDATA[  IDC_VM_DISK_USE_SIZE = #{idcVmDiskUseSize } ,]]></if>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[  IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ IDC_VM_HOSTS_ID , ]]></if>
+				
+		<if test="idcVmDiskType != null and idcVmDiskType != '' ">  <![CDATA[ IDC_VM_DISK_TYPE , ]]></if>
+				
+		<if test="idcVmDiskId != null and idcVmDiskId != '' ">  <![CDATA[ IDC_VM_DISK_ID , ]]></if>
+				
+		<if test="idcVmDiskAvailableSize != null and idcVmDiskAvailableSize != '' ">  <![CDATA[ IDC_VM_DISK_AVAILABLE_SIZE , ]]></if>
+				
+		<if test="idcVmDiskUseSize != null and idcVmDiskUseSize != '' ">  <![CDATA[ IDC_VM_DISK_USE_SIZE , ]]></if>
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ IDC_RESOURCES_POOL_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ #{idcVmHostsId } , ]]></if>
+				
+		<if test="idcVmDiskType != null and idcVmDiskType != '' ">  <![CDATA[ #{idcVmDiskType } , ]]></if>
+				
+		<if test="idcVmDiskId != null and idcVmDiskId != '' ">  <![CDATA[ #{idcVmDiskId } , ]]></if>
+				
+		<if test="idcVmDiskAvailableSize != null and idcVmDiskAvailableSize != '' ">  <![CDATA[ #{idcVmDiskAvailableSize } , ]]></if>
+				
+		<if test="idcVmDiskUseSize != null and idcVmDiskUseSize != '' ">  <![CDATA[ #{idcVmDiskUseSize } , ]]></if>
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ #{idcResourcesPoolId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			IDC_VM_HOSTS_ID,IDC_VM_DISK_TYPE,IDC_VM_DISK_ID,IDC_VM_DISK_AVAILABLE_SIZE,IDC_VM_DISK_USE_SIZE,IDC_RESOURCES_POOL_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.idcVmHostsId},#{item.idcVmDiskType},#{item.idcVmDiskId},#{item.idcVmDiskAvailableSize},#{item.idcVmDiskUseSize},#{item.idcResourcesPoolId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

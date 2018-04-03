@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LnUsergrpRoleMapper">
+
+    <!-- 批量保存 -->
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO sys_ln_usergrp_role (
+        <include refid="batchInsertColumn"/>
+        )
+        select lnu.* from (
+        <foreach collection="list" item="item" index="index" separator="union">
+            select
+            <include refid="batchInsertColumnParam"/>
+            from dual
+        </foreach>
+        ) lnu
+    </insert>
+
+    <!-- 删除角色与组的绑定 -->
+    <delete id="deleteByLnUsergrpRoles" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" open="begin" close="end;">
+            delete from sys_ln_usergrp_role where role_id = #{item.roleId} and ugrp_id =#{item.ugrpId};
+        </foreach>
+    </delete>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+        role_id,ugrp_id
+    </sql>
+
+    <sql id="batchInsertColumnParam">
+        #{item.roleId},#{item.ugrpId}
+    </sql>
+
+</mapper>

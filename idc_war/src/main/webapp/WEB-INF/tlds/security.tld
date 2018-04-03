@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+		version="2.0">
+	<description>jbpmSecurity taglib</description>
+	<display-name>jbpmSecurity taglib</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>security</short-name>
+	<uri>http://jbpmSecurity.idc.tag.cn/</uri>
+
+	<tag>
+		<description>
+			<![CDATA[
+				权限控制
+				authorize Tag
+			]]>
+		</description>
+		<name>security</name><!-- 里面的内容是JSP文件中标签里面的<jbpm:jbpmTag>jbpmTag -->
+		<tag-class>com.idc.tag.SecurityTag</tag-class>
+		<body-content>JSP</body-content><!-- 标签主体内容 -->
+		<attribute>
+			<description></description>
+			<name>module</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue><!-- 里面的值代表JSP文件中自定义标签的属性的值不能用EL表达式(${})来表示，如果为true自定义标签的属性的值能用EL表达式(${})来表示。 -->
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>item</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>说明</description>
+			<name>comment</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>至少满足多少</description>
+			<name>moreThan</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<description></description>
+			<name>hasSecurity</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>
+	</tag>
+</taglib>

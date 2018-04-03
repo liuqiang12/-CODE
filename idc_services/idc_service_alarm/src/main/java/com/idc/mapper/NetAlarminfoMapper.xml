@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetAlarminfoMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultNetAlarminfoMap" type="com.idc.model.NetAlarmInfoVo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id"/>
+
+        <result column="ALARMLEVEL" property="alarmlevel"/>
+
+        <result column="OBJID" property="objid"/>
+
+        <result column="KPIID" property="kpiid"/>
+
+        <result column="PORTNAME" property="portname"/>
+
+        <result column="ALARMLEVELID" property="alarmlevelid"/>
+
+        <result column="PORTID" property="portid"/>
+
+        <result column="CAPVALUE" property="capvalue"/>
+
+        <result column="COMPARAVALUE" property="comparavalue"/>
+
+        <result column="ALARMCLASS" property="alarmclass"/>
+
+        <result column="FLAGVALUE" property="flagvalue"/>
+
+        <result column="ALARMINFO" property="alarminfo"/>
+
+        <result column="ALARMTIME" property="alarmtime"/>
+
+        <result column="ALARMSEND" property="alarmsend"/>
+
+        <result column="ALARMSENDTIME" property="alarmsendtime"/>
+
+        <result column="ALARMREMARK" property="alarmremark"/>
+
+        <result column="TRIGGERTASK" property="triggertask"/>
+
+        <result column="RESUMETIME" property="resumetime"/>
+
+        <result column="RESUMEUSER" property="resumeuser"/>
+
+        <result column="TRIGGERTASK" property="triggertask"/>
+
+        <result column="OBJNAME" property="objName"/>
+
+        <result column="KPIKEY" property="kpiKey"/>
+
+    </resultMap>
+
+    <!-- sql基本映射 -->
+    <sql id="currBaseColumn">
+	  <![CDATA[
+		  	     a.id as id,
+                 a.alarmlevel as alarmlevel,
+                 a.alarmtype alarmtype,
+                 a.alarmobj alarmobj,
+                 a.alarminfo alarminfo,
+                 a.alarmtime alarmtime,
+                 a.alarmsendflag alarmsendflag,
+                 a.alarmsendtime alarmsendtime,
+                 a.portid portid
+        ]]>
+	</sql>
+    <sql id="BaseColumnAddOther">
+        <![CDATA[
+
+                 ,b.kpiname as kpiname,
+			     c.portname AS portname
+        ]]>
+    </sql>
+    <sql id="joinkpitable">
+        JOIN net_kpiBase b ON a.kpiid = b.kpiid
+    </sql>
+    <sql id="joinkpiColumn">
+        ,b.KpiName as "netKpibase.kpiName"
+    </sql>
+    <sql id="hisBaseColumn">
+        <![CDATA[
+                 a.id as id,
+                 a.alarmlevel as alarmlevel,
+                 a.alarmtype alarmtype,
+                 a.alarmobj alarmobj,
+                 a.alarminfo alarminfo,
+                 a.alarmtime alarmtime,
+                 a.alarmsendflag alarmsendflag,
+                 a.alarmsendtime alarmsendtime,
+                 a.portid portid,
+                 a.RESUMETIME as resumetime,
+			     a.RESUMEUSER as resumeuser
+
+        ]]>
+    </sql>
+    <sql id="objname">
+        DECODE (
+		KPIKEY,
+		'device',
+		(
+			SELECT
+				"NAME"
+			FROM
+				IDC_DEVICE
+			WHERE
+        deviceid = a.OBJID and isdelete = 0
+		)
+	) objname,
+	b.kpikey as kpiKey
+    </sql>
+    <delete id="deleteCurrById">
+        DELETE FROM ALARM_INFO_CURR WHERE id=#{0}
+    </delete>
+    <!--&#45;&#45;         <include refid="objname"/>,-->
+    <!--&#45;&#45;         <include refid="wherePageParam"/>-->
+    <select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetAlarminfo">
+        SELECT * from
+        (SELECT
+        <if test="params.iscurralarm == true ">
+            <include refid="currBaseColumn"/>
+            <include refid="BaseColumnAddOther"/>
+            <![CDATA[ from ALARM_INFO_CURR a ]]>
+        </if>
+        <if test="params.iscurralarm == false ">
+            <include refid="hisBaseColumn"/>
+            <include refid="BaseColumnAddOther"/>
+            <![CDATA[ from ALARM_INFO_HIS a ]]>
+        </if>
+        INNER JOIN NET_KPIBASE b ON a.alarmtype = b.KPIID
+        LEFT JOIN net_Device d ON a.alarmobj = d.deviceid
+        LEFT JOIN net_port c ON c.portid = a.portid
+        <where>
+            <if test="params.keyword != null and params.keyword != '' ">
+                <![CDATA[ and (a.alarminfo like CONCAT(CONCAT('%',#{params.keyword }) ,'%') or
+                               d.routname like CONCAT(CONCAT('%',#{params.keyword }) ,'%') or
+                               c.portname like CONCAT(CONCAT('%',#{params.keyword }) ,'%'))]]>
+            </if>
+            <if test="params.starttime != null and params.starttime != '' ">
+                <![CDATA[ and a.alarmtime>=to_date(#{params.starttime},'YYYY-MM-DD HH24:MI:SS')]]>
+            </if>
+            <if test="params.endtime != null and params.endtime != '' ">
+                <![CDATA[ and a.alarmtime<=to_date(#{params.endtime},'YYYY-MM-DD HH24:MI:SS')]]>
+            </if>
+        </where>
+        ) a
+        ORDER BY a.alarmtime DESC
+    </select>
+    <select id="getById" resultType="com.idc.model.NetAlarminfo">
+        SELECT
+        <if test="iscurralarm == true ">
+            <include refid="currBaseColumn"/>
+            <![CDATA[ from ALARM_INFO_CURR a ]]>
+        </if>
+        <if test="iscurralarm == false ">
+            <include refid="hisBaseColumn"/>
+            <![CDATA[ from ALARM_INFO_HIS a ]]>
+        </if>
+        WHERE ID=#{id}
+    </select>
+    <select id="getMaxId" resultType="java.lang.Long">
+        SELECT nvl(max(id),1) from ALARM_INFO_HIS
+    </select>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.alarmlevel != null and params.alarmlevel != '' ">
+                <![CDATA[ and a.alarmlevel = #{params.alarmlevel} ]]></if>
+
+            <if test="params.alarmobj != null and params.alarmobj != '' ">
+                <![CDATA[ and a.alarmObj = #{params.alarmobj} ]]></if>
+
+            <if test="params.alarmtime != null ">  <![CDATA[ and alarmtime = #{params.alarmtime} ]]></if>
+
+            <if test="params.alarmsendflag != null and params.alarmsendflag != '' ">
+                <![CDATA[ and alarmsendflag = #{params.alarmsendflag} ]]></if>
+
+            <if test="params.alarmsendtime != null ">  <![CDATA[ and AlarmSendTime = #{params.alarmsendtime} ]]></if>
+
+            <if test="params.resumetime != null  ">  <![CDATA[ and resumeTime = #{params.resumetime} ]]></if>
+
+            <if test="params.resumeuser != null and params.resumeuser != '' ">
+                <![CDATA[ and resumeUser = #{params.resumeuser} ]]></if>
+
+        </where>
+    </sql>
+
+    <!--AlarmLevel,objId,kpiId,AlarmLevelId,PortId,PortName,CapValue,comparaValue,alarmClass,FlagValue,AlarmInfo,AlarmTime,AlarmSend,AlarmSendTime-->
+    <insert id="insertHis" parameterType="com.idc.model.NetAlarminfo">
+        INSERT INTO ALARM_INFO_HIS (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null and id != '' ">  <![CDATA[ id  , ]]></if>
+            <if test="alarmlevel != null and alarmlevel != '' ">  <![CDATA[alarmlevel  , ]]></if>
+            <if test="alarmobj != null and alarmobj != '' ">  <![CDATA[ alarmobj , ]]></if>
+            <if test="alarmtype != null and alarmtype != '' ">  <![CDATA[alarmtype , ]]></if>
+            <if test="portid != null and portid != '' ">  <![CDATA[ portid  , ]]></if>
+            <if test="alarminfo != null and alarminfo != '' ">  <![CDATA[ alarminfo  , ]]></if>
+            <if test="alarmtime != null  ">  <![CDATA[ alarmtime  , ]]></if>
+            <if test="alarmsendflag != null  ">  <![CDATA[ alarmsendflag  , ]]></if>
+            <if test="resumetime != null  ">  <![CDATA[ resumetime , ]]></if>
+            <if test="resumeuser != null  ">  <![CDATA[ resumeuser  , ]]></if>
+            <if test="alarmsendtime != null  ">  <![CDATA[ alarmsendtime  , ]]></if>
+        </trim>
+        )
+        VALUES (
+        <trim suffix="" suffixOverrides=",">
+            <if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+            <if test="alarmlevel != null and alarmlevel != '' ">  <![CDATA[ #{alarmlevel } , ]]></if>
+            <if test="alarmobj != null and alarmobj != '' ">  <![CDATA[ #{alarmobj } , ]]></if>
+            <if test="alarmtype != null and alarmtype != '' ">  <![CDATA[ #{alarmtype } , ]]></if>
+            <if test="portid != null and portid != '' ">  <![CDATA[ #{portid } , ]]></if>
+            <if test="alarminfo != null and alarminfo != '' ">  <![CDATA[ #{alarminfo } , ]]></if>
+            <if test="alarmtime != null  ">  <![CDATA[ #{alarmtime } , ]]></if>
+            <if test="alarmsendflag != null  ">  <![CDATA[ #{alarmsendflag } , ]]></if>
+            <if test="resumetime != null  ">  <![CDATA[ #{resumetime } , ]]></if>
+            <if test="resumeuser != null  ">  <![CDATA[ #{resumeuser } , ]]></if>
+            <if test="alarmsendtime != null  ">  <![CDATA[ #{alarmsendtime } , ]]></if>
+        </trim>
+        )
+    </insert>
+</mapper>

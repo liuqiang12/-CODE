@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.TestResoucesMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultTestResoucesMap" type="TestResouces">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="gdcode" property="gdcode" />
+				
+		<result column="usercode" property="usercode" />
+				
+		<result column="status" property="status" />
+				
+		<result column="handuser" property="handuser" />
+				
+		<result column="lxr" property="lxr" />
+				
+		<result column="email" property="email" />
+				
+		<result column="time" property="time" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="TestResouces">
+		select
+		<include refid="baseColumn" />
+		from test_resouces where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="TestResouces"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="TestResouces">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="TestResouces">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="TestResouces"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="TestResouces">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="TestResouces">
+		select
+		<include refid="baseColumn" />
+		from test_resouces
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="TestResouces">
+		update test_resouces
+		<include refid="updateParam" />
+		<where>
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+		</where>
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update test_resouces
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from test_resouces
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from test_resouces where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="TestResouces">
+		delete from test_resouces
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from test_resouces
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from test_resouces where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="TestResouces"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO test_resouces
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO test_resouces (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,			gdcode as gdcode,			usercode as usercode,			status as status,			handuser as handuser,			lxr as lxr,			email as email,			time as time,
+			taskid as taskid,
+			processInstanceId as processInstanceId,
+			DATE_FORMAT(time,'%Y-%m-%d %H:%m:%s') as timeStr
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="gdcode != null and gdcode != '' ">  <![CDATA[ and gdcode = #{gdcode} ]]></if>
+						
+			<if test="usercode != null and usercode != '' ">  <![CDATA[ and usercode = #{usercode} ]]></if>
+						
+			<if test="status != null and status != '' ">  <![CDATA[ and status = #{status} ]]></if>
+						
+			<if test="handuser != null and handuser != '' ">  <![CDATA[ and handuser = #{handuser} ]]></if>
+						
+			<if test="lxr != null and lxr != '' ">  <![CDATA[ and lxr = #{lxr} ]]></if>
+						
+			<if test="email != null and email != '' ">  <![CDATA[ and email = #{email} ]]></if>
+						
+			<if test="time != null and time != '' ">  <![CDATA[ and time = #{time} ]]></if>
+						
+			<if test="taskid != null and taskid != '' ">  <![CDATA[ and taskid = #{taskid} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.gdcode != null and params.gdcode != '' ">  <![CDATA[ and gdcode = #{params.gdcode} ]]></if>
+						
+			<if test="params.usercode != null and params.usercode != '' ">  <![CDATA[ and usercode = #{params.usercode} ]]></if>
+						
+			<if test="params.status != null and params.status != '' ">  <![CDATA[ and status = #{params.status} ]]></if>
+						
+			<if test="params.handuser != null and params.handuser != '' ">  <![CDATA[ and handuser = #{params.handuser} ]]></if>
+						
+			<if test="params.lxr != null and params.lxr != '' ">  <![CDATA[ and lxr = #{params.lxr} ]]></if>
+						
+			<if test="params.email != null and params.email != '' ">  <![CDATA[ and email = #{params.email} ]]></if>
+						
+			<if test="params.time != null and params.time != '' ">  <![CDATA[ and time = #{params.time} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="gdcode != null and gdcode != '' ">  <![CDATA[  gdcode = #{gdcode } ,]]></if>
+						
+			<if test="usercode != null and usercode != '' ">  <![CDATA[  usercode = #{usercode } ,]]></if>
+						
+			<if test="status != null and status != '' ">  <![CDATA[  status = #{status } ,]]></if>
+						
+			<if test="handuser != null and handuser != '' ">  <![CDATA[  handuser = #{handuser } ,]]></if>
+						
+			<if test="lxr != null and lxr != '' ">  <![CDATA[  lxr = #{lxr } ,]]></if>
+						
+			<if test="email != null and email != '' ">  <![CDATA[  email = #{email } ,]]></if>
+						
+			<if test="time != null and time != '' ">  <![CDATA[  time = #{time } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>
+				
+		<if test="gdcode != null and gdcode != '' ">  <![CDATA[ gdcode , ]]></if>
+				
+		<if test="usercode != null and usercode != '' ">  <![CDATA[ usercode , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ status , ]]></if>
+				
+		<if test="handuser != null and handuser != '' ">  <![CDATA[ handuser , ]]></if>
+				
+		<if test="lxr != null and lxr != '' ">  <![CDATA[ lxr , ]]></if>
+				
+		<if test="email != null and email != '' ">  <![CDATA[ email , ]]></if>
+				
+		<if test="time != null and time != '' ">  <![CDATA[ time , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="gdcode != null and gdcode != '' ">  <![CDATA[ #{gdcode } , ]]></if>
+				
+		<if test="usercode != null and usercode != '' ">  <![CDATA[ #{usercode } , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+				
+		<if test="handuser != null and handuser != '' ">  <![CDATA[ #{handuser } , ]]></if>
+				
+		<if test="lxr != null and lxr != '' ">  <![CDATA[ #{lxr } , ]]></if>
+				
+		<if test="email != null and email != '' ">  <![CDATA[ #{email } , ]]></if>
+				
+		<if test="time != null and time != '' ">  <![CDATA[ #{time } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			id,gdcode,usercode,status,handuser,lxr,email,time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.gdcode},#{item.usercode},#{item.status},#{item.handuser},#{item.lxr},#{item.email},#{item.time}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

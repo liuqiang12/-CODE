@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcPowerRoomInfoMapper">
+    <!-- 批量保存 -->
+    <resultMap id="idcPdfDayPowerInfoMap" type="IdcPdfDayPowerInfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <id column="IDC_POWER_ROOM_ID" property="idcPowerRoomId" jdbcType="VARCHAR"/>
+
+        <result column="IDC_POWER_ROOM_CODE" property="idcPowerRoomCode" jdbcType="VARCHAR"/>
+
+        <result column="IDC_POWER_ROOM_NAME" property="idcPowerRoomName" jdbcType="VARCHAR"/>
+
+        <result column="IDC_POWER_BUIDING_ID" property="idcPowerBuidingId" jdbcType="VARCHAR"/>
+
+        <result column="IDC_AMOUT" property="idcAmout" jdbcType="NUMERIC"/>
+
+        <result column="IDC_STATUS" property="idcStatus" jdbcType="VARCHAR"/>
+        <result column="IDC_START_TIME" property="idcStartTime" jdbcType="DATE"/>
+
+        <result column="IDC_CREATE_TIME" property="idcCreateTime" jdbcType="DATE"/>
+
+        <result column="IDC_END_TIME" property="idcEndTime" jdbcType="DATE"/>
+
+        <result column="IDC_BEFORE_DIFF" property="idcBeforeDiff" jdbcType="NUMERIC"/>
+        <result column="IDC_AIR_ADJUST_AMOUT" property="idcAirAdjustAmout" jdbcType="NUMERIC"/>
+        <result column="IDC_DEVICE_BEFORE_DIFF" property="idcDeviceBeforeDiff" jdbcType="NUMERIC"/>
+        <result column="IDC_DEVICE_AMOUT" property="idcDeviceAmout" jdbcType="NUMERIC"/>
+        <result column="IDC_AIR_ADJUST_BEFORE_DIFF" property="idcAirAdjustBeforeDiff" jdbcType="NUMERIC"/>
+
+    </resultMap>
+    <!--<insert id="insertList" parameterType="java.util.List">-->
+    <!--INSERT INTO IDC_PDF_DAY_POWER_INFO (-->
+    <!--<include refid="insertColumn"/>-->
+    <!--)-->
+    <!--VALUES-->
+    <!--<foreach collection="list" item="item" index=""-->
+    <!--separator="union all">-->
+    <!--(-->
+    <!--<include refid="columnParam"/>-->
+    <!--)-->
+    <!--</foreach>-->
+    <!--</insert>-->
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_POWER_ROOM_INFO(
+        IDC_POWER_ROOM_ID,
+        IDC_POWER_ROOM_CODE,
+        IDC_POWER_ROOM_NAME,
+        IDC_POWER_BUIDING_ID,
+        IDC_AMOUT,
+        IDC_STATUS,
+        IDC_START_TIME,
+        IDC_CREATE_TIME,
+        IDC_END_TIME,
+        IDC_BEFORE_DIFF,
+        IDC_AIR_ADJUST_AMOUT,
+        IDC_DEVICE_BEFORE_DIFF,
+        IDC_DEVICE_AMOUT,
+        IDC_AIR_ADJUST_BEFORE_DIFF
+        )
+        (
+        <foreach collection="list" index="" item="item"
+                 separator="union all">
+            select
+            #{item.idcPowerRoomId},
+            #{item.idcPowerRoomCode},
+            #{item.idcPowerRoomName},
+            #{item.idcPowerBuidingId},
+            #{item.idcAmout},
+            #{item.idcStatus},
+            #{item.idcStartTime},
+            #{item.idcCreateTime},
+            #{item.idcEndTime},
+            #{item.idcBeforeDiff},
+            #{item.idcAirAdjustAmout},
+            #{item.idcDeviceBeforeDiff},
+            #{item.idcDeviceAmout},
+            #{item.idcAirAdjustBeforeDiff}
+
+            from dual
+        </foreach>
+        )
+    </insert>
+    <!-- 批量保存 -->
+    <sql id="insertColumn">
+        <![CDATA[
+
+        IDC_POWER_ROOM_ID,
+        IDC_POWER_ROOM_CODE,
+        IDC_POWER_ROOM_NAME,
+        IDC_POWER_BUIDING_ID,
+        IDC_AMOUT,
+        IDC_STATUS,
+        IDC_START_TIME,
+        IDC_CREATE_TIME,
+        IDC_END_TIME,
+        IDC_BEFORE_DIFF,
+        IDC_AIR_ADJUST_AMOUT,
+        IDC_DEVICE_BEFORE_DIFF,
+        IDC_DEVICE_AMOUT,
+        IDC_AIR_ADJUST_BEFORE_DIFF
+
+        ]]>
+    </sql>
+
+    <sql id="columnParam">
+        <![CDATA[
+
+            #{item.idcPowerRoomId},
+            #{item.idcPowerRoomCode},
+            #{item.idcPowerRoomName},
+            #{item.idcPowerBuidingId},
+            #{item.idcAmout},
+            #{item.idcStatus},
+            #{item.idcStartTime},
+            #{item.idcCreateTime},
+            #{item.idcEndTime},
+            #{item.idcBeforeDiff},
+            #{item.idcAirAdjustAmout},
+            #{item.idcDeviceBeforeDiff},
+            #{item.idcDeviceAmout},
+            #{item.idcAirAdjustBeforeDiff}
+
+        ]]>
+    </sql>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="com.idc.model.IdcPowerRoomInfo"
+            parameterType="Map">
+        select
+        <include refid="insertColumn"/>
+        from IDC_POWER_PDF_INFO
+        where to_date(to_char(IDC_CREATE_TIME,'yyyy-mm-dd'),'yyyy-mm-dd')= to_date( #{idcCreateTime},'yyyy-mm-dd')
+    </select>
+    <select id="queryByTime" resultType="com.idc.model.IdcPowerRoomInfo">
+        <if test="cyc!=null and cyc =='day'">
+            select
+            IDC_CREATE_TIME idcCreateTime,
+            IDC_POWER_ROOM_CODE as idcPowerRoomCode,
+            IDC_POWER_ROOM_NAME idcPowerRoomName,
+            IDC_before_diff as IDCbeforediff ,
+            IDC_AIR_ADJUST_before_diff IDCAIRADJUSTbeforediff,
+            IDC_DEVICE_before_diff IDCDEVICEbeforediff,
+            idc_Amout as idcAmout ,
+            idc_Air_Adjust_Amout idcAirAdjustAmout,
+            idc_Device_Amout idcDeviceAmout,
+            b.outer_code as outercode,
+            b.sys_code as syscode
+            from IDC_POWER_ROOM_INFO a
+            INNER JOIN IDC_OUTER_CODE b on a.IDC_POWER_ROOM_CODE  = b.OUTER_CODE
+            <where>
+                and b.outer_code_type= 1
+                <if test="room_code!=null and room_code!=''">
+                    and b.sys_code = #{room_code}
+                </if>
+                <if test="startTime!=null and startTime!=''">
+                    and IDC_CREATE_TIME >=  to_date(#{startTime},'yyyy-mm-dd') and IDC_CREATE_TIME &lt;=to_date( #{endTime},'yyyy-mm-dd')
+                </if>
+                <if test="startTime==null or  startTime==''">
+                    and IDC_CREATE_TIME =  to_date(#{endTime},'yyyy-mm-dd')
+                </if>
+            </where>
+            ORDER by IDCCREATETIME
+        </if>
+        <if test="cyc!=null and cyc =='month'">
+            select to_date(to_char(IDC_CREATE_TIME,'yyyy-mm'),'yyyy-mm') as idcCreateTime,
+            b.SYS_CODE idcPowerRoomCode,
+            sum(IDC_before_diff) as IDCbeforediff ,
+            sum(IDC_AIR_ADJUST_before_diff) IDCAIRADJUSTbeforediff,
+            sum(IDC_DEVICE_before_diff) IDCDEVICEbeforediff
+            from IDC_POWER_ROOM_INFO a
+            INNER JOIN IDC_OUTER_CODE b on a.IDC_POWER_ROOM_CODE  = b.OUTER_CODE
+            where   b.outer_code_type= 1 and b.sys_code = #{room_code} and
+             TO_DATE (
+            TO_CHAR (IDC_CREATE_TIME, 'yyyy-mm'),
+            'yyyy-mm'
+            ) >=  to_date(#{startTime},'yyyy-mm') and 	TO_DATE (
+            TO_CHAR (IDC_CREATE_TIME, 'yyyy-mm'),
+            'yyyy-mm'
+            ) &lt;=to_date( #{endTime},'yyyy-mm')
+            GROUP BY	b.SYS_CODE,to_date(to_char(IDC_CREATE_TIME,'yyyy-mm'),'yyyy-mm')
+            ORDER BY
+            TO_DATE (
+            TO_CHAR (IDC_CREATE_TIME, 'yyyy-mm'),
+            'yyyy-mm'
+            )
+        </if>
+    </select>
+</mapper>

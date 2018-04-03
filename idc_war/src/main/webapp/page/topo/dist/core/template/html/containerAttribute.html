@@ -1,0 +1,240 @@
+<div name="topo_container_template">
+    <div name='topo_container_attribute' class='panel panel-primary '>
+        <div name='head' class='panel-heading'>
+            <span>分组属性</span>
+            <button type="button" class="close" aria-hidden="true">&times;</button>
+        </div>
+        <div class='panel-body ' >
+            <form class='form-horizontal ' role='form'>
+                <div name="name_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>名称</label>
+                    <div class='col-sm-7'>
+                        <input name="name" type='text' class='form-control'>
+                    </div>
+                </div>
+                <div name="position_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>名称位置</label>
+
+                    <div class='col-sm-7'>
+                        <select name='position' class='form-control'>
+                            <option value='Bottom_Center'>底部</option>
+                            <option value='Top_Center'>顶部</option>
+                            <option value='Middle_Left'>左部</option>
+                            <option value='Middle_Right'>右侧</option>
+                            <option value='Hidden'>隐藏</option>
+                        </select>
+                    </div>
+                </div>
+                <div name="image_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>收缩图形</label>
+
+                    <div class='col-sm-7'>
+                        <img name='image' src='img/mo/wlan_4.png'>
+                        <button name="find_image" class='btn btn-primary' type='button'>
+                            <span class='glyphicon glyphicon-search'></span>
+                        </button>
+                    </div>
+                </div>
+                <div name="fill_color_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>填充颜色</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input name="selected_color" type='text' class='form-control' readonly="true">
+                            <span class="input-group-btn">
+                                <button class='btn btn-primary' type='button' data-toggle="dropdown">
+                                    <span class='glyphicon glyphicon-search'></span>
+                                 </button>
+                                <ul class="dropdown-menu color_selected" >
+                                    <li>
+                                        <div name="color_palette"></div>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div name="alpha_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>透明度</label>
+
+                    <div class=" col-sm-7">
+                        <div class="progress inner-progress">
+                            <div name="alpha" class="progress-bar progress-bar-info" role="progressbar"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100" style="width: 100%;">100%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div name="border_width_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>边框粗细</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="border_width_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="border_width_num" type="text" class="form-control" value="0" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="border_width_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div name="border_color_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>边框颜色</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input name="selected_color" type='text' class='form-control' readonly="true">
+                        <span class="input-group-btn">
+                            <button class='btn btn-primary' type='button' data-toggle="dropdown">
+                                <span class='glyphicon glyphicon-search'></span>
+                            </button>
+                             <ul class="dropdown-menu color_selected">
+                                 <li>
+                                     <div name="color_palette"></div>
+                                 </li>
+                             </ul>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div name="border_radius_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>边角弧度</label>
+
+                    <div class='col-sm-7'>
+                        <input name="border_radius" type='text' class='form-control'>
+                    </div>
+                </div>
+                <div class='form-group' name="set_member_group">
+                    <label  class='col-sm-4 control-label'>成员设置</label>
+
+                    <div  class="col-sm-7">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="show_name" value="showName" checked>显示名
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="show_link" value="showLink" checked>显示线
+                        </label>
+                    </div>
+                </div>
+                <div name="layout_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>布局</label>
+
+                    <div class="col-sm-7">
+                        <label class="radio-inline">
+                            <input type="radio" name="layout" value="set"> 手动
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="layout" value="auto"> 自动
+                        </label>
+                    </div>
+                </div>
+                <div name="width_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>宽度</label>
+
+                    <div class='col-sm-7'>
+                        <input name="width" type='text' class='form-control'>
+                    </div>
+                </div>
+                <div name="height_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>高度</label>
+
+                    <div class='col-sm-7'>
+                        <input name="height" type='text' class='form-control'>
+                    </div>
+                </div>
+                <div name="select_layout_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>布局样式</label>
+
+                    <div class='col-sm-7'>
+                        <select name="select_layout" class='form-control'>
+                            <option value='flow'>流式</option>
+                            <option value='grid'>网格</option>
+                        </select>
+                    </div>
+                </div>
+                <div name="row_space_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>行间距</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="row_space_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="row_space_num" type="text" class="form-control" value="0" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="row_space_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div name="column_space_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>列间距</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="column_space_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="column_space_num" type="text" class="form-control" value="0" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="column_space_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class='col-sm-offset-3 col-sm-10' name="group">
+                <button name="ok" class='btn btn-primary' type='button'>确定</button>
+                <button name="cancel" class='btn btn-primary' type='button'>关闭</button>
+            </div>
+        </div>
+    </div>
+    <!--图形选择子框-->
+    <div name="image_select" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        选择图形
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-group" name="topo_container_selected_image" role="tablist" aria-multiselectable="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="ok" type="button" class="btn btn-primary">
+                        确定
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+</div>

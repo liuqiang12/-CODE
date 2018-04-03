@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisTicketHaltMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcHisTicketHaltMap" type="IdcHisTicketHalt">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+				
+		<result column="PAUSE_TYPE" property="pauseType" />
+				
+		<result column="CONSTRUCT_COMMENT" property="constructComment" />
+				
+		<result column="REV" property="rev" />
+				
+		<result column="CREATE_TIME" property="createTime" />
+				
+		<result column="APPLYDESC" property="applydesc" />
+				
+		<result column="HALTREASON" property="haltreason" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcHisTicketHalt"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</select>
+
+
+	<!-- 通过实体类查询记录 -->
+	<select id="queryIdcTicketHalt" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		where  TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</select>
+	<update id="updateByIdcHisTicketHalt" parameterType="IdcHisTicketHalt">
+		update IDC_HIS_TICKET_HALT
+		<set>
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[  APPLYDESC = #{applydesc } ,]]></if>
+			<if test="haltreason != null and haltreason != '' ">  <![CDATA[  HALTREASON = #{haltreason } ,]]></if>
+		</set>
+		where TICKET_INST_ID = #{ticketInstId}
+
+	</update>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcHisTicketHalt"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcHisTicketHalt">
+		select
+		<include refid="baseColumn" />
+		from IDC_HIS_TICKET_HALT
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcHisTicketHalt">
+		update IDC_HIS_TICKET_HALT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_HIS_TICKET_HALT
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_HIS_TICKET_HALT
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_HIS_TICKET_HALT where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcHisTicketHalt">
+		delete from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_HIS_TICKET_HALT
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_HIS_TICKET_HALT where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcHisTicketHalt"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_HIS_TICKET_HALT
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_HIS_TICKET_HALT (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			TICKET_INST_ID as ticketInstId,
+			PAUSE_TYPE as pauseType,
+			CONSTRUCT_COMMENT as constructComment,
+			REV as rev,
+			CREATE_TIME as createTime,
+			APPLYDESC as applydesc,
+			HALTREASON as haltreason
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{ticketInstId} ]]></if>
+						
+			<if test="pauseType != null and pauseType != '' ">  <![CDATA[ and PAUSE_TYPE = #{pauseType} ]]></if>
+						
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[ and CONSTRUCT_COMMENT = #{constructComment} ]]></if>
+						
+			<if test="rev != null and rev != '' ">  <![CDATA[ and REV = #{rev} ]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+						
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[ and APPLYDESC = #{applydesc} ]]></if>
+						
+			<if test="haltreason != null and haltreason != '' ">  <![CDATA[ and HALTREASON = #{haltreason} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.ticketInstId != null and params.ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{params.ticketInstId} ]]></if>
+						
+			<if test="params.pauseType != null and params.pauseType != '' ">  <![CDATA[ and PAUSE_TYPE = #{params.pauseType} ]]></if>
+						
+			<if test="params.constructComment != null and params.constructComment != '' ">  <![CDATA[ and CONSTRUCT_COMMENT = #{params.constructComment} ]]></if>
+						
+			<if test="params.rev != null and params.rev != '' ">  <![CDATA[ and REV = #{params.rev} ]]></if>
+						
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+						
+			<if test="params.applydesc != null and params.applydesc != '' ">  <![CDATA[ and APPLYDESC = #{params.applydesc} ]]></if>
+						
+			<if test="params.haltreason != null and params.haltreason != '' ">  <![CDATA[ and HALTREASON = #{params.haltreason} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[  TICKET_INST_ID = #{ticketInstId } ,]]></if>
+						
+			<if test="pauseType != null and pauseType != '' ">  <![CDATA[  PAUSE_TYPE = #{pauseType } ,]]></if>
+						
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[  CONSTRUCT_COMMENT = #{constructComment } ,]]></if>
+						
+			<if test="rev != null and rev != '' ">  <![CDATA[  REV = #{rev } ,]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+						
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[  APPLYDESC = #{applydesc } ,]]></if>
+						
+			<if test="haltreason != null and haltreason != '' ">  <![CDATA[  HALTREASON = #{haltreason } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+				
+		<if test="pauseType != null and pauseType != '' ">  <![CDATA[ PAUSE_TYPE , ]]></if>
+				
+		<if test="constructComment != null and constructComment != '' ">  <![CDATA[ CONSTRUCT_COMMENT , ]]></if>
+				
+		<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ CREATE_TIME , ]]></if>
+				
+		<if test="applydesc != null and applydesc != '' ">  <![CDATA[ APPLYDESC , ]]></if>
+				
+		<if test="haltreason != null and haltreason != '' ">  <![CDATA[ HALTREASON , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+				
+		<if test="pauseType != null and pauseType != '' ">  <![CDATA[ #{pauseType } , ]]></if>
+				
+		<if test="constructComment != null and constructComment != '' ">  <![CDATA[ #{constructComment } , ]]></if>
+				
+		<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+				
+		<if test="applydesc != null and applydesc != '' ">  <![CDATA[ #{applydesc } , ]]></if>
+				
+		<if test="haltreason != null and haltreason != '' ">  <![CDATA[ #{haltreason } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,TICKET_INST_ID,PAUSE_TYPE,CONSTRUCT_COMMENT,REV,CREATE_TIME,APPLYDESC,HALTREASON
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.ticketInstId},#{item.pauseType},#{item.constructComment},#{item.rev},#{item.createTime},#{item.applydesc},#{item.haltreason}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+	<update id="updateByData" parameterType="IdcRunTicketHalt">
+		update idc_his_ticket_halt
+		<set>
+			<if test="constructComment != null and constructComment != '' ">  <![CDATA[ CONSTRUCT_COMMENT = #{constructComment } , ]]></if>
+			<if test="applydesc != null and applydesc != '' ">  <![CDATA[ APPLYDESC = #{applydesc } , ]]></if>
+			<if test="haltreason != null and haltreason != '' ">  <![CDATA[ HALTREASON = #{haltreason } , ]]></if>
+		</set>
+		WHERE  ticket_inst_id = #{ticketInstId }
+
+	</update>
+
+	 <select id="getDataByTicketInstId" resultType="Map">
+		select t.ticket_inst_id,
+		to_char(t.reservestart, 'yyyy-MM-dd HH24:mi:ss') reservestart,
+		to_char(t.reserveend, 'yyyy-MM-dd HH24:mi:ss') reserveend,
+		t.applydesc,
+		t.construct_comment
+		from IDC_HIS_TICKET_PAUSE t
+		where t.TICKET_INST_ID = #{0}
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

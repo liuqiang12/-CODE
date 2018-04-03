@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.CostMapper">
+    <!-- 返回类型 -->
+    <resultMap id="costRackVO" type="com.idc.vo.CostRackVO">
+        <!-- 数据库属性和实体类属性对应关系 -->
+        <result column="ID" property="id"/>
+        <result column="alarm_type" property="alarmType"/>
+        <result column="alarm_limit" property="alarmLimit"/>
+        <result column="alarm_level" property="alarmLevel"/>
+        <result column="description" property="description"/>
+    </resultMap>
+    <select id="getCostRack" resultType="com.idc.vo.CostRackVO">
+        SELECT
+            A .COST_DEPRECIATION AS costDepreciation,
+            A .COST_MAINTENANCE_FEE AS costMaintenanceFee,
+            A .COST_INVEST AS costInvest,
+            B.COST_RACK_POWER_FEE AS costRackPowerFee,
+            B.COST_MARKETTING AS costMarketting,
+            B.COST_OTHER AS costOther,
+            B.COST_COLLIGATE AS costColligate,
+            B.COST_YEAR AS costYear,
+            B.COST_BANDWIDTH AS costBandwidth,
+            B.BANDWIDTH_INCOME AS bandwidthIncome,
+            B.SOLD_INCOME_FEE AS soldIncomeFee,
+            B.COST_ROCK_INCOME AS costRockIncome,
+            B.SOLD_ROCK_FEE AS soldRockFee,
+            B.AVG_DEPRECIATION_YEAR AS AVGdEPRECIATIONyEAR,
+            C. NAME AS costRackName,
+            C. ID AS COSTRACKID,
+            D .SITENAME AS ROOMNAME,
+            D . ID AS ROOMID
+        FROM
+            COST_RACK_BASE A
+        INNER JOIN COST_ANALYSIS_RACK B ON A .COST_RACK_ID = b.COST_RACK_ID
+        INNER JOIN IDC_RACK c ON c.code = A .RACK_CODE
+        INNER JOIN ZB_MACHINEROOM D ON D .sitenamesn = A .ROOM_CODE
+        WHERE C.ID=#{0}
+        and B.COST_YEAR = to_char(add_months(sysdate,-1), 'yymm')
+    </select>
+    <select id="getCostByRoom" resultType="com.idc.vo.CostRoomVO">
+                SELECT
+            A .COST_DEPRECIATION AS COST_DEPRECIATION,
+            A .cost_repair AS cost_repair,
+            A .cost_renovation AS cost_renovation,
+            A .cost_dev_depreciation AS cost_dev_depreciation,
+            A .cost_dev_repair AS cost_dev_repair,
+            A .cost_energy AS cost_energy,
+            A .cost_work AS cost_work,
+            A .cost_network AS cost_network,
+            B.cost_income AS cost_income,
+            B.cost_bandwidth_income AS cost_bandwidth_income,
+            B.cost_other_income AS cost_other_income,
+            B.cost_operating_profit AS cost_operating_profit,
+            B.cost_income_profit AS cost_income_profit,
+            B.cost_ring_growth AS cost_ring_growth,
+            B.cost_energy_use_rate AS cost_energy_use_rate,
+            B.cost_frame_use_rate AS cost_frame_use_rate,
+            B.cost_electric_matching_rate AS cost_electric_matching_rate,
+            D .SITENAME AS ROOMNAME,
+            D . ID AS ROOMID
+        FROM
+            COST_ROOM_BASE A
+        INNER JOIN COST_ANALYSIS_ROOM B ON A .COST_ROOM_ID = b.COST_ROOM_ID
+        INNER JOIN ZB_MACHINEROOM D ON D .sitenamesn = A .ROOM_CODE
+        WHERE D.ID=#{0}
+        and A.COST_YEAR_OR_MONTH = to_char(add_months(sysdate,-1), 'yymm')
+    </select>
+    <select id="getBuilding" resultType="String">
+        select c.id from idc_rack a LEFT JOIN ZB_MACHINEROOM b on a.roomid=b."ID"
+        LEFT JOIN IDC_BUILDING c on c.id=b.buildingid
+        where a.id=#{0}
+    </select>
+</mapper>

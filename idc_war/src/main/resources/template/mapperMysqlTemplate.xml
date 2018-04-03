@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${bussPackage}.${sql_path}.${className}Mapper">
+	<!-- 返回类型 -->
+	<resultMap id="result${className}Map" type="${className}">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		#foreach($item in $!{entityAndDatabase})
+		
+		<result column="$!item.columnName" property="$item.modelName" />
+		#end
+		
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="${className}">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName where $tablePrimary.databasepro= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="${className}"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="${className}">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="${className}">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="${className}"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="${className}">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="${className}">
+		select
+		<include refid="baseColumn" />
+		from $tableData.tableName
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="${className}">
+		update $tableData.tableName
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update $tableData.tableName
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from $tableData.tableName
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from $tableData.tableName where $tablePrimary.databasepro= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="${className}">
+		delete from $tableData.tableName
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from $tableData.tableName
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from $tableData.tableName where $tablePrimary.databasepro in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="${className}"
+		useGeneratedKeys="true" keyProperty="$tablePrimary.databasepro">
+		INSERT INTO $tableData.tableName
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO $tableData.tableName (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	$columnToEntity
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+			#foreach($item in $entityAndDatabase)
+			
+			<if test="$item.modelName != null and $item.modelName != '' ">  <![CDATA[ and $!item.columnName = #{$item.modelName} ]]></if>
+			#end
+			
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+			#foreach($item in $entityAndDatabase)
+			
+			<if test="params.$item.modelName != null and params.$item.modelName != '' ">  <![CDATA[ and $!item.columnName = #{params.$item.modelName} ]]></if>
+			#end
+			
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+			#foreach($item in $entityAndDatabase)
+			
+			<if test="$item.modelName != null and $item.modelName != '' ">  <![CDATA[  $!item.columnName = #{$item.modelName } ,]]></if>
+			#end
+			
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+		#foreach($item in $entityAndDatabase)
+		
+		<if test="$item.modelName != null and $item.modelName != '' ">  <![CDATA[ $!item.columnName , ]]></if>
+		#end
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+		#foreach($item in $entityAndDatabase)
+		
+		<if test="$item.modelName != null and $item.modelName != '' ">  <![CDATA[ #{$item.modelName } , ]]></if>
+		#end
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+		$columnInfo
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		$columnInfoWithBatchInsert
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIpSubnetMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultIdcIpSubnetMap" type="com.idc.model.IdcIpSubnet">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id"/>
+
+        <result column="SUBNETIP" property="subnetip"/>
+
+        <result column="MASKSTR" property="maskstr"/>
+
+        <result column="MASK" property="mask"/>
+
+        <result column="BEGIPNUM" property="begipnum"/>
+
+        <result column="ENDIPNUM" property="endipnum"/>
+
+        <result column="BEGIP" property="begip"/>
+
+        <result column="ENDIP" property="endip"/>
+
+        <result column="CODE" property="code"/>
+
+        <result column="REMARK" property="remark"/>
+
+        <result column="STATUS" property="status"/>
+
+        <result column="PID" property="pid"/>
+
+        <result column="USEFOR" property="usefor"/>
+
+        <result column="TICKET" property="ticket"/>
+
+        <result column="PUBPRITYPE" property="pubpritype"/>
+
+        <result column="ISPARENT" property="parent" javaType="boolean" jdbcType="BOOLEAN"/>
+
+
+    </resultMap>
+    <select id="countUsageBySubnet" resultType="com.idc.model.IdcSubnetCountVo">
+       SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT
+	ID as SUBNETID,
+	(
+		SELECT
+			SUM (free)
+		FROM
+			(
+			         SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID
+			) Y START WITH Y . ID = Z. ID CONNECT BY PRIOR Y . ID = Y .PID
+	) free,
+(
+		SELECT
+			SUM (preused)
+		FROM
+			(
+			         SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID
+			) Y START WITH Y . ID = Z. ID CONNECT BY PRIOR Y . ID = Y .PID
+	) preused
+,(
+		SELECT
+			SUM (used)
+		FROM
+			(
+			         SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID
+			) Y START WITH Y . ID = Z. ID CONNECT BY PRIOR Y . ID = Y .PID
+	) used,(
+		SELECT
+			SUM (RECOVERY)
+		FROM
+			(
+			         SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID
+			) Y START WITH Y . ID = Z. ID CONNECT BY PRIOR Y . ID = Y .PID
+	) RECOVERY,
+	(
+		SELECT
+			SUM (allip)
+		FROM
+			(
+			         SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID
+			) Y START WITH Y . ID = Z. ID CONNECT BY PRIOR Y . ID = Y .PID
+	) allip
+FROM
+	(       SELECT * FROM IDC_IPSUBNET A LEFT JOIN (
+       SELECT subnetid,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid ) b ON A .ID = b.SUBNETID) Z
+       ) b ON A .ID =b.SUBNETID
+    </select>
+
+
+    <select id="sumUsageBySubnet" resultType="com.idc.model.IdcSubnetCountVo">
+        SELECT subnetid as id,
+       SUM ( CASE WHEN STATUS IS NULL OR STATUS = 0 THEN 1 ELSE 0 END ) AS free,
+       SUM ( CASE WHEN STATUS = 1 THEN 1 ELSE 0 END ) AS preused,
+       SUM ( CASE WHEN STATUS = 2 THEN 1 ELSE 0 END ) AS used,
+       SUM ( CASE WHEN STATUS = 3 THEN 1 ELSE 0 END ) AS RECOVERY,
+       COUNT (*) AS allip FROM IDC_IPINFO GROUP BY subnetid
+    </select>
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET where ID= #{0}
+    </select>
+    <select id="queryListByIdIn" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET where ID  in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="com.idc.model.IdcIpSubnet"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </select>
+    <!-- 工单使用 foreachUpdateInfo -->
+    <update id="foreachUpdateInfo" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="begin"  close="end;">
+            UPDATE IDC_IPSUBNET set STATUS = ${item.status} WHERE ID = ${item.resourceId};
+        </foreach>
+    </update>
+    <!-- 工单使用 singleUpdateInfoById -->
+    <update id="singleUpdateInfoById" >
+        UPDATE IDC_IPSUBNET set STATUS = ${status} WHERE ID = ${resourceId};
+    </update>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="com.idc.model.IdcIpSubnet"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.IdcIpSubnet">
+        select
+        <include refid="baseColumn"/>
+        from IDC_IPSUBNET
+        <include refid="wherePageParam"/>
+    </select>
+    <select id="getChildId" resultType="String">
+          SELECT ID FROM IDC_IPSUBNET T
+    WHERE CONNECT_BY_ISLEAF=1 --只显示叶子节点
+    START WITH T.ID=#{0}  --递归起点,即查询条件
+    CONNECT BY PRIOR ID=PID --递归条件,向下递归
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="com.idc.model.IdcIpSubnet">
+        update IDC_IPSUBNET
+        <set>
+            <if test="subnetip != null and subnetip != '' ">  <![CDATA[  SUBNETIP = #{subnetip } ,]]></if>
+            <if test="begipnum != null and begipnum != '' ">  <![CDATA[  BEGIPNUM = #{begipnum } ,]]></if>
+            <if test="endipnum != null and endipnum != '' ">  <![CDATA[  ENDIPNUM = #{endipnum } ,]]></if>
+            <if test="begip != null and begip != '' ">  <![CDATA[  BEGIP = #{begip } ,]]></if>
+            <if test="endip != null and endip != '' ">  <![CDATA[  ENDIP = #{endip } ,]]></if>
+            <if test="mask != null and mask != '' ">  <![CDATA[  MASK = #{mask } ,]]></if>
+            <if test="maskstr != null and maskstr != '' ">  <![CDATA[  MASKSTR = #{maskstr } ,]]></if>
+            <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+            <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+            <if test="usefor != null and usefor != '' ">  <![CDATA[  USEFOR = #{usefor } ,]]></if>
+            <![CDATA[  ISPARENT = #{parent,jdbcType=BOOLEAN} ,]]>
+        </set>
+        WHERE ID=#{id}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update IDC_IPSUBNET
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from IDC_IPSUBNET
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from IDC_IPSUBNET where ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="com.idc.model.IdcIpSubnet">
+        delete from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from IDC_IPSUBNET
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from IDC_IPSUBNET where ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="com.idc.model.IdcIpSubnet"
+            useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            select IDC_IPSUBNET_seq.nextval from dual
+        </selectKey>
+        INSERT INTO IDC_IPSUBNET
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_IPSUBNET(
+        ID,SUBNETIP,MASKSTR,MASK,BEGIPNUM,ENDIPNUM,BEGIP,ENDIP,CODE,REMARK,PID,USEFOR,ISPARENT,localid
+        )
+        select IDC_IPSUBNET_SEQ.NEXTVAL,cd.* from(
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.subnetip},#{item.maskstr},#{item.mask},#{item.begipnum},
+            #{item.endipnum},#{item.begip},#{item.endip},#{item.code,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},#{item.pid},#{item.usefor,jdbcType=VARCHAR},#{item.parent,jdbcType=BOOLEAN},#{item.localid}
+            from dual
+        </foreach>
+        ) cd
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	ID as id,
+			SUBNETIP as subnetip,
+			MASKSTR as maskstr,
+			MASK as mask,
+			BEGIPNUM as begipnum,
+			ENDIPNUM as endipnum,
+			BEGIP as begip,
+			ENDIP as endip,
+			CODE as code,
+			REMARK as remark,
+			STATUS as status,
+			PID as pid,
+			USEFOR as usefor,
+			TICKET as ticket,
+			PUBPRITYPE as pubpritype,
+			localid as localid,
+			ISPARENT as parent
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+            <if test="subnetip != null and subnetip != '' ">  <![CDATA[ and SUBNETIP = #{subnetip} ]]></if>
+
+            <if test="maskstr != null and maskstr != '' ">  <![CDATA[ and MASKSTR = #{maskstr} ]]></if>
+
+            <if test="mask != null and mask != '' ">  <![CDATA[ and MASK = #{mask} ]]></if>
+
+            <if test="begipnum != null and begipnum != '' ">  <![CDATA[ and BEGIPNUM = #{begipnum} ]]></if>
+
+            <if test="endipnum != null and endipnum != '' ">  <![CDATA[ and ENDIPNUM = #{endipnum} ]]></if>
+
+            <if test="begip != null and begip != '' ">  <![CDATA[ and BEGIP = #{begip} ]]></if>
+
+            <if test="endip != null and endip != '' ">  <![CDATA[ and ENDIP = #{endip} ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+            <if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+
+            <if test="pid != null and pid != '' ">  <![CDATA[ and PID = #{pid} ]]></if>
+
+            <if test="usefor != null and usefor != '' ">  <![CDATA[ and USEFOR = #{usefor} ]]></if>
+
+            <if test="ticket != null and ticket != '' ">  <![CDATA[ and TICKET = #{ticket} ]]></if>
+
+            <if test="pubpritype != null and pubpritype != '' ">  <![CDATA[ and PUBPRITYPE = #{pubpritype} ]]></if>
+
+            <if test="localid != null and localid != '' ">  <![CDATA[ and localid = #{localid} ]]></if>
+
+            <!--<![CDATA[ and PARENT = #{parent,jdbcType=BOOLEAN} ]]>-->
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+            <if test="params.subnetip != null and params.subnetip != '' ">
+                <![CDATA[ and SUBNETIP = #{params.subnetip} ]]></if>
+
+            <if test="params.maskstr != null and params.maskstr != '' ">
+                <![CDATA[ and MASKSTR = #{params.maskstr} ]]></if>
+
+            <if test="params.mask != null and params.mask != '' ">  <![CDATA[ and MASK = #{params.mask} ]]></if>
+
+            <if test="params.begipnum != null and params.begipnum != '' ">
+                <![CDATA[ and BEGIPNUM = #{params.begipnum} ]]></if>
+
+            <if test="params.endipnum != null and params.endipnum != '' ">
+                <![CDATA[ and ENDIPNUM = #{params.endipnum} ]]></if>
+
+            <if test="params.begip != null and params.begip != '' ">  <![CDATA[ and BEGIP = #{params.begip} ]]></if>
+
+            <if test="params.endip != null and params.endip != '' ">  <![CDATA[ and ENDIP = #{params.endip} ]]></if>
+
+            <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+            <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+            <if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+
+            <if test="params.pid != null and params.pid != '' ">  <![CDATA[ and PID = #{params.pid} ]]></if>
+
+            <if test="params.pid == null or params.pid == '' ">  <![CDATA[ and PID IS NULL ]]></if>
+
+            <if test="params.usefor != null and params.usefor != '' ">  <![CDATA[ and USEFOR = #{params.usefor} ]]></if>
+
+            <if test="params.ticket != null and params.ticket != '' ">  <![CDATA[ and TICKET = #{params.ticket} ]]></if>
+
+            <if test="params.localid != null and params.localid != '' ">  <![CDATA[ and localid = #{params.localid} ]]></if>
+
+            <if test="params.pubpritype != null and params.pubpritype != '' ">
+                <![CDATA[ and PUBPRITYPE = #{params.pubpritype} ]]></if>
+            <if test="params.searchKey!=null and params.searchKey!=''">
+            <![CDATA[ and (
+            SUBNETIP like  '%${params.searchKey}%' or
+            BEGIP like  '%${params.searchKey}%' or
+            ENDIP like  '%${params.searchKey}%' or
+            MASKSTR like  '%${params.searchKey}%') ]]>
+            </if>
+            <!--<![CDATA[ and PARENT = #{params.parent,jdbcType=BOOLEAN} ]]>-->
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+            <if test="subnetip != null and subnetip != '' ">  <![CDATA[  SUBNETIP = #{subnetip } ,]]></if>
+
+            <if test="maskstr != null and maskstr != '' ">  <![CDATA[  MASKSTR = #{maskstr } ,]]></if>
+
+            <if test="mask != null and mask != '' ">  <![CDATA[  MASK = #{mask } ,]]></if>
+
+            <if test="begipnum != null and begipnum != '' ">  <![CDATA[  BEGIPNUM = #{begipnum } ,]]></if>
+
+            <if test="endipnum != null and endipnum != '' ">  <![CDATA[  ENDIPNUM = #{endipnum } ,]]></if>
+
+            <if test="begip != null and begip != '' ">  <![CDATA[  BEGIP = #{begip } ,]]></if>
+
+            <if test="endip != null and endip != '' ">  <![CDATA[  ENDIP = #{endip } ,]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+            <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+
+            <if test="pid != null and pid != '' ">  <![CDATA[  PID = #{pid } ,]]></if>
+
+            <if test="usefor != null and usefor != '' ">  <![CDATA[  USEFOR = #{usefor } ,]]></if>
+
+            <if test="ticket != null and ticket != '' ">  <![CDATA[  TICKET = #{ticket } ,]]></if>
+
+            <if test="pubpritype != null and pubpritype != '' ">  <![CDATA[  PUBPRITYPE = #{pubpritype } ,]]></if>
+
+            <![CDATA[  ISPARENT = #{parent,jdbcType=BOOLEAN } ,]]>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+
+            <if test="subnetip != null and subnetip != '' ">  <![CDATA[ SUBNETIP , ]]></if>
+
+            <if test="maskstr != null and maskstr != '' ">  <![CDATA[ MASKSTR , ]]></if>
+
+            <if test="mask != null and mask != '' ">  <![CDATA[ MASK , ]]></if>
+
+            <if test="begipnum != null and begipnum != '' ">  <![CDATA[ BEGIPNUM , ]]></if>
+
+            <if test="endipnum != null and endipnum != '' ">  <![CDATA[ ENDIPNUM , ]]></if>
+
+            <if test="begip != null and begip != '' ">  <![CDATA[ BEGIP , ]]></if>
+
+            <if test="endip != null and endip != '' ">  <![CDATA[ ENDIP , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+            <if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+
+            <if test="pid != null and pid != '' ">  <![CDATA[ PID , ]]></if>
+
+            <if test="usefor != null and usefor != '' ">  <![CDATA[ USEFOR , ]]></if>
+
+            <if test="ticket != null and ticket != '' ">  <![CDATA[ TICKET , ]]></if>
+
+            <if test="localid != null and localid != '' ">  <![CDATA[ localid , ]]></if>
+
+            <if test="pubpritype != null and pubpritype != '' ">  <![CDATA[ PUBPRITYPE , ]]></if>
+
+            <![CDATA[ ISPARENT,]]>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+
+            <if test="subnetip != null and subnetip != '' ">  <![CDATA[ #{subnetip } , ]]></if>
+
+            <if test="maskstr != null and maskstr != '' ">  <![CDATA[ #{maskstr } , ]]></if>
+
+            <if test="mask != null and mask != '' ">  <![CDATA[ #{mask } , ]]></if>
+
+            <if test="begipnum != null and begipnum != '' ">  <![CDATA[ #{begipnum } , ]]></if>
+
+            <if test="endipnum != null and endipnum != '' ">  <![CDATA[ #{endipnum } , ]]></if>
+
+            <if test="begip != null and begip != '' ">  <![CDATA[ #{begip } , ]]></if>
+
+            <if test="endip != null and endip != '' ">  <![CDATA[ #{endip } , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+            <if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+
+            <if test="pid != null and pid != '' ">  <![CDATA[ #{pid } , ]]></if>
+
+            <if test="usefor != null and usefor != '' ">  <![CDATA[ #{usefor } , ]]></if>
+
+            <if test="ticket != null and ticket != '' ">  <![CDATA[ #{ticket } , ]]></if>
+
+            <if test="localid != null and localid != '' ">  <![CDATA[ #{localid} , ]]></if>
+
+            <if test="pubpritype != null and pubpritype != '' ">  <![CDATA[ #{pubpritype } , ]]></if>
+
+            <![CDATA[ #{parent,jdbcType=BOOLEAN} ,]]>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			ID,SUBNETIP,MASKSTR,MASK,BEGIPNUM,ENDIPNUM,BEGIP,ENDIP,CODE,REMARK,STATUS,PID,USEFOR,TICKET,PUBPRITYPE,ISPARENT
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.id},#{item.subnetip},#{item.maskstr},#{item.mask},#{item.begipnum},#{item.endipnum},#{item.begip},#{item.endip},#{item.code},#{item.remark},#{item.status},#{item.pid},#{item.usefor},#{item.ticket},#{item.pubpritype},#{item.parent,jdbcType=BOOLEAN}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+</mapper>

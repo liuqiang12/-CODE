@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysOperateLogMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysOperateLogMap" type="SysOperateLog">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="user_id" property="userId" />
+				
+		<result column="type" property="type" />
+				
+		<result column="description" property="description" />
+				
+		<result column="create_time" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysOperateLog">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysOperateLog"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysOperateLog">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysOperateLog">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+	</select>
+    <select id="queryListMap" resultType="java.util.HashMap">
+        select a.*,b.nick as username from sys_operate_log a LEFT  join sys_userinfo b on a.user_id=b.id
+        ORDER BY create_time DESC
+    </select>
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysOperateLog"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+		<include refid="whereParam" />
+        ORDER BY create_time DESC
+	</select>
+
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysOperateLog">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysOperateLog">
+		select
+		<include refid="baseColumn" />
+		from sys_operate_log
+		<include refid="wherePageParam" />
+        ORDER BY create_time DESC
+    </select>
+    <select id="queryListMapPage" resultType="java.util.HashMap"
+            parameterType="PageBean">
+        select a.*,b.nick as username from sys_operate_log a LEFT join sys_userinfo b on a.user_id=b.id
+        <include refid="wherePageParam" />
+        ORDER BY a.create_time DESC
+    </select>
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysOperateLog">
+		update sys_operate_log
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_operate_log
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_operate_log
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_operate_log where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysOperateLog">
+		delete from sys_operate_log
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_operate_log
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_operate_log where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysOperateLog"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+			select sys_operate_log_seq.nextval from dual
+		</selectKey>
+		INSERT INTO sys_operate_log
+		(id,
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_operate_log (
+		<include refid="batchInsertColumn" />
+		)
+		select sys_operate_log_seq.nextval,sol.* from (
+			<foreach collection="list" item="item" index="index" separator="union all">
+				select
+					<include refid="batchInsertColumnParam"/>
+				from dual
+			</foreach>
+		) sol
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			user_id as userId,
+			type as type,
+			description as description,
+			create_time as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[ and user_id = #{userId} ]]></if>
+						
+			<if test="type != null and type != '' ">  <![CDATA[ and type = #{type} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and description = #{description} ]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.userId != null and params.userId != '' ">  <![CDATA[ and user_id = #{params.userId} ]]></if>
+						
+			<if test="params.type != null and params.type != '' ">  <![CDATA[ and type = #{params.type} ]]></if>
+
+            <if test="params.description != null and params.description != '' ">  <![CDATA[ and description like ('%'||#{params.description}||'%')]]></if>
+
+			<if test="params.createTime != null ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[  user_id = #{userId } ,]]></if>
+						
+			<if test="type != null and type != '' ">  <![CDATA[  type = #{type } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  description = #{description } ,]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+		<!--<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>-->
+				
+		<if test="userId != null and userId != '' ">  <![CDATA[ user_id , ]]></if>
+				
+		<if test="type != null and type != '' ">  <![CDATA[ type , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ description ,]]></if>
+				
+		<if test="createTime != null ">  <![CDATA[ create_time ]]></if>
+        </trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+		<!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+				
+		<if test="userId != null and userId != '' ">  <![CDATA[ #{userId } , ]]></if>
+				
+		<if test="type != null and type != '' ">  <![CDATA[ #{type } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				
+		<if test="createTime != null ">  <![CDATA[ #{createTime } ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			id,user_id,type,description,create_time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.userId},#{item.type},#{item.description},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

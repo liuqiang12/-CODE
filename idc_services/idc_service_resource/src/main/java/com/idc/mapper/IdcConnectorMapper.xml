@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcConnectorMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultIdcConnectorMap" type="IdcConnector">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id"/>
+
+        <result column="NAME" property="name"/>
+
+        <result column="CODE" property="code"/>
+
+        <result column="MEMO" property="memo"/>
+
+        <result column="RACK_ID" property="rackId"/>
+
+        <result column="CREATEDATE" property="createdate"/>
+
+        <result column="UPDATEDATE" property="updatedate"/>
+
+        <result column="CONNECTORTYPE" property="connectortype"/>
+
+        <result column="TYPE" property="type"/>
+
+        <result column="PORT_MODE" property="portMode"/>
+
+        <result column="STATUS" property="status"/>
+
+        <result column="TICKET_ID" property="ticketId"/>
+
+        <result column="NICKNAME" property="nickname"/>
+
+        <result column="BOX_IDX" property="boxIdx"/>
+
+        <result column="DISC_IDX" property="discIdx"/>
+
+        <result column="INNIS_IDX" property="innisIdx"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR where ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="IdcConnector"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="IdcConnector"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+        <include refid="whereParam"/>
+        order by box_idx,disc_idx,innis_idx
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="IdcConnector">
+        update IDC_CONNECTOR
+        <include refid="updateParam"/>
+        where id = #{id}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update IDC_CONNECTOR
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from IDC_CONNECTOR
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from IDC_CONNECTOR where ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="IdcConnector">
+        delete from IDC_CONNECTOR
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from IDC_CONNECTOR
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from IDC_CONNECTOR where ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="IdcConnector"
+            useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select idc_connector_seq.nextval from dual
+        </selectKey>
+        INSERT INTO IDC_CONNECTOR
+        (id,
+        <include refid="insertColumn"/>
+        ) VALUES
+        (#{id,jdbcType=INTEGER},
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO IDC_CONNECTOR (id,
+        <include refid="insertColumn"/>
+        )
+        select idc_connector_seq.nextval,ct.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            <include refid="batchInsertColumnParam"/>
+            from dual
+        </foreach>
+        ) ct
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	ID as id,
+			NAME as name,
+			CODE as code,
+			MEMO as memo,
+			RACK_ID as rackId,
+			CREATEDATE as createdate,
+			UPDATEDATE as updatedate,
+			CONNECTORTYPE as connectortype,
+			TYPE as type,
+			PORT_MODE as portMode,
+			STATUS as status,
+			TICKET_ID as ticketId,
+			NICKNAME as nickname,
+			BOX_IDX as boxIdx,
+			DISC_IDX as discIdx,
+			INNIS_IDX as innisIdx
+
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ and MEMO = #{memo} ]]></if>
+
+            <if test="rackId != null and rackId != '' ">  <![CDATA[ and RACK_ID = #{rackId} ]]></if>
+
+            <if test="createdate != null">  <![CDATA[ and CREATEDATE = #{createdate} ]]></if>
+
+            <if test="updatedate != null ">  <![CDATA[ and UPDATEDATE = #{updatedate} ]]></if>
+
+            <if test="connectortype != null and connectortype != '' ">
+                <![CDATA[ and CONNECTORTYPE = #{connectortype} ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ and TYPE = #{type} ]]></if>
+
+            <if test="portMode != null and portMode != '' ">  <![CDATA[ and PORT_MODE = #{portMode} ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+
+            <if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+
+            <if test="nickname != null and nickname != '' ">  <![CDATA[ and NICKNAME = #{nickname} ]]></if>
+
+            <if test="boxIdx != null and boxIdx != '' ">  <![CDATA[ and BOX_IDX = #{boxIdx} ]]></if>
+
+            <if test="discIdx != null and discIdx != '' ">  <![CDATA[ and DISC_IDX = #{discIdx} ]]></if>
+
+            <if test="innisIdx != null and innisIdx != '' ">  <![CDATA[ and INNIS_IDX = #{innisIdx} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+            <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+            <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+            <if test="params.memo != null and params.memo != '' ">  <![CDATA[ and MEMO = #{params.memo} ]]></if>
+
+            <if test="params.rackId != null and params.rackId != '' ">
+                <![CDATA[ and RACK_ID = #{params.rackId} ]]></if>
+
+            <if test="params.createdate != null">  <![CDATA[ and CREATEDATE = #{params.createdate} ]]></if>
+
+            <if test="params.updatedate != null">  <![CDATA[ and UPDATEDATE = #{params.updatedate} ]]></if>
+
+            <if test="params.connectortype != null and params.connectortype != '' ">
+                <![CDATA[ and CONNECTORTYPE = #{params.connectortype} ]]></if>
+
+            <if test="params.type != null and params.type != '' ">  <![CDATA[ and TYPE = #{params.type} ]]></if>
+
+            <if test="params.portMode != null and params.portMode != '' ">
+                <![CDATA[ and PORT_MODE = #{params.portMode} ]]></if>
+
+            <if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+
+            <if test="params.ticketId != null and params.ticketId != '' ">
+                <![CDATA[ and TICKET_ID = #{params.ticketId} ]]></if>
+
+            <if test="params.nickname != null and params.nickname != '' ">
+                <![CDATA[ and NICKNAME = #{params.nickname} ]]></if>
+
+            <if test="params.boxIdx != null and params.boxIdx != '' ">
+                <![CDATA[ and BOX_IDX = #{params.boxIdx} ]]></if>
+
+            <if test="params.discIdx != null and params.discIdx != '' ">
+                <![CDATA[ and DISC_IDX = #{params.discIdx} ]]></if>
+
+            <if test="params.innisIdx != null and params.innisIdx != '' ">
+                <![CDATA[ and INNIS_IDX = #{params.innisIdx} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[  MEMO = #{memo } ,]]></if>
+
+            <if test="rackId != null and rackId != '' ">  <![CDATA[  RACK_ID = #{rackId } ,]]></if>
+
+            <if test="createdate != null">  <![CDATA[  CREATEDATE = #{createdate } ,]]></if>
+
+            <if test="updatedate != null">  <![CDATA[  UPDATEDATE = #{updatedate } ,]]></if>
+
+            <if test="connectortype != null and connectortype != '' ">
+                <![CDATA[  CONNECTORTYPE = #{connectortype } ,]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[  TYPE = #{type } ,]]></if>
+
+            <if test="portMode != null and portMode != '' ">  <![CDATA[  PORT_MODE = #{portMode } ,]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+
+            <if test="ticketId != null and ticketId != '' ">  <![CDATA[  TICKET_ID = #{ticketId } ,]]></if>
+
+            <if test="nickname != null and nickname != '' ">  <![CDATA[  NICKNAME = #{nickname } ,]]></if>
+
+            <if test="boxIdx != null and boxIdx != '' ">  <![CDATA[  BOX_IDX = #{boxIdx } ,]]></if>
+
+            <if test="discIdx != null and discIdx != '' ">  <![CDATA[  DISC_IDX = #{discIdx } ,]]></if>
+
+            <if test="innisIdx != null and innisIdx != '' ">  <![CDATA[  INNIS_IDX = #{innisIdx } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <!--<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>-->
+
+            <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ MEMO , ]]></if>
+
+            <if test="rackId != null and rackId != '' ">  <![CDATA[ RACK_ID , ]]></if>
+
+            <if test="createdate != null">  <![CDATA[ CREATEDATE , ]]></if>
+
+            <if test="updatedate != null">  <![CDATA[ UPDATEDATE , ]]></if>
+
+            <if test="connectortype != null and connectortype != '' ">  <![CDATA[ CONNECTORTYPE , ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ TYPE , ]]></if>
+
+            <if test="portMode != null and portMode != '' ">  <![CDATA[ PORT_MODE , ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+
+            <if test="ticketId != null and ticketId != '' ">  <![CDATA[ TICKET_ID , ]]></if>
+
+            <if test="nickname != null and nickname != '' ">  <![CDATA[ NICKNAME , ]]></if>
+
+            <if test="boxIdx != null and boxIdx != '' ">  <![CDATA[ BOX_IDX , ]]></if>
+
+            <if test="discIdx != null and discIdx != '' ">  <![CDATA[ DISC_IDX , ]]></if>
+
+            <if test="innisIdx != null and innisIdx != '' ">  <![CDATA[ INNIS_IDX , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+            <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+            <if test="memo != null and memo != '' ">  <![CDATA[ #{memo } , ]]></if>
+
+            <if test="rackId != null and rackId != '' ">  <![CDATA[ #{rackId } , ]]></if>
+
+            <if test="createdate != null">  <![CDATA[ #{createdate } , ]]></if>
+
+            <if test="updatedate != null">  <![CDATA[ #{updatedate } , ]]></if>
+
+            <if test="connectortype != null and connectortype != '' ">  <![CDATA[ #{connectortype } , ]]></if>
+
+            <if test="type != null and type != '' ">  <![CDATA[ #{type } , ]]></if>
+
+            <if test="portMode != null and portMode != '' ">  <![CDATA[ #{portMode } , ]]></if>
+
+            <if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+
+            <if test="ticketId != null and ticketId != '' ">  <![CDATA[ #{ticketId } , ]]></if>
+
+            <if test="nickname != null and nickname != '' ">  <![CDATA[ #{nickname } , ]]></if>
+
+            <if test="boxIdx != null and boxIdx != '' ">  <![CDATA[ #{boxIdx } , ]]></if>
+
+            <if test="discIdx != null and discIdx != '' ">  <![CDATA[ #{discIdx } , ]]></if>
+
+            <if test="innisIdx != null and innisIdx != '' ">  <![CDATA[ #{innisIdx } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			NAME,CODE,MEMO,RACK_ID,CREATEDATE,UPDATEDATE,CONNECTORTYPE,TYPE,
+			PORT_MODE,STATUS,TICKET_ID,NICKNAME,BOX_IDX,DISC_IDX,INNIS_IDX
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.name},#{item.code},#{item.memo},#{item.rackId},#{item.createdate},#{item.updatedate},#{item.connectortype},
+			#{item.type},#{item.portMode},#{item.status},#{item.ticketId},#{nickname},#{boxIdx},#{discIdx},#{innisIdx}
+	</sql>
+
+    <sql id="Join_Column_List">
+		A.ID, A.NAME, A.CODE, A.MEMO, A.RACK_ID,
+		A.CREATEDATE,
+		A.UPDATEDATE, A.CONNECTORTYPE, A.TYPE, A.PORT_MODE,
+		A.STATUS, A.TICKET_ID,A.NICKNAME,A.BOX_IDX,A.DISC_IDX,A.INNIS_IDX, B.CODE AS BCODE,B.ID AS BID,B.NAME AS BNAME
+	</sql>
+
+    <sql id="whereJoinParam">
+        <where>
+            <if test="params.name!=null and params.name!=''">
+                <![CDATA[ and upper(A.NAME) like '%'||upper(#{params.name})||'%' ]]></if>
+            <if test="params.rackId!=null and params.rackId!=''"><![CDATA[ and A.rack_id= #{params.rackId}]]></if>
+        </where>
+    </sql>
+
+    <!-- 分页查询返回map -->
+    <select id="queryIdcConnectorInfoListPage" parameterType="PageBean" resultType="map">
+        select
+        <include refid="Join_Column_List"/>
+        from IDC_CONNECTOR A
+        LEFT JOIN IDC_RACK B ON (to_char(A.RACK_ID) = to_char(B.ID))
+        <include refid="whereJoinParam"/>
+        order by A.box_idx,A.disc_idx,A.innis_idx
+    </select>
+
+
+    <select id="queryAllIdcConnectorInfoList" resultType="map">
+        select
+        <include refid="Join_Column_List"/>
+        from IDC_CONNECTOR A
+        LEFT JOIN IDC_RACK B ON (to_char(A.RACK_ID) = to_char(B.ID))
+        <where>
+            <if test="name!=null and name!=''"><![CDATA[ and upper(A.NAME) like  '%'||upper(#{name})||'%' ]]></if>
+            <if test="rackId!=null and rackId!=''"><![CDATA[ and A.rack_id= #{rackId} ]]></if>
+            <if test="status!=null and status!='' "><![CDATA[ and A.status= #{status} ]]></if>
+        </where>
+        order by A.box_idx,A.disc_idx,A.innis_idx
+    </select>
+    <!-- 查询详细返回map -->
+    <select id="getMapModelById" resultType="map">
+        select
+        <include refid="Join_Column_List"/>
+        from IDC_CONNECTOR A
+        LEFT JOIN IDC_RACK B ON (to_char(A.RACK_ID) = to_char(B.ID))
+        where A.ID = #{0}
+    </select>
+    <!--导出端子信息-->
+    <select id="getAllIdcConnectorInfo" resultType="map">
+        select
+        <include refid="exportExcelIdcConnectorParam"/>
+        from IDC_CONNECTOR A
+        LEFT JOIN IDC_RACK B ON (to_char(A.RACK_ID) = to_char(B.ID))
+    </select>
+    <!-- 导出端子信息 -->
+    <sql id="exportExcelIdcConnectorParam">
+		A.ID as id,
+		A.NAME as name,
+		A.CODE as code,
+		A.MEMO as memo,
+		A.RACK_ID as rackId,
+		to_char(A.CREATEDATE,'yyyy-mm-dd HH24:mi:ss') as createdate,
+		to_char(A.UPDATEDATE,'yyyy-mm-dd HH24:mi:ss') as updatedate,
+		decode(A.CONNECTORTYPE,'1','RJ45','2','FC','3','LC','4','SC') as connectortype,
+		decode(A.TYPE,'odf','ODF','ddf','DDF') as type,
+		decode(A.PORT_MODE,'1','单模','2','多模') as portMode,
+		decode(A.STATUS ,'20', '可用','30','预留','50','预占','55','已停机','60','在服') as status,
+		A.TICKET_ID as ticketId,
+		B.CODE AS BCODE,
+		B.ID AS BID,
+		B.NAME AS BNAME
+	</sql>
+
+    <select id="queryBindedConnectorList" parameterType="PageBean" resultType="IdcConnector">
+        select
+        <include refid="baseColumn"/>
+        from IDC_CONNECTOR A
+        <where>
+            <if test="params.portIds!=null">
+                and A.id in
+                <foreach collection="params.portIds" index="index" item="item" open="("
+                         separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+            <if test="params.name!=null and params.name!=''">
+                <![CDATA[  and upper(A.name) like '%'||upper(#{params.name})||'%' ]]> </if>
+        </where>
+        ORDER BY A.id
+    </select>
+
+    <!-- 通过端子IDS修改端子状态 -->
+    <update id="updateStatusByConnIds" parameterType="java.util.List">
+        update IDC_CONNECTOR t set t.status = #{status} where id IN
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysRoleinfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysRoleinfoMap" type="SysRoleinfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="id" property="id" />
+				
+		<result column="enabled" property="enabled" />
+				
+		<result column="type" property="type"/>
+				
+		<result column="name" property="name" />
+				
+		<result column="parent_id" property="parentId" />
+				
+		<result column="description" property="description" />
+				
+		<result column="tree_type" property="treeType" />
+				
+		<result column="create_time" property="createTime" />
+
+        <result column="role_key" property="role_key"/>
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysRoleinfo">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo where id= #{0}
+	</select>
+
+	<select id="getRolesWithUserId" resultType="String">
+		select listagg(tmp.role_name,',') within group (order by null) roleNames_  from (
+				select
+				   distinct  t1.role_name
+				from jbpm_oa_author t1
+				where t1.author_id = #{0}
+		)tmp
+	</select>
+	<select id="getRoles" resultType="Map">
+		select t.roleNames_,t.id from view_usergrpNames_roleNames t
+		where t.id in (select u2.id
+		from SYS_USER_GROUP      gr,
+		sys_userinfo        u2,
+		SYS_LN_USER_USERGRP ug
+		where gr.id = ug.ugrp_id
+		and u2.id = ug.user_id
+		GROUP by u2.id)
+	</select>
+	<select id="getRegionsWithUserId" resultType="String">
+		select listagg(lnregion.region_id,';') within group (order by lnregion.user_id) regions_ from sys_userinfo userinfo
+			left join sys_ln_user_region lnregion on lnregion.user_id = userinfo.id
+			where userinfo.enabled = 1
+			and lnregion.region_id is not null
+			and userinfo.id = #{0}
+			group by userinfo.id
+	</select>
+	<select id="getAllRegions" resultType="Map">
+	select listagg(lnregion.region_id,';') within group (order by lnregion.user_id) regions_,userinfo.id from sys_userinfo userinfo
+	left join sys_ln_user_region lnregion on lnregion.user_id = userinfo.id
+	where userinfo.enabled = 1
+	and lnregion.region_id is not null
+	and userinfo.id in (select u2.id
+	from SYS_USER_GROUP      gr,
+	sys_userinfo        u2,
+	SYS_LN_USER_USERGRP ug
+	where gr.id = ug.ugrp_id
+	and u2.id = ug.user_id
+	GROUP by u2.id)
+	group by userinfo.id
+	</select>
+	<select id="getGroupsWithUserId" resultType="String">
+		select listagg(lnregion.region_id,';') within group (order by lnregion.user_id) regions_ from sys_userinfo userinfo
+		left join sys_ln_user_region lnregion on lnregion.user_id = userinfo.id
+		where userinfo.enabled = 1
+		and lnregion.region_id is not null
+		and userinfo.id = #{0}
+		group by userinfo.id
+	</select>
+
+
+    <select id="queryListByObjectByGroupId" resultType="SysRoleinfo"  parameterType="java.util.List">
+        select * FROM sys_roleinfo t1 LEFT JOIN sys_ln_usergrp_role t2 on t1.id= t2.role_id
+        where t1.enabled = 1 and t2.ugrp_id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryListByObjectByUserId" parameterType="int" resultType="SysRoleinfo">
+        select t1.* FROM sys_roleinfo t1 LEFT join sys_ln_user_role t2 on t1.id= t2.role_id
+        where t1.enabled = 1 and t2.user_id= #{0}
+    </select>
+
+	<select id="getRolAddGroup" parameterType="int" resultType="SysRoleinfo">
+		select t1.role_id as roleId,
+			   t1.role_key ,
+			   t1.user_id as userId
+		 from VIEW_USER_ROLE t1
+		where t1.user_id= #{0}
+	</select>
+
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysRoleinfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysRoleinfo">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysRoleinfo">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysRoleinfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysRoleinfo">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListFilterByObject" resultType="SysRoleinfo">
+		select
+			id as id,
+			enabled as enabled,
+			type as type,
+			name as name,
+			parent_id as parentId,
+			description as description,
+			tree_type as treeType,
+			create_time as createTime,
+			ROLE_KEY as role_key
+		from sys_roleinfo
+		<include refid="whereParam" />
+	</select>
+
+
+
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysRoleinfo">
+		select
+		<include refid="baseColumn" />
+		from sys_roleinfo
+		<include refid="wherePageParam" />
+	</select>
+
+    <!-- 根据用户ID获取当前用户的角色信息 角色通过组与用户绑定，之前的用户直接绑定角色不再使用 -->
+    <select id="getRoleinfosByUserId" resultType="SysRoleinfo">
+		select
+		  distinct t1.id,
+		  t1.enabled,
+		  t1.type,
+		  t1.name,
+		  t1.parent_id as parentId,
+		  t1.description,
+		  t1.tree_type as treeType,
+		  t1.create_time as createType,
+		  t1.role_key  as roleKey
+		from sys_roleinfo t1
+		left join jbpm_oa_author t2 on t1.id = t2.role_id
+		where t2.author_id = #{0}
+	</select>
+	<!-- 获取当前用户的角色信息 角色通过组与用户绑定，之前的用户直接绑定角色不再使用 -->
+	<select id="getAllRoleinfos" resultType="Map">
+	  select o.id          as id,
+			o.enabled     as enabled,
+			o.type        as type,
+			o.name        as name,
+			o.parent_id   as parentId,
+			o.description as description,
+			o.tree_type   as treeType,
+			o.create_time as createTime,
+			o.role_key    as role_key,
+			u1.id         as user_id
+	   from sys_roleinfo o,SYS_USERINFO u1,SYS_LN_USER_USERGRP ug,SYS_LN_USERGRP_ROLE gr
+	  where o.id=gr.role_id and gr.ugrp_id=ug.ugrp_id and ug.user_id=u1.id and exists (select 1
+			   from sys_ln_usergrp_role g
+			  where g.role_id = o.id
+				and exists
+			  (select 1
+					   from sys_ln_user_usergrp u
+					  where u.ugrp_id = g.ugrp_id
+						and u.user_id in (select u.user_id
+											from SYS_USER_GROUP      gr,
+												 sys_userinfo        u,
+												 SYS_LN_USER_USERGRP ug
+										   where gr.id = ug.ugrp_id
+											 and u.id = ug.user_id
+										   GROUP by u.id)))
+	</select>
+	
+	<!-- update -->
+	<!--<update id="updateByObject" parameterType="SysRoleinfo">-->
+		<!--update sys_roleinfo-->
+		<!--<include refid="updateParam" />-->
+		<!--<include refid="whereParam" />-->
+	<!--</update>-->
+    <update id="updateByObject" parameterType="SysRoleinfo" >
+        update sys_roleinfo
+        <include refid="updateParam" />
+        WHERE id =  #{id}
+    </update>
+	<update id="updateByMap" parameterType="Map">
+		update sys_roleinfo
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_roleinfo
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_roleinfo where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysRoleinfo">
+		delete from sys_roleinfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_roleinfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_roleinfo where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysRoleinfo"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+			select sys_roleinfo_seq.nextval from dual
+		</selectKey>
+		INSERT INTO sys_roleinfo
+		(id,
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_roleinfo (
+		<include refid="batchInsertColumn" />
+		)
+		select sys_roleinfo_seq.nextval,sri.* from (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+				<include refid="batchInsertColumnParam"/>
+			from dual
+		</foreach>
+		) sri
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			enabled as enabled,
+			type as type,
+			name as name,
+			parent_id as parentId,
+			description as description,
+			tree_type as treeType,
+			create_time as createTime,
+			role_key as role_key
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="enabled != null or enabled == 0 ">  <![CDATA[ and enabled = #{enabled} ]]></if>
+						
+			<if test="type != null and type != '' ">  <![CDATA[ and type = #{type} ]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[ and name = #{name} ]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[ and parent_id = #{parentId} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and description = #{description} ]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[ and tree_type = #{treeType} ]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+
+            <if test="role_key != null and role_key != '' ">  <![CDATA[ and role_key = #{role_key} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.enabled != null or params.enabled == 0 ">  <![CDATA[ and enabled = #{params.enabled} ]]></if>
+						
+			<if test="params.type != null and params.type != '' ">  <![CDATA[ and type = #{params.type} ]]></if>
+						
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and name = #{params.name} ]]></if>
+						
+			<if test="params.parentId != null and params.parentId != '' ">  <![CDATA[ and parent_id = #{params.parentId} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and description = #{params.description} ]]></if>
+						
+			<if test="params.treeType != null and params.treeType != '' ">  <![CDATA[ and tree_type = #{params.treeType} ]]></if>
+						
+			<if test="params.createTime != null ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+
+            <if test="params.role_key != null and params.role_key != '' ">
+                <![CDATA[ and role_key = #{params.role_key} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<!--<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>-->
+						
+			<if test="enabled != null or enabled == 0 ">  <![CDATA[  enabled = #{enabled } ,]]></if>
+
+			<if test="type != null and type != '' ">  <![CDATA[  type = #{type } ,]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[  name = #{name } ,]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[  parent_id = #{parentId } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  description = #{description } ,]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[  tree_type = #{treeType } ,]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+
+            <if test="role_key != null and role_key != '' ">  <![CDATA[  role_key = #{role_key } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <![CDATA[name,enabled,description,type,create_time,role_key]]>
+		<!--<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>-->
+				<!-- -->
+		<!--<if test="enabled != null and enabled != '' ">  <![CDATA[ enabled , ]]></if>-->
+				<!-- -->
+		<!--<if test="type != null and type != '' ">  <![CDATA[ type , ]]></if>-->
+				<!-- -->
+		<!--<if test="name != null and name != '' ">  <![CDATA[ name , ]]></if>-->
+				<!-- -->
+		<!--<if test="parentId != null and parentId != '' ">  <![CDATA[ parent_id , ]]></if>-->
+				<!-- -->
+		<!--<if test="description != null and description != '' ">  <![CDATA[ description , ]]></if>-->
+				<!-- -->
+		<!--<if test="treeType != null and treeType != '' ">  <![CDATA[ tree_type , ]]></if>-->
+				<!-- -->
+		<!--<if test="createTime != null and createTime != '' ">  <![CDATA[ create_time , ]]></if>-->
+				
+	</sql>
+
+	<sql id="insertColumnParam">
+        <![CDATA[ #{name,jdbcType=VARCHAR } ,#{enabled,jdbcType=INTEGER} ,#{description ,jdbcType=VARCHAR } ,#{type,jdbcType=VARCHAR },#{createTime,jdbcType=TIMESTAMP},#{role_key,jdbcType=VARCHAR}]]>
+		<!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+				<!-- -->
+		<!--<if test="enabled != null and enabled != '' ">  <![CDATA[ #{enabled } , ]]></if>-->
+				<!-- -->
+		<!--<if test="type != null and type != '' ">  <![CDATA[ #{type } , ]]></if>-->
+				<!-- -->
+		<!--<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>-->
+				<!-- -->
+		<!--<if test="parentId != null and parentId != '' ">  <![CDATA[ #{parentId } , ]]></if>-->
+				<!-- -->
+		<!--<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>-->
+				<!-- -->
+		<!--<if test="treeType != null and treeType != '' ">  <![CDATA[ #{treeType } , ]]></if>-->
+				<!-- -->
+		<!--<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>-->
+				
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+        id,enabled,type,name,parent_id,description,tree_type,create_time,role_key
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+        #{item.enabled},#{item.type},#{item.name},#{item.parentId},#{item.description},#{item.treeType},#{item.createTime},#{item.role_key}
+	</sql>
+
+	<!-- 通过组ID获取所有的角色 -->
+	<select id="queryRoleListByGroupId" parameterType="PageBean" resultType="SysRoleinfo">
+		select o.id as id,
+		o.enabled as enabled,
+		o.type as type,
+		o.name as name,
+		o.parent_id as parentId,
+		o.description as description,
+		o.tree_type as treeType,
+		o.create_time as createTime,
+		o.role_key as role_key
+		from sys_roleinfo o
+		<where>
+			<if test="params.name != null and params.name != '' ">
+				<![CDATA[ and upper(o.name) like '%'||upper(#{params.name})||'%' ]]>
+			</if>
+			<choose>
+				<when test="params.isbind != null and params.isbind == 'unbind' ">
+					<if test="params.groupId != null and params.groupId != '' ">
+						<![CDATA[ and not exists(select 1 from sys_ln_usergrp_role rp where rp.role_id = o.id and rp.ugrp_id = #{params.groupId}) ]]>
+					</if>
+				</when>
+				<otherwise>
+					<if test="params.groupId != null and params.groupId != '' ">
+						<![CDATA[ and exists(select 1 from sys_ln_usergrp_role rp where rp.role_id = o.id and rp.ugrp_id = #{params.groupId}) ]]>
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+
+
+</mapper>

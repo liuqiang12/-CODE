@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.AlarmConfigLevelMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultAlarmConfigLevelMap" type="AlarmConfigLevel">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="alarm_type" property="alarmType" />
+				
+		<result column="alarm_limit" property="alarmLimit" />
+				
+		<result column="alarm_level" property="alarmLevel" />
+				
+		<result column="description" property="description" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="AlarmConfigLevel">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="AlarmConfigLevel"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="AlarmConfigLevel">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="AlarmConfigLevel">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="AlarmConfigLevel"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="AlarmConfigLevel">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="AlarmConfigLevel">
+		select
+		<include refid="baseColumn" />
+		from alarm_config_level
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="AlarmConfigLevel">
+		update alarm_config_level
+		<include refid="updateParam" />
+        WHERE id= #{id}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update alarm_config_level
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from alarm_config_level
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from alarm_config_level where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="AlarmConfigLevel">
+		delete from alarm_config_level
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from alarm_config_level
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from alarm_config_level where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="AlarmConfigLevel"
+		useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select alarm_config_level_seq.nextval from dual
+        </selectKey>
+		INSERT INTO alarm_config_level
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO alarm_config_level (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			alarm_type as alarmType,
+			alarm_limit as alarmLimit,
+			alarm_level as alarmLevel,
+			description as description
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="alarmType != null and alarmType != '' or alarmType==0">  <![CDATA[ and alarm_type = #{alarmType} ]]></if>
+						
+			<if test="alarmLimit != null and alarmLimit != '' ">  <![CDATA[ and alarm_limit = #{alarmLimit} ]]></if>
+						
+			<if test="alarmLevel != null and alarmLevel != '' ">  <![CDATA[ and alarm_level = #{alarmLevel} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and description = #{description} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.alarmType != null and params.alarmType != '' ">  <![CDATA[ and alarm_type = #{params.alarmType} ]]></if>
+						
+			<if test="params.alarmLimit != null and params.alarmLimit != '' ">  <![CDATA[ and alarm_limit = #{params.alarmLimit} ]]></if>
+						
+			<if test="params.alarmLevel != null and params.alarmLevel != '' ">  <![CDATA[ and alarm_level = #{params.alarmLevel} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and description = #{params.description} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="alarmType != null and alarmType != '' ">  <![CDATA[  alarm_type = #{alarmType } ,]]></if>
+						
+			<if test="alarmLimit != null and alarmLimit != '' ">  <![CDATA[  alarm_limit = #{alarmLimit } ,]]></if>
+						
+			<if test="alarmLevel != null and alarmLevel != '' ">  <![CDATA[  alarm_level = #{alarmLevel } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  description = #{description } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="alarmType != null and alarmType != '' ">  <![CDATA[ alarm_type , ]]></if>
+				
+		<if test="alarmLimit != null and alarmLimit != '' ">  <![CDATA[ alarm_limit , ]]></if>
+				
+		<if test="alarmLevel != null and alarmLevel != '' ">  <![CDATA[ alarm_level , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ description , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="alarmType != null and alarmType != '' ">  <![CDATA[ #{alarmType } , ]]></if>
+				
+		<if test="alarmLimit != null and alarmLimit != '' ">  <![CDATA[ #{alarmLimit } , ]]></if>
+				
+		<if test="alarmLevel != null and alarmLevel != '' ">  <![CDATA[ #{alarmLevel } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,alarm_type,alarm_limit,alarm_level,description
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.alarmType},#{item.alarmLimit},#{item.alarmLevel},#{item.description}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.RmTmpInOutFormMapper">
+
+    <!--*****************************************************************查询start*******************************************************************-->
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="RmTmpInOutForm">
+        select
+        <include refid="baseColumn"/>
+        from RM_TMP_IN_OUT_FORM where RM_TMP_IN_OUT_ID= #{0}
+    </select>
+
+    <!--获取满足条件的所有临时出入申请单  map-->
+    <select id="queryListMap" parameterType="Map" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_TMP_IN_OUT_FORM
+        <where>
+            <if test="name != null and name != '' ">
+                <![CDATA[ and upper(RM_ROOM_NAME) like '%'||upper(#{name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!--获取满足条件的所有临时出入申请单  分页 map-->
+    <select id="queryListPageMap" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_TMP_IN_OUT_FORM
+        <where>
+            <if test="params.name != null and params.name != '' ">
+                <![CDATA[ and upper(RM_ROOM_NAME) like '%'||upper(#{params.name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+    <!--*****************************************************************查询end*********************************************************************-->
+
+    <!--*****************************************************************修改start*******************************************************************-->
+    <!-- 通过实体修改数据 -->
+    <update id="updateByObject" parameterType="RmTmpInOutForm">
+        update RM_TMP_IN_OUT_FORM
+        <include refid="updateParam"/>
+        where RM_TMP_IN_OUT_ID = #{rmTmpInOutId}
+    </update>
+    <!--*****************************************************************修改end*********************************************************************-->
+
+    <!--*****************************************************************新增start*******************************************************************-->
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="RmTmpInOutForm"
+            useGeneratedKeys="true" keyProperty="RM_TMP_IN_OUT_ID">
+        INSERT INTO RM_TMP_IN_OUT_FORM
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+    <!--*****************************************************************新增end*********************************************************************-->
+
+    <!--*****************************************************************删除start*******************************************************************-->
+    <!-- 通过IDS 删除多条记录数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from RM_TMP_IN_OUT_FORM where RM_TMP_IN_OUT_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 通过主键删除数据 -->
+    <delete id="deleteById">
+        delete from RM_TMP_IN_OUT_FORM where RM_TMP_IN_OUT_ID= #{0}
+    </delete>
+    <!--*****************************************************************删除end*********************************************************************-->
+
+    <!--*****************************************************************sql  satrt *****************************************************************-->
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+        <![CDATA[
+		  	RM_TMP_IN_OUT_ID as rmTmpInOutId,
+			RM_ROOM_NAME as rmRoomName,
+			RM_START_TIME as rmStartTime,
+			RM_END_TIME as rmEndTime,
+			RM_APPLICANT as rmApplicant,
+			RM_LEAD as rmLead,
+			RM_COMPANY as rmCompany,
+			RM_NUM as rmNum,
+			RM_CONTENT as rmContent,
+			RM_CREATE_TIME as rmCreateTime,
+			RM_CREATE_USER as rmCreateUser
+        ]]>
+    </sql>
+
+    <!--  通过实体修改数据sql  -->
+    <sql id="updateParam">
+        <set>
+            <if test="rmTmpInOutId != null and rmTmpInOutId != '' ">
+                <![CDATA[  RM_TMP_IN_OUT_ID = #{rmTmpInOutId } ,]]></if>
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[  RM_ROOM_NAME = #{rmRoomName } ,]]></if>
+            <if test="rmStartTime != null">  <![CDATA[  RM_START_TIME = #{rmStartTime } ,]]></if>
+            <if test="rmEndTime != null">  <![CDATA[  RM_END_TIME = #{rmEndTime } ,]]></if>
+            <if test="rmApplicant != null and rmApplicant != '' ">  <![CDATA[  RM_APPLICANT = #{rmApplicant } ,]]></if>
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[  RM_LEAD = #{rmLead } ,]]></if>
+            <if test="rmCompany != null and rmCompany != '' ">  <![CDATA[  RM_COMPANY = #{rmCompany } ,]]></if>
+            <if test="rmNum != null and rmNum != '' ">  <![CDATA[  RM_NUM = #{rmNum } ,]]></if>
+            <if test="rmContent != null and rmContent != '' ">  <![CDATA[  RM_CONTENT = #{rmContent } ,]]></if>
+            <if test="rmCreateTime != null">
+                <![CDATA[  RM_CREATE_TIME = #{rmCreateTime } ,]]></if>
+            <if test="rmCreateUser != null and rmCreateUser != '' ">
+                <![CDATA[  RM_CREATE_USER = #{rmCreateUser } ,]]></if>
+        </set>
+    </sql>
+
+    <!-- 新增sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmTmpInOutId != null and rmTmpInOutId != '' ">  <![CDATA[ RM_TMP_IN_OUT_ID , ]]></if>
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[ RM_ROOM_NAME , ]]></if>
+            <if test="rmStartTime != null">  <![CDATA[ RM_START_TIME , ]]></if>
+            <if test="rmEndTime != null">  <![CDATA[ RM_END_TIME , ]]></if>
+            <if test="rmApplicant != null and rmApplicant != '' ">  <![CDATA[ RM_APPLICANT , ]]></if>
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[ RM_LEAD , ]]></if>
+            <if test="rmCompany != null and rmCompany != '' ">  <![CDATA[ RM_COMPANY , ]]></if>
+            <if test="rmNum != null and rmNum != '' ">  <![CDATA[ RM_NUM , ]]></if>
+            <if test="rmContent != null and rmContent != '' ">  <![CDATA[ RM_CONTENT , ]]></if>
+            <if test="rmCreateTime != null">  <![CDATA[ RM_CREATE_TIME , ]]></if>
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ RM_CREATE_USER , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 新增 对应值 -->
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmTmpInOutId != null and rmTmpInOutId != '' ">  <![CDATA[ #{rmTmpInOutId } , ]]></if>
+            <if test="rmRoomName != null and rmRoomName != '' ">  <![CDATA[ #{rmRoomName } , ]]></if>
+            <if test="rmStartTime != null">  <![CDATA[ #{rmStartTime } , ]]></if>
+            <if test="rmEndTime != null">  <![CDATA[ #{rmEndTime } , ]]></if>
+            <if test="rmApplicant != null and rmApplicant != '' ">  <![CDATA[ #{rmApplicant } , ]]></if>
+            <if test="rmLead != null and rmLead != '' ">  <![CDATA[ #{rmLead } , ]]></if>
+            <if test="rmCompany != null and rmCompany != '' ">  <![CDATA[ #{rmCompany } , ]]></if>
+            <if test="rmNum != null and rmNum != '' ">  <![CDATA[ #{rmNum } , ]]></if>
+            <if test="rmContent != null and rmContent != '' ">  <![CDATA[ #{rmContent } , ]]></if>
+            <if test="rmCreateTime != null">  <![CDATA[ #{rmCreateTime } , ]]></if>
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ #{rmCreateUser } , ]]></if>
+        </trim>
+    </sql>
+    <!--*****************************************************************sql  end *******************************************************************-->
+
+</mapper>

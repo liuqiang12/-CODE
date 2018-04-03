@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcLinkMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcLinkMap" type="IdcLink">
+		<!-- 数据库属性和实体类属性对应关系 -->
+
+		<result column="ID" property="id" />
+
+		<result column="NAME" property="name" />
+
+		<result column="CODE" property="code" />
+
+		<result column="CREATEDATE" property="createdate" />
+
+		<result column="UPDATEDATE" property="updatedate" />
+
+		<result column="BUSINESSTYPE_ID" property="businesstypeId" />
+
+		<result column="AENDPORT_ID" property="aendportId" />
+
+		<result column="AENDDEVICE_ID" property="aenddeviceId" />
+
+		<result column="AENDRACK_ID" property="aendrackId" />
+
+		<result column="ZENDPORT_ID" property="zendportId" />
+
+		<result column="ZENDDEVICE_ID" property="zenddeviceId" />
+
+		<result column="ZENDRACK_ID" property="zendrackId"/>
+
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcLink"
+			parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcLink"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+		<include refid="whereParam" />
+	</select>
+
+    <select id="queryListByObjectMap" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+        from idc_link k
+        <include refid="whereParamByLink"/>
+    </select>
+
+    <!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK
+		<include refid="wherePageParam" />
+	</select>
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcLink">
+		update IDC_LINK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_LINK
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_LINK
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_LINK where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcLink">
+		delete from IDC_LINK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_LINK
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_LINK where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcLink"
+		useGeneratedKeys="true" keyProperty="ID">
+		<selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+			select idc_link_seq.nextval from dual
+		</selectKey>
+		INSERT INTO IDC_LINK
+		(id,
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=DECIMAL},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_LINK (
+		<include refid="batchInsertColumn"/>
+		)
+		select idc_link_seq.nextval,lin.* from (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+			<include refid="batchInsertColumnParam"/>
+			from dual
+		</foreach>
+		) lin
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			NAME as name,
+			CODE as code,
+			CREATEDATE as createdate,
+			UPDATEDATE as updatedate,
+			BUSINESSTYPE_ID as businesstypeId,
+			AENDPORT_ID as aendportId,
+			AENDDEVICE_ID as aenddeviceId,
+			AENDRACK_ID as aendrackId,
+			ZENDPORT_ID as zendportId,
+			ZENDDEVICE_ID as zenddeviceId,
+			ZENDRACK_ID as zendrackId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+			<if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+			<if test="createdate != null">  <![CDATA[ and CREATEDATE = #{createdate} ]]></if>
+
+			<if test="updatedate != null">  <![CDATA[ and UPDATEDATE = #{updatedate} ]]></if>
+
+			<if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+
+			<if test="aendportId != null and aendportId != '' ">  <![CDATA[ and AENDPORT_ID = #{aendportId} ]]></if>
+
+			<if test="aenddeviceId != null and aenddeviceId != '' ">  <![CDATA[ and AENDDEVICE_ID = #{aenddeviceId} ]]></if>
+
+			<if test="aendrackId != null and aendrackId != '' ">  <![CDATA[ and AENDRACK_ID = #{aendrackId} ]]></if>
+
+			<if test="zendportId != null and zendportId != '' ">  <![CDATA[ and ZENDPORT_ID = #{zendportId} ]]></if>
+
+			<if test="zenddeviceId != null and zenddeviceId != '' ">  <![CDATA[ and ZENDDEVICE_ID = #{zenddeviceId} ]]></if>
+
+			<if test="zendrackId != null and zendrackId != '' ">  <![CDATA[ and ZENDRACK_ID = #{zendrackId} ]]></if>
+
+		</where>
+	</sql>
+
+    <sql id="whereParamByLink">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and k.ID = #{id} ]]></if>
+
+            <if test="name != null and name != '' ">  <![CDATA[ and k.NAME like '%${name}%' ]]></if>
+
+            <if test="code != null and code != '' ">  <![CDATA[ and k.CODE = #{code} ]]></if>
+
+            <if test="createdate != null">  <![CDATA[ and k.CREATEDATE = #{createdate} ]]></if>
+
+            <if test="updatedate != null">  <![CDATA[ and k.UPDATEDATE = #{updatedate} ]]></if>
+
+            <if test="businesstypeId != null and businesstypeId != '' ">
+                <![CDATA[ and k.BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+
+            <if test="aendportId != null and aendportId != '' ">  <![CDATA[ and k.AENDPORT_ID = #{aendportId} ]]></if>
+
+            <if test="aenddeviceId != null and aenddeviceId != '' ">
+                <![CDATA[ and k.AENDDEVICE_ID = #{aenddeviceId} ]]></if>
+
+            <if test="aendrackId != null and aendrackId != '' ">  <![CDATA[ and k.AENDRACK_ID = #{aendrackId} ]]></if>
+
+            <if test="zendportId != null and zendportId != '' ">  <![CDATA[ and k.ZENDPORT_ID = #{zendportId} ]]></if>
+
+            <if test="zenddeviceId != null and zenddeviceId != '' ">
+                <![CDATA[ and k.ZENDDEVICE_ID = #{zenddeviceId} ]]></if>
+
+            <if test="zendrackId != null and zendrackId != '' ">  <![CDATA[ and k.ZENDRACK_ID = #{zendrackId} ]]></if>
+
+        </where>
+    </sql>
+
+    <sql id="wherePageParam">
+		<where>
+
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+			<if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+			<if test="params.createdate != null">  <![CDATA[ and CREATEDATE = #{params.createdate} ]]></if>
+
+			<if test="params.updatedate != null">  <![CDATA[ and UPDATEDATE = #{params.updatedate} ]]></if>
+
+			<if test="params.businesstypeId != null and params.businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{params.businesstypeId} ]]></if>
+
+			<if test="params.aendportId != null and params.aendportId != '' ">  <![CDATA[ and AENDPORT_ID = #{params.aendportId} ]]></if>
+
+			<if test="params.aenddeviceId != null and params.aenddeviceId != '' ">  <![CDATA[ and AENDDEVICE_ID = #{params.aenddeviceId} ]]></if>
+
+			<if test="params.aendrackId != null and params.aendrackId != '' ">  <![CDATA[ and AENDRACK_ID = #{params.aendrackId} ]]></if>
+
+			<if test="params.zendportId != null and params.zendportId != '' ">  <![CDATA[ and ZENDPORT_ID = #{params.zendportId} ]]></if>
+
+			<if test="params.zenddeviceId != null and params.zenddeviceId != '' ">  <![CDATA[ and ZENDDEVICE_ID = #{params.zenddeviceId} ]]></if>
+
+			<if test="params.zendrackId != null and params.zendrackId != '' ">  <![CDATA[ and ZENDRACK_ID = #{params.zendrackId} ]]></if>
+
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+			<if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+			<if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+			<if test="createdate != null">  <![CDATA[  CREATEDATE = #{createdate } ,]]></if>
+
+			<if test="updatedate != null">  <![CDATA[  UPDATEDATE = #{updatedate } ,]]></if>
+
+			<if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[  BUSINESSTYPE_ID = #{businesstypeId } ,]]></if>
+
+			<if test="aendportId != null and aendportId != '' ">  <![CDATA[  AENDPORT_ID = #{aendportId } ,]]></if>
+
+			<if test="aenddeviceId != null and aenddeviceId != '' ">  <![CDATA[  AENDDEVICE_ID = #{aenddeviceId } ,]]></if>
+
+			<if test="aendrackId != null and aendrackId != '' ">  <![CDATA[  AENDRACK_ID = #{aendrackId } ,]]></if>
+
+			<if test="zendportId != null and zendportId != '' ">  <![CDATA[  ZENDPORT_ID = #{zendportId } ,]]></if>
+
+			<if test="zenddeviceId != null and zenddeviceId != '' ">  <![CDATA[  ZENDDEVICE_ID = #{zenddeviceId } ,]]></if>
+
+			<if test="zendrackId != null and zendrackId != '' ">  <![CDATA[  ZENDRACK_ID = #{zendrackId } ,]]></if>
+
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+		<if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+		<if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+			<if test="createdate != null">  <![CDATA[ CREATEDATE , ]]></if>
+
+			<if test="updatedate != null">  <![CDATA[ UPDATEDATE , ]]></if>
+
+		<if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ BUSINESSTYPE_ID , ]]></if>
+
+		<if test="aendportId != null and aendportId != '' ">  <![CDATA[ AENDPORT_ID , ]]></if>
+
+		<if test="aenddeviceId != null and aenddeviceId != '' ">  <![CDATA[ AENDDEVICE_ID , ]]></if>
+
+		<if test="aendrackId != null and aendrackId != '' ">  <![CDATA[ AENDRACK_ID , ]]></if>
+
+		<if test="zendportId != null and zendportId != '' ">  <![CDATA[ ZENDPORT_ID , ]]></if>
+
+		<if test="zenddeviceId != null and zenddeviceId != '' ">  <![CDATA[ ZENDDEVICE_ID , ]]></if>
+
+		<if test="zendrackId != null and zendrackId != '' ">  <![CDATA[ ZENDRACK_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+		<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+		<if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+			<if test="createdate != null">  <![CDATA[ #{createdate } , ]]></if>
+
+			<if test="updatedate != null">  <![CDATA[ #{updatedate } , ]]></if>
+
+		<if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ #{businesstypeId } , ]]></if>
+
+		<if test="aendportId != null and aendportId != '' ">  <![CDATA[ #{aendportId } , ]]></if>
+
+		<if test="aenddeviceId != null and aenddeviceId != '' ">  <![CDATA[ #{aenddeviceId } , ]]></if>
+
+		<if test="aendrackId != null and aendrackId != '' ">  <![CDATA[ #{aendrackId } , ]]></if>
+
+		<if test="zendportId != null and zendportId != '' ">  <![CDATA[ #{zendportId } , ]]></if>
+
+		<if test="zenddeviceId != null and zenddeviceId != '' ">  <![CDATA[ #{zenddeviceId } , ]]></if>
+
+		<if test="zendrackId != null and zendrackId != '' ">  <![CDATA[ #{zendrackId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,NAME,CODE,CREATEDATE,UPDATEDATE,BUSINESSTYPE_ID,AENDPORT_ID,AENDDEVICE_ID,AENDRACK_ID,ZENDPORT_ID,ZENDDEVICE_ID,ZENDRACK_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+		#{item.name},#{item.code},#{item.createdate},#{item.updatedate},#{item.businesstypeId},#{item.aendportId},#{item.aenddeviceId},#{item.aendrackId},#{item.zendportId},#{item.zenddeviceId},#{item.zendrackId}
+	</sql>
+
+	<!-- 通过A端机架获取所有对端信息 -->
+	<select id="queryListByRackIdA" resultType="IdcLink">
+		select
+		<include refid="baseColumn"/>
+		from IDC_LINK
+		<where>
+			<if test="rackId != null and rackId != '' ">
+				and AENDRACK_ID = #{rackId}
+			</if>
+			<if test="deviceId != null and deviceId != '' ">
+				and AENDDEVICE_ID = #{deviceId}
+			</if>
+			<if test="portId != null and portId != '' ">
+				and AENDPORT_ID = #{portId}
+			</if>
+		</where>
+	</select>
+
+	<!-- 通过AZ信息获取链路信息  不区分AZ端是机架组、机架、设备     同一在xml中通过类型区分 -->
+	<select id="queryIdcLinksByAZMap" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k
+		<where>
+			<!-- 机架组到机架 -->
+			<if test="type!=null and type=='racks_rack' ">
+				<![CDATA[ and k.zenddevice_id is null]]>
+				<!-- A端机架参数 -->
+				<if test="racksIdsList!=null and racksIdsList.size()>0">
+					and k.aendrack_id in
+					<foreach collection="racksIdsList" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<!-- Z端机架参数 -->
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zendrack_id = #{zId} ]]>
+				</if>
+			</if>
+			<!-- 机架组到设备 -->
+			<if test="type!=null and type=='racks_device' ">
+				<!-- A端机架参数 -->
+				<if test="racksIdsList!=null and racksIdsList.size()>0">
+					and k.aendrack_id in
+					<foreach collection="racksIdsList" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<!-- Z端设备参数 -->
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zenddevice_id = #{zId} ]]>
+				</if>
+			</if>
+			<!-- 机架到机架 -->
+			<if test="type!=null and type=='rack_rack' ">
+				<![CDATA[ and k.aenddevice_id is null and k.zenddevice_id is null]]>
+				<if test="aId!=null and aId!='' ">
+					<![CDATA[ and k.aendrack_id = #{aId} ]]>
+				</if>
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zendrack_id = #{zId} ]]>
+				</if>
+			</if>
+			<!-- 机架到设备 -->
+			<if test="type!=null and type=='rack_device' ">
+				<![CDATA[ and k.aenddevice_id is null ]]>
+				<if test="aId!=null and aId!='' ">
+					<![CDATA[ and k.aendrack_id = #{aId} ]]>
+				</if>
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zenddevice_id = #{zId} ]]>
+				</if>
+			</if>
+			<!-- 设备到机架 -->
+			<if test="type!=null and type=='device_rack' ">
+				<![CDATA[ and k.zenddevice_id is null]]>
+				<if test="aId!=null and aId!='' ">
+					<![CDATA[ and k.aenddevice_id = #{aId} ]]>
+				</if>
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zendrack_id = #{zId} ]]>
+				</if>
+			</if>
+			<!-- 设备到设备 -->
+			<if test="type!=null and type=='device_device' ">
+				<if test="aId!=null and aId!='' ">
+					<![CDATA[ and k.aenddevice_id = #{aId} ]]>
+				</if>
+				<if test="zId!=null and zId!='' ">
+					<![CDATA[ and k.zenddevice_id = #{zId} ]]>
+				</if>
+			</if>
+			<if test="wlRackId!=null and wlRackId!='' ">
+				<![CDATA[ and exists(select 1 from idc_link l where l.aendrack_id=#{wlRackId} and k.aendport_id=l.zendport_id) ]]>
+			</if>
+			<!-- 模糊查询参数 -->
+			<if test="name != null and name != '' "><![CDATA[and upper(k.name) like '%'||upper(#{name})||'%']]></if>
+			<!-- AZ端端口  通过‘_’链接 -->
+			<choose>
+				<when test="type!=null and (type=='racks_rack' or type=='racks_device') ">
+					<if test="portAZStrs!=null and portAZStrs.size()>0">
+						and '_'||k.zendport_id in
+						<foreach collection="portAZStrs" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</when>
+				<otherwise>
+					<if test="portAZStrs!=null and portAZStrs.size()>0">
+						and k.aendport_id||'_'||k.zendport_id in
+						<foreach collection="portAZStrs" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  机架组-机架 -->
+	<select id="queryIdcLinksByAZRsR" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.zendrack_id = #{rackIdZ} /*and k.zenddevice_id is null and k.aenddevice_id is null and
+		k.aendport_id is null */ and k.aendrack_id in
+		<foreach collection="racksIdsList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  机架组-设备 -->
+	<select id="queryIdcLinksByAZRsD" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.zenddevice_id=#{deviceIdZ} /*and k.aenddevice_id is null and k.aendport_id is null*/
+		and k.aendrack_id in
+		<foreach collection="racksIdsList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  机架-机架 -->
+	<select id="queryIdcLinksByAZRR" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.aendrack_id=#{rackIdA} /*and k.aenddevice_id is null*/ and k.zendrack_id=#{rackIdZ} /*and
+		k.zenddevice_id is null*/ and k.aendport_id in
+		<foreach collection="portIdsAList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  机架-设备 -->
+	<select id="queryIdcLinksByAZRD" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.aendrack_id=#{rackIdA} /*and k.aenddevice_id is null*/ and k.zenddevice_id=#{deviceIdZ} and
+		k.aendport_id in
+		<foreach collection="portIdsAList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  设备-机架 -->
+	<select id="queryIdcLinksByAZDR" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.aenddevice_id=#{deviceIdA} and k.zendrack_id=#{rackIdZ} /*and k.zenddevice_id is null*/ and
+		k.aendport_id in
+		<foreach collection="portIdsAList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+	<!-- 通过AZ端信息获取链路信息  设备-设备 -->
+	<select id="queryIdcLinksByAZDD" parameterType="Map" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k where k.aenddevice_id=#{deviceIdA} and k.zenddevice_id=#{deviceIdZ} and k.aendport_id in
+		<foreach collection="portIdsAList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="name != null and name != '' ">
+			and upper(k.name) like '%'||upper(#{name})||'%'
+		</if>
+	</select>
+
+	<sql id="queryIdcLinksByAZColumn">
+		k.id as id,k.name as name,
+		k.aendport_id as aendportId,k.aenddevice_id as aenddeviceId,k.aendrack_id as aendrackId,
+		k.zendport_id as zendportId,k.zenddevice_id as zenddeviceId,k.zendrack_id as zendrackId,
+		( select r.name from idc_rack r where r.id=k.aendrack_id and r.isdelete = 0 ) as aRackName,
+		( select r.businesstype_id from idc_rack r where r.id = k.aendrack_id and r.isdelete = 0 ) as aBusinesstype,
+		( select r.name from idc_rack r where r.id=k.zendrack_id and r.isdelete = 0 ) as zRackName,
+		( select r.businesstype_id from idc_rack r where r.id = k.zendrack_id and r.isdelete = 0 ) as zBusinesstype,
+		( select d.name from idc_device d where d.deviceid=k.aenddevice_id and d.isdelete = 0 ) as aDeviceName,
+		( select d.name from idc_device d where d.deviceid=k.zenddevice_id and d.isdelete = 0 ) as zDeviceName,
+		(case when k.aenddevice_id is null or k.aenddevice_id ='' then
+			( select tr.name from idc_connector tr where tr.id=k.aendport_id )
+		else
+        	( select p.portname from NET_PORT p where p.portid=k.aendport_id )
+		end) as aPortName,
+		(case when k.zenddevice_id is null or k.zenddevice_id ='' then
+			( select tr.name from idc_connector tr where tr.id=k.zendport_id )
+		else
+        	( select p.portname from NET_PORT p where p.portid=k.zendport_id )
+		end ) as zPortName
+	</sql>
+
+	<!-- 通过链路IDS获取链路信息 -->
+	<select id="queryLinkModelByIds" parameterType="java.util.List" resultType="IdcLink">
+		select
+		<include refid="baseColumn" />
+		from IDC_LINK where ID in
+		<foreach collection="list" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 通过AZ端端口删除链路   如：352352_352352 -->
+	<delete id="deleteLinkByAZPortStrList">
+		delete from idc_link k where k.aendport_id||'_'||k.zendport_id IN
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 跟据端子ID，获取上行端口信息 -->
+	<select id="queryUpPortInfoByPortIdZ" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k
+		where k.zendport_id = #{zid} and k.zenddevice_id is null and k.zendrack_id is not null
+	</select>
+	<!-- 跟据端子ID，获取下行端口信息 -->
+	<select id="queryDownPortInfoByPortIdA" resultType="Map">
+		select
+		<include refid="queryIdcLinksByAZColumn"/>
+		from idc_link k
+		where k.aendport_id = #{aid} and k.aenddevice_id is null and k.aendrack_id is not null
+	</select>
+
+	<select id="queryListByZendrackId" resultType="IdcLink">
+		select distinct k.aenddevice_id as aenddeviceId,k.aendrack_id as aendrackId,
+			k.zenddevice_id as zenddeviceId,k.zendrack_id as zendrackId
+		from idc_link k where k.zendrack_id = #{zrackId}
+	</select>
+	<select id="queryListByAendrackId" parameterType="Map" resultType="IdcLink">
+		select distinct k.aenddevice_id as aenddeviceId,k.aendrack_id as aendrackId,
+			k.zenddevice_id as zenddeviceId,k.zendrack_id as zendrackId
+		from idc_link k where k.aendrack_id = #{arackId}
+		<if test="wlRackId!=null and wlRackId!='' ">
+            <![CDATA[ and exists(select 1 from idc_link l where l.aendrack_id=#{wlRackId} and l.zendport_id=k.aendport_id) ]]>
+        </if>
+	</select>
+	<select id="queryListByZenddeviceId" resultType="IdcLink">
+		select distinct k.aenddevice_id as aenddeviceId,k.aendrack_id as aendrackId,
+			k.zenddevice_id as zenddeviceId,k.zendrack_id as zendrackId
+		from idc_link k where k.zenddevice_id = #{zdeviceId}
+	</select>
+	<select id="queryListByAenddeviceId" resultType="IdcLink">
+		select distinct k.aenddevice_id as aenddeviceId,k.aendrack_id as aendrackId,
+			k.zenddevice_id as zenddeviceId,k.zendrack_id as zendrackId
+		from idc_link k where k.aenddevice_id = #{adeviceId}
+	</select>
+</mapper>

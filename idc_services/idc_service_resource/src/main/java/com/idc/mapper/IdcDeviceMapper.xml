@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcDeviceMapper">
+
+    <!-- 通过主键查询记录 -->
+<select id="getModelById" resultType="IdcDevice">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE where DEVICEID= #{0} and isdelete = 0
+</select>
+
+<!-- map对应的key和实体类中的属性一致 -->
+<select id="getModelByMap" resultType="IdcDevice"
+        parameterType="Map">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE
+  <include refid="whereParam" />
+  ORDER BY DEVICEID DESC
+</select>
+
+<!-- 通过实体类查询记录 -->
+<select id="getModelByObject" resultType="IdcDevice">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE
+  <include refid="whereParam" />
+</select>
+
+<!-- 查询所有记录 -->
+<select id="queryList" resultType="IdcDevice">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE where isdelete = 0
+</select>
+  <!--查询机架列表-->
+<select id="getRackModel" resultType="map">
+  select
+    r.id as id,
+    r.name as name
+  from IDC_RACK r where r.businesstype_id in ('equipment','cabinet') and r.isdelete = 0
+</select>
+<!--导出设备信息-->
+<select id="getAllDeviceInfos" resultType="map" parameterType="Map">
+  select
+  <include refid="exportDeviceDetails" />
+  <if test="tableName != null and tableName == 'NET_DEVICE'">
+    ,<include refid="exportNetDeviceDetails" />
+  </if>
+  <if test="tableName != null and tableName == 'IDC_HOST'">
+    ,<include refid="exportIdcHostDetails" />
+  </if>
+  from IDC_DEVICE i Left JOIN ${tableName} n ON (i.DEVICEID=n.DEVICEID)
+  where i.isdelete = 0
+  <if test="deviceClass!=null and deviceClass!='' ">
+    <![CDATA[ and i.deviceclass = #{deviceClass}]]>
+  </if>
+  <if test="searchType!=null and searchType=='location' and searchId!=null and searchId!='' ">
+    <![CDATA[ and exists(select 1 from idc_rack rack where rack.id=i.rack_id and exists(select 1 from zb_machineroom room where room.id=rack.roomid
+           and exists(select 1 from idc_building build where build.id=room.buildingid and build.locationid=#{searchId})))]]>
+  </if>
+  <if test="searchType!=null and searchType=='building' and searchId!=null and searchId!='' ">
+    <![CDATA[ and exists(select 1 from idc_rack rack where rack.id=i.rack_id and exists(select 1 from zb_machineroom room where room.id=rack.roomid
+           and room.buildingid=#{searchId}))]]>
+  </if>
+  <if test="searchType!=null and searchType=='idcroom' and searchId!=null and searchId!='' ">
+    <![CDATA[ and exists(select 1 from idc_rack rack where rack.id=i.rack_id and rack.roomid=#{searchId})]]>
+  </if>
+  <if test="searchType!=null and searchType=='idcrack' and searchId!=null and searchId!='' ">
+    <![CDATA[ and i.rack_id = #{searchId}]]>
+  </if>
+  ORDER BY i.DEVICEID
+</select>
+
+<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+<select id="queryListByMap" resultType="IdcDevice"
+        parameterType="Map">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE
+  <include refid="whereParam" />
+</select>
+
+<!-- 查询记录:通过实体类查询多条记录 -->
+<select id="queryListByObject" resultType="IdcDevice">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE
+  <include refid="whereParam" />
+</select>
+
+<!-- 查询记录:通过实体类查询多条记录   map -->
+<select id="queryListByObjectMap" resultType="map">
+  select
+  <include refid="deviceAndRackColumn" />,n.IPADDRESS as ipaddress
+  from IDC_DEVICE d LEFT JOIN IDC_RACK r ON (d.rack_id = r.id)
+    left join NET_DEVICE n ON (d.deviceid = n.deviceid)
+    <include refid="whereLikeParam"/>
+  ORDER BY d.name
+</select>
+<!--资源分配  获取网络设备列表-->
+<select id="queryDistributionDeviceList" parameterType="Map" resultType="Map">
+  select
+  <include refid="deviceAndRackColumn" />,n.IPADDRESS as ipaddress
+  from IDC_DEVICE d LEFT JOIN IDC_RACK r ON (d.rack_id = r.id)
+    left join NET_DEVICE n ON (d.deviceid = n.deviceid)
+  where d.isdelete = 0 and d.deviceclass = 1
+  <if test="roomId != null and roomId != '' ">
+    <![CDATA[ and exists (select 1 from zb_machineroom m where m.id = r.roomid and m.id =
+    #{roomId} and m.isdelete = 0) ]]>
+  </if>
+  <if test="isvirtualdevice!=null and isvirtualdevice!='' "><![CDATA[ and d.isvirtualdevice = #{isvirtualdevice} ]]></if>
+  <if test="name != null and name != '' "><![CDATA[ and d.NAME like '%${name}%' ]]></if>
+</select>
+
+<!-- 分页查询 -->
+<select id="queryListPage" parameterType="PageBean" resultType="IdcDevice">
+  select
+  <include refid="baseColumn" />
+  from IDC_DEVICE
+  <include refid="wherePageParam" />
+</select>
+<!-- 分页查询 map-->
+<select id="queryListPageMap" parameterType="PageBean" resultType="map">
+  select
+  <include refid="deviceAndRackColumn" />,n.IPADDRESS as ipaddress
+  from IDC_DEVICE d LEFT JOIN IDC_RACK r ON (d.rack_id = r.id)
+    left join NET_DEVICE n ON (d.deviceid = n.deviceid)
+  <include refid="whereLikePageParam" />
+  ORDER BY d.name
+</select>
+<!--资源分配  获取网络设备列表     分页-->
+<select id="queryDistributionDeviceListPage" parameterType="PageBean" resultType="Map">
+  select
+  <include refid="deviceAndRackColumn" />,n.IPADDRESS as ipaddress
+  from IDC_DEVICE d LEFT JOIN IDC_RACK r ON (d.rack_id = r.id)
+    left join NET_DEVICE n ON (d.deviceid = n.deviceid)
+  <include refid="distributionWhereParam" />
+</select>
+
+  <!-- 根据机架IDS查询机架信息 -->
+  <select id="queryListByRackIds" parameterType="java.util.List" resultType="IdcDevice">
+    select
+    <include refid="baseColumn"/>
+    from IDC_DEVICE d
+    where d.isdelete = 0 and d.rack_id IN
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <!-- 根据机房IDS查询机架信息 -->
+  <select id="queryListByRoomIds" parameterType="Map" resultType="Map">
+    select d.*,m.id as mid,m.sitename as mname
+    from idc_device d
+    left join idc_rack r
+    on (d.rack_id = r.id)
+    left join zb_machineroom m
+    on (m.id = r.roomid)
+    where d.isdelete = 0 and d.deviceclass = 1
+    <if test="roomIdList!=null and roomIdList.size()>0">
+      and m.id in
+      <foreach collection="roomIdList" index="index" item="item" open="("
+               separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="locationId!=null and locationId!='' ">
+      <![CDATA[ and exists(select 1 from idc_building b where b.id = m.buildingid and b.locationid = #{locationId}) ]]>
+    </if>
+    <if test="isvirtualdevice!=null and isvirtualdevice!='' ">
+      <![CDATA[ and d.isvirtualdevice = #{isvirtualdevice} ]]>
+    </if>
+    <if test="deviceclass!=null and deviceclass!='' ">
+      <![CDATA[ and d.deviceclass = #{deviceclass} ]]>
+    </if>
+  </select>
+
+  <!--获取上架设备-->
+  <select id="queryDeviceList" parameterType="PageBean" resultType="Map">
+      SELECT A.DEVICEID,A.NAME,A.CODE,
+    A.VENDOR,A.MODEL,A .UINSTALL,A.UHEIGHT,A.deviceclass from IDC_DEVICE A
+    WHERE A.isdelete = 0 and not EXISTS (select 1 from idc_rackunit t where t.deviceid=A.deviceid)
+    <if test="params.name != null and params.name != '' ">
+        <![CDATA[ and upper(A.NAME) like '%'||upper(#{params.name})||'%' ]]></if>
+    order by A.name
+  </select>
+
+
+  <!-- update -->
+<update id="updateByObject" parameterType="IdcDevice">
+  update IDC_DEVICE
+  <include refid="updateParam" />
+  WHERE DEVICEID=#{deviceid}
+</update>
+
+<update id="updateByMap" parameterType="Map">
+  update IDC_DEVICE
+  <include refid="updateParam" />
+  <include refid="whereParam" />
+</update>
+
+  <!-- 修改设备状态 map中key:id-设备ID，status-状态，customerId-客户ID，customerName-客户名称，ticketId-工单号 -->
+  <update id="updateDeviceStatusByDeviceIds" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="begin" close=" end;">
+      UPDATE IDC_DEVICE t
+      <set>
+        <if test="item.status!=null and item.status!='' ">
+          t.STATUS = ${item.status},
+        </if>
+        <choose>
+          <when test="item.ticketId!=null and item.ticketId!='' ">
+            t.TICKET_ID = ${item.ticketId},
+          </when>
+          <otherwise>
+            t.TICKET_ID = null,
+          </otherwise>
+        </choose>
+        <choose>
+          <when test="item.customerId!=null and item.customerId!='' ">
+              t.CUSTOMERID = ${item.customerId},
+          </when>
+          <otherwise>
+              t.CUSTOMERID = null,
+          </otherwise>
+        </choose>
+        <choose>
+          <when test="item.customerName!=null and item.customerName!='' ">
+              t.CUSTOMERNAME = '${item.customerName}',
+          </when>
+          <otherwise>
+              t.CUSTOMERNAME = null
+          </otherwise>
+        </choose>
+      </set>
+      <where>
+        t.DEVICEID = ${item.id}
+        <if test="item.releaseReourceByTicketId!=null and item.releaseReourceByTicketId!='' ">
+          and t.TICKET_ID = ${item.releaseReourceByTicketId}
+        </if>
+        ;
+      </where>
+    </foreach>
+  </update>
+
+  <!-- 慎用此方法 -->
+<delete id="deleteAll">
+  delete from IDC_DEVICE where isdelete = 0
+</delete>
+
+
+<delete id="deleteById">
+  delete from IDC_DEVICE where DEVICEID= #{0} and isdelete = 0
+</delete>
+
+<!-- 删除数据 -->
+<delete id="deleteByObject" parameterType="IdcDevice">
+  delete from IDC_DEVICE
+  <include refid="whereParam" />
+</delete>
+
+<!-- 删除数据 -->
+<delete id="deleteByMap" parameterType="Map">
+  delete from IDC_DEVICE
+  <include refid="whereParam" />
+</delete>
+<!-- 删除数据 -->
+<delete id="deleteByList" parameterType="java.util.List">
+  delete from IDC_DEVICE where isdelete = 0 and DEVICEID in
+  <foreach collection="list" index="index" item="item" open="("
+           separator="," close=")">
+    #{item}
+  </foreach>
+</delete>
+
+  <!-- insert保存方法 -->
+  <insert id="insert" parameterType="IdcDevice"
+          useGeneratedKeys="true" keyProperty="DEVICEID">
+    <selectKey keyProperty="deviceid" resultType="java.lang.Long" order="BEFORE">
+      select idc_device_seq.nextval from dual
+    </selectKey>
+    INSERT INTO IDC_DEVICE
+    (deviceid,
+    <include refid="insertColumn" />
+    ) VALUES
+    (#{deviceid,jdbcType=DECIMAL},
+    <include refid="insertColumnParam" />
+    )
+  </insert>
+
+  <!-- 批量保存 -->
+
+  <insert id="insertList" parameterType="java.util.List">
+    INSERT INTO IDC_DEVICE (deviceid,
+    <include refid="insertColumn" />
+    )
+    select idc_device_seq.nextval,ids.* from (
+    <foreach collection="list" item="item" index="index" separator="union all">
+      select
+      <include refid="batchInsertColumnParam"/>
+      from dual
+    </foreach>
+    ) ids
+  </insert>
+
+  <!-- 批量修改 -->
+  <update id="foreachUpdateInfo" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="begin" close="end;">
+      UPDATE IDC_DEVICE set STATUS = ${item.status} WHERE deviceid = ${item.deviceid} and isdelete = 0;
+    </foreach>
+  </update>
+  <update id="singleUpdateInfoByDeviceId">
+    UPDATE IDC_DEVICE set STATUS = #{status} WHERE deviceid = #{resourceId} and isdelete = 0
+  </update>
+
+
+<!-- sql基本映射 -->
+<sql id="baseColumn">
+  <![CDATA[
+		  	DEVICECLASS as deviceclass,
+			VENDOR as vendor,
+			OWNER as owner,
+			UINSTALL as uinstall,
+			UHEIGHT as uheight,
+			OWNERTYPE as ownertype,
+			PWR_POWERTYPE as pwrPowertype,
+			UPLINEDATE as uplinedate,
+			DESCRIPTION as description,
+			POWER as power,
+			PHONE as phone,
+			DEVICEID as deviceid,
+			NAME as name,
+			CODE as code,
+			BUSINESSTYPE_ID as businesstypeId,
+			RACK_ID as rackId,
+			STATUS as status,
+			TICKET_ID as ticketId,
+			MODEL as model,
+			CUSTOMERID as customerid,
+			CUSTOMERNAME as customername,
+			DEVICE_VERSION as deviceVersion,
+			INSURANCEDATE as insurancedate,
+			ISDELETE as isdelete
+	  ]]>
+</sql>
+<sql id="whereParam">
+  <where>
+    isdelete = 0
+    <if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{deviceclass} ]]></if>
+
+    <if test="vendor != null or vendor == '0' ">  <![CDATA[ and VENDOR = #{vendor} ]]></if>
+
+    <if test="owner != null and owner != '' ">  <![CDATA[ and OWNER = #{owner} ]]></if>
+
+    <if test="uinstall != null and uinstall != '' ">  <![CDATA[ and UINSTALL = #{uinstall} ]]></if>
+
+    <if test="uheight != null and uheight != '' ">  <![CDATA[ and UHEIGHT = #{uheight} ]]></if>
+
+    <if test="ownertype != null and ownertype != '' ">  <![CDATA[ and OWNERTYPE = #{ownertype} ]]></if>
+
+    <if test="pwrPowertype != null and pwrPowertype != '' ">  <![CDATA[ and PWR_POWERTYPE = #{pwrPowertype} ]]></if>
+
+    <if test="uplinedate != null">  <![CDATA[ and UPLINEDATE = #{uplinedate} ]]></if>
+
+    <if test="description != null and description != '' ">  <![CDATA[ and DESCRIPTION = #{description} ]]></if>
+
+    <if test="power != null and power != '' ">  <![CDATA[ and POWER = #{power} ]]></if>
+
+    <if test="phone != null and phone != '' ">  <![CDATA[ and PHONE = #{phone} ]]></if>
+
+    <if test="deviceid != null and deviceid != '' ">  <![CDATA[ and DEVICEID = #{deviceid} ]]></if>
+
+    <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+    <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+    <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+
+    <if test="rackId != null and rackId != '' ">  <![CDATA[ and RACK_ID = #{rackId} ]]></if>
+
+    <if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+
+    <if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+
+    <if test="model != null and model != '' ">  <![CDATA[ and MODEL = #{model} ]]></if>
+
+    <if test="customerid != null and customerid != '' ">  <![CDATA[ and CUSTOMERID = #{customerid} ]]></if>
+
+    <if test="customername != null and customername != '' ">  <![CDATA[ and CUSTOMERNAME = #{customername} ]]></if>
+
+    <if test="deviceVersion != null and deviceVersion != '' ">
+          <![CDATA[ and DEVICE_VERSION = #{deviceVersion} ]]></if>
+
+    <if test="insurancedate != null">  <![CDATA[ and INSURANCEDATE = #{insurancedate} ]]></if>
+
+    <if test="isvirtualdevice != null and isvirtualdevice != '' ">  <![CDATA[ and ISVIRTUALDEVICE = #{isvirtualdevice} ]]></if>
+
+  </where>
+</sql>
+<sql id="wherePageParam">
+  <where>
+    isdelete = 0
+    <if test="params.deviceclass != null and params.deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{params.deviceclass} ]]></if>
+
+    <if test="params.vendor != null or params.vendor == '0' ">  <![CDATA[ and VENDOR = #{params.vendor} ]]></if>
+
+    <if test="params.owner != null and params.owner != '' ">  <![CDATA[ and OWNER = #{params.owner} ]]></if>
+
+    <if test="params.uinstall != null and params.uinstall != '' ">  <![CDATA[ and UINSTALL = #{params.uinstall} ]]></if>
+
+    <if test="params.uheight != null and params.uheight != '' ">  <![CDATA[ and UHEIGHT = #{params.uheight} ]]></if>
+
+    <if test="params.ownertype != null and params.ownertype != '' ">  <![CDATA[ and OWNERTYPE = #{params.ownertype} ]]></if>
+
+    <if test="params.pwrPowertype != null and params.pwrPowertype != '' ">  <![CDATA[ and PWR_POWERTYPE = #{params.pwrPowertype} ]]></if>
+
+    <if test="params.uplinedate != null">  <![CDATA[ and UPLINEDATE = #{params.uplinedate} ]]></if>
+
+    <if test="params.description != null and params.description != '' ">  <![CDATA[ and DESCRIPTION = #{params.description} ]]></if>
+
+    <if test="params.power != null and params.power != '' ">  <![CDATA[ and POWER = #{params.power} ]]></if>
+
+    <if test="params.phone != null and params.phone != '' ">  <![CDATA[ and PHONE = #{params.phone} ]]></if>
+
+    <if test="params.deviceid != null and params.deviceid != '' ">  <![CDATA[ and DEVICEID = #{params.deviceid} ]]></if>
+
+    <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+    <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+    <if test="params.businesstypeId != null and params.businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{params.businesstypeId} ]]></if>
+
+    <if test="params.rackId != null and params.rackId != '' ">  <![CDATA[ and RACK_ID = #{params.rackId} ]]></if>
+
+    <if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+
+    <if test="params.ticketId != null and params.ticketId != '' ">  <![CDATA[ and TICKET_ID = #{params.ticketId} ]]></if>
+
+    <if test="params.model != null and params.model != '' ">  <![CDATA[ and MODEL = #{params.model} ]]></if>
+
+    <if test="params.customerid != null and params.customerid != '' ">
+      <![CDATA[ and CUSTOMERID = #{params.customerid} ]]></if>
+
+    <if test="params.customername != null and params.customername != '' ">
+      <![CDATA[ and CUSTOMERNAME = #{params.customername} ]]></if>
+
+    <if test="params.deviceVersion != null and params.deviceVersion != '' ">
+          <![CDATA[ and DEVICE_VERSION = #{params.deviceVersion} ]]></if>
+
+    <if test="params.insurancedate != null">
+          <![CDATA[ and INSURANCEDATE = #{params.insurancedate} ]]></if>
+
+    <if test="params.isvirtualdevice != null and params.isvirtualdevice != '' ">  <![CDATA[ and ISVIRTUALDEVICE = #{params.isvirtualdevice} ]]></if>
+
+  </where>
+</sql>
+<sql id="whereLikePageParam">
+    <where>
+      d.isdelete = 0
+      <if test="params.roomid != null and params.roomid != '' ">  <![CDATA[ and r.roomid = #{params.roomid} ]]></if>
+      <if test="params.rackId != null and params.rackId != '' ">  <![CDATA[ and d.rack_id = #{params.rackId} ]]></if>
+      <if test="params.deviceclass != null and params.deviceclass != '' ">  <![CDATA[ and d.DEVICECLASS = #{params.deviceclass} ]]></if>
+      <if test="params.isvirtualdevice != null and params.isvirtualdevice != '' ">  <![CDATA[ and d.isvirtualdevice = #{params.isvirtualdevice} ]]></if>
+      <choose>
+          <when test="params.netType != null and params.netType == 1 ">
+              <![CDATA[ and n.NETWORKLAYER = '核心' ]]>
+          </when>
+          <when test="params.netType != null and params.netType == 2 ">
+              <![CDATA[ and n.NETWORKLAYER = '接入' ]]>
+          </when>
+          <when test="params.netType != null and params.netType == 3 ">
+              <![CDATA[ and n.NETWORKLAYER = '汇聚' ]]>
+          </when>
+          <otherwise></otherwise>
+      </choose>
+      <if test="params.name != null and params.name != '' ">
+          <![CDATA[ and (upper(d.NAME) like '%'||upper(#{params.name})||'%' or upper(n.IPADDRESS) like '%'||upper(#{params.name})||'%')]]></if>
+      <if test="params.searchType!=null and params.searchType=='location' and params.searchId!=null and params.searchId!='' ">
+        <![CDATA[ and exists(select 1 from zb_machineroom room where room.id=r.roomid
+           and exists(select 1 from idc_building build where build.id=room.buildingid and build.locationid=#{params.searchId}))]]>
+      </if>
+      <if test="params.searchType!=null and params.searchType=='building' and params.searchId!=null and params.searchId!='' ">
+        <![CDATA[ and exists(select 1 from zb_machineroom room where room.id=r.roomid
+           and room.buildingid=#{params.searchId})]]>
+      </if>
+      <if test="params.searchType!=null and params.searchType=='idcroom' and params.searchId!=null and params.searchId!='' ">
+        <![CDATA[ and r.roomid=#{params.searchId}]]>
+      </if>
+      <if test="params.searchType!=null and params.searchType=='idcrack' and params.searchId!=null and params.searchId!='' ">
+        <![CDATA[ and d.rack_id = #{params.searchId}]]>
+      </if>
+    </where>
+</sql>
+    <sql id="whereLikeParam">
+        <where>
+          d.isdelete = 0
+          <if test="roomid != null and roomid != '' ">  <![CDATA[ and r.roomid = #{roomid} ]]></if>
+          <if test="rackId != null and rackId != '' ">  <![CDATA[ and d.rack_id = #{rackId} ]]></if>
+          <if test="deviceid != null and deviceid != '' ">  <![CDATA[ and d.deviceid = #{deviceid} ]]></if>
+          <if test="isvirtualdevice != null and isvirtualdevice != '' ">  <![CDATA[ and d.isvirtualdevice = #{isvirtualdevice} ]]></if>
+          <if test="deviceclass != null and deviceclass != '' ">
+              <![CDATA[ and d.DEVICECLASS = #{deviceclass} ]]></if>
+          <choose>
+              <when test="netType != null and netType == 1 ">
+                  <![CDATA[ and n.NETWORKLAYER = '核心' ]]>
+              </when>
+              <when test="netType != null and netType == 2 ">
+                  <![CDATA[ and n.NETWORKLAYER = '接入' ]]>
+              </when>
+              <when test="netType != null and netType == 3 ">
+                  <![CDATA[ and n.NETWORKLAYER = '汇聚' ]]>
+              </when>
+              <otherwise></otherwise>
+          </choose>
+          <if test="name != null and name != '' ">
+              <![CDATA[ and (upper(d.NAME) like '%'||upper(#{name})||'%' or upper(n.IPADDRESS) like '%'||upper(#{name})||'%'))]]></if>
+          <if test="searchType!=null and searchType=='location' and searchId!=null and searchId!='' ">
+              <![CDATA[ and exists(select 1 from zb_machineroom room where room.id=r.roomid
+           and exists(select 1 from idc_building build where build.id=room.buildingid and build.locationid=#{searchId}))]]>
+          </if>
+          <if test="searchType!=null and searchType=='building' and searchId!=null and searchId!='' ">
+            <![CDATA[ and exists(select 1 from zb_machineroom room where room.id=r.roomid
+           and room.buildingid=#{searchId})]]>
+          </if>
+          <if test="searchType!=null and searchType=='idcroom' and searchId!=null and searchId!='' ">
+            <![CDATA[ and r.roomid=#{searchId}]]>
+          </if>
+          <if test="searchType!=null and searchType=='idcrack' and searchId!=null and searchId!='' ">
+              <![CDATA[ and d.rack_id = #{searchId}]]>
+          </if>
+        </where>
+    </sql>
+<!-- update sql -->
+<sql id="updateParam">
+  <set>
+
+    <if test="deviceclass != null and deviceclass != '' ">  <![CDATA[  DEVICECLASS = #{deviceclass } ,]]></if>
+
+    <if test="vendor != null or vendor == 0 ">  <![CDATA[  VENDOR = #{vendor } ,]]></if>
+
+    <if test="owner != null and owner != '' ">  <![CDATA[  OWNER = #{owner } ,]]></if>
+
+    <if test="uinstall != null and uinstall != '' ">  <![CDATA[  UINSTALL = #{uinstall } ,]]></if>
+
+    <if test="uheight != null and uheight != '' ">  <![CDATA[  UHEIGHT = #{uheight } ,]]></if>
+
+    <if test="ownertype != null and ownertype != '' ">  <![CDATA[  OWNERTYPE = #{ownertype } ,]]></if>
+
+    <if test="pwrPowertype != null and pwrPowertype != '' ">  <![CDATA[  PWR_POWERTYPE = #{pwrPowertype } ,]]></if>
+
+    <if test="uplinedate != null">  <![CDATA[  UPLINEDATE = #{uplinedate } ,]]></if>
+
+    <if test="description != null and description != '' ">  <![CDATA[  DESCRIPTION = #{description } ,]]></if>
+
+    <if test="power != null and power != '' ">  <![CDATA[  POWER = #{power } ,]]></if>
+
+    <if test="phone != null and phone != '' ">  <![CDATA[  PHONE = #{phone } ,]]></if>
+
+    <if test="deviceid != null and deviceid != '' ">  <![CDATA[  DEVICEID = #{deviceid } ,]]></if>
+
+    <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+    <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+    <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[  BUSINESSTYPE_ID = #{businesstypeId } ,]]></if>
+
+    <if test="rackId != null and rackId != '' ">  <![CDATA[  RACK_ID = #{rackId } ,]]></if>
+
+    <if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+
+    <if test="ticketId != null and ticketId != '' ">  <![CDATA[  TICKET_ID = #{ticketId } ,]]></if>
+
+    <if test="model != null and model != '' ">  <![CDATA[  MODEL = #{model } ,]]></if>
+
+    <if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID = #{customerid} ,]]></if>
+
+    <if test="customername != null and customername != '' ">  <![CDATA[ CUSTOMERNAME = #{customername} ,]]></if>
+
+      <if test="deviceVersion != null and deviceVersion != '' ">  <![CDATA[ DEVICE_VERSION = #{deviceVersion} ,]]></if>
+
+      <if test="insurancedate != null">  <![CDATA[ INSURANCEDATE = #{insurancedate} ,]]></if>
+
+    <if test="isdelete != null or isdelete == '0' ">  <![CDATA[ ISDELETE = #{isdelete} ,]]></if>
+
+  </set>
+</sql>
+
+<!-- insert sql -->
+<sql id="insertColumn">
+  <trim suffix="" suffixOverrides=",">
+
+    <if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ DEVICECLASS , ]]></if>
+
+    <if test="vendor != null or vendor == '0' ">  <![CDATA[ VENDOR , ]]></if>
+
+    <if test="owner != null and owner != '' ">  <![CDATA[ OWNER , ]]></if>
+
+    <if test="uinstall != null and uinstall != '' ">  <![CDATA[ UINSTALL , ]]></if>
+
+    <if test="uheight != null and uheight != '' ">  <![CDATA[ UHEIGHT , ]]></if>
+
+    <if test="ownertype != null and ownertype != '' ">  <![CDATA[ OWNERTYPE , ]]></if>
+
+    <if test="pwrPowertype != null and pwrPowertype != '' ">  <![CDATA[ PWR_POWERTYPE , ]]></if>
+
+    <if test="uplinedate != null">  <![CDATA[ UPLINEDATE , ]]></if>
+
+    <if test="description != null and description != '' ">  <![CDATA[ DESCRIPTION , ]]></if>
+
+    <if test="power != null and power != '' ">  <![CDATA[ POWER , ]]></if>
+
+    <if test="phone != null and phone != '' ">  <![CDATA[ PHONE , ]]></if>
+
+    <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+    <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+    <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ BUSINESSTYPE_ID , ]]></if>
+
+    <if test="rackId != null and rackId != '' ">  <![CDATA[ RACK_ID , ]]></if>
+
+    <if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+
+    <if test="ticketId != null and ticketId != '' ">  <![CDATA[ TICKET_ID , ]]></if>
+
+    <if test="model != null and model != '' ">  <![CDATA[ MODEL , ]]></if>
+
+    <if test="customerid != null and customerid != '' ">  <![CDATA[ CUSTOMERID  ,]]></if>
+
+    <if test="customername != null and customername != '' ">  <![CDATA[ CUSTOMERNAME ,]]></if>
+
+      <if test="deviceVersion != null and deviceVersion != '' ">  <![CDATA[ DEVICE_VERSION ,]]></if>
+
+      <if test="insurancedate != null">  <![CDATA[ INSURANCEDATE ,]]></if>
+
+  </trim>
+</sql>
+
+<sql id="insertColumnParam">
+  <trim suffix="" suffixOverrides=",">
+
+    <if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ #{deviceclass } , ]]></if>
+
+    <if test="vendor != null or vendor == '0' ">  <![CDATA[ #{vendor } , ]]></if>
+
+    <if test="owner != null and owner != '' ">  <![CDATA[ #{owner } , ]]></if>
+
+    <if test="uinstall != null and uinstall != '' ">  <![CDATA[ #{uinstall } , ]]></if>
+
+    <if test="uheight != null and uheight != '' ">  <![CDATA[ #{uheight } , ]]></if>
+
+    <if test="ownertype != null and ownertype != '' ">  <![CDATA[ #{ownertype } , ]]></if>
+
+    <if test="pwrPowertype != null and pwrPowertype != '' ">  <![CDATA[ #{pwrPowertype } , ]]></if>
+
+    <if test="uplinedate != null">  <![CDATA[ #{uplinedate } , ]]></if>
+
+    <if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+
+    <if test="power != null and power != '' ">  <![CDATA[ #{power } , ]]></if>
+
+    <if test="phone != null and phone != '' ">  <![CDATA[ #{phone } , ]]></if>
+
+    <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+    <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+    <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ #{businesstypeId } , ]]></if>
+
+    <if test="rackId != null and rackId != '' ">  <![CDATA[ #{rackId } , ]]></if>
+
+    <if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+
+    <if test="ticketId != null and ticketId != '' ">  <![CDATA[ #{ticketId } , ]]></if>
+
+    <if test="model != null and model != '' ">  <![CDATA[ #{model } , ]]></if>
+
+    <if test="customerid != null and customerid != '' ">  <![CDATA[ #{customerid} ,]]></if>
+
+    <if test="customername != null and customername != '' ">  <![CDATA[ #{customername} ,]]></if>
+
+      <if test="deviceVersion != null and deviceVersion != '' ">  <![CDATA[ #{deviceVersion} ,]]></if>
+
+      <if test="insurancedate != null">  <![CDATA[ #{insurancedate} ,]]></if>
+
+  </trim>
+</sql>
+
+<!-- 批量保存 -->
+<sql id="batchInsertColumn">
+    DEVICECLASS,VENDOR,OWNER,UINSTALL,UHEIGHT,OWNERTYPE,PWR_POWERTYPE,UPLINEDATE,DESCRIPTION,POWER,PHONE,NAME,CODE,
+    BUSINESSTYPE_ID,RACK_ID,STATUS,TICKET_ID,MODEL,CUSTOMERID,CUSTOMERNAME,DEVICE_VERSION,INSURANCEDATE
+</sql>
+
+<sql id="batchInsertColumnParam">
+    #{item.deviceclass},#{item.vendor},#{item.owner},#{item.uinstall},#{item.uheight},#{item.ownertype},
+  #{item.pwrPowertype},#{item.uplinedate},#{item.description},#{item.power},#{item.phone},#{item.name},#{item.code},
+    #{item.businesstypeId},#{item.rackId},#{item.status},#{item.ticketId},#{item.model},#{customerid},#{customername},#{deviceVersion},#{insurancedate}
+</sql>
+
+<!--导出设备信息sql IDC_DEVICE && NET_DEVICE-->
+<sql id="exportDeviceDetails">
+    <![CDATA[
+          decode(i.DEVICECLASS ,'1', '网络','2','主机'） as ideviceclass,
+          decode(i.VENDOR,'0','华为','1','思科','2','阿尔卡特','3','3Com','4','HP','5','Linux','6','Microsoft','17','D-Link','54','Juniper','61','H3C') as ivendor,
+          i.OWNER as iowner,
+          i.UINSTALL as iuinstall,
+          i.UHEIGHT as iuheight,
+          decode(i.OWNERTYPE ,'1', '自建','2','租用','3','客户','4','自有业务') as iownertype,
+          i.PWR_POWERTYPE as ipwrPowertype,
+          to_char(i.UPLINEDATE,'yyyy-mm-dd HH24:mi:ss') as iuplinedate,
+          i.DESCRIPTION as idescription,
+          i.POWER as ipower,
+          i.PHONE as iphone,
+          i.DEVICEID as ideviceid,
+          i.NAME as iname,
+          i.CODE as icode,
+          i.BUSINESSTYPE_ID as ibusinesstypeId,
+          (select k.name from IDC_RACK k where k.id = i.RACK_ID and k.isdelete = 0) as irackId,
+          decode(i.STATUS ,'20', '可用','40','空闲','50','预占','55','已停机','60','在服','110','不可用') as istatus,
+          i.TICKET_ID as iticketId,
+          i.MODEL as imodel
+    ]]>
+</sql>
+<sql id="exportNetDeviceDetails">
+    <![CDATA[
+        n.DEVICEID as ndeviceid,
+        n.DEVICECLASS as ndeviceclass,
+        n.ROUTTYPE as nrouttype,
+        n.ROUTNAME as nroutname,
+        n.NETWORKLAYER as nnetworklayer,
+        n.LOGINUSER as nloginuser,
+        n.LOGINPSW as nloginpsw,
+        n.PRIVILEGEPSW as nprivilegepsw,
+        decode(n.STATUS,'0','激活','1','禁用') as nstatus,
+        decode(n.SNMPVERSION,'0','V1','1','V2','3','V3') as nsnmpversion,
+        n.SNMPPORT as nsnmpport,
+        n.SNMPCOMMUNITY as nsnmpcommunity,
+        n.SNMPSETCOMMUNITY as nsnmpsetcommunity,
+        n.SNMPPASSWORD as nsnmppassword,
+        n.SNMPSCTTYPE as nsnmpscttype,
+        n.SNMPKEYSCTTYPE as nsnmpkeyscttype,
+        n.SNMPKEY as nsnmpkey,
+        n.DEVICEVERSION as ndeviceversion,
+        decode(n.LOGINMODEL,'0','telnet','1','ssh') as nloginmodel,
+        n.TELNETPORT as ntelnetport,
+        n.TELNETFLOWID as ntelnetflowid,
+        n.TELNETJUMPID as ntelnetjumpid,
+        n.TELNETVPNPARM as ntelnetvpnparm,
+        n.SYSDESCR as nsysdescr,
+        n.SYSUPTIME as nsysuptime,
+        n.DISTRIBUTEDNODEID as ndistributednodeid,
+        n.IPADDRESS as nipaddress
+    ]]>
+</sql>
+<sql id="exportIdcHostDetails">
+    <![CDATA[
+        n.DEVICETYPE as hdevicetype,
+        n.OS as hos,
+        n.CPUSIZE as hcpusize,
+        n.MEMSIZE as hmemsize,
+        n.DISKSIZE as hdisksize,
+        n.USERID as huserid,
+        n.SysDescr as hsysdescr,
+        n.IPADDRESS as hipaddress
+    ]]>
+</sql>
+<sql id="deviceAndRackColumn">
+  <![CDATA[
+          d.DEVICECLASS as deviceclass,
+          d.VENDOR as vendor,
+          d.OWNER as owner,
+          d.UINSTALL as uinstall,
+          d.UHEIGHT as uheight,
+          d.OWNERTYPE as ownertype,
+          d.PWR_POWERTYPE as pwrPowertype,
+          d.UPLINEDATE as uplinedate,
+          d.DESCRIPTION as description,
+          d.POWER as power,
+          d.PHONE as phone,
+          d.DEVICEID as deviceid,
+          d.NAME as name,
+          d.CODE as code,
+          d.BUSINESSTYPE_ID as businesstypeId,
+          d.RACK_ID as rackId,
+          d.STATUS as status,
+          d.TICKET_ID as ticketId,
+          d.MODEL as model,
+          d.CUSTOMERID as customerid,
+          d.CUSTOMERNAME as customername,
+          d.DEVICE_VERSION as deviceVersion,
+          d.INSURANCEDATE as insurancedate,
+          r.name as rname
+    ]]>
+</sql>
+
+  <!-- 资源分配模糊查询 条件-->
+<sql id="distributionWhereParam">
+  <where>
+    d.isdelete = 0 and d.deviceclass = 1
+    <if test="params.name != null and params.name != '' "><![CDATA[ and d.NAME like '%${params.name}%' ]]></if>
+    <if test="params.roomId != null and params.roomId != '' ">
+      <![CDATA[ and exists (select 1 from zb_machineroom m where m.id = r.roomid and m.id = #{params.roomId} and m.isdelete = 0)]]>
+    </if>
+    <if test="params.isvirtualdevice!=null and params.isvirtualdevice!='' "><![CDATA[ and d.isvirtualdevice = #{params.isvirtualdevice} ]]></if>
+  </where>
+</sql>
+
+  <!--删除设备  对设备进行软删除-->
+  <update id="updateDeviceToInvalidByIds" parameterType="java.util.List">
+    update IDC_DEVICE set isdelete = 1 where isdelete = 0 and deviceid IN
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </update>
+
+  <!-- 通过设备ID获取各个设备是否上架的信息 -->
+  <select id="getDeviceNumByIds" parameterType="java.util.List" resultType="Map">
+    select (select d.name from idc_device d where d.deviceid = t.deviceid) as devicename,
+    count(1) devicenum
+    from idc_rackunit t
+    where t.deviceid in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    group by t.deviceid
+  </select>
+
+  <!-- 通过设备名称获取设备 -->
+  <select id="queryIdcDeviceInfoByName" resultType="IdcDevice">
+    select
+    <include refid="baseColumn"/>
+    from IDC_DEVICE where name = #{name}
+  </select>
+
+  <!-- 通过数据中心ID获取所有的设备 -->
+  <select id="queryDeviceListByLocationId" parameterType="Map" resultType="IdcDevice">
+    select
+    <include refid="baseColumn"/>
+    from IDC_DEVICE where isdelete = 0
+    <if test="deviceclass!=null and deviceclass!='' "><![CDATA[ and deviceclass = #{deviceclass}]]></if>
+    <if test="isvirtualdevice!=null and isvirtualdevice!='' "><![CDATA[ and isvirtualdevice = #{isvirtualdevice}]]></if>
+    <if test="locationId!=null and locationId!='' ">
+      <![CDATA[
+          and exists(select 1
+          from idc_rack r
+         where rack_id = r.id
+           and exists
+         (select 1
+                  from zb_machineroom m
+                 where r.roomid = m.id
+                   and exists (select 1
+                          from idc_building b
+                         where b.id = m.buildingid
+                           and b.locationid = #{locationId})))
+      ]]>
+    </if>
+  </select>
+</mapper>

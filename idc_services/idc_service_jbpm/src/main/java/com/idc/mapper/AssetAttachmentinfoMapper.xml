@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.AssetAttachmentinfoMapper">
+	<resultMap id="resultAssetAttachmentinfoMap" type="AssetAttachmentinfo">
+		<result column="ID" property="id" />
+		<result column="ATTACH_NAME" property="attachName" />
+	</resultMap>
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			ATTACH_NAME as attachName,
+			LOGIC_TABLENAME as logicTablename,
+			LOGIC_COLUMN as logicColumn,
+			ATTACH_SUFFIX as attachSuffix,
+			ATTACH_SIZE as attachSize,
+			RELATIONAL_VALUE as relationalValue,
+			ATTACH_BYTE as attachByte,
+			CREATE_USERID as createUserid,
+			CREATE_TIME as createTime,
+			TICKET_INST_ID as ticketInstId
+			PROD_INST_ID as prodInstId
+	  ]]>
+	</sql>
+	<!-- 获取附件信息 -->
+	<select id="getAttachmentinfoByRelationalId" resultType="AssetAttachmentinfo" parameterType="Map">
+			select t1.id,
+				   t1.attach_name as attachName
+			from ASSET_ATTACHMENTINFO t1 where UPPER(to_char(t1.logic_tablename)) = upper(to_char(#{tableName}))
+			and to_char(t1.relational_value) = to_char(#{relationalId})
+	</select>
+	<select id="getTicketInsId" resultType="Long">
+			select t1.ticket_inst_id from idc_contract t1
+			where exists
+			(
+				  select * from asset_attachmentinfo t2
+				 where UPPER(t2.logic_tablename) = upper('idc_contract')
+						and to_char(t2.relational_value) = to_char(t1.id)
+						and t2.id = #{id}
+
+			)
+	</select>
+
+	<select id="call_AttachmentHandleSecurity" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL PROCESS_RESOURCE.Attachment_Handle_Security(
+              #{ticketInstId,mode=IN,jdbcType=INTEGER},
+              #{prodInstId,mode=IN,jdbcType=INTEGER},
+              #{loginUserID,mode=IN,jdbcType=INTEGER},
+              #{handleResource,mode=OUT,jdbcType=INTEGER},
+              #{handleIDCISP,mode=OUT,jdbcType=INTEGER},
+			  #{handleOther,mode=OUT,jdbcType=INTEGER}
+			  #{handleContract,mode=OUT,jdbcType=INTEGER},
+			  #{handleDelete,mode=OUT,jdbcType=INTEGER},
+			  #{handleMoney,mode=OUT,jdbcType=INTEGER},
+			  #{msg,mode=OUT,jdbcType=VARCHAR}
+			) ]]>
+	</select>
+
+	<select id="getAttachmentinfoByTicketInstIdList" resultType="AssetAttachmentinfo">
+		select  t.id,
+				t.attach_name as attachName,
+				t.create_time as createTime,
+				t.ftp_attach_name as ftpAttachName,
+				t.ftp_info as ftpInfo
+		from ASSET_ATTACHMENTINFO t
+		where to_char(t.logic_tablename) = to_char(#{logicColumn})
+			and to_char(t.relational_value) = to_char(#{prodInstId})
+		order by t.create_time desc
+	</select>
+
+	<select id="getAttachmentinfoByTicketIdList" resultType="AssetAttachmentinfo">
+		select  t.id,
+				t.attach_name as attachName,
+				t.create_time as createTime,
+				t.ftp_attach_name as ftpAttachName,
+				t.ftp_info as ftpInfo
+		from ASSET_ATTACHMENTINFO t
+		<where>
+ 			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and t.TICKET_INST_ID = #{ticketInstId} ]]></if>
+			<if test="prodInstId != null  and prodInstId != '' ">  <![CDATA[ and t.PROD_INST_ID = #{prodInstId} ]]></if>
+			<if test="logicTablename != null  and logicTablename != '' ">  <![CDATA[ and t.LOGIC_TABLENAME = #{logicTablename} ]]></if>
+		</where>
+		order by t.create_time desc
+	</select>
+
+	<select id="getAttachmentinfoByTicketInstIdListPage" parameterType="PageBean" resultType="Map">
+		select  t.id,
+				t.attach_name,
+				to_char(t.create_time,'yy-mm-dd hh24:mi:ss') as create_time,
+				t.prod_inst_id as prodInstId,
+				t.ticket_inst_id as ticketInstId
+		  from ASSET_ATTACHMENTINFO t
+			<where>
+				<if test="params.prodInstId != null and params.prodInstId != '' ">
+					and t.prod_inst_id=#{params.prodInstId}
+				</if>
+			</where>
+		  order by t.create_time desc
+	</select>
+
+	<select id="queryAttachmentListPage" parameterType="PageBean" resultType="AssetAttachmentinfo">
+		select  t.id,
+		t.attach_name as attachName,
+		t.logic_tablename as logicTablename,
+		t.logic_column as logicColumn,
+		t.attach_suffix as attachSuffix,
+		t.attach_size as attachSize,
+		t.relational_value as relationalValue,
+		t.attach_byte as attachByte,
+		t.create_userid as createUserid,
+		to_char(t.create_time,'yy-mm-dd hh24:mi:ss') as createTimeStr,
+		t.prod_inst_id as prodInstId,
+		t.ticket_inst_id as ticketInstId,
+		t.ftp_attach_name as ftpAttachName,
+		t.ftp_info as ftpInfo,
+		case when t.ATTACHMENT_TYPE = '1111' then
+		'资源附件'
+		when t.ATTACHMENT_TYPE = '2222' then
+		'IDC_ISP附件'
+		when t.ATTACHMENT_TYPE = '3333' then
+		'其他附件'
+		else
+		'合同附件' end attachmentType,
+		t.ATTACHMENT_MAKER as attachmentMaker,
+		tmp.nick as author
+		from ASSET_ATTACHMENTINFO t
+		left join sys_userinfo tmp on t.create_userid = tmp.id
+			<where>
+				<if test="params.attachmentType != null and params.attachmentType != '' ">
+					and t.ATTACHMENT_TYPE=#{params.attachmentType}
+				</if>
+				<if test="params.prodInstId != null and params.prodInstId != '' ">
+					and t.relational_value=#{params.prodInstId}
+				</if>
+				<if test="params.ticketInstId != null and params.ticketInstId != '' ">
+					and t.TICKET_INST_ID=#{params.ticketInstId}
+				</if>
+				<if test="params.logicColumn != null and params.logicColumn != '' ">
+					and t.LOGIC_COLUMN=#{params.logicColumn}
+				</if>
+			</where>
+		  order by t.create_time desc
+	</select>
+
+	<update id="updateAttachData" parameterType="AssetAttachmentinfo">
+		update ASSET_ATTACHMENTINFO
+		set ATTACH_AES_BYTE = #{aesAttachByteForceByte}
+		<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ ,TICKET_INST_ID = #{ticketInstId} ]]></if>
+		where ID = #{id}
+
+	</update>
+
+
+
+	<select id="getIdsByContractId" resultType="Long" >
+		select t1.id  from ASSET_ATTACHMENTINFO t1 where t1.logic_tablename = 'IDC_CONTRACT' and t1.relational_value = to_char(#{0})
+	</select>
+
+	<select id="getAttachmentById" resultType="AssetAttachmentinfo" >
+		select t1.ID as id,
+			t1.ATTACH_NAME as attachName,
+			t1.LOGIC_TABLENAME as logicTablename,
+			t1.LOGIC_COLUMN as logicColumn,
+			t1.ATTACH_SUFFIX as attachSuffix,
+			t1.ATTACH_SIZE as attachSize,
+			t1.RELATIONAL_VALUE as relationalValue,
+			t1.ATTACH_BYTE as attachByte,
+			t1.CREATE_USERID as createUserid,
+			t1.TICKET_INST_ID as ticketInstId,
+			t1.PROD_INST_ID as prodInstId,
+			t1.FTP_ATTACH_NAME as ftpAttachName,
+			t1.FTP_INFO as ftpInfo
+		from ASSET_ATTACHMENTINFO t1 where t1.id = #{0}
+	</select>
+
+	<delete id="removeAttachById" parameterType="Long">
+		DELETE  FROM  ASSET_ATTACHMENTINFO where id = #{0}
+	</delete>
+
+	<insert id="insertAttachInfo" parameterType="AssetAttachmentinfo">
+		INSERT INTO ASSET_ATTACHMENTINFO
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="attachName != null and attachName != '' ">  <![CDATA[ ATTACH_NAME , ]]></if>
+				<if test="logicTablename != null and logicTablename != '' ">  <![CDATA[ LOGIC_TABLENAME , ]]></if>
+				<if test="logicColumn != null and logicColumn != '' ">  <![CDATA[ LOGIC_COLUMN , ]]></if>
+				<if test="attachSuffix != null and attachSuffix != '' ">  <![CDATA[ ATTACH_SUFFIX , ]]></if>
+				<if test="attachSize != null and attachSize != '' ">  <![CDATA[ ATTACH_SIZE , ]]></if>
+				<if test="relationalValue != null and relationalValue != '' ">  <![CDATA[ RELATIONAL_VALUE , ]]></if>
+				<if test="attachByte != null and attachByte != '' ">  <![CDATA[ ATTACH_BYTE , ]]></if>
+				<if test="createUserid != null and createUserid != '' ">  <![CDATA[ CREATE_USERID , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+				<if test="aesAttachByteForceByte != null and aesAttachByteForceByte != '' ">  <![CDATA[ ATTACH_AES_BYTE , ]]></if>
+
+				<if test="createTime != null  ">  <![CDATA[ CREATE_TIME , ]]></if>
+				<if test="prodInstId != null  ">  <![CDATA[ PROD_INST_ID , ]]></if>
+				<if test="ftpAttachName != null  ">  <![CDATA[ FTP_ATTACH_NAME , ]]></if>
+				<if test="attachmentType != null  ">  <![CDATA[ ATTACHMENT_TYPE , ]]></if>
+				<if test="ftpInfo != null  ">  <![CDATA[ FTP_INFO , ]]></if>
+				<if test="attachmentMaker != null  ">  <![CDATA[ ATTACHMENT_MAKER , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="attachName != null and attachName != '' ">  <![CDATA[ #{attachName } , ]]></if>
+				<if test="logicTablename != null and logicTablename != '' ">  <![CDATA[ #{logicTablename } , ]]></if>
+				<if test="logicColumn != null and logicColumn != '' ">  <![CDATA[ #{logicColumn } , ]]></if>
+				<if test="attachSuffix != null and attachSuffix != '' ">  <![CDATA[ #{attachSuffix } , ]]></if>
+				<if test="attachSize != null and attachSize != '' ">  <![CDATA[ #{attachSize } , ]]></if>
+				<if test="relationalValue != null and relationalValue != '' ">  <![CDATA[ #{relationalValue } , ]]></if>
+				<if test="attachByte != null and attachByte != '' ">  <![CDATA[ #{attachByte } , ]]></if>
+				<if test="createUserid != null and createUserid != '' ">  <![CDATA[ #{createUserid } , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId} , ]]></if>
+				<if test="aesAttachByteForceByte != null and aesAttachByteForceByte != '' ">  <![CDATA[ #{aesAttachByteForceByte} , ]]></if>
+				<if test="createTime != null ">  <![CDATA[ #{createTime } , ]]></if>
+				<if test="prodInstId != null ">  <![CDATA[ #{prodInstId } , ]]></if>
+				<if test="ftpAttachName != null  ">  <![CDATA[ #{ftpAttachName} , ]]></if>
+				<if test="attachmentType != null  ">  <![CDATA[ #{attachmentType} , ]]></if>
+				<if test="ftpInfo != null  ">  <![CDATA[ #{ftpInfo} , ]]></if>
+				<if test="attachmentMaker != null  ">  <![CDATA[ #{attachmentMaker} , ]]></if>
+			</trim>
+		)
+	</insert>
+
+	<!--获取附件 通过表明 字段  字段值-->
+	<select id="getAssetAttachmentinfoByParams" parameterType="AssetAttachmentinfo" resultType="AssetAttachmentinfo">
+		select t1.ID as id,
+			t1.ATTACH_NAME as attachName,
+			t1.LOGIC_TABLENAME as logicTablename,
+			t1.LOGIC_COLUMN as logicColumn,
+			t1.ATTACH_SUFFIX as attachSuffix,
+			t1.ATTACH_SIZE as attachSize,
+			t1.RELATIONAL_VALUE as relationalValue,
+			t1.ATTACH_BYTE as attachByte,
+			t1.CREATE_USERID as createUserid,
+			t1.TICKET_INST_ID as ticketInstId,
+			t1.PROD_INST_ID as prodInstId,
+			t1.FTP_ATTACH_NAME as ftpAttachName,
+			t1.FTP_INFO as ftpInfo
+		from ASSET_ATTACHMENTINFO t1 where t1.LOGIC_TABLENAME = #{logicTablename} and t1.LOGIC_COLUMN=#{logicColumn} and t1.RELATIONAL_VALUE=#{relationalValue}
+	</select>
+</mapper>

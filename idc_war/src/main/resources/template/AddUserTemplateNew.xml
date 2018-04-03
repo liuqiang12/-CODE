@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<newInfo>
+		<idcId>$ispSolidData.idcId</idcId>
+		<idcName>$ispSolidData.idcName</idcName>
+		<idcAdd>$ispSolidData.houseAdd</idcAdd>
+		<idcZip>$ispSolidData.houseZip</idcZip>
+		<corp>$ispSolidData.corp</corp>
+		<idcOfficer>
+			<name>$ispSolidData.offerName</name>
+			<idType>$ispSolidData.offerIdType</idType>
+			<id>$ispSolidData.offerId</id>
+			<tel>$ispSolidData.offerTel</tel>
+			<mobile>$ispSolidData.offerMobile</mobile>
+			<email>$ispSolidData.offerEmail</email>
+		</idcOfficer>
+		<emergencyContact>
+			<name>$ispSolidData.emergencyName</name>
+			<idType>$ispSolidData.emergencyIdType</idType>
+			<id>$ispSolidData.emergencyId</id>
+			<tel>$ispSolidData.emergencyTel</tel>
+			<mobile>$ispSolidData.emergencyMobile</mobile>
+			<email>$ispSolidData.emergencyEmail</email>
+		</emergencyContact>#if($has_www_customer=='1')#* 网络用户信息 *##foreach($item in $www_customers)#*用户信息*#
+		<userInfo>
+			<id>$item.aid</id>
+			<nature>$item.nature</nature>
+			<info>
+				<unitName>$item.unitName</unitName>
+				<unitNature>$item.unitNature</unitNature>
+				<idType>$item.idType</idType>
+				<idNumber>$item.idNumber</idNumber>
+				<officer>
+					<name>$item.offerName</name>
+					<idType>$item.offerIdType</idType>
+					<id>$item.offerId</id>
+					<tel>$item.offerTel</tel>
+					<mobile>$item.offerMobile</mobile>
+					<email>$item.offerEmail</email>
+				</officer>
+				<add>$item.addr</add>
+				<zipCode>$item.zipCode</zipCode>#foreach($serverItem in $item.localIspServerList)#*45服务信息*#
+				<serviceInfo>
+					<serviceId>$serverItem.aid</serviceId>#foreach( $serviceContentItem in $serverItem.serviceContent.split("[,]"))#* 17遍历服务项 *#
+					<serviceContent>$serviceContentItem</serviceContent>#end#* //	17遍历服务项 *#
+					#if($serverItem.regType)<regType>$serverItem.regType</regType>#end#* 判断非空 *#
+					#if($serverItem.regId)<regId>$serverItem.regId</regId>#end#* 判断非空 *#
+					#if($serverItem.setMode)<setMode>$serverItem.setMode</setMode>#end#* 判断非空 *#
+					#if($serverItem.business)<business>$serverItem.business</business>#end#* 判断非空 *##foreach($domainItem in $serverItem.domains)#* 域名信息 *#
+					<domain>
+						<id>$domainItem.aid</id>
+						<name>$domainItem.name</name>
+					</domain>#end#foreach($householdItem in $serverItem.localIspHouseholdList)#*59占用的机架*#
+					<housesHoldInfo>
+						<hhId>$householdItem.hhId</hhId>
+						<houseId>$householdItem.houseId</houseId>
+						<distributeTime>$householdItem.distributeTime</distributeTime>#if($serverItem.setMode == '1')#* 90setMode=1:虚拟机 *#
+						<virtualServer>
+							#if($householdItem.virtualhostName)<virtualhostName>$householdItem.virtualhostName</virtualhostName>#end#* 判断非空 *#
+							#if($householdItem.virtualhostState)<virtualhostState>$householdItem.virtualhostState</virtualhostState>#end#* 判断非空 *#
+							#if($householdItem.virtualhostType)<virtualhostType>$householdItem.virtualhostType</virtualhostType>#end#* 判断非空 *#
+							#if($householdItem.virtualhostAddress)<virtualhostAddress>$householdItem.virtualhostAddress</virtualhostAddress>#end#* 判断非空 *#
+							#if($householdItem.virtualhostManagementAddress)<virtualhostManagementAddress>$householdItem.virtualhostManagementAddress</virtualhostManagementAddress>#end#* 判断非空 *#
+						</virtualServer>#end#* //90setMode=1:虚拟机 *#
+						<frameInfoId>$householdItem.frameInfoId</frameInfoId>#if($householdItem.bandWidth)#* 35带宽 *#
+						<bandWidth>$householdItem.bandWidth</bandWidth>#end#* //35带宽 *#
+						<ipTrans>
+							<internetIp>
+								<startIp>$householdItem.startIp</startIp>
+								<endIp>$householdItem.startIp</endIp>
+							</internetIp>
+						</ipTrans>
+					</housesHoldInfo>#end#* //59占用的机架*#
+				</serviceInfo>#end#*//45服务信息*#
+				<registerTime>$item.registerTime</registerTime>
+			</info>
+		</userInfo>#end#end#if($has_other_customer=='1')#foreach($item in $other_customers)#*其他客户*#
+		<userInfo>
+			<id>$item.aid</id>
+			<nature>$item.nature</nature>
+			<info>
+				<unitName>$item.unitName</unitName>
+				<unitNature>$item.unitNature</unitNature>
+				<idType>$item.idType</idType>
+				<idNumber>$item.idNumber</idNumber>
+				<officer>
+					<name>$item.offerName</name>
+					<idType>$item.offerIdType</idType>
+					<id>$item.offerId</id>
+					<tel>$item.offerTel</tel>
+					<mobile>$item.offerMobile</mobile>
+					<email>$item.offerEmail</email>
+				</officer>
+				<add>$item.addr</add>
+				<zipCode>$item.zipCode</zipCode>
+				<serviceRegTime>$item.serviceRegTime</serviceRegTime>#foreach($householdItem in $item.localIspHouseholdList)#**#
+				<houseHoldInfo>
+					<hhId>$householdItem.frameInfoId</hhId>
+					<houseId>$householdItem.houseId</houseId>
+					<distributeTime>$householdItem.distributeTime</distributeTime>
+					<ipSeg>
+						<ipId>$householdItem.ipId</ipId>
+						<startIp>$householdItem.startIp</startIp>
+						<endIp>$householdItem.endIp</endIp>
+					</ipSeg>#if($householdItem.bandWidth)#* 35带宽 *#
+					<bandWidth>$householdItem.bandWidth</bandWidth>#end#* //35带宽 *#
+				</houseHoldInfo>#end#*   *#
+				<registerTime>$item.registerTime</registerTime>
+			</info>
+		</userInfo>#end#end#**#
+	</newInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

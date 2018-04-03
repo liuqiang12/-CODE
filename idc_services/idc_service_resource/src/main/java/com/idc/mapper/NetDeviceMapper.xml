@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetDeviceMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetDeviceMap" type="NetDevice">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="DEVICEID" property="deviceid" />
+				
+		<result column="DEVICECLASS" property="deviceclass" />
+				
+		<result column="ROUTTYPE" property="routtype" />
+				
+		<result column="ROUTNAME" property="routname" />
+				
+		<result column="NETWORKLAYER" property="networklayer" />
+				
+		<result column="LOGINUSER" property="loginuser" />
+				
+		<result column="LOGINPSW" property="loginpsw" />
+				
+		<result column="PRIVILEGEPSW" property="privilegepsw" />
+				
+		<result column="FACTORY" property="factory" />
+				
+		<result column="STATUS" property="status" />
+				
+		<result column="SNMPVERSION" property="snmpversion" />
+				
+		<result column="SNMPPORT" property="snmpport" />
+				
+		<result column="SNMPCOMMUNITY" property="snmpcommunity" />
+				
+		<result column="SNMPSETCOMMUNITY" property="snmpsetcommunity" />
+				
+		<result column="SNMPPASSWORD" property="snmppassword" />
+				
+		<result column="SNMPSCTTYPE" property="snmpscttype" />
+				
+		<result column="SNMPKEYSCTTYPE" property="snmpkeyscttype" />
+				
+		<result column="SNMPKEY" property="snmpkey" />
+				
+		<result column="DEVICEVERSION" property="deviceversion" />
+				
+		<result column="LOGINMODEL" property="loginmodel" />
+				
+		<result column="TELNETPORT" property="telnetport" />
+				
+		<result column="TELNETFLOWID" property="telnetflowid" />
+				
+		<result column="TELNETJUMPID" property="telnetjumpid" />
+				
+		<result column="TELNETVPNPARM" property="telnetvpnparm" />
+				
+		<result column="SYSDESCR" property="sysdescr" />
+				
+		<result column="SYSUPTIME" property="sysuptime" />
+				
+		<result column="DISTRIBUTEDNODEID" property="distributednodeid" />
+
+        <result column="IPADDRESS" property="ipaddress"/>
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="NetDevice">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE where DEVICEID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="NetDevice"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="NetDevice">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="NetDevice">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="NetDevice"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="NetDevice">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="NetDevice">
+		select
+		<include refid="baseColumn" />
+		from NET_DEVICE
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="NetDevice">
+		update NET_DEVICE
+		<include refid="updateParam" />
+		where deviceid=#{deviceid,jdbcType=DECIMAL}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_DEVICE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_DEVICE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_DEVICE where DEVICEID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="NetDevice">
+		delete from NET_DEVICE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_DEVICE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_DEVICE where DEVICEID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="NetDevice">
+		INSERT INTO NET_DEVICE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_DEVICE (
+		<include refid="insertColumn" />
+		)
+		select nd.* from (
+		<foreach collection="list" item="item" index="index" separator="union all">
+			select
+			<include refid="batchInsertColumnParam"/>
+			from dual
+		</foreach>
+		) nd
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	DEVICEID as deviceid,
+			DEVICECLASS as deviceclass,
+			ROUTTYPE as routtype,
+			ROUTNAME as routname,
+			NETWORKLAYER as networklayer,
+			LOGINUSER as loginuser,
+			LOGINPSW as loginpsw,
+			PRIVILEGEPSW as privilegepsw,
+			FACTORY as factory,
+			STATUS as status,
+			SNMPVERSION as snmpversion,
+			SNMPPORT as snmpport,
+			SNMPCOMMUNITY as snmpcommunity,
+			SNMPSETCOMMUNITY as snmpsetcommunity,
+			SNMPPASSWORD as snmppassword,
+			SNMPSCTTYPE as snmpscttype,
+			SNMPKEYSCTTYPE as snmpkeyscttype,
+			SNMPKEY as snmpkey,
+			DEVICEVERSION as deviceversion,
+			LOGINMODEL as loginmodel,
+			TELNETPORT as telnetport,
+			TELNETFLOWID as telnetflowid,
+			TELNETJUMPID as telnetjumpid,
+			TELNETVPNPARM as telnetvpnparm,
+			SYSDESCR as sysdescr,
+			SYSUPTIME as sysuptime,
+			DISTRIBUTEDNODEID as distributednodeid,
+			IPADDRESS as ipaddress
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[ and DEVICEID = #{deviceid} ]]></if>
+						
+			<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{deviceclass} ]]></if>
+						
+			<if test="routtype != null and routtype != '' ">  <![CDATA[ and ROUTTYPE = #{routtype} ]]></if>
+						
+			<if test="routname != null and routname != '' ">  <![CDATA[ and ROUTNAME = #{routname} ]]></if>
+						
+			<if test="networklayer != null and networklayer != '' ">  <![CDATA[ and NETWORKLAYER = #{networklayer} ]]></if>
+						
+			<if test="loginuser != null and loginuser != '' ">  <![CDATA[ and LOGINUSER = #{loginuser} ]]></if>
+						
+			<if test="loginpsw != null and loginpsw != '' ">  <![CDATA[ and LOGINPSW = #{loginpsw} ]]></if>
+						
+			<if test="privilegepsw != null and privilegepsw != '' ">  <![CDATA[ and PRIVILEGEPSW = #{privilegepsw} ]]></if>
+						
+			<if test="factory != null or factory == 0 ">  <![CDATA[ and FACTORY = #{factory} ]]></if>
+						
+			<if test="status != null or status == 0 ">  <![CDATA[ and STATUS = #{status} ]]></if>
+						
+			<if test="snmpversion != null or snmpversion == 0 ">  <![CDATA[ and SNMPVERSION = #{snmpversion} ]]></if>
+						
+			<if test="snmpport != null and snmpport != '' ">  <![CDATA[ and SNMPPORT = #{snmpport} ]]></if>
+						
+			<if test="snmpcommunity != null and snmpcommunity != '' ">  <![CDATA[ and SNMPCOMMUNITY = #{snmpcommunity} ]]></if>
+						
+			<if test="snmpsetcommunity != null and snmpsetcommunity != '' ">  <![CDATA[ and SNMPSETCOMMUNITY = #{snmpsetcommunity} ]]></if>
+						
+			<if test="snmppassword != null and snmppassword != '' ">  <![CDATA[ and SNMPPASSWORD = #{snmppassword} ]]></if>
+						
+			<if test="snmpscttype != null and snmpscttype != '' ">  <![CDATA[ and SNMPSCTTYPE = #{snmpscttype} ]]></if>
+						
+			<if test="snmpkeyscttype != null and snmpkeyscttype != '' ">  <![CDATA[ and SNMPKEYSCTTYPE = #{snmpkeyscttype} ]]></if>
+						
+			<if test="snmpkey != null and snmpkey != '' ">  <![CDATA[ and SNMPKEY = #{snmpkey} ]]></if>
+						
+			<if test="deviceversion != null and deviceversion != '' ">  <![CDATA[ and DEVICEVERSION = #{deviceversion} ]]></if>
+						
+			<if test="loginmodel != null or loginmodel == 0 ">  <![CDATA[ and LOGINMODEL = #{loginmodel} ]]></if>
+						
+			<if test="telnetport != null and telnetport != '' ">  <![CDATA[ and TELNETPORT = #{telnetport} ]]></if>
+						
+			<if test="telnetflowid != null and telnetflowid != '' ">  <![CDATA[ and TELNETFLOWID = #{telnetflowid} ]]></if>
+						
+			<if test="telnetjumpid != null and telnetjumpid != '' ">  <![CDATA[ and TELNETJUMPID = #{telnetjumpid} ]]></if>
+						
+			<if test="telnetvpnparm != null and telnetvpnparm != '' ">  <![CDATA[ and TELNETVPNPARM = #{telnetvpnparm} ]]></if>
+						
+			<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ and SYSDESCR = #{sysdescr} ]]></if>
+						
+			<if test="sysuptime != null and sysuptime != '' ">  <![CDATA[ and SYSUPTIME = #{sysuptime} ]]></if>
+						
+			<if test="distributednodeid != null and distributednodeid != '' ">  <![CDATA[ and DISTRIBUTEDNODEID = #{distributednodeid} ]]></if>
+
+            <if test="ipaddress != null and ipaddress != '' ">
+                <![CDATA[ and IPADDRESS = #{ipaddress} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.deviceid != null and params.deviceid != '' ">  <![CDATA[ and DEVICEID = #{params.deviceid} ]]></if>
+						
+			<if test="params.deviceclass != null and params.deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{params.deviceclass} ]]></if>
+						
+			<if test="params.routtype != null and params.routtype != '' ">  <![CDATA[ and ROUTTYPE = #{params.routtype} ]]></if>
+						
+			<if test="params.routname != null and params.routname != '' ">  <![CDATA[ and ROUTNAME = #{params.routname} ]]></if>
+						
+			<if test="params.networklayer != null and params.networklayer != '' ">  <![CDATA[ and NETWORKLAYER = #{params.networklayer} ]]></if>
+						
+			<if test="params.loginuser != null and params.loginuser != '' ">  <![CDATA[ and LOGINUSER = #{params.loginuser} ]]></if>
+						
+			<if test="params.loginpsw != null and params.loginpsw != '' ">  <![CDATA[ and LOGINPSW = #{params.loginpsw} ]]></if>
+						
+			<if test="params.privilegepsw != null and params.privilegepsw != '' ">  <![CDATA[ and PRIVILEGEPSW = #{params.privilegepsw} ]]></if>
+						
+			<if test="params.factory != null or params.factory == 0 ">  <![CDATA[ and FACTORY = #{params.factory} ]]></if>
+						
+			<if test="params.status != null or params.status == 0 ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+						
+			<if test="params.snmpversion != null or params.snmpversion == 0 ">  <![CDATA[ and SNMPVERSION = #{params.snmpversion} ]]></if>
+						
+			<if test="params.snmpport != null and params.snmpport != '' ">  <![CDATA[ and SNMPPORT = #{params.snmpport} ]]></if>
+						
+			<if test="params.snmpcommunity != null and params.snmpcommunity != '' ">  <![CDATA[ and SNMPCOMMUNITY = #{params.snmpcommunity} ]]></if>
+						
+			<if test="params.snmpsetcommunity != null and params.snmpsetcommunity != '' ">  <![CDATA[ and SNMPSETCOMMUNITY = #{params.snmpsetcommunity} ]]></if>
+						
+			<if test="params.snmppassword != null and params.snmppassword != '' ">  <![CDATA[ and SNMPPASSWORD = #{params.snmppassword} ]]></if>
+						
+			<if test="params.snmpscttype != null and params.snmpscttype != '' ">  <![CDATA[ and SNMPSCTTYPE = #{params.snmpscttype} ]]></if>
+						
+			<if test="params.snmpkeyscttype != null and params.snmpkeyscttype != '' ">  <![CDATA[ and SNMPKEYSCTTYPE = #{params.snmpkeyscttype} ]]></if>
+						
+			<if test="params.snmpkey != null and params.snmpkey != '' ">  <![CDATA[ and SNMPKEY = #{params.snmpkey} ]]></if>
+						
+			<if test="params.deviceversion != null and params.deviceversion != '' ">  <![CDATA[ and DEVICEVERSION = #{params.deviceversion} ]]></if>
+						
+			<if test="params.loginmodel != null or params.loginmodel == 0 ">  <![CDATA[ and LOGINMODEL = #{params.loginmodel} ]]></if>
+						
+			<if test="params.telnetport != null and params.telnetport != '' ">  <![CDATA[ and TELNETPORT = #{params.telnetport} ]]></if>
+						
+			<if test="params.telnetflowid != null and params.telnetflowid != '' ">  <![CDATA[ and TELNETFLOWID = #{params.telnetflowid} ]]></if>
+						
+			<if test="params.telnetjumpid != null and params.telnetjumpid != '' ">  <![CDATA[ and TELNETJUMPID = #{params.telnetjumpid} ]]></if>
+						
+			<if test="params.telnetvpnparm != null and params.telnetvpnparm != '' ">  <![CDATA[ and TELNETVPNPARM = #{params.telnetvpnparm} ]]></if>
+						
+			<if test="params.sysdescr != null and params.sysdescr != '' ">  <![CDATA[ and SYSDESCR = #{params.sysdescr} ]]></if>
+						
+			<if test="params.sysuptime != null and params.sysuptime != '' ">  <![CDATA[ and SYSUPTIME = #{params.sysuptime} ]]></if>
+						
+			<if test="params.distributednodeid != null and params.distributednodeid != '' ">  <![CDATA[ and DISTRIBUTEDNODEID = #{params.distributednodeid} ]]></if>
+
+            <if test="params.ipaddress != null and params.ipaddress != '' ">
+                <![CDATA[ and IPADDRESS = #{params.ipaddress} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="deviceid != null and deviceid != '' ">  <![CDATA[  DEVICEID = #{deviceid } ,]]></if>
+						
+			<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[  DEVICECLASS = #{deviceclass } ,]]></if>
+						
+			<if test="routtype != null and routtype != '' ">  <![CDATA[  ROUTTYPE = #{routtype } ,]]></if>
+						
+			<if test="routname != null and routname != '' ">  <![CDATA[  ROUTNAME = #{routname } ,]]></if>
+						
+			<if test="networklayer != null and networklayer != '' ">  <![CDATA[  NETWORKLAYER = #{networklayer } ,]]></if>
+						
+			<if test="loginuser != null and loginuser != '' ">  <![CDATA[  LOGINUSER = #{loginuser } ,]]></if>
+						
+			<if test="loginpsw != null and loginpsw != '' ">  <![CDATA[  LOGINPSW = #{loginpsw } ,]]></if>
+						
+			<if test="privilegepsw != null and privilegepsw != '' ">  <![CDATA[  PRIVILEGEPSW = #{privilegepsw } ,]]></if>
+						
+			<if test="factory != null or factory == 0 ">  <![CDATA[  FACTORY = #{factory } ,]]></if>
+						
+			<if test="status != null or status == 0 ">  <![CDATA[  STATUS = #{status } ,]]></if>
+						
+			<if test="snmpversion != null or snmpversion == 0 ">  <![CDATA[  SNMPVERSION = #{snmpversion } ,]]></if>
+						
+			<if test="snmpport != null and snmpport != '' ">  <![CDATA[  SNMPPORT = #{snmpport } ,]]></if>
+						
+			<if test="snmpcommunity != null and snmpcommunity != '' ">  <![CDATA[  SNMPCOMMUNITY = #{snmpcommunity } ,]]></if>
+						
+			<if test="snmpsetcommunity != null and snmpsetcommunity != '' ">  <![CDATA[  SNMPSETCOMMUNITY = #{snmpsetcommunity } ,]]></if>
+						
+			<if test="snmppassword != null and snmppassword != '' ">  <![CDATA[  SNMPPASSWORD = #{snmppassword } ,]]></if>
+						
+			<if test="snmpscttype != null and snmpscttype != '' ">  <![CDATA[  SNMPSCTTYPE = #{snmpscttype } ,]]></if>
+						
+			<if test="snmpkeyscttype != null and snmpkeyscttype != '' ">  <![CDATA[  SNMPKEYSCTTYPE = #{snmpkeyscttype } ,]]></if>
+						
+			<if test="snmpkey != null and snmpkey != '' ">  <![CDATA[  SNMPKEY = #{snmpkey } ,]]></if>
+						
+			<if test="deviceversion != null and deviceversion != '' ">  <![CDATA[  DEVICEVERSION = #{deviceversion } ,]]></if>
+						
+			<if test="loginmodel != null or loginmodel == 0 ">  <![CDATA[  LOGINMODEL = #{loginmodel } ,]]></if>
+						
+			<if test="telnetport != null and telnetport != '' ">  <![CDATA[  TELNETPORT = #{telnetport } ,]]></if>
+						
+			<if test="telnetflowid != null and telnetflowid != '' ">  <![CDATA[  TELNETFLOWID = #{telnetflowid } ,]]></if>
+						
+			<if test="telnetjumpid != null and telnetjumpid != '' ">  <![CDATA[  TELNETJUMPID = #{telnetjumpid } ,]]></if>
+						
+			<if test="telnetvpnparm != null and telnetvpnparm != '' ">  <![CDATA[  TELNETVPNPARM = #{telnetvpnparm } ,]]></if>
+						
+			<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[  SYSDESCR = #{sysdescr } ,]]></if>
+						
+			<if test="sysuptime != null and sysuptime != '' ">  <![CDATA[  SYSUPTIME = #{sysuptime } ,]]></if>
+						
+			<if test="distributednodeid != null and distributednodeid != '' ">  <![CDATA[  DISTRIBUTEDNODEID = #{distributednodeid } ,]]></if>
+
+            <if test="ipaddress != null and ipaddress != '' ">
+                <![CDATA[  IPADDRESS = #{ipaddress } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="deviceid != null and deviceid != '' ">  <![CDATA[ DEVICEID , ]]></if>
+				
+		<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ DEVICECLASS , ]]></if>
+				
+		<if test="routtype != null and routtype != '' ">  <![CDATA[ ROUTTYPE , ]]></if>
+				
+		<if test="routname != null and routname != '' ">  <![CDATA[ ROUTNAME , ]]></if>
+				
+		<if test="networklayer != null and networklayer != '' ">  <![CDATA[ NETWORKLAYER , ]]></if>
+				
+		<if test="loginuser != null and loginuser != '' ">  <![CDATA[ LOGINUSER , ]]></if>
+				
+		<if test="loginpsw != null and loginpsw != '' ">  <![CDATA[ LOGINPSW , ]]></if>
+				
+		<if test="privilegepsw != null and privilegepsw != '' ">  <![CDATA[ PRIVILEGEPSW , ]]></if>
+				
+		<if test="factory != null or factory == 0 ">  <![CDATA[ FACTORY , ]]></if>
+				
+		<if test="status != null or status == 0 ">  <![CDATA[ STATUS , ]]></if>
+				
+		<if test="snmpversion != null or snmpversion == 0 ">  <![CDATA[ SNMPVERSION , ]]></if>
+				
+		<if test="snmpport != null and snmpport != '' ">  <![CDATA[ SNMPPORT , ]]></if>
+				
+		<if test="snmpcommunity != null and snmpcommunity != '' ">  <![CDATA[ SNMPCOMMUNITY , ]]></if>
+				
+		<if test="snmpsetcommunity != null and snmpsetcommunity != '' ">  <![CDATA[ SNMPSETCOMMUNITY , ]]></if>
+				
+		<if test="snmppassword != null and snmppassword != '' ">  <![CDATA[ SNMPPASSWORD , ]]></if>
+				
+		<if test="snmpscttype != null and snmpscttype != '' ">  <![CDATA[ SNMPSCTTYPE , ]]></if>
+				
+		<if test="snmpkeyscttype != null and snmpkeyscttype != '' ">  <![CDATA[ SNMPKEYSCTTYPE , ]]></if>
+				
+		<if test="snmpkey != null and snmpkey != '' ">  <![CDATA[ SNMPKEY , ]]></if>
+				
+		<if test="deviceversion != null and deviceversion != '' ">  <![CDATA[ DEVICEVERSION , ]]></if>
+				
+		<if test="loginmodel != null or loginmodel == 0 ">  <![CDATA[ LOGINMODEL , ]]></if>
+				
+		<if test="telnetport != null and telnetport != '' ">  <![CDATA[ TELNETPORT , ]]></if>
+				
+		<if test="telnetflowid != null and telnetflowid != '' ">  <![CDATA[ TELNETFLOWID , ]]></if>
+				
+		<if test="telnetjumpid != null and telnetjumpid != '' ">  <![CDATA[ TELNETJUMPID , ]]></if>
+				
+		<if test="telnetvpnparm != null and telnetvpnparm != '' ">  <![CDATA[ TELNETVPNPARM , ]]></if>
+				
+		<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ SYSDESCR , ]]></if>
+				
+		<if test="sysuptime != null and sysuptime != '' ">  <![CDATA[ SYSUPTIME , ]]></if>
+				
+		<if test="distributednodeid != null and distributednodeid != '' ">  <![CDATA[ DISTRIBUTEDNODEID , ]]></if>
+
+            <if test="ipaddress != null and ipaddress != '' ">  <![CDATA[ IPADDRESS , ]]></if>
+        </trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="deviceid != null and deviceid != '' ">  <![CDATA[ #{deviceid } , ]]></if>
+				
+		<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ #{deviceclass } , ]]></if>
+				
+		<if test="routtype != null and routtype != '' ">  <![CDATA[ #{routtype } , ]]></if>
+				
+		<if test="routname != null and routname != '' ">  <![CDATA[ #{routname } , ]]></if>
+				
+		<if test="networklayer != null and networklayer != '' ">  <![CDATA[ #{networklayer } , ]]></if>
+				
+		<if test="loginuser != null and loginuser != '' ">  <![CDATA[ #{loginuser } , ]]></if>
+				
+		<if test="loginpsw != null and loginpsw != '' ">  <![CDATA[ #{loginpsw } , ]]></if>
+				
+		<if test="privilegepsw != null and privilegepsw != '' ">  <![CDATA[ #{privilegepsw } , ]]></if>
+				
+		<if test="factory != null or factory == 0 ">  <![CDATA[ #{factory } , ]]></if>
+				
+		<if test="status != null or status == 0 ">  <![CDATA[ #{status } , ]]></if>
+				
+		<if test="snmpversion != null or snmpversion == 0 ">  <![CDATA[ #{snmpversion } , ]]></if>
+				
+		<if test="snmpport != null and snmpport != '' ">  <![CDATA[ #{snmpport } , ]]></if>
+				
+		<if test="snmpcommunity != null and snmpcommunity != '' ">  <![CDATA[ #{snmpcommunity } , ]]></if>
+				
+		<if test="snmpsetcommunity != null and snmpsetcommunity != '' ">  <![CDATA[ #{snmpsetcommunity } , ]]></if>
+				
+		<if test="snmppassword != null and snmppassword != '' ">  <![CDATA[ #{snmppassword } , ]]></if>
+				
+		<if test="snmpscttype != null and snmpscttype != '' ">  <![CDATA[ #{snmpscttype } , ]]></if>
+				
+		<if test="snmpkeyscttype != null and snmpkeyscttype != '' ">  <![CDATA[ #{snmpkeyscttype } , ]]></if>
+				
+		<if test="snmpkey != null and snmpkey != '' ">  <![CDATA[ #{snmpkey } , ]]></if>
+				
+		<if test="deviceversion != null and deviceversion != '' ">  <![CDATA[ #{deviceversion } , ]]></if>
+				
+		<if test="loginmodel != null or loginmodel == 0 ">  <![CDATA[ #{loginmodel } , ]]></if>
+				
+		<if test="telnetport != null and telnetport != '' ">  <![CDATA[ #{telnetport } , ]]></if>
+				
+		<if test="telnetflowid != null and telnetflowid != '' ">  <![CDATA[ #{telnetflowid } , ]]></if>
+				
+		<if test="telnetjumpid != null and telnetjumpid != '' ">  <![CDATA[ #{telnetjumpid } , ]]></if>
+				
+		<if test="telnetvpnparm != null and telnetvpnparm != '' ">  <![CDATA[ #{telnetvpnparm } , ]]></if>
+				
+		<if test="sysdescr != null and sysdescr != '' ">  <![CDATA[ #{sysdescr } , ]]></if>
+				
+		<if test="sysuptime != null and sysuptime != '' ">  <![CDATA[ #{sysuptime } , ]]></if>
+				
+		<if test="distributednodeid != null and distributednodeid != '' ">  <![CDATA[ #{distributednodeid } , ]]></if>
+
+            <if test="ipaddress != null and ipaddress != '' ">  <![CDATA[ #{ipaddress } , ]]></if>
+        </trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+        DEVICEID,DEVICECLASS,ROUTTYPE,ROUTNAME,NETWORKLAYER,LOGINUSER,LOGINPSW,PRIVILEGEPSW,FACTORY,STATUS,SNMPVERSION,SNMPPORT,SNMPCOMMUNITY,
+        SNMPSETCOMMUNITY,SNMPPASSWORD,SNMPSCTTYPE,SNMPKEYSCTTYPE,SNMPKEY,DEVICEVERSION,LOGINMODEL,TELNETPORT,TELNETFLOWID,TELNETJUMPID,TELNETVPNPARM,
+        SYSDESCR,SYSUPTIME,DISTRIBUTEDNODEID,IPADDRESS
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+        #{item.deviceid},#{item.deviceclass},#{item.routtype},#{item.routname},#{item.networklayer},#{item.loginuser},#{item.loginpsw},#{item.privilegepsw},
+        #{item.factory},#{item.status},#{item.snmpversion},#{item.snmpport},#{item.snmpcommunity},#{item.snmpsetcommunity},#{item.snmppassword},#{item.snmpscttype},
+        #{item.snmpkeyscttype},#{item.snmpkey},#{item.deviceversion},#{item.loginmodel},#{item.telnetport},#{item.telnetflowid},#{item.telnetjumpid},#{item.telnetvpnparm},
+        #{item.sysdescr},#{item.sysuptime},#{item.distributednodeid},#{item.ipaddress}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

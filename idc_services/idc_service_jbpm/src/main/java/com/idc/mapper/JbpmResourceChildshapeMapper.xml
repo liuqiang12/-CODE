@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.JbpmResourceChildshapeMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultJbpmResourceChildshapeMap" type="JbpmResourceChildshape">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="RESOURCE_ID" property="resourceId" />
+				
+		<result column="TASK_ID" property="taskId" />
+				
+		<result column="TASK_NAME" property="taskName" />
+		<result column="FORM_KEY" property="formKey" />
+
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="JbpmResourceChildshape">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="JbpmResourceChildshape"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="JbpmResourceChildshape">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="JbpmResourceChildshape">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+	</select>
+
+	<select id="getJbpmResourceChildshapaIds" resultType="Long">
+		select id from JBPM_RESOURCE_CHILDSHAPE where RESOURCE_ID = #{0}
+	</select>
+
+	<delete id="deleteByResource" >
+		delete from JBPM_RESOURCE_CHILDSHAPE
+		where RESOURCE_ID = #{0}
+	</delete>
+
+
+
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="JbpmResourceChildshape"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="JbpmResourceChildshape">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="JbpmResourceChildshape">
+		select
+		<include refid="baseColumn" />
+		from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="JbpmResourceChildshape">
+		update JBPM_RESOURCE_CHILDSHAPE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update JBPM_RESOURCE_CHILDSHAPE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from JBPM_RESOURCE_CHILDSHAPE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from JBPM_RESOURCE_CHILDSHAPE where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="JbpmResourceChildshape">
+		delete from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from JBPM_RESOURCE_CHILDSHAPE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from JBPM_RESOURCE_CHILDSHAPE where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="createJbpmResourceChildshape" parameterType="JbpmResourceChildshape" >
+		<selectKey  keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_JBPM_RESOURCE_CHILDSHAPE.CURRVAL AS id FROM DUAL
+		</selectKey>
+
+		INSERT INTO JBPM_RESOURCE_CHILDSHAPE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="JbpmResourceChildshape"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO JBPM_RESOURCE_CHILDSHAPE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO JBPM_RESOURCE_CHILDSHAPE (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			RESOURCE_ID as resourceId,
+			TASK_ID as taskId,
+			TASK_NAME as taskName,
+			FORM_KEY as formKey
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[ and RESOURCE_ID = #{resourceId} ]]></if>
+						
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ and TASK_ID = #{taskId} ]]></if>
+						
+			<if test="taskName != null and taskName != '' ">  <![CDATA[ and TASK_NAME = #{taskName} ]]></if>
+			<if test="formKey != null and formKey != '' ">  <![CDATA[ and FORM_KEY = #{formKey} ]]></if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+			<if test="params.resourceId != null and params.resourceId != '' ">  <![CDATA[ and RESOURCE_ID = #{params.resourceId} ]]></if>
+			<if test="params.taskId != null and params.taskId != '' ">  <![CDATA[ and TASK_ID = #{params.taskId} ]]></if>
+			<if test="params.taskName != null and params.taskName != '' ">  <![CDATA[ and TASK_NAME = #{params.taskName} ]]></if>
+			<if test="params.formKey != null and params.formKey != '' ">  <![CDATA[ and FORM_KEY = #{params.formKey} ]]></if>
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[  RESOURCE_ID = #{resourceId } ,]]></if>
+						
+			<if test="taskId != null and taskId != '' ">  <![CDATA[  TASK_ID = #{taskId } ,]]></if>
+						
+			<if test="taskName != null and taskName != '' ">  <![CDATA[  TASK_NAME = #{taskName } ,]]></if>
+			<if test="formKey != null and formKey != '' ">  <![CDATA[ FORM_KEY = #{formKey} , ]]></if>
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+			<if test="resourceId != null and resourceId != '' ">  <![CDATA[ RESOURCE_ID , ]]></if>
+			<if test="taskId != null and taskId != '' ">  <![CDATA[ TASK_ID , ]]></if>
+			<if test="taskName != null and taskName != '' ">  <![CDATA[ TASK_NAME , ]]></if>
+			<if test="formKey != null and formKey != '' ">  <![CDATA[ FORM_KEY , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+		<if test="resourceId != null and resourceId != '' ">  <![CDATA[ #{resourceId } , ]]></if>
+		<if test="taskId != null and taskId != '' ">  <![CDATA[ #{taskId } , ]]></if>
+		<if test="taskName != null and taskName != '' ">  <![CDATA[ #{taskName } , ]]></if>
+		<if test="formKey != null and formKey != '' ">  <![CDATA[ #{formKey } , ]]></if>
+		</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,RESOURCE_ID,TASK_ID,TASK_NAME,FORM_KEY
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.resourceId},#{item.taskId},#{item.taskName},#{item.formKey}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

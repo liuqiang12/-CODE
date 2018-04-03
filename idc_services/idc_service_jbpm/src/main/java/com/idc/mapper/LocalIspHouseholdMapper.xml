@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspHouseholdMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspHouseholdMap" type="LocalIspHousehold">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="AID" property="aid" />
+				
+		<result column="HH_ID" property="hhId" />
+				
+		<result column="HOUSE_ID" property="houseId" />
+				
+		<result column="DISTRIBUTE_TIME" property="distributeTime" />
+				
+		<result column="VIRTUALHOST_NAME" property="virtualhostName" />
+				
+		<result column="VIRTUALHOST_STATE" property="virtualhostState" />
+				
+		<result column="VIRTUALHOST_TYPE" property="virtualhostType" />
+				
+		<result column="VIRTUALHOST_ADDRESS" property="virtualhostAddress" />
+				
+		<result column="VIRTUALHOST_MANAGEMENT_ADDRESS" property="virtualhostManagementAddress" />
+				
+		<result column="FRAME_INFO_ID" property="frameInfoId" />
+				
+		<result column="BAND_WIDTH" property="bandWidth" />
+				
+		<result column="FK_SERVER_ID" property="fkServerId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspHousehold">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspHousehold"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspHousehold">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspHousehold">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspHousehold"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspHousehold">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspHousehold">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_HOUSEHOLD
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspHousehold">
+		update LOCAL_ISP_HOUSEHOLD
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_HOUSEHOLD
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_HOUSEHOLD
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_HOUSEHOLD where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspHousehold">
+		delete from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_HOUSEHOLD
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_HOUSEHOLD where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspHousehold"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO LOCAL_ISP_HOUSEHOLD
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_HOUSEHOLD (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,			HH_ID as hhId,			HOUSE_ID as houseId,			DISTRIBUTE_TIME as distributeTime,			VIRTUALHOST_NAME as virtualhostName,			VIRTUALHOST_STATE as virtualhostState,			VIRTUALHOST_TYPE as virtualhostType,			VIRTUALHOST_ADDRESS as virtualhostAddress,			VIRTUALHOST_MANAGEMENT_ADDRESS as virtualhostManagementAddress,			FRAME_INFO_ID as frameInfoId,			BAND_WIDTH as bandWidth,			FK_SERVER_ID as fkServerId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="hhId != null and hhId != '' ">  <![CDATA[ and HH_ID = #{hhId} ]]></if>
+						
+			<if test="houseId != null and houseId != '' ">  <![CDATA[ and HOUSE_ID = #{houseId} ]]></if>
+						
+			<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[ and DISTRIBUTE_TIME = #{distributeTime} ]]></if>
+						
+			<if test="virtualhostName != null and virtualhostName != '' ">  <![CDATA[ and VIRTUALHOST_NAME = #{virtualhostName} ]]></if>
+						
+			<if test="virtualhostState != null and virtualhostState != '' ">  <![CDATA[ and VIRTUALHOST_STATE = #{virtualhostState} ]]></if>
+						
+			<if test="virtualhostType != null and virtualhostType != '' ">  <![CDATA[ and VIRTUALHOST_TYPE = #{virtualhostType} ]]></if>
+						
+			<if test="virtualhostAddress != null and virtualhostAddress != '' ">  <![CDATA[ and VIRTUALHOST_ADDRESS = #{virtualhostAddress} ]]></if>
+						
+			<if test="virtualhostManagementAddress != null and virtualhostManagementAddress != '' ">  <![CDATA[ and VIRTUALHOST_MANAGEMENT_ADDRESS = #{virtualhostManagementAddress} ]]></if>
+						
+			<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[ and FRAME_INFO_ID = #{frameInfoId} ]]></if>
+						
+			<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ and BAND_WIDTH = #{bandWidth} ]]></if>
+						
+			<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ and FK_SERVER_ID = #{fkServerId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.hhId != null and params.hhId != '' ">  <![CDATA[ and HH_ID = #{params.hhId} ]]></if>
+						
+			<if test="params.houseId != null and params.houseId != '' ">  <![CDATA[ and HOUSE_ID = #{params.houseId} ]]></if>
+						
+			<if test="params.distributeTime != null and params.distributeTime != '' ">  <![CDATA[ and DISTRIBUTE_TIME = #{params.distributeTime} ]]></if>
+						
+			<if test="params.virtualhostName != null and params.virtualhostName != '' ">  <![CDATA[ and VIRTUALHOST_NAME = #{params.virtualhostName} ]]></if>
+						
+			<if test="params.virtualhostState != null and params.virtualhostState != '' ">  <![CDATA[ and VIRTUALHOST_STATE = #{params.virtualhostState} ]]></if>
+						
+			<if test="params.virtualhostType != null and params.virtualhostType != '' ">  <![CDATA[ and VIRTUALHOST_TYPE = #{params.virtualhostType} ]]></if>
+						
+			<if test="params.virtualhostAddress != null and params.virtualhostAddress != '' ">  <![CDATA[ and VIRTUALHOST_ADDRESS = #{params.virtualhostAddress} ]]></if>
+						
+			<if test="params.virtualhostManagementAddress != null and params.virtualhostManagementAddress != '' ">  <![CDATA[ and VIRTUALHOST_MANAGEMENT_ADDRESS = #{params.virtualhostManagementAddress} ]]></if>
+						
+			<if test="params.frameInfoId != null and params.frameInfoId != '' ">  <![CDATA[ and FRAME_INFO_ID = #{params.frameInfoId} ]]></if>
+						
+			<if test="params.bandWidth != null and params.bandWidth != '' ">  <![CDATA[ and BAND_WIDTH = #{params.bandWidth} ]]></if>
+						
+			<if test="params.fkServerId != null and params.fkServerId != '' ">  <![CDATA[ and FK_SERVER_ID = #{params.fkServerId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="hhId != null and hhId != '' ">  <![CDATA[  HH_ID = #{hhId } ,]]></if>
+						
+			<if test="houseId != null and houseId != '' ">  <![CDATA[  HOUSE_ID = #{houseId } ,]]></if>
+						
+			<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[  DISTRIBUTE_TIME = #{distributeTime } ,]]></if>
+						
+			<if test="virtualhostName != null and virtualhostName != '' ">  <![CDATA[  VIRTUALHOST_NAME = #{virtualhostName } ,]]></if>
+						
+			<if test="virtualhostState != null and virtualhostState != '' ">  <![CDATA[  VIRTUALHOST_STATE = #{virtualhostState } ,]]></if>
+						
+			<if test="virtualhostType != null and virtualhostType != '' ">  <![CDATA[  VIRTUALHOST_TYPE = #{virtualhostType } ,]]></if>
+						
+			<if test="virtualhostAddress != null and virtualhostAddress != '' ">  <![CDATA[  VIRTUALHOST_ADDRESS = #{virtualhostAddress } ,]]></if>
+						
+			<if test="virtualhostManagementAddress != null and virtualhostManagementAddress != '' ">  <![CDATA[  VIRTUALHOST_MANAGEMENT_ADDRESS = #{virtualhostManagementAddress } ,]]></if>
+						
+			<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[  FRAME_INFO_ID = #{frameInfoId } ,]]></if>
+						
+			<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[  BAND_WIDTH = #{bandWidth } ,]]></if>
+						
+			<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[  FK_SERVER_ID = #{fkServerId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="hhId != null and hhId != '' ">  <![CDATA[ HH_ID , ]]></if>
+				
+		<if test="houseId != null and houseId != '' ">  <![CDATA[ HOUSE_ID , ]]></if>
+				
+		<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[ DISTRIBUTE_TIME , ]]></if>
+				
+		<if test="virtualhostName != null and virtualhostName != '' ">  <![CDATA[ VIRTUALHOST_NAME , ]]></if>
+				
+		<if test="virtualhostState != null and virtualhostState != '' ">  <![CDATA[ VIRTUALHOST_STATE , ]]></if>
+				
+		<if test="virtualhostType != null and virtualhostType != '' ">  <![CDATA[ VIRTUALHOST_TYPE , ]]></if>
+				
+		<if test="virtualhostAddress != null and virtualhostAddress != '' ">  <![CDATA[ VIRTUALHOST_ADDRESS , ]]></if>
+				
+		<if test="virtualhostManagementAddress != null and virtualhostManagementAddress != '' ">  <![CDATA[ VIRTUALHOST_MANAGEMENT_ADDRESS , ]]></if>
+				
+		<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[ FRAME_INFO_ID , ]]></if>
+				
+		<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ BAND_WIDTH , ]]></if>
+				
+		<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ FK_SERVER_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="hhId != null and hhId != '' ">  <![CDATA[ #{hhId } , ]]></if>
+				
+		<if test="houseId != null and houseId != '' ">  <![CDATA[ #{houseId } , ]]></if>
+				
+		<if test="distributeTime != null and distributeTime != '' ">  <![CDATA[ #{distributeTime } , ]]></if>
+				
+		<if test="virtualhostName != null and virtualhostName != '' ">  <![CDATA[ #{virtualhostName } , ]]></if>
+				
+		<if test="virtualhostState != null and virtualhostState != '' ">  <![CDATA[ #{virtualhostState } , ]]></if>
+				
+		<if test="virtualhostType != null and virtualhostType != '' ">  <![CDATA[ #{virtualhostType } , ]]></if>
+				
+		<if test="virtualhostAddress != null and virtualhostAddress != '' ">  <![CDATA[ #{virtualhostAddress } , ]]></if>
+				
+		<if test="virtualhostManagementAddress != null and virtualhostManagementAddress != '' ">  <![CDATA[ #{virtualhostManagementAddress } , ]]></if>
+				
+		<if test="frameInfoId != null and frameInfoId != '' ">  <![CDATA[ #{frameInfoId } , ]]></if>
+				
+		<if test="bandWidth != null and bandWidth != '' ">  <![CDATA[ #{bandWidth } , ]]></if>
+				
+		<if test="fkServerId != null and fkServerId != '' ">  <![CDATA[ #{fkServerId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,HH_ID,HOUSE_ID,DISTRIBUTE_TIME,VIRTUALHOST_NAME,VIRTUALHOST_STATE,VIRTUALHOST_TYPE,VIRTUALHOST_ADDRESS,VIRTUALHOST_MANAGEMENT_ADDRESS,FRAME_INFO_ID,BAND_WIDTH,FK_SERVER_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.hhId},#{item.houseId},#{item.distributeTime},#{item.virtualhostName},#{item.virtualhostState},#{item.virtualhostType},#{item.virtualhostAddress},#{item.virtualhostManagementAddress},#{item.frameInfoId},#{item.bandWidth},#{item.fkServerId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

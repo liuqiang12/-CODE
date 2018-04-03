@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIpinfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIpInfoMap" type="IdcIpInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="IPADDRESS" property="ipaddress" />
+				
+		<result column="DECIMALIP" property="decimalip" />
+				
+		<result column="SUBNETID" property="subnetid" />
+				
+		<result column="SUBNETIP" property="subnetip" />
+				
+		<result column="MASKSTR" property="maskstr" />
+				
+		<result column="MASK" property="mask" />
+				
+		<result column="STATUS" property="status" />
+				
+		<result column="MAC" property="mac" />
+				
+		<result column="TICKET" property="ticket" />
+				
+		<result column="USETYPE" property="usetype" />
+
+        <result column="REMARK" property="remark" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcIpInfo">
+		select
+		<include refid="baseColumn" />
+		from IDC_IPINFO where ID= #{0}
+	</select>
+    <select id="getAllocationIP" resultType="IdcIpInfo">
+        select
+        <include refid="baseColumn" />
+        from IDC_IPINFO where STATUS = 0 and  ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcIpInfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_IPINFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getSeqs" resultType="Long">
+        select IDC_IPINFO_SEQ.nextval from (select 1 from all_objects where rownum &lt;= #{0})
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcIpInfo">
+		select
+		<include refid="baseColumn" />
+		from IDC_IPINFO
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcIpInfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_IPINFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcIpInfo">
+		select
+		<include refid="baseColumn" />
+		from IDC_IPINFO
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcIpInfo">
+		select
+        a.ID as id,
+        a.IPADDRESS as ipaddress,
+        a.DECIMALIP as decimalip,
+        a.SUBNETID as subnetid,
+        a.SUBNETIP as subnetip,
+        a.MASKSTR as maskstr,
+        a.MASK as mask,
+        a.STATUS as status,
+        a.MAC as mac,
+        a.TICKET as ticket,
+        a.USETYPE as usetype,
+        a.REMARK as remark
+        ,b.name as userid
+		from IDC_IPINFO a
+        LEFT JOIN  IDC_HIS_TICKET c on a.ticket  = c.ID
+        LEFT JOIN IDC_RE_CUSTOMER b on  c .CUSTOMER_ID = b.id
+        <include refid="wherePageParamTemp"/>
+        order by a.DECIMALIP
+	</select>
+	<select id="countUsed" resultType="Map">
+       SELECT
+	b.total AS total,
+	A .used
+FROM
+	(
+		SELECT
+			COUNT (A . ID) used
+		FROM
+			idc_ipinfo A
+		LEFT JOIN IDC_IPSUBNET b ON A .subnetid = b. ID
+		WHERE
+			A .status > 0
+		AND b.LOCALid = #{localId}
+	) A
+LEFT JOIN (
+	SELECT
+		COUNT (A . ID) AS total
+	FROM
+		idc_ipinfo A
+	LEFT JOIN IDC_IPSUBNET b ON A .subnetid = b. ID
+	WHERE
+		b.LOCALid = #{localId}
+) b ON 1 = 1
+    </select>
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcIpInfo">
+		update IDC_IPINFO
+		<include refid="updateParam" />
+        WHERE ID = #{id}
+	</update>
+
+	<update id="singleUpdateInfoById" >
+		update IDC_IPINFO SET STATUS = #{status} WHERE ID = #{resourceId}
+	</update>
+    <update id="recoveryByids" >
+        update IDC_IPINFO SET STATUS = 0,usetype = null WHERE ID in
+        <foreach collection="ids" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <update id="recoveryBySubnetids" >
+        update IDC_IPINFO SET STATUS = 0,usetype = null WHERE subnetid in
+        <foreach collection="subnetids" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+	<!-- 工单使用 foreachUpdateInfo -->
+	<update id="foreachUpdateInfo" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="begin"  close="end;">
+			UPDATE IDC_IPINFO set STATUS = ${item.status} WHERE ID = ${item.resourceId};
+		</foreach>
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_IPINFO
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+    <update id="updateIpBySubnet" parameterType="com.idc.model.IdcIpSubnet">
+        update IDC_IPINFO  SET
+        SUBNETID=#{id},MASK=#{mask},MASKSTR=#{maskstr},SUBNETIP=#{subnetip}
+        WHERE SUBNETID = #{pid} And DECIMALIP BETWEEN #{begipnum} and #{endipnum}
+    </update>
+	<update id="updateBuSubnet">
+             update IDC_IPINFO  SET
+        status=#{status},TICKET=#{ticketid},userId=#{userId},remark=#{remark}
+        WHERE subNetId = #{subNetId}
+	</update>
+
+    <!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_IPINFO
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_IPINFO where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcIpInfo">
+		delete from IDC_IPINFO
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_IPINFO
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_IPINFO where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcIpInfo"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_IPINFO
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_IPINFO (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			IPADDRESS as ipaddress,
+			DECIMALIP as decimalip,
+			SUBNETID as subnetid,
+			SUBNETIP as subnetip,
+			MASKSTR as maskstr,
+			MASK as mask,
+			STATUS as status,
+			MAC as mac,
+			TICKET as ticket,
+			USETYPE as usetype,
+			REMARK as remark
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="ipaddress != null and ipaddress != '' ">  <![CDATA[ and IPADDRESS = #{ipaddress} ]]></if>
+						
+			<if test="decimalip != null and decimalip != '' ">  <![CDATA[ and DECIMALIP = #{decimalip} ]]></if>
+						
+			<if test="subnetid != null and subnetid != '' ">  <![CDATA[ and SUBNETID = #{subnetid} ]]></if>
+						
+			<if test="subnetip != null and subnetip != '' ">  <![CDATA[ and SUBNETIP = #{subnetip} ]]></if>
+						
+			<if test="maskstr != null and maskstr != '' ">  <![CDATA[ and MASKSTR = #{maskstr} ]]></if>
+						
+			<if test="mask != null and mask != '' ">  <![CDATA[ and MASK = #{mask} ]]></if>
+						
+			<if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+						
+			<if test="mac != null and mac != '' ">  <![CDATA[ and MAC = #{mac} ]]></if>
+						
+			<if test="ticket != null and ticket != '' ">  <![CDATA[ and TICKET = #{ticket} ]]></if>
+						
+			<if test="usetype != null and usetype != '' ">  <![CDATA[ and USETYPE = #{usetype} ]]></if>
+
+            <if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.ipaddress != null and params.ipaddress != '' ">  <![CDATA[ and IPADDRESS = #{params.ipaddress} ]]></if>
+						
+			<if test="params.decimalip != null and params.decimalip != '' ">  <![CDATA[ and DECIMALIP = #{params.decimalip} ]]></if>
+						
+			<if test="params.subnetid != null and params.subnetid != '' ">  <![CDATA[ and SUBNETID = #{params.subnetid} ]]></if>
+						
+			<if test="params.subnetip != null and params.subnetip != '' ">  <![CDATA[ and SUBNETIP = #{params.subnetip} ]]></if>
+						
+			<if test="params.maskstr != null and params.maskstr != '' ">  <![CDATA[ and MASKSTR = #{params.maskstr} ]]></if>
+						
+			<if test="params.mask != null and params.mask != '' ">  <![CDATA[ and MASK = #{params.mask} ]]></if>
+						
+			<if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+
+            <if test="params.status == 0 ">  <![CDATA[ and (STATUS = 0 or STATUS is null) ]]></if>
+						
+			<if test="params.mac != null and params.mac != '' ">  <![CDATA[ and MAC = #{params.mac} ]]></if>
+						
+			<if test="params.ticket != null and params.ticket != '' ">  <![CDATA[ and TICKET = #{params.ticket} ]]></if>
+						
+			<if test="params.usetype != null and params.usetype != '' ">  <![CDATA[ and USETYPE = #{params.usetype} ]]></if>
+
+            <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+            <if test="params.searchKey!=null and params.searchKey!=''">
+                <![CDATA[ and (
+            SUBNETIP like  '%${params.searchKey}%' or
+            IPADDRESS like  '%${params.searchKey}%' or
+            MASKSTR like  '%${params.searchKey}%' or
+            REMARK like  '%${params.searchKey}%' or
+            MAC like  '%${params.searchKey}%') ]]>
+            </if>
+		</where>
+	</sql>
+
+    <sql id="wherePageParamTemp">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and a.ID = #{params.id} ]]></if>
+
+            <if test="params.ipaddress != null and params.ipaddress != '' ">
+                <![CDATA[ and a.IPADDRESS = #{params.ipaddress} ]]></if>
+
+            <if test="params.decimalip != null and params.decimalip != '' ">
+                <![CDATA[ and a.DECIMALIP = #{params.decimalip} ]]></if>
+
+            <if test="params.subnetid != null and params.subnetid != '' ">
+                <![CDATA[ and a.SUBNETID = #{params.subnetid} ]]></if>
+
+            <if test="params.subnetip != null and params.subnetip != '' ">
+                <![CDATA[ and a.SUBNETIP = #{params.subnetip} ]]></if>
+
+            <if test="params.maskstr != null and params.maskstr != '' ">
+                <![CDATA[ and a.MASKSTR = #{params.maskstr} ]]></if>
+
+            <if test="params.mask != null and params.mask != '' ">  <![CDATA[ and a.MASK = #{params.mask} ]]></if>
+
+            <if test="params.status != null and params.status != '' ">
+                <![CDATA[ and a.STATUS = #{params.status} ]]></if>
+
+            <if test="params.status == 0 ">  <![CDATA[ and (a.STATUS = 0 or a.STATUS is null) ]]></if>
+
+            <if test="params.mac != null and params.mac != '' ">  <![CDATA[ and a.MAC = #{params.mac} ]]></if>
+
+            <if test="params.ticket != null and params.ticket != '' ">
+                <![CDATA[ and a.TICKET = #{params.ticket} ]]></if>
+
+            <if test="params.usetype != null and params.usetype != '' ">
+                <![CDATA[ and a.USETYPE = #{params.usetype} ]]></if>
+
+            <if test="params.remark != null and params.remark != '' ">
+                <![CDATA[ and a.REMARK = #{params.remark} ]]></if>
+
+            <if test="params.searchKey!=null and params.searchKey!=''">
+                <![CDATA[ and (
+            a.SUBNETIP like  '%${params.searchKey}%' or
+            a.IPADDRESS like  '%${params.searchKey}%' or
+            a.MASKSTR like  '%${params.searchKey}%' or
+            a.REMARK like  '%${params.searchKey}%' or
+            a.MAC like  '%${params.searchKey}%') ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="ipaddress != null and ipaddress != '' ">  <![CDATA[  IPADDRESS = #{ipaddress } ,]]></if>
+						
+			<if test="decimalip != null and decimalip != '' ">  <![CDATA[  DECIMALIP = #{decimalip } ,]]></if>
+						
+			<if test="subnetid != null and subnetid != '' ">  <![CDATA[  SUBNETID = #{subnetid } ,]]></if>
+						
+			<if test="subnetip != null and subnetip != '' ">  <![CDATA[  SUBNETIP = #{subnetip } ,]]></if>
+						
+			<if test="maskstr != null and maskstr != '' ">  <![CDATA[  MASKSTR = #{maskstr } ,]]></if>
+						
+			<if test="mask != null and mask != '' ">  <![CDATA[  MASK = #{mask } ,]]></if>
+						
+			<if test="status != null || status == 0 ">  <![CDATA[  STATUS = #{status } ,]]></if>
+						
+			<if test="mac != null and mac != '' ">  <![CDATA[  MAC = #{mac } ,]]></if>
+
+            <if test="userId != null and userId != '' ">  <![CDATA[  userId = #{userId } ,]]></if>
+						
+			<if test="ticket != null and ticket != '' ">  <![CDATA[  TICKET = #{ticket } ,]]></if>
+
+						
+			<!--<if test="usetype != null and usetype != '' "> </if>-->
+            <![CDATA[  USETYPE = #{usetype,jdbcType=NUMERIC} ,]]>
+            <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="ipaddress != null and ipaddress != '' ">  <![CDATA[ IPADDRESS , ]]></if>
+				
+		<if test="decimalip != null and decimalip != '' ">  <![CDATA[ DECIMALIP , ]]></if>
+				
+		<if test="subnetid != null and subnetid != '' ">  <![CDATA[ SUBNETID , ]]></if>
+				
+		<if test="subnetip != null and subnetip != '' ">  <![CDATA[ SUBNETIP , ]]></if>
+				
+		<if test="maskstr != null and maskstr != '' ">  <![CDATA[ MASKSTR , ]]></if>
+				
+		<if test="mask != null and mask != '' ">  <![CDATA[ MASK , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+				
+		<if test="mac != null and mac != '' ">  <![CDATA[ MAC , ]]></if>
+				
+		<if test="ticket != null and ticket != '' ">  <![CDATA[ TICKET , ]]></if>
+				
+		<if test="usetype != null and usetype != '' ">  <![CDATA[ USETYPE , ]]></if>
+            <if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="ipaddress != null and ipaddress != '' ">  <![CDATA[ #{ipaddress } , ]]></if>
+				
+		<if test="decimalip != null and decimalip != '' ">  <![CDATA[ #{decimalip } , ]]></if>
+				
+		<if test="subnetid != null and subnetid != '' ">  <![CDATA[ #{subnetid } , ]]></if>
+				
+		<if test="subnetip != null and subnetip != '' ">  <![CDATA[ #{subnetip } , ]]></if>
+				
+		<if test="maskstr != null and maskstr != '' ">  <![CDATA[ #{maskstr } , ]]></if>
+				
+		<if test="mask != null and mask != '' ">  <![CDATA[ #{mask } , ]]></if>
+				
+		<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+				
+		<if test="mac != null and mac != '' ">  <![CDATA[ #{mac } , ]]></if>
+				
+		<if test="ticket != null and ticket != '' ">  <![CDATA[ #{ticket } , ]]></if>
+				
+		<if test="usetype != null and usetype != '' ">  <![CDATA[ #{usetype } , ]]></if>
+            <if test="remark != null and remark != '' ">  <![CDATA[ #{REMARK } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,IPADDRESS,DECIMALIP,SUBNETID,SUBNETIP,MASKSTR,MASK,STATUS,MAC,TICKET,USETYPE
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.ipaddress},#{item.decimalip},#{item.subnetid},#{item.subnetip},#{item.maskstr},#{item.mask},#{item.status},#{item.mac},#{item.ticket},#{item.usetype}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+	<!-- 获取客户所有占用机架  起始IP -->
+	<select id="queryUseredIPByCustomerId" parameterType="Map" resultType="Map">
+        select *
+        from (select p.ticketid, p.beginip, p.endip,hh.serial_number as serialNumber
+        from idc_ipinfo_temp p
+        left join idc_his_ticket hh on (hh.ticket_inst_id=p.ticketid)
+        order by p.ticketId)
+		<if test="rowNum!=null and rowNum!=''"> <![CDATA[  where  rownum<#{rowNum} ]]> </if>
+	</select>
+	<!-- 获取客户所有占用机架  起始IP   page-->
+	<select id="queryUseredIPByCustomerIdPage" parameterType="PageBean" resultType="Map">
+        select p.ticketid,p.beginip,p.endip,hh.serial_number as serialNumber from idc_ipinfo_temp p
+        left join idc_his_ticket hh on (hh.ticket_inst_id=p.ticketid)
+		<if test="params.selectKey!=null and params.selectKey!=''">
+			<![CDATA[ where upper(p.beginip) like '%'||upper(#{params.selectKey})||'%']]>
+		</if>
+		order by p.ticketId
+	</select>
+	<!--将客户占用IP数据写入idc_ipinof_temp表中   每次调用都会清空此表  用于展现客户视图-->
+	<select id="saveCustomerUsedIpToIpintoTemp">
+		call idc_ipused_customer(
+			#{cusId,mode=IN,jdbcType=NUMERIC}
+		)
+	</select>
+	<!--根据客户ID获取ipinfo信息-->
+	<select id="queryUseredIPinfoByCustomerIdPage" parameterType="PageBean" resultType="Map">
+        select hh.serial_number as serialNumber,
+        t.ID as id,
+        t.IPADDRESS as ipaddress,
+        t.DECIMALIP as decimalip,
+        t.SUBNETID as subnetid,
+        t.SUBNETIP as subnetip,
+        t.MASKSTR as maskstr,
+        t.MASK as mask,
+        t.STATUS as status,
+        t.MAC as mac,
+        t.TICKET as ticket,
+        t.USETYPE as usetype,
+        t.REMARK as remark
+        from idc_ipinfo t left join idc_his_ticket hh on (hh.ticket_inst_id= t.TICKET)
+		where t.userid=to_char(#{params.cusId})
+		<if test="params.selectKey!=null and params.selectKey!=''">
+            <![CDATA[ and upper(t.ipaddress) like '%'||upper(#{params.selectKey})||'%']]>
+		</if>
+	</select>
+
+	<!-- 资源分配修改IP状态  按网段分配 -->
+    <update id="updateIpInfoStatus">
+		update idc_ipinfo
+		<set>
+            <if test="status !=null or status == '0' ">
+				STATUS = #{status},
+			</if>
+			<choose>
+				<when test="ticketid!=null and ticketid!='' ">
+					TICKET = #{ticketid},
+				</when>
+				<otherwise>
+					TICKET = null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="userId!=null and userId!='' ">
+					USERID = #{userId},
+				</when>
+				<otherwise>
+					USERID = null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="remark!=null and remark!='' ">
+					REMARK = #{remark},
+				</when>
+				<otherwise>
+					REMARK = null,
+				</otherwise>
+			</choose>
+		</set>
+		<where>
+			<choose>
+				<when test="idType!=null and idType != '' ">
+					<![CDATA[ and SUBNETID = #{id}]]>
+				</when>
+				<otherwise>
+					<![CDATA[ and id = #{id}]]>
+				</otherwise>
+			</choose>
+			<if test="oldTicketId!=null and oldTicketId!='' ">
+				<![CDATA[ and TICKET = #{oldTicketId}]]>
+			</if>
+		</where>
+	</update>
+
+</mapper>

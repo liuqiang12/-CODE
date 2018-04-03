@@ -1,0 +1,163 @@
+body {
+    text-align: left;
+    color: #3f3f3f;
+    padding: 0;
+    margin: 0;
+}
+a {
+    color: #333;
+    text-decoration: none;
+    outline: none;
+    cursor: hand;
+    cursor: pointer;
+}
+a:hover {
+    color: #4a88df;
+    text-decoration: underline;
+}
+
+html,body{height: 100%;width: 100%;margin:0;padding:0;}
+body{
+    background:url(login/main-background.png) no-repeat;
+    width:100%;
+    height:100%;
+    background-size:100% 100%;
+    position:absolute;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='login/main-background.png',sizingMethod='scale');
+}
+.login-content{
+    position:relative;
+    height:100%;
+    width:100%;
+}
+/*logo…Ë÷√*/
+.login-logo{
+    position:absolute;
+    left:63px;
+    top:27px;
+    background:url(login/login-logo.png) no-repeat left top;
+    height:82px;
+    width:222px;
+}
+
+.login-title{
+    background:url(login/login-main.png) no-repeat left top;
+    margin: 0 auto;
+    position: absolute;
+    margin-top: 140px;
+    margin-left: 348px;
+    width: 664px;
+    height: 55px;
+}
+.login-main{
+
+    height:483px;
+    width:868px;
+    margin:0 auto;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-241px;
+    margin-left:-434px;
+}
+.copyright-cls{
+    position:absolute;
+    bottom:5px;
+    left:55%;
+    margin-left:-181px;
+}
+.copyright-text{
+    font-family:"Œ¢»Ì—≈∫⁄";
+    font-size:12px;
+    color:#ffffff;
+}
+.login-inputs{
+    position:absolute;
+    left: 285px;
+    top:150px;
+    width:247px;
+    height:235px;
+    background:url(login/login-inputs.png) no-repeat left top;
+}
+.login-username-cls{
+    position:absolute;
+    top: 28px;
+    right: -46px;
+}
+.login-userpwd-cls{
+    position:absolute;
+    top: 87px;
+    right: -46px;
+}
+.login-validate-cls{
+    position:absolute;
+    top:147px;
+    right:-46px;
+}
+.login-username-cls input{
+    width:161px;
+    height:19px;
+}
+
+
+
+.login-userpwd-cls input{
+    width:161px;
+    height:19px;
+}
+.login-validate-cls input{
+    width: 78px;
+    height: 19px;
+    float: left;
+    margin-right: 13px;
+}
+
+.login-font{
+    font-family:"Œ¢»Ì—≈∫⁄";
+    font-size:12px;
+    color:#000;
+}
+.validationReps{
+    margin-top: 0px;
+    right: -83px;
+    background: url(login/validate.png) no-repeat left top;
+    height: 21px;
+    width: 70px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #3e1000;
+    cursor: pointer;
+    float: left;
+}
+.handler-cls{
+    position: absolute;
+    bottom: -22px;
+    height: 33px;
+    width: 250px;
+    left: 20px;
+}
+.handler-cls-login{
+    position:absolute;
+    top:0px;
+    left:0px;
+    background:url(login/handler-cls-login.png) no-repeat left top;
+    height:29px;
+    cursor:pointer;
+    width:88px;
+}
+.handler-cls-login:hover{
+    background:url(login/handler-cls-login-hover.png) no-repeat left top;
+}
+.handler-cls-reset{
+    position:absolute;
+    top:0px;
+    right:0px;
+    background:url(login/handler-cls-reset.png) no-repeat left top;
+    height:29px;
+    width:88px;
+    cursor:pointer;
+}
+.handler-cls-reset:hover{
+    background:url(login/handler-cls-reset-hover.png) no-repeat left top;
+}

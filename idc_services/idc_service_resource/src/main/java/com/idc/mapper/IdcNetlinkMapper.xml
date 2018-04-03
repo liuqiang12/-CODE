@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcNetlinkMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcNetlinkMap" type="IdcNetlink">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="SRCID" property="srcid" />
+				
+		<result column="SRCIP" property="srcip" />
+				
+		<result column="DESIP" property="desip" />
+				
+		<result column="DESID" property="desid" />
+				
+		<result column="LINENAME" property="linename" />
+				
+		<result column="DESCRIPTION" property="description" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcNetlink">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcNetlink"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcNetlink">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcNetlink">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcNetlink"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcNetlink">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcNetlink">
+		select
+		<include refid="baseColumn" />
+		from IDC_netlink
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcNetlink">
+		update IDC_netlink
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_netlink
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_netlink
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_netlink where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcNetlink">
+		delete from IDC_netlink
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_netlink
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_netlink where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcNetlink"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_netlink
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_netlink (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,			SRCID as srcid,			SRCIP as srcip,			DESIP as desip,			DESID as desid,			LINENAME as linename,			DESCRIPTION as description
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="srcid != null and srcid != '' ">  <![CDATA[ and SRCID = #{srcid} ]]></if>
+						
+			<if test="srcip != null and srcip != '' ">  <![CDATA[ and SRCIP = #{srcip} ]]></if>
+						
+			<if test="desip != null and desip != '' ">  <![CDATA[ and DESIP = #{desip} ]]></if>
+						
+			<if test="desid != null and desid != '' ">  <![CDATA[ and DESID = #{desid} ]]></if>
+						
+			<if test="linename != null and linename != '' ">  <![CDATA[ and LINENAME = #{linename} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and DESCRIPTION = #{description} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.srcid != null and params.srcid != '' ">  <![CDATA[ and SRCID = #{params.srcid} ]]></if>
+						
+			<if test="params.srcip != null and params.srcip != '' ">  <![CDATA[ and SRCIP = #{params.srcip} ]]></if>
+						
+			<if test="params.desip != null and params.desip != '' ">  <![CDATA[ and DESIP = #{params.desip} ]]></if>
+						
+			<if test="params.desid != null and params.desid != '' ">  <![CDATA[ and DESID = #{params.desid} ]]></if>
+						
+			<if test="params.linename != null and params.linename != '' ">  <![CDATA[ and LINENAME = #{params.linename} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and DESCRIPTION = #{params.description} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="srcid != null and srcid != '' ">  <![CDATA[  SRCID = #{srcid } ,]]></if>
+						
+			<if test="srcip != null and srcip != '' ">  <![CDATA[  SRCIP = #{srcip } ,]]></if>
+						
+			<if test="desip != null and desip != '' ">  <![CDATA[  DESIP = #{desip } ,]]></if>
+						
+			<if test="desid != null and desid != '' ">  <![CDATA[  DESID = #{desid } ,]]></if>
+						
+			<if test="linename != null and linename != '' ">  <![CDATA[  LINENAME = #{linename } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  DESCRIPTION = #{description } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="srcid != null and srcid != '' ">  <![CDATA[ SRCID , ]]></if>
+				
+		<if test="srcip != null and srcip != '' ">  <![CDATA[ SRCIP , ]]></if>
+				
+		<if test="desip != null and desip != '' ">  <![CDATA[ DESIP , ]]></if>
+				
+		<if test="desid != null and desid != '' ">  <![CDATA[ DESID , ]]></if>
+				
+		<if test="linename != null and linename != '' ">  <![CDATA[ LINENAME , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ DESCRIPTION , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="srcid != null and srcid != '' ">  <![CDATA[ #{srcid } , ]]></if>
+				
+		<if test="srcip != null and srcip != '' ">  <![CDATA[ #{srcip } , ]]></if>
+				
+		<if test="desip != null and desip != '' ">  <![CDATA[ #{desip } , ]]></if>
+				
+		<if test="desid != null and desid != '' ">  <![CDATA[ #{desid } , ]]></if>
+				
+		<if test="linename != null and linename != '' ">  <![CDATA[ #{linename } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,SRCID,SRCIP,DESIP,DESID,LINENAME,DESCRIPTION
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.srcid},#{item.srcip},#{item.desip},#{item.desid},#{item.linename},#{item.description}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

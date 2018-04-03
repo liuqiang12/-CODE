@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisTicketMapper">
+	<resultMap id="resultIdcHisTicketMap" type="IdcHisTicket">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="CANDIDATE" property="candidate" />
+		<result column="GROUP_ID" property="groupId" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="CUSTOMER_ATTR" property="customerAttr" />
+		<result column="CONTACT_MOBILE" property="contactMobile" />
+		<result column="CATEGORYLINKED" property="categorylinked" />
+		<result column="TITLE" property="title" />
+		<result column="FIRSTNODE" property="firstnode" />
+		<result column="IS_PROCESS_END" property="isProcessEnd" />
+		<result column="CUR_TASK_NAME" property="curTaskName" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="PARENT_ID" property="parentId" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="APPROVAL_STATUS" property="approvalStatus" />
+		<result column="REMARK" property="remark" />
+		<result column="REV" property="rev" />
+		<result column="END_TIME" property="endTime" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="SERIAL_NUMBER" property="serialNumber" />
+		<result column="INIT_ID" property="initId" />
+		<result column="TASK_NAME" property="taskName" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="FORM_KEY_" property="formKey" />
+		<result column="PROC_DEF_ID_" property="procDefId" />
+		<result column="PROCESSDEFINITONKEY" property="processdefinitonkey" />
+		<result column="REJECT_COMMENT" property="rejectComment" />
+		<result column="IS_REJECT_TICKET" property="isRejectTicket" />
+		<result column="IS_RUBBISH" property="isRubbish" />
+		<result column="BUSNAME" property="busname" />
+	</resultMap>
+	<!-- createHisTicketInst -->
+	<insert id="createHisTicketInst" parameterType="IdcHisTicket" >
+		INSERT INTO IDC_HIS_TICKET
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="parentId != null and parentId != '' ">  <![CDATA[ PARENT_ID , ]]></if>
+			<if test="initId != null and initId != '' ">  <![CDATA[ INIT_ID , ]]></if>
+
+			<if test="procInstId != null and procInstId != '' ">  <![CDATA[ PROC_INST_ID , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ TICKET_CATEGORY , ]]></if>
+			<if test="approvalStatus != null and approvalStatus != '' ">  <![CDATA[ APPROVAL_STATUS , ]]></if>
+			<if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="serialNumber != null and serialNumber != '' ">  <![CDATA[ SERIAL_NUMBER , ]]></if>
+		</trim>
+		) VALUES
+		(
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+			<if test="parentId != null and parentId != '' ">  <![CDATA[ #{parentId } , ]]></if>
+			<if test="initId != null and initId != '' ">  <![CDATA[ #{initId } , ]]></if>
+			<if test="procInstId != null and procInstId != '' ">  <![CDATA[ #{procInstId } , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ #{category } , ]]></if>
+			<if test="approvalStatus != null and approvalStatus != '' ">  <![CDATA[ #{approvalStatus } , ]]></if>
+			<if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="serialNumber != null and serialNumber != '' ">  <![CDATA[ #{serialNumber} , ]]></if>
+		</trim>
+		)
+	</insert>
+	<!-- 修改历史工单的流程实例 -->
+	<update id="updateHisTicketProcInstById">
+		update IDC_HIS_TICKET
+			set PROC_INST_ID = #{procInstId}
+		  where id = #{id}
+	</update>
+	<!-- 修改历史工单的流程实例 -->
+	<update id="updateEndTimeByTicketInstId">
+		update IDC_HIS_TICKET
+		set  END_TIME = sysdate,
+		APPROVAL_STATUS = #{status},
+		IS_RUBBISH = #{rubbish}
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<update id="updateByDeleteTicket">
+		update IDC_HIS_TICKET
+		set  AUDIT_IDS = #{rubbishOrDeleteMSG}
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<select id="getTicketObjMapByTicketInstId" parameterType="java.lang.Long" resultMap="resultIdcHisTicketMap">
+		select * from IDC_His_TICKET WHERE TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="queryProdInstIdByTicketInstId" parameterType="Long" resultType="Long">
+		select t.prod_inst_id from IDC_HIS_TICKET t WHERE t.TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getContractListPageData" parameterType="Long" resultType="Map">
+			select t.id as ticketID,
+			t.ticket_inst_id,
+			t.prod_inst_id,
+			t.parent_id,
+			t.proc_inst_id,
+			t.serial_number,
+			t.task_name,
+			t.form_key_,
+			t.proc_def_id_,
+			t.processdefinitonkey,
+			t.apply_id,
+			t.apply_name,
+			t.ticket_category,
+			case
+			when t.ticket_category = '100' then
+			'预勘流程_' || t.task_name
+			when t.ticket_category = '200' then
+			'开通流程_' || t.task_name
+			when t.ticket_category = '400' then
+			'停机流程_' || t.task_name
+			when t.ticket_category = '500' then
+			'复通流程_' || t.task_name
+			when t.ticket_category = '600' then
+			'下线流程_' || t.task_name
+			when t.ticket_category = '700' then
+			'变更开通流程_' || t.task_name
+			when t.ticket_category = '800' then
+			'临时测试流程_' || t.task_name
+			when t.ticket_category = '900' then
+			'业务变更流程_' || t.task_name
+			end as task_name_fy,
+			t.customer_id,
+			t.customer_name,
+			t.busname,
+			t.prod_category,
+			t.form_url,
+			t.role_key,
+			t.audit_name,
+			t.ticket_status,
+			t.rev,
+			t2.id as contractID,
+			t2.contractname,
+			t2.contractno,
+			t2.contractprice,
+		    TO_CHAR(t2.contractsigndate,'YYYY-MM-DD HH24:MI:SS')  AS contractsigndate,
+		    TO_CHAR(t2.contractstart,'YYYY-MM-DD HH24:MI:SS')  AS contractstart,
+			t2.contractperiod,
+			t2.contractexpirreminder,
+			t2.contractpostpaid,
+			t2.contractpaycycle,
+			t2.contractremark,
+			t2.customer_id,
+			t2.ticket_inst_id,
+			t2.apply_id,
+			t2.apply_name,
+			t2.customer_name,
+			t2.dns,
+			t2.ishand_status,
+			t2.delete_after,
+			t2.prod_inst_id
+			from idc_his_ticket t
+			left join idc_contract t2
+			on t.ticket_Inst_Id = t2.ticket_inst_id
+  <![CDATA[ where t.ticket_category <> 100  ]]>
+			and t.task_name is not null
+			and t.prod_inst_id = #{0}
+	</select>
+
+	<select id="getIdcHisTicketByIdTicketInstIdForPerission" resultType="IdcHisTicket">
+		select
+		t.id,/*工单主键*/
+		t.prod_inst_id AS prodInstId,/*业务实例ID*/
+		t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+		t.busname AS busname,/* 业务名称*/
+		t.serial_number as serialNumber,/*工单号*/
+		t.form_key_ AS formkey,/*表单键*/
+		t.FORM_URL AS formUrl,/*表单URL*/
+		t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+		t.customer_id AS customerId, /* 客户ID */
+		t.customer_name AS customerName,/* 客户名称 */
+		/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+		t.APPLY_ID AS applyId,/*申请人ID*/
+		t.APPLY_NAME AS applyName,/*申请人名称*/
+		t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+		t.TASK_NAME AS taskName,/*任务名称*/
+		t.task_id AS taskId,/*任务ID*/
+		t.proc_def_id_ AS procDefId,/*流程定义ID*/
+		t.proc_inst_id AS procInstId,/*流程实例ID*/
+		t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+		t.ticket_status as ticketStatus,/*工单状态*/
+		t.IS_RELEVANT_TICKET as isRelevantTicket,/*是否存在相关工单*/
+		t.TICKET_CATEGORY as ticketCategory,/*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+		case
+			when t.ticket_category = 100 then
+			'预勘流程'
+			when t.ticket_category = 200 then
+			'开通流程'
+			when t.ticket_category = 400 then
+			'停机流程'
+			when t.ticket_category = 500 then
+			'复通流程'
+			when t.ticket_category = 600 then
+			'下线流程'
+			when t.ticket_category = 700 then
+			'变更开通流程'
+			when t.ticket_category = 800 then
+			'临时测试流程'
+			when t.ticket_category = 900 then
+			'业务变更流程'
+			end as ticketCtegory_FY,
+
+		t.audit_name as auditName,/*审批人*/
+		t.audit_id as auditId,/*审批人ID*/
+		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+		t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+		t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+		t.PARENT_ID as parentId,/*父工单ID*/
+		has_Permission(t.id,t.form_key_,t.ticket_status,t.ROLE_KEY,t.apply_id,#{loginId}) as canPermission,
+		TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS')  AS createTimeStr  /*创建时间*/
+		from idc_his_ticket t
+		where t.role_key is not null and t.TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<select id="getIdcHisTicketByIdTicketInstId" parameterType="java.lang.Long" resultType="IdcHisTicket">
+		select
+		t.id,/*工单主键*/
+		t.prod_inst_id AS prodInstId,/*业务实例ID*/
+		t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+		t.busname AS busname,/* 业务名称*/
+		t.serial_number as serialNumber,/*工单号*/
+		t.form_key_ AS formkey,/*表单键*/
+		t.FORM_URL AS formUrl,/*表单URL*/
+		t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+		t.customer_id AS customerId, /* 客户ID */
+		t.customer_name AS customerName,/* 客户名称 */
+		/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+		t.APPLY_ID AS applyId,/*申请人ID*/
+		t.APPLY_NAME AS applyName,/*申请人名称*/
+		t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+		t.TASK_NAME AS taskName,/*任务名称*/
+		t.task_id AS taskId,/*任务ID*/
+		t.proc_def_id_ AS procDefId,/*流程定义ID*/
+		t.proc_inst_id AS procInstId,/*流程实例ID*/
+		t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+		t.ticket_status as ticketStatus,/*工单状态*/
+		t.IS_RELEVANT_TICKET as isRelevantTicket,/*是否存在相关工单*/
+		t.TICKET_CATEGORY as ticketCategory,/*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+		t.audit_name as auditName,/*审批人*/
+		t.audit_id as auditId,/*审批人ID*/
+		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+		t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+		t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+		t.PARENT_ID as parentId,/*父工单ID*/
+		TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS')  AS createTimeStr  /*创建时间*/
+		from idc_his_ticket t
+		where t.role_key is not null and t.TICKET_INST_ID = #{0}
+	</select>
+
+	<update id="updateTaskByTicketIdAndProcInstId">
+		update IDC_HIS_TICKET set TASK_NAME = #{TASK_NAME},
+		TASK_ID = #{TASK_ID},
+		FORM_KEY_ = #{FORM_KEY},
+		PROC_DEF_ID_ = #{PROC_DEF_ID},
+		PROCESSDEFINITONKEY = #{PROCESSDEFINITONKEY}
+		where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+	<!-- 保存工单实例ID 和流程实例ID -->
+	<update id="updateTicketInstIdAndProcInstById">
+		update IDC_HIS_TICKET set
+		TICKET_INST_ID = #{id},
+		PROC_INST_ID = #{procInstId}
+		where id = #{id}
+	</update>
+
+	<select id="getTicketInstIdByCatalogAndProdInstId" resultType="Map">
+			select t1.id,t1.init_id as initId from IDC_HIS_TICKET t1
+			where t1.prod_inst_id = #{prodInstId}
+			and t1.TICKET_CATEGORY = #{catalog}
+			and t1.end_time is not null
+	</select>
+
+	<select id="getCustomerByTicketInstId" resultType="Map">
+		select t.CUSTOMER_ID,t.CUSTOMER_NAME
+		from IDC_HIS_TICKET t WHERE TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getTicketCategoryByTicket" resultType="String">
+		select t.TICKET_CATEGORY
+		  from idc_his_ticket t
+		 where t.role_key is not null
+		   and t.TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getIdcHisTicketById" resultMap="resultIdcHisTicketMap">
+		select ID,
+			   TICKET_INST_ID,
+			   PROD_INST_ID,
+			   PROC_INST_ID,
+			   CREATE_TIME,
+			   SERIAL_NUMBER,
+			   TASK_NAME,
+			   TASK_ID,
+			   FORM_KEY_,
+			   PROC_DEF_ID_,
+			   PROCESSDEFINITONKEY,
+			   APPLY_ID,
+			   APPLY_NAME,
+			   TICKET_CATEGORY,
+			   CUSTOMER_ID,
+			   CUSTOMER_NAME,
+			   BUSNAME,
+			   PROD_CATEGORY,
+			   FORM_URL,
+			   ROLE_KEY,
+			   AUDIT_NAME,
+			   TICKET_STATUS,
+			   IS_RELEVANT_TICKET,
+			   AUDIT_ID,
+			   RESOURCE_ALLOCATION_STATUS,
+			   TICKET_RESOURCE_HAND_STATUS
+			  from idc_his_ticket t
+			where t.id = #{0}
+	</select>
+
+	<select id="getIdcHisTicketCategoryById" resultType="String">
+		select
+		TICKET_CATEGORY
+		from idc_his_ticket t
+		where t.id = #{0}
+	</select>
+
+
+
+
+	<select id="queryPreTicketInfo" parameterType="String" resultType="IdcHisTicketInitVo">
+		select
+			  t1.id,
+			  t1.ticket_inst_id as ticketInstId,
+			  t1.prod_inst_id as prodInstId,
+			  t1.parent_id as parentId,
+			  t1.proc_inst_id as procInstId,
+			  t1.TICKET_CATEGORY as "category",
+			  to_char(t1.end_time,'yyyy-MM-dd HH24:mi:ss') endTime,
+			  to_char(t1.create_time,'yyyy-MM-dd HH24:mi:ss') createTime ,
+			  t1.serial_number as serialNumber,
+			  t1.init_id as initId,
+			  tmp.author,
+			  tmp."COMMENT" "comment",
+			  t4.name as customerName,
+			  t4.id as customerId
+			from idc_his_ticket t1
+			left join
+			/*最后一次审批*/
+			(
+			   select t2.ticket_inst_id,t2.author,t2."COMMENT",rank() over (partition by t2.ticket_inst_id order by t2.create_time desc) orderNum from idc_his_proc_cment t2
+			   where t2.ticket_inst_id = #{0}
+			)tmp on tmp.ticket_inst_id = t1.ticket_inst_id
+			left join idc_re_product t3 on t1.prod_inst_id = t3.id
+			left join idc_re_customer t4 on t3.customer_id = t4.id
+			where tmp.orderNum  =1 and t1.ticket_inst_id = #{0}
+	</select>
+
+
+
+	<select id="queryEndTicketByCustomerIdListPage" parameterType="PageBean" resultType="Map">
+		select distinct t1.name,
+			   t1.attribute,
+			   t1.idcardtype,
+			   t2.ticket_inst_id,
+			   t2.customer_name,
+			   t2.busname,
+			   t2.SERIAL_NUMBER,
+			   t2.TICKET_CATEGORY,
+			   t2.TICKET_CATEGORY as ticketgory
+		  from idc_re_customer t1
+		  left join idc_his_ticket t2
+			on t1.id = t2.customer_id
+		  left join idc_his_ticket_resource t3
+			on t2.ticket_inst_id = t3.ticket_inst_id
+		 where t2.ticket_status = 2
+		   and t1.id = #{params.cusId}
+		<if test="params.selectKey != null and params.selectKey != '' ">
+			<![CDATA[  and upper(t2.busname) like '%'||upper(#{params.selectKey })||'%' ]]>
+		</if>
+
+		 group by t1.name,
+				  t1.attribute,
+				  t1.idcardtype,
+				  t2.ticket_inst_id,
+				  t2.customer_name,
+				  t2.busname,
+				  t3.resourceid,
+				  t2.SERIAL_NUMBER,
+				  t2.TICKET_CATEGORY,
+				  t2.TICKET_CATEGORY
+
+	</select>
+	<select id="queryEndTicketByCustomerIdCount" parameterType="Long" resultType="Long">
+		select count(1) from (select distinct t1.name,
+         t1.attribute,
+         t1.idcardtype,
+         t2.ticket_inst_id,
+         t2.customer_name,
+         t2.busname,
+         t2.SERIAL_NUMBER,
+         t2.TICKET_CATEGORY,
+         t2.TICKET_CATEGORY
+      from idc_re_customer t1
+      left join idc_his_ticket t2
+      on t1.id = t2.customer_id
+      left join idc_his_ticket_resource t3
+      on t2.ticket_inst_id = t3.ticket_inst_id
+     where t2.ticket_status = 2
+       and t1.id =#{cusId})
+
+	</select>
+
+	<select id="getHistTicketDataIntoRedis" resultType="IdcHisTicket">
+		select t.id,
+			   t.ticket_inst_id,
+			   t.prod_inst_id,
+			   t.parent_id,
+			   t.proc_inst_id,
+			   t.end_time,
+			   t.create_time,
+			   t.serial_number,
+			   t.task_name,
+			   t.task_id,
+			   t.form_key_,
+			   t.proc_def_id_,
+			   t.processdefinitonkey,
+			   t.apply_id,
+			   t.apply_name,
+			   t.ticket_category,
+			   t.customer_id,
+			   t.customer_name,
+			   t.busname,
+			   t.prod_category,
+			   t.form_url,
+			   t.role_key,
+			   t.audit_name,
+			   t.ticket_status,
+			   t.is_relevant_ticket,
+			   t.audit_id,
+			   t.resource_allocation_status,
+			   t.ticket_resource_hand_status,
+			   t.ticket_category_from,
+			   t.rev
+			from idc_his_ticket t
+	</select>
+
+	<select id="getProdCategoryById" parameterType="String" resultType="String">
+
+		select  t.prod_category from idc_his_ticket t where t.id=#{0}
+
+	</select>
+
+</mapper>

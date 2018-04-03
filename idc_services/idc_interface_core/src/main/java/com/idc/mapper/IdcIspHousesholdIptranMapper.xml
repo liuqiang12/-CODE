@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspHousesholdIptranMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspHousesholdIptranMap" type="IpTran">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<!--
+		<result column="IP_CATEGORY" property="ipCategory" />
+		<result column="START_IP" property="startIp" />
+		<result column="END_IP" property="endIp" />-->
+		<result column="FK_HOUSESHOLD_INFO_ID" property="fkHousesholdInfoId" />
+		<!-- 获取相关属性 -->
+		<association property="internetIp" javaType="IpAttr" column="{fkIptranId=AID}" select="getInternetIp">
+		</association>
+		<association property="netIp" javaType="IpAttr" column="{fkIptranId=AID}" select="getIpAttr">
+		</association>
+	</resultMap>
+
+	<resultMap id="resultIdcIspHousesholdIpAttrMap" type="IpAttr">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="IP_CATEGORY" property="ipCategory" />
+		<result column="START_IP" property="startIp" />
+		<result column="END_IP" property="endIp" />
+		<result column="FK_IPTRAN_ID" property="fkIptranId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+	</resultMap>
+	<!-- 获取ip -->
+	<select id="getInternetIp" resultMap="resultIdcIspHousesholdIpAttrMap">
+		select
+			t1.aid,
+			T1.ip_category,
+			t1.start_ip,
+			t1.end_ip,
+			t1.fk_iptran_id,
+			t1.TICKET_INST_ID
+			from IDC_ISP_HOUSESHOLD_IPATTR t1
+			where t1.ip_category = 1
+			and t1.fk_iptran_id = #{fkIptranId}
+	</select>
+	<select id="getIpAttr" resultMap="resultIdcIspHousesholdIpAttrMap">
+		select
+			t1.aid,
+			T1.ip_category,
+			t1.start_ip,
+			t1.end_ip,
+			t1.fk_iptran_id,
+			t1.TICKET_INST_ID
+			from IDC_ISP_HOUSESHOLD_IPATTR t1
+			where t1.ip_category = 2
+			and t1.fk_iptran_id = #{fkIptranId}
+	</select>
+
+</mapper>

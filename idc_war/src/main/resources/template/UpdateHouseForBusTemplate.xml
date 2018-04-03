@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<updateInfo>
+		<houseInfo>
+			<houseId>$ispSolidData.houseId</houseId>
+			<houseName>$ispSolidData.houseName</houseName>
+			<houseType>$ispSolidData.houseType</houseType>
+			<houseProvince>$ispSolidData.houseProvincel</houseProvince>
+			<houseCity>$ispSolidData.houseCity</houseCity>
+			<houseCounty>$ispSolidData.houseCounty</houseCounty>
+			<houseAdd>$ispSolidData.houseAdd</houseAdd>
+			<houseZip>$ispSolidData.houseZip</houseZip>
+			#foreach($item in $idcOfficerList)#*40foreach=$idcOfficerList*#
+			#if($item.category=='1')#*41从list中判断,是否是网络安全负责人*#
+			<idcOfficer>
+				<name>$item.name</name>
+				<idType>$item.idType</idType>
+				<id>$item.id</id>
+				<tel>$item.tel</tel>
+				<mobile>$item.mobile</mobile>
+				<email>$item.email</email>
+			</idcOfficer>
+			#end#*//41从list中判断,是否是网络安全负责人***#
+			#end#*//40foreach=$idcOfficerList*#
+			#foreach($item in $gatewayInfoList)#*52#*链路信息:通过表中数据固化*#
+			<gatewayInfo>
+				<id>$item.id</id>
+				<bandWidth>$item.bandWidth</bandWidth>
+				<linkType>$item.linkType</linkType>
+				<accessUnit>$item.accessUnit</accessUnit>
+				<gatewayIp>$item.gatewayIp</gatewayIp>
+			</gatewayInfo>
+			#end#*//52*#
+			#foreach($item in $ipSegInfoList)#*61ip地址:通过表中数据固化*#
+			<ipSegInfo>
+				<id>$item.id</id>
+				<startIp>$item.startIp</startIp>
+				<endIp>$item.endIp</endIp>
+				<type>$item.type</type>
+				<user>$item.user</user>
+				<idType>$item.idType</idType>
+				<idNumber>$item.idNumber</idNumber>
+				<sourceUnit>$item.sourceUnit</sourceUnit>
+				<allocationUnit>$item.allocationUnit</allocationUnit>
+				<useTime>$item.useTime</useTime>
+			</ipSegInfo>
+			#end#*//61ip地址:通过表中数据固化*#
+			#foreach($item in $frameInfoList)#*75机架信息*#
+			<frameInfo>
+				<id>$item.id</id>
+				<useType>$item.useType</useType>
+				<distribution>$item.distribution</distribution>
+				<occupancy>$item.occupancy</occupancy>
+				<frameName>$item.frameName</frameName>
+			</frameInfo>
+			#end#*//75机架信息*#
+		</houseInfo>
+	</updateInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

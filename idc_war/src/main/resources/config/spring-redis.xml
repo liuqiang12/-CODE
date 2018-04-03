@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:config/application.properties"/>
+    <cache:annotation-driven cache-manager="cacheManager"/>
+
+    <!-- 自定义key生成策略 -->
+    <!--  <bean id="customKeyGenerator" class="com.typhoon.spring_redis.cache.CustomKeyGenerator" /> -->
+
+    <!-- redis 相关配置 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="500"/> <!-- 控制一个pool可分配多少个jedis实例 -->
+        <property name="maxIdle" value="100"/><!-- 最大能够保持idel状态的对象数 -->
+        <property name="maxWaitMillis" value="1000"/><!-- 表示当borrow一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException -->
+        <property name="timeBetweenEvictionRunsMillis" value="30000"/><!-- 多长时间检查一次连接池中空闲的连接 -->
+        <property name="minEvictableIdleTimeMillis" value="30000"/><!-- 空闲连接多长时间后会被收回, 单位是毫秒 -->
+        <property name="testOnBorrow" value="true"/> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
+        <property name="testOnReturn" value="true"/> <!-- 当调用return Object方法时，是否进行有效性检查 -->
+        <property name="testWhileIdle" value="true"/>
+    </bean>
+
+    <bean id="JedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="timeout" value="${redis.timeout}"></property>
+         <property name="password" value="${redis.password}"/>
+        <!--<property name="database" value="${redis.dbIndex}"/>-->
+        <property name="poolConfig" ref="poolConfig"/>
+    </bean>
+    <!--<bean id="JedisConnectionFactory"-->
+    <!--class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">-->
+    <!--<property name="poolConfig" ref="poolConfig"/>-->
+    <!--<property name="port" value="${redis.port}"/>-->
+    <!--<property name="hostName" value="${redis.host}"/>-->
+    <!--&lt;!&ndash; <property name="password" value="${redis.password}" /> &ndash;&gt;-->
+    <!--</bean>-->
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="JedisConnectionFactory"/>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>
+        </property>
+    </bean>
+
+    <!--<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+    <!--<property name="configLocation"  value="classpath:config/ehcache.xml"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; spring自己的缓存管理器，这里定义了缓存位置名称 ，即注解中的value &ndash;&gt;-->
+    <!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">-->
+    <!--<property name="cacheManager" ref="cacheManagerFactory"/>-->
+    <!--</bean>-->
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg ref="redisTemplate"/>
+        <property name="expires">
+            <map>
+                <entry key="10M" value="600" />
+                <entry key="always" value="0" />
+                <entry key="5M" value="300" />
+                <entry key="1M" value="60" />
+            </map>
+        </property>
+        <!-- 		<property name="caches">
+                    <set>
+                        这里可以配置多个redis
+                        <bean class="com.cn.util.RedisCache"> <property name="redisTemplate"
+                            ref="redisTemplate" /> <property name="name" value="default"/> </bean>
+                        <bean class="com.typhoon.spring_redis.cache.RedisCache">
+                            <property name="redisTemplate" ref="redisTemplate" />
+                            <property name="name" value="common" />
+                            common名称要在类或方法的注解中使用
+                        </bean>
+                    </set>
+                </property> -->
+    </bean>
+    <!-- lq add config-->
+    <!-- 采用哈希分片扩展 -->
+    <bean id="jedisShardInfo" class="system.data.supper.service.JedisShardInfoExt">
+        <constructor-arg name="host" value="${redis.host}"/>
+        <constructor-arg name="port" value="${redis.port}"/>
+         <property name="password" value="${redis.password}"/>
+        <property name="soTimeout" value="0"/>
+    </bean>
+    <bean id="shardedjedispool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0" ref="poolConfig"></constructor-arg>
+        <constructor-arg index="1">
+            <list>
+                <ref bean="jedisShardInfo" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+</beans>

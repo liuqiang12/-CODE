@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetKpibaseMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetKpibaseMap" type="com.idc.model.NetKpibase">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="KPIID" property="kpiid" />
+				
+		<result column="GATHERCLASS" property="gatherclass" />
+				
+		<result column="KPICLASS" property="kpiclass" />
+				
+		<result column="KPIKEY" property="kpikey" />
+				
+		<result column="KPINAME" property="kpiname" />
+				
+		<result column="KPIUNIT" property="kpiunit" />
+				
+		<result column="KPITABLE" property="kpitable" />
+				
+		<result column="KPIFIELD" property="kpifield" />
+				
+		<result column="DEVICECLASS" property="deviceclass" />
+				
+		<result column="KPIGROUP" property="kpigroup" />
+				
+		<result column="KPIDES" property="kpides" />
+				
+		<result column="EXTEND" property="extend" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.NetKpibase">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE where KPIID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.NetKpibase"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.NetKpibase">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.NetKpibase">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.NetKpibase"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.NetKpibase">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetKpibase">
+		select
+		<include refid="baseColumn" />
+		from NET_KPIBASE
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.NetKpibase">
+		update NET_KPIBASE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_KPIBASE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_KPIBASE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_KPIBASE where KPIID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.NetKpibase">
+		delete from NET_KPIBASE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_KPIBASE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_KPIBASE where KPIID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.NetKpibase"
+		useGeneratedKeys="true" keyProperty="KPIID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select NET_KPIBASE_seq.nextval from dual
+        </selectKey>
+		INSERT INTO NET_KPIBASE
+		(KPIID
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=INTEGER},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_KPIBASE (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	KPIID as kpiid,			GATHERCLASS as gatherclass,			KPICLASS as kpiclass,			KPIKEY as kpikey,			KPINAME as kpiname,			KPIUNIT as kpiunit,			KPITABLE as kpitable,			KPIFIELD as kpifield,			DEVICECLASS as deviceclass,			KPIGROUP as kpigroup,			KPIDES as kpides,			EXTEND as extend
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="kpiid != null and kpiid != '' ">  <![CDATA[ and KPIID = #{kpiid} ]]></if>
+						
+			<if test="gatherclass != null and gatherclass != '' ">  <![CDATA[ and GATHERCLASS = #{gatherclass} ]]></if>
+						
+			<if test="kpiclass != null and kpiclass != '' ">  <![CDATA[ and KPICLASS = #{kpiclass} ]]></if>
+						
+			<if test="kpikey != null and kpikey != '' ">  <![CDATA[ and KPIKEY = #{kpikey} ]]></if>
+						
+			<if test="kpiname != null and kpiname != '' ">  <![CDATA[ and KPINAME = #{kpiname} ]]></if>
+						
+			<if test="kpiunit != null and kpiunit != '' ">  <![CDATA[ and KPIUNIT = #{kpiunit} ]]></if>
+						
+			<if test="kpitable != null and kpitable != '' ">  <![CDATA[ and KPITABLE = #{kpitable} ]]></if>
+						
+			<if test="kpifield != null and kpifield != '' ">  <![CDATA[ and KPIFIELD = #{kpifield} ]]></if>
+						
+			<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{deviceclass} ]]></if>
+						
+			<if test="kpigroup != null and kpigroup != '' ">  <![CDATA[ and KPIGROUP = #{kpigroup} ]]></if>
+						
+			<if test="kpides != null and kpides != '' ">  <![CDATA[ and KPIDES = #{kpides} ]]></if>
+						
+			<if test="extend != null and extend != '' ">  <![CDATA[ and EXTEND = #{extend} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.kpiid != null and params.kpiid != '' ">  <![CDATA[ and KPIID = #{params.kpiid} ]]></if>
+						
+			<if test="params.gatherclass != null and params.gatherclass != '' ">  <![CDATA[ and GATHERCLASS = #{params.gatherclass} ]]></if>
+						
+			<if test="params.kpiclass != null and params.kpiclass != '' ">  <![CDATA[ and KPICLASS = #{params.kpiclass} ]]></if>
+						
+			<if test="params.kpikey != null and params.kpikey != '' ">  <![CDATA[ and KPIKEY = #{params.kpikey} ]]></if>
+						
+			<if test="params.kpiname != null and params.kpiname != '' ">  <![CDATA[ and KPINAME = #{params.kpiname} ]]></if>
+						
+			<if test="params.kpiunit != null and params.kpiunit != '' ">  <![CDATA[ and KPIUNIT = #{params.kpiunit} ]]></if>
+						
+			<if test="params.kpitable != null and params.kpitable != '' ">  <![CDATA[ and KPITABLE = #{params.kpitable} ]]></if>
+						
+			<if test="params.kpifield != null and params.kpifield != '' ">  <![CDATA[ and KPIFIELD = #{params.kpifield} ]]></if>
+						
+			<if test="params.deviceclass != null and params.deviceclass != '' ">  <![CDATA[ and DEVICECLASS = #{params.deviceclass} ]]></if>
+						
+			<if test="params.kpigroup != null and params.kpigroup != '' ">  <![CDATA[ and KPIGROUP = #{params.kpigroup} ]]></if>
+						
+			<if test="params.kpides != null and params.kpides != '' ">  <![CDATA[ and KPIDES = #{params.kpides} ]]></if>
+						
+			<if test="params.extend != null and params.extend != '' ">  <![CDATA[ and EXTEND = #{params.extend} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="kpiid != null and kpiid != '' ">  <![CDATA[  KPIID = #{kpiid } ,]]></if>
+						
+			<if test="gatherclass != null and gatherclass != '' ">  <![CDATA[  GATHERCLASS = #{gatherclass } ,]]></if>
+						
+			<if test="kpiclass != null and kpiclass != '' ">  <![CDATA[  KPICLASS = #{kpiclass } ,]]></if>
+						
+			<if test="kpikey != null and kpikey != '' ">  <![CDATA[  KPIKEY = #{kpikey } ,]]></if>
+						
+			<if test="kpiname != null and kpiname != '' ">  <![CDATA[  KPINAME = #{kpiname } ,]]></if>
+						
+			<if test="kpiunit != null and kpiunit != '' ">  <![CDATA[  KPIUNIT = #{kpiunit } ,]]></if>
+						
+			<if test="kpitable != null and kpitable != '' ">  <![CDATA[  KPITABLE = #{kpitable } ,]]></if>
+						
+			<if test="kpifield != null and kpifield != '' ">  <![CDATA[  KPIFIELD = #{kpifield } ,]]></if>
+						
+			<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[  DEVICECLASS = #{deviceclass } ,]]></if>
+						
+			<if test="kpigroup != null and kpigroup != '' ">  <![CDATA[  KPIGROUP = #{kpigroup } ,]]></if>
+						
+			<if test="kpides != null and kpides != '' ">  <![CDATA[  KPIDES = #{kpides } ,]]></if>
+						
+			<if test="extend != null and extend != '' ">  <![CDATA[  EXTEND = #{extend } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="kpiid != null and kpiid != '' ">  <![CDATA[ KPIID , ]]></if>
+				
+		<if test="gatherclass != null and gatherclass != '' ">  <![CDATA[ GATHERCLASS , ]]></if>
+				
+		<if test="kpiclass != null and kpiclass != '' ">  <![CDATA[ KPICLASS , ]]></if>
+				
+		<if test="kpikey != null and kpikey != '' ">  <![CDATA[ KPIKEY , ]]></if>
+				
+		<if test="kpiname != null and kpiname != '' ">  <![CDATA[ KPINAME , ]]></if>
+				
+		<if test="kpiunit != null and kpiunit != '' ">  <![CDATA[ KPIUNIT , ]]></if>
+				
+		<if test="kpitable != null and kpitable != '' ">  <![CDATA[ KPITABLE , ]]></if>
+				
+		<if test="kpifield != null and kpifield != '' ">  <![CDATA[ KPIFIELD , ]]></if>
+				
+		<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ DEVICECLASS , ]]></if>
+				
+		<if test="kpigroup != null and kpigroup != '' ">  <![CDATA[ KPIGROUP , ]]></if>
+				
+		<if test="kpides != null and kpides != '' ">  <![CDATA[ KPIDES , ]]></if>
+				
+		<if test="extend != null and extend != '' ">  <![CDATA[ EXTEND , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="kpiid != null and kpiid != '' ">  <![CDATA[ #{kpiid } , ]]></if>
+				
+		<if test="gatherclass != null and gatherclass != '' ">  <![CDATA[ #{gatherclass } , ]]></if>
+				
+		<if test="kpiclass != null and kpiclass != '' ">  <![CDATA[ #{kpiclass } , ]]></if>
+				
+		<if test="kpikey != null and kpikey != '' ">  <![CDATA[ #{kpikey } , ]]></if>
+				
+		<if test="kpiname != null and kpiname != '' ">  <![CDATA[ #{kpiname } , ]]></if>
+				
+		<if test="kpiunit != null and kpiunit != '' ">  <![CDATA[ #{kpiunit } , ]]></if>
+				
+		<if test="kpitable != null and kpitable != '' ">  <![CDATA[ #{kpitable } , ]]></if>
+				
+		<if test="kpifield != null and kpifield != '' ">  <![CDATA[ #{kpifield } , ]]></if>
+				
+		<if test="deviceclass != null and deviceclass != '' ">  <![CDATA[ #{deviceclass } , ]]></if>
+				
+		<if test="kpigroup != null and kpigroup != '' ">  <![CDATA[ #{kpigroup } , ]]></if>
+				
+		<if test="kpides != null and kpides != '' ">  <![CDATA[ #{kpides } , ]]></if>
+				
+		<if test="extend != null and extend != '' ">  <![CDATA[ #{extend } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			KPIID,GATHERCLASS,KPICLASS,KPIKEY,KPINAME,KPIUNIT,KPITABLE,KPIFIELD,DEVICECLASS,KPIGROUP,KPIDES,EXTEND
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.kpiid},#{item.gatherclass},#{item.kpiclass},#{item.kpikey},#{item.kpiname},#{item.kpiunit},#{item.kpitable},#{item.kpifield},#{item.deviceclass},#{item.kpigroup},#{item.kpides},#{item.extend}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

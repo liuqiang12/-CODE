@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>				
+<root>
+	<service><!-- service节点，可以配置多个 -->
+		<anstype>1</anstype><!-- 发送类型  SMS:0;MAIL:1;MAIL and SMS:2-->
+		<mailHost>mail.zyserv.com.cn</mailHost><!-- 邮件发送服务器 -->
+		<username>liyi</username><!-- 服务器登录用户名 -->
+		<password>liyi557</password><!-- 服务器登录密码 -->
+		<from>liyi@zyserv.com.cn</from><!-- 来自谁的发送 -->
+		<personal>ICS智能管家系统</personal><!-- 发件人名字 -->
+		<textsubject>false</textsubject><!-- true:使用邮件内容作为标题 -->
+	</service>
+	<service><!-- service节点，可以配置多个 -->
+		<anstype>0</anstype><!-- 发送类型  SMS:0;MAIL:1;MAIL and SMS:2-->
+		<mailHost>mail.zyserv.com.cn</mailHost><!-- 邮件发送服务器 -->
+		<username>liuxt</username><!-- 服务器登录用户名 -->
+		<password>ziyuan</password><!-- 服务器登录密码 -->
+		<from>liuxt@zyserv.com.cn</from><!-- 来自谁的发送 -->
+	</service>
+</root>

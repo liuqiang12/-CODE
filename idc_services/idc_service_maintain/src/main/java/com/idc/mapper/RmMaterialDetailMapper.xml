@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.RmMaterialDetailMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultRmMaterialDetailMap" type="RmMaterialDetail">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="RM_MATERIAL_DETAIL_ID" property="rmMaterialDetailId"/>
+
+        <result column="RM_MATERIAL_TYPE_ID" property="rmMaterialTypeId"/>
+
+        <result column="RM_MATERIAL_CUSTOMER" property="rmMaterialCustomer"/>
+
+        <result column="RM_MATERIAL_NUM" property="rmMaterialNum"/>
+
+        <result column="RM_MATERIAL_IN_OUT_TIME" property="rmMaterialInOutTime"/>
+
+        <result column="RM_MATERIAL_IN_OUT_TYPE" property="rmMaterialInOutType"/>
+
+        <result column="RM_MATERIAL_CODE" property="rmMaterialCode"/>
+
+        <result column="RM_MATERIAL_DISPOSE_MAN" property="rmMaterialDisposeMan"/>
+
+        <result column="NOTE" property="note"/>
+
+        <result column="RM_CREATE_TIME" property="rmCreateTime"/>
+
+        <result column="RM_CREATE_USER" property="rmCreateUser"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="RmMaterialDetail">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL where RM_MATERIAL_DETAIL_ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="RmMaterialDetail"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="RmMaterialDetail">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="RmMaterialDetail">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+    </select>
+
+    <!-- 获取满足条件的所有物资出入申请单  map -->
+    <select id="queryListMap" parameterType="Map" resultType="Map">
+        select
+        <include refid="materialAndMaterialTypeColumn"/>
+        from RM_MATERIAL_DETAIL t1
+        left join RM_MATERIAL_TYPE t2 on (t1.RM_MATERIAL_TYPE_ID = t2.RM_MATERIAL_TYPE_ID)
+        <where>
+            <if test="name != null and name != '' ">
+                <![CDATA[ and upper(t2.RM_MATERIAL_TYPE_NAME) like '%'||upper(#{name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 获取满足条件的所有物资出入申请单  分页 map -->
+    <select id="queryListPageMap" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="materialAndMaterialTypeColumn"/>
+        from RM_MATERIAL_DETAIL t1
+        left join RM_MATERIAL_TYPE t2 on (t1.RM_MATERIAL_TYPE_ID = t2.RM_MATERIAL_TYPE_ID)
+        <where>
+            <if test="params.name != null and params.name != '' ">
+                <![CDATA[ and upper(t2.RM_MATERIAL_TYPE_NAME) like '%'||upper(#{params.name})||'%' ]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="RmMaterialDetail"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="RmMaterialDetail">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="RmMaterialDetail">
+        select
+        <include refid="baseColumn"/>
+        from RM_MATERIAL_DETAIL
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="RmMaterialDetail">
+        update RM_MATERIAL_DETAIL
+        <include refid="updateParam"/>
+        where RM_MATERIAL_DETAIL_ID = #{rmMaterialDetailId}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update RM_MATERIAL_DETAIL
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from RM_MATERIAL_DETAIL
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from RM_MATERIAL_DETAIL where RM_MATERIAL_DETAIL_ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="RmMaterialDetail">
+        delete from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from RM_MATERIAL_DETAIL
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from RM_MATERIAL_DETAIL where RM_MATERIAL_DETAIL_ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="RmMaterialDetail"
+            useGeneratedKeys="true" keyProperty="RM_MATERIAL_DETAIL_ID">
+        INSERT INTO RM_MATERIAL_DETAIL
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO RM_MATERIAL_DETAIL (
+        <include refid="insertColumn"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam"/>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+
+		  	RM_MATERIAL_DETAIL_ID as rmMaterialDetailId,
+			RM_MATERIAL_TYPE_ID as rmMaterialTypeId,
+			RM_MATERIAL_CUSTOMER as rmMaterialCustomer,
+			RM_MATERIAL_NUM as rmMaterialNum,
+			RM_MATERIAL_IN_OUT_TIME as rmMaterialInOutTime,
+			RM_MATERIAL_IN_OUT_TYPE as rmMaterialInOutType,
+			RM_MATERIAL_CODE as rmMaterialCode,
+			RM_MATERIAL_DISPOSE_MAN as rmMaterialDisposeMan,
+			NOTE as note,
+			RM_CREATE_TIME as rmCreateTime,
+			RM_CREATE_USER as rmCreateUser
+
+        ]]>
+	</sql>
+
+    <!-- RM_MATERIAL_DETAIL与RM_MATERIAL_TYPE 表 -->
+    <sql id="materialAndMaterialTypeColumn">
+        <![CDATA[
+
+            t1.RM_MATERIAL_DETAIL_ID as rmMaterialDetailId,
+            t1.RM_MATERIAL_TYPE_ID as rmMaterialTypeId,
+            t1.RM_MATERIAL_CUSTOMER as rmMaterialCustomer,
+            t1.RM_MATERIAL_NUM as rmMaterialNum,
+            t1.RM_MATERIAL_IN_OUT_TIME as rmMaterialInOutTime,
+            t1.RM_MATERIAL_IN_OUT_TYPE as rmMaterialInOutType,
+            t1.RM_MATERIAL_CODE as rmMaterialCode,
+            t1.RM_MATERIAL_DISPOSE_MAN as rmMaterialDisposeMan,
+            t1.NOTE as note,
+            t1.RM_CREATE_TIME as rmCreateTime,
+            t1.RM_CREATE_USER as rmCreateUser,
+			t2.RM_MATERIAL_TYPE_NAME as rmMaterialTypeName
+
+        ]]>
+    </sql>
+
+    <sql id="whereParam">
+        <where>
+
+            <if test="rmMaterialDetailId != null and rmMaterialDetailId != '' ">
+                <![CDATA[ and RM_MATERIAL_DETAIL_ID = #{rmMaterialDetailId} ]]></if>
+
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">
+                <![CDATA[ and RM_MATERIAL_TYPE_ID = #{rmMaterialTypeId} ]]></if>
+
+            <if test="rmMaterialCustomer != null and rmMaterialCustomer != '' ">
+                <![CDATA[ and RM_MATERIAL_CUSTOMER = #{rmMaterialCustomer} ]]></if>
+
+            <if test="rmMaterialNum != null and rmMaterialNum != '' ">
+                <![CDATA[ and RM_MATERIAL_NUM = #{rmMaterialNum} ]]></if>
+
+            <if test="rmMaterialInOutTime != null">
+                <![CDATA[ and RM_MATERIAL_IN_OUT_TIME = #{rmMaterialInOutTime} ]]></if>
+
+            <if test="rmMaterialInOutType != null and rmMaterialInOutType != '' ">
+                <![CDATA[ and RM_MATERIAL_IN_OUT_TYPE = #{rmMaterialInOutType} ]]></if>
+
+            <if test="rmMaterialCode != null and rmMaterialCode != '' ">
+                <![CDATA[ and RM_MATERIAL_CODE = #{rmMaterialCode} ]]></if>
+
+            <if test="rmMaterialDisposeMan != null and rmMaterialDisposeMan != '' ">
+                <![CDATA[ and RM_MATERIAL_DISPOSE_MAN = #{rmMaterialDisposeMan} ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ and NOTE = #{note} ]]></if>
+
+            <if test="rmCreateTime != null">
+                <![CDATA[ and RM_CREATE_TIME = #{rmCreateTime} ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">
+                <![CDATA[ and RM_CREATE_USER = #{rmCreateUser} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.rmMaterialDetailId != null and params.rmMaterialDetailId != '' ">
+                <![CDATA[ and RM_MATERIAL_DETAIL_ID = #{params.rmMaterialDetailId} ]]></if>
+
+            <if test="params.rmMaterialTypeId != null and params.rmMaterialTypeId != '' ">
+                <![CDATA[ and RM_MATERIAL_TYPE_ID = #{params.rmMaterialTypeId} ]]></if>
+
+            <if test="params.rmMaterialCustomer != null and params.rmMaterialCustomer != '' ">
+                <![CDATA[ and RM_MATERIAL_CUSTOMER = #{params.rmMaterialCustomer} ]]></if>
+
+            <if test="params.rmMaterialNum != null and params.rmMaterialNum != '' ">
+                <![CDATA[ and RM_MATERIAL_NUM = #{params.rmMaterialNum} ]]></if>
+
+            <if test="params.rmMaterialInOutTime != null">
+                <![CDATA[ and RM_MATERIAL_IN_OUT_TIME = #{params.rmMaterialInOutTime} ]]></if>
+
+            <if test="params.rmMaterialInOutType != null and params.rmMaterialInOutType != '' ">
+                <![CDATA[ and RM_MATERIAL_IN_OUT_TYPE = #{params.rmMaterialInOutType} ]]></if>
+
+            <if test="params.rmMaterialCode != null and params.rmMaterialCode != '' ">
+                <![CDATA[ and RM_MATERIAL_CODE = #{params.rmMaterialCode} ]]></if>
+
+            <if test="params.rmMaterialDisposeMan != null and params.rmMaterialDisposeMan != '' ">
+                <![CDATA[ and RM_MATERIAL_DISPOSE_MAN = #{params.rmMaterialDisposeMan} ]]></if>
+
+            <if test="params.note != null and params.note != '' ">  <![CDATA[ and NOTE = #{params.note} ]]></if>
+
+            <if test="params.rmCreateTime != null">
+                <![CDATA[ and RM_CREATE_TIME = #{params.rmCreateTime} ]]></if>
+
+            <if test="params.rmCreateUser != null and params.rmCreateUser != '' ">
+                <![CDATA[ and RM_CREATE_USER = #{params.rmCreateUser} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="rmMaterialDetailId != null and rmMaterialDetailId != '' ">
+                <![CDATA[  RM_MATERIAL_DETAIL_ID = #{rmMaterialDetailId } ,]]></if>
+
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">
+                <![CDATA[  RM_MATERIAL_TYPE_ID = #{rmMaterialTypeId } ,]]></if>
+
+            <if test="rmMaterialCustomer != null and rmMaterialCustomer != '' ">
+                <![CDATA[  RM_MATERIAL_CUSTOMER = #{rmMaterialCustomer } ,]]></if>
+
+            <if test="rmMaterialNum != null and rmMaterialNum != '' ">
+                <![CDATA[  RM_MATERIAL_NUM = #{rmMaterialNum } ,]]></if>
+
+            <if test="rmMaterialInOutTime != null">
+                <![CDATA[  RM_MATERIAL_IN_OUT_TIME = #{rmMaterialInOutTime } ,]]></if>
+
+            <if test="rmMaterialInOutType != null and rmMaterialInOutType != '' ">
+                <![CDATA[  RM_MATERIAL_IN_OUT_TYPE = #{rmMaterialInOutType } ,]]></if>
+
+            <if test="rmMaterialCode != null and rmMaterialCode != '' ">
+                <![CDATA[  RM_MATERIAL_CODE = #{rmMaterialCode } ,]]></if>
+
+            <if test="rmMaterialDisposeMan != null and rmMaterialDisposeMan != '' ">
+                <![CDATA[  RM_MATERIAL_DISPOSE_MAN = #{rmMaterialDisposeMan } ,]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[  NOTE = #{note } ,]]></if>
+
+            <if test="rmCreateTime != null">
+                <![CDATA[  RM_CREATE_TIME = #{rmCreateTime } ,]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">
+                <![CDATA[  RM_CREATE_USER = #{rmCreateUser } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="rmMaterialDetailId != null and rmMaterialDetailId != '' ">
+                <![CDATA[ RM_MATERIAL_DETAIL_ID , ]]></if>
+
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">  <![CDATA[ RM_MATERIAL_TYPE_ID , ]]></if>
+
+            <if test="rmMaterialCustomer != null and rmMaterialCustomer != '' ">
+                <![CDATA[ RM_MATERIAL_CUSTOMER , ]]></if>
+
+            <if test="rmMaterialNum != null and rmMaterialNum != '' ">  <![CDATA[ RM_MATERIAL_NUM , ]]></if>
+
+            <if test="rmMaterialInOutTime != null">
+                <![CDATA[ RM_MATERIAL_IN_OUT_TIME , ]]></if>
+
+            <if test="rmMaterialInOutType != null and rmMaterialInOutType != '' ">
+                <![CDATA[ RM_MATERIAL_IN_OUT_TYPE , ]]></if>
+
+            <if test="rmMaterialCode != null and rmMaterialCode != '' ">  <![CDATA[ RM_MATERIAL_CODE , ]]></if>
+
+            <if test="rmMaterialDisposeMan != null and rmMaterialDisposeMan != '' ">
+                <![CDATA[ RM_MATERIAL_DISPOSE_MAN , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[ RM_CREATE_TIME , ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ RM_CREATE_USER , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="rmMaterialDetailId != null and rmMaterialDetailId != '' ">
+                <![CDATA[ #{rmMaterialDetailId } , ]]></if>
+
+            <if test="rmMaterialTypeId != null and rmMaterialTypeId != '' ">  <![CDATA[ #{rmMaterialTypeId } , ]]></if>
+
+            <if test="rmMaterialCustomer != null and rmMaterialCustomer != '' ">
+                <![CDATA[ #{rmMaterialCustomer } , ]]></if>
+
+            <if test="rmMaterialNum != null and rmMaterialNum != '' ">  <![CDATA[ #{rmMaterialNum } , ]]></if>
+
+            <if test="rmMaterialInOutTime != null">
+                <![CDATA[ #{rmMaterialInOutTime } , ]]></if>
+
+            <if test="rmMaterialInOutType != null and rmMaterialInOutType != '' ">
+                <![CDATA[ #{rmMaterialInOutType } , ]]></if>
+
+            <if test="rmMaterialCode != null and rmMaterialCode != '' ">  <![CDATA[ #{rmMaterialCode } , ]]></if>
+
+            <if test="rmMaterialDisposeMan != null and rmMaterialDisposeMan != '' ">
+                <![CDATA[ #{rmMaterialDisposeMan } , ]]></if>
+
+            <if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+
+            <if test="rmCreateTime != null">  <![CDATA[ #{rmCreateTime } , ]]></if>
+
+            <if test="rmCreateUser != null and rmCreateUser != '' ">  <![CDATA[ #{rmCreateUser } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			RM_MATERIAL_DETAIL_ID,RM_MATERIAL_TYPE_ID,RM_MATERIAL_CUSTOMER,RM_MATERIAL_NUM,RM_MATERIAL_IN_OUT_TIME,RM_MATERIAL_IN_OUT_TYPE,RM_MATERIAL_CODE,RM_MATERIAL_DISPOSE_MAN,NOTE,RM_CREATE_TIME,RM_CREATE_USER
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.rmMaterialDetailId},#{item.rmMaterialTypeId},#{item.rmMaterialCustomer},#{item.rmMaterialNum},#{item.rmMaterialInOutTime},#{item.rmMaterialInOutType},#{item.rmMaterialCode},#{item.rmMaterialDisposeMan},#{item.note},#{item.rmCreateTime},#{item.rmCreateUser}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+
+
+</mapper>

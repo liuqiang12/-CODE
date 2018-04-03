@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspDomainMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspDomainMap" type="Domain">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="ID" property="id" />
+		<result column="NAME" property="name" />
+		<result column="FK_SERVICE_INFO_ID" property="fkServiceInfoId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+	</resultMap>
+</mapper>

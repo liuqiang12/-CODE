@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.LocalIspServerMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultLocalIspServerMap" type="LocalIspServer">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="AID" property="aid" />
+				
+		<result column="SERVICE_NODE_ID" property="serviceNodeId" />
+				
+		<result column="SERVICE_CONTENT" property="serviceContent" />
+				
+		<result column="REG_TYPE" property="regType" />
+				
+		<result column="REG_ID" property="regId" />
+				
+		<result column="SET_MODE" property="setMode" />
+				
+		<result column="BUSINESS" property="business" />
+				
+		<result column="DOMAIN_ID" property="domainId" />
+				
+		<result column="DOMAIN_NAME" property="domainName" />
+				
+		<result column="FK_ISP_CUSTOMER_ID" property="fkIspCustomerId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="LocalIspServer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER where AID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="LocalIspServer"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="LocalIspServer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="LocalIspServer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="LocalIspServer"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="LocalIspServer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="LocalIspServer">
+		select
+		<include refid="baseColumn" />
+		from LOCAL_ISP_SERVER
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="LocalIspServer">
+		update LOCAL_ISP_SERVER
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update LOCAL_ISP_SERVER
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from LOCAL_ISP_SERVER
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from LOCAL_ISP_SERVER where AID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="LocalIspServer">
+		delete from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from LOCAL_ISP_SERVER
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from LOCAL_ISP_SERVER where AID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="LocalIspServer"
+		useGeneratedKeys="true" keyProperty="AID">
+		INSERT INTO LOCAL_ISP_SERVER
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO LOCAL_ISP_SERVER (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	AID as aid,			SERVICE_NODE_ID as serviceNodeId,			SERVICE_CONTENT as serviceContent,			REG_TYPE as regType,			REG_ID as regId,			SET_MODE as setMode,			BUSINESS as business,			DOMAIN_ID as domainId,			DOMAIN_NAME as domainName,			FK_ISP_CUSTOMER_ID as fkIspCustomerId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[ and AID = #{aid} ]]></if>
+						
+			<if test="serviceNodeId != null and serviceNodeId != '' ">  <![CDATA[ and SERVICE_NODE_ID = #{serviceNodeId} ]]></if>
+						
+			<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[ and SERVICE_CONTENT = #{serviceContent} ]]></if>
+						
+			<if test="regType != null and regType != '' ">  <![CDATA[ and REG_TYPE = #{regType} ]]></if>
+						
+			<if test="regId != null and regId != '' ">  <![CDATA[ and REG_ID = #{regId} ]]></if>
+						
+			<if test="setMode != null and setMode != '' ">  <![CDATA[ and SET_MODE = #{setMode} ]]></if>
+						
+			<if test="business != null and business != '' ">  <![CDATA[ and BUSINESS = #{business} ]]></if>
+						
+			<if test="domainId != null and domainId != '' ">  <![CDATA[ and DOMAIN_ID = #{domainId} ]]></if>
+						
+			<if test="domainName != null and domainName != '' ">  <![CDATA[ and DOMAIN_NAME = #{domainName} ]]></if>
+						
+			<if test="fkIspCustomerId != null and fkIspCustomerId != '' ">  <![CDATA[ and FK_ISP_CUSTOMER_ID = #{fkIspCustomerId} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.aid != null and params.aid != '' ">  <![CDATA[ and AID = #{params.aid} ]]></if>
+						
+			<if test="params.serviceNodeId != null and params.serviceNodeId != '' ">  <![CDATA[ and SERVICE_NODE_ID = #{params.serviceNodeId} ]]></if>
+						
+			<if test="params.serviceContent != null and params.serviceContent != '' ">  <![CDATA[ and SERVICE_CONTENT = #{params.serviceContent} ]]></if>
+						
+			<if test="params.regType != null and params.regType != '' ">  <![CDATA[ and REG_TYPE = #{params.regType} ]]></if>
+						
+			<if test="params.regId != null and params.regId != '' ">  <![CDATA[ and REG_ID = #{params.regId} ]]></if>
+						
+			<if test="params.setMode != null and params.setMode != '' ">  <![CDATA[ and SET_MODE = #{params.setMode} ]]></if>
+						
+			<if test="params.business != null and params.business != '' ">  <![CDATA[ and BUSINESS = #{params.business} ]]></if>
+						
+			<if test="params.domainId != null and params.domainId != '' ">  <![CDATA[ and DOMAIN_ID = #{params.domainId} ]]></if>
+						
+			<if test="params.domainName != null and params.domainName != '' ">  <![CDATA[ and DOMAIN_NAME = #{params.domainName} ]]></if>
+						
+			<if test="params.fkIspCustomerId != null and params.fkIspCustomerId != '' ">  <![CDATA[ and FK_ISP_CUSTOMER_ID = #{params.fkIspCustomerId} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="aid != null and aid != '' ">  <![CDATA[  AID = #{aid } ,]]></if>
+						
+			<if test="serviceNodeId != null and serviceNodeId != '' ">  <![CDATA[  SERVICE_NODE_ID = #{serviceNodeId } ,]]></if>
+						
+			<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[  SERVICE_CONTENT = #{serviceContent } ,]]></if>
+						
+			<if test="regType != null and regType != '' ">  <![CDATA[  REG_TYPE = #{regType } ,]]></if>
+						
+			<if test="regId != null and regId != '' ">  <![CDATA[  REG_ID = #{regId } ,]]></if>
+						
+			<if test="setMode != null and setMode != '' ">  <![CDATA[  SET_MODE = #{setMode } ,]]></if>
+						
+			<if test="business != null and business != '' ">  <![CDATA[  BUSINESS = #{business } ,]]></if>
+						
+			<if test="domainId != null and domainId != '' ">  <![CDATA[  DOMAIN_ID = #{domainId } ,]]></if>
+						
+			<if test="domainName != null and domainName != '' ">  <![CDATA[  DOMAIN_NAME = #{domainName } ,]]></if>
+						
+			<if test="fkIspCustomerId != null and fkIspCustomerId != '' ">  <![CDATA[  FK_ISP_CUSTOMER_ID = #{fkIspCustomerId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ AID , ]]></if>
+				
+		<if test="serviceNodeId != null and serviceNodeId != '' ">  <![CDATA[ SERVICE_NODE_ID , ]]></if>
+				
+		<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[ SERVICE_CONTENT , ]]></if>
+				
+		<if test="regType != null and regType != '' ">  <![CDATA[ REG_TYPE , ]]></if>
+				
+		<if test="regId != null and regId != '' ">  <![CDATA[ REG_ID , ]]></if>
+				
+		<if test="setMode != null and setMode != '' ">  <![CDATA[ SET_MODE , ]]></if>
+				
+		<if test="business != null and business != '' ">  <![CDATA[ BUSINESS , ]]></if>
+				
+		<if test="domainId != null and domainId != '' ">  <![CDATA[ DOMAIN_ID , ]]></if>
+				
+		<if test="domainName != null and domainName != '' ">  <![CDATA[ DOMAIN_NAME , ]]></if>
+				
+		<if test="fkIspCustomerId != null and fkIspCustomerId != '' ">  <![CDATA[ FK_ISP_CUSTOMER_ID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="aid != null and aid != '' ">  <![CDATA[ #{aid } , ]]></if>
+				
+		<if test="serviceNodeId != null and serviceNodeId != '' ">  <![CDATA[ #{serviceNodeId } , ]]></if>
+				
+		<if test="serviceContent != null and serviceContent != '' ">  <![CDATA[ #{serviceContent } , ]]></if>
+				
+		<if test="regType != null and regType != '' ">  <![CDATA[ #{regType } , ]]></if>
+				
+		<if test="regId != null and regId != '' ">  <![CDATA[ #{regId } , ]]></if>
+				
+		<if test="setMode != null and setMode != '' ">  <![CDATA[ #{setMode } , ]]></if>
+				
+		<if test="business != null and business != '' ">  <![CDATA[ #{business } , ]]></if>
+				
+		<if test="domainId != null and domainId != '' ">  <![CDATA[ #{domainId } , ]]></if>
+				
+		<if test="domainName != null and domainName != '' ">  <![CDATA[ #{domainName } , ]]></if>
+				
+		<if test="fkIspCustomerId != null and fkIspCustomerId != '' ">  <![CDATA[ #{fkIspCustomerId } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			AID,SERVICE_NODE_ID,SERVICE_CONTENT,REG_TYPE,REG_ID,SET_MODE,BUSINESS,DOMAIN_ID,DOMAIN_NAME,FK_ISP_CUSTOMER_ID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.aid},#{item.serviceNodeId},#{item.serviceContent},#{item.regType},#{item.regId},#{item.setMode},#{item.business},#{item.domainId},#{item.domainName},#{item.fkIspCustomerId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

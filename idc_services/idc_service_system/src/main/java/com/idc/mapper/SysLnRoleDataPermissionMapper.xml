@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysLnRoleDataPermissionMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysLnRoleDataPermissionMap" type="SysLnRoleDataPermission">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="user_id" property="userId" />
+				
+		<result column="user_type" property="userType" />
+				
+		<result column="perm_type" property="permType" />
+				
+		<result column="perm_id" property="permId" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysLnRoleDataPermission">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission where user_id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysLnRoleDataPermission"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysLnRoleDataPermission">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysLnRoleDataPermission">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysLnRoleDataPermission"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+		<include refid="whereParam" />
+	</select>
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="get" resultType="SysLnRoleDataPermission" >
+        select
+        <include refid="baseColumn" />
+        from sys_ln_role_data_permission
+        <where>
+        <if test="usertype != null and usertype != '' ">  <![CDATA[ and user_type = #{usertype} ]]></if>
+        <if test="userids != null  "> and user_id IN
+            <foreach collection="userids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysLnRoleDataPermission">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysLnRoleDataPermission">
+		select
+		<include refid="baseColumn" />
+		from sys_ln_role_data_permission
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysLnRoleDataPermission">
+		update sys_ln_role_data_permission
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_ln_role_data_permission
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_ln_role_data_permission
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_ln_role_data_permission where user_id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysLnRoleDataPermission">
+		delete from sys_ln_role_data_permission
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_ln_role_data_permission
+        <where>
+            <if test="usertype != null and usertype != '' ">  <![CDATA[ and user_type = #{usertype} ]]></if>
+            <if test="userids != null  "> and user_id IN
+                <foreach collection="userids" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_ln_role_data_permission where user_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysLnRoleDataPermission"
+		useGeneratedKeys="true" keyProperty="user_id">
+		INSERT INTO sys_ln_role_data_permission
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_ln_role_data_permission (
+		<include refid="batchInsertColumn" />
+		)
+		select slrdp.* from (
+			<foreach collection="list" item="item" index="index" separator="union all">
+				select
+					<include refid="batchInsertColumnParam"/>
+				from dual
+			</foreach>
+		) slrdp
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	user_id as userId,
+			user_type as userType,
+			perm_type as permType,
+			perm_id as permId
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[ and user_id = #{userId} ]]></if>
+						
+			<if test="userType != null and userType != '' ">  <![CDATA[ and user_type = #{userType} ]]></if>
+						
+			<if test="permType != null and permType != '' ">  <![CDATA[ and perm_type = #{permType} ]]></if>
+						
+			<if test="permId != null and permId != '' ">  <![CDATA[ and perm_id = #{permId} ]]></if>
+
+            <if test="usertype != null and usertype != '' ">  <![CDATA[ and user_type = #{usertype} ]]></if>
+            <if test="userids != null  "> and user_id IN
+                <foreach collection="userids" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.userId != null and params.userId != '' ">  <![CDATA[ and user_id = #{params.userId} ]]></if>
+						
+			<if test="params.userType != null and params.userType != '' ">  <![CDATA[ and user_type = #{params.userType} ]]></if>
+						
+			<if test="params.permType != null and params.permType != '' ">  <![CDATA[ and perm_type = #{params.permType} ]]></if>
+						
+			<if test="params.permId != null and params.permId != '' ">  <![CDATA[ and perm_id = #{params.permId} ]]></if>
+            <if test="usertype != null and usertype != '' ">  <![CDATA[ and user_type = #{usertype} ]]></if>
+            <if test="userids != null  "> and user_id IN
+                <foreach collection="userids" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="userId != null and userId != '' ">  <![CDATA[  user_id = #{userId } ,]]></if>
+						
+			<if test="userType != null and userType != '' ">  <![CDATA[  user_type = #{userType } ,]]></if>
+						
+			<if test="permType != null and permType != '' ">  <![CDATA[  perm_type = #{permType } ,]]></if>
+						
+			<if test="permId != null and permId != '' ">  <![CDATA[  perm_id = #{permId } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="userId != null and userId != '' ">  <![CDATA[ user_id , ]]></if>
+				
+		<if test="userType != null and userType != '' ">  <![CDATA[ user_type , ]]></if>
+				
+		<if test="permType != null and permType != '' ">  <![CDATA[ perm_type , ]]></if>
+				
+		<if test="permId != null and permId != '' ">  <![CDATA[ perm_id , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="userId != null and userId != '' ">  <![CDATA[ #{userId } , ]]></if>
+				
+		<if test="userType != null and userType != '' ">  <![CDATA[ #{userType } , ]]></if>
+				
+		<if test="permType != null and permType != '' ">  <![CDATA[ #{permType } , ]]></if>
+				
+		<if test="permId != null and permId != '' ">  <![CDATA[ #{permId } , ]]></if>
+        </trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			user_id,user_type,perm_type,perm_id
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.userId},#{item.userType},#{item.permType},#{item.permId}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

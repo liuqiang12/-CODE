@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcLocationMapper">
+  <!-- 返回类型 -->
+  <resultMap id="resultIdcLocationMap" type="IdcLocation">
+    <!-- 数据库属性和实体类属性对应关系 -->
+
+    <result column="ZIPCODE" property="zipcode" />
+
+    <result column="CONTACTPERSON" property="contactperson" />
+
+    <result column="CONTACTTEL" property="contacttel"/>
+
+    <result column="CONTACTFAX" property="contactfax"/>
+
+    <result column="REMARK" property="remark" />
+
+    <result column="TOTALBANDWIDTH" property="totalbandwidth" />
+
+    <result column="GATEWAYIP" property="gatewayip" />
+
+    <result column="RATEDCAPACITY" property="ratedcapacity" />
+
+    <result column="ID" property="id" />
+
+    <result column="NAME" property="name" />
+
+    <result column="ADDRESS" property="address" />
+
+    <result column="CODE" property="code" />
+
+    <result column="PROVINCE" property="province" />
+
+    <result column="CITY" property="city" />
+
+    <result column="DISTRICT" property="district" />
+
+  </resultMap>
+
+  <!-- 通过主键查询记录 -->
+  <select id="getModelById" resultType="IdcLocation">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION where ID= #{0}
+  </select>
+
+  <!-- map对应的key和实体类中的属性一致 -->
+  <select id="getModelByMap" resultType="IdcLocation"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 通过实体类查询记录 -->
+  <select id="loadLocations" resultType="Map">
+    select 5000000000+t.ID AS hhId,t.ID,t.provid,to_char(sysdate,'YYYY-MM-dd HH24:mi:ss') TIME_STAMP,t.name,t.HOUSEID,t.nature,t.houseProvince,t.houseCity,t.houseCounty,t.address,t.ZIPCODE from IDC_LOCATION t
+    where t.name = '中国移动（四川成都）数据中心'
+  </select>
+
+  <select id="loadFrameByHouseId" resultType="Map">
+       select (5000000000 + t1.id) as id,
+           t1.USEFOR as useType,
+           2 as distribution,
+           2 as occupancy,
+           t1.name  as frameName
+       from idc_rack t1
+       where exists
+            (
+      <![CDATA[ select 1 from idc_run_ticket_resource tmp1
+                      where tmp1.resourceid = t1.id
+                      and tmp1.STATUS <> -1
+            ]]>
+            )
+      and t1.isdelete = 0
+       order by t1.name
+  </select>
+  <select id="loadAllFrameInfo" resultType="Map">
+    select (5000000000 + t1.id) as id,
+    t1.USEFOR as useType,
+    2 as distribution,
+    2 as occupancy,
+    t1.name  as frameName,
+    to_char(sysdate,'yyyy-MM-dd HH24:mi:ss') as DISTRIBUTETIME
+    from idc_rack t1
+  </select>
+
+  <select id="loadFrameByHouseIdAndTicketId" resultType="Map">
+    select (5000000000 + t1.id) as id,
+    t1.USEFOR as useType,
+    2 as distribution,
+    2 as occupancy,
+    t1.name  as frameName,
+    to_char(t2.create_time,'yyyy-MM-dd HH24:mi:ss') as DISTRIBUTETIME
+    from idc_rack t1 left join idc_run_ticket_resource t2 on t1.id = t2.resourceid and t2.category = '100'
+    where exists
+    (
+    <![CDATA[
+      select tmp1.* from idc_his_ticket_resource tmp1
+        left join idc_net_serviceinfo tmp2 on tmp1.ticket_inst_id = tmp2.ticket_inst_id
+        where tmp1.ticket_inst_id = tmp2.ticket_inst_id
+        and tmp1.STATUS <> -1
+        and tmp1.resourceid = t1.id and tmp1.category = '100'
+      ]]>
+    )
+  </select>
+
+
+  <select id="loadIpTrans" resultType="Map">
+      /* ip */
+      select
+    t1.id as aid,
+    t2.ipaddress as startIp,
+    t2.ipaddress as endIp,
+    t1.ip_type as ip_status,
+    t1.ticket_inst_id
+    from idc_his_ticket_resource t1
+    left join idc_ipinfo t2 on t1.resourceid = t2.id
+    where exists
+    (
+    select tmp1.* from idc_net_serviceinfo tmp1
+    where tmp1.ticket_inst_id = t1.ticket_inst_id
+    and  tmp1.id = #{aid}/*服务ID*/
+    <if test="ticketInstId != null and ticketInstId != '' ">
+      and t1.ticket_inst_id = #{ticketInstId}
+    </if>
+    and t1.ip_type is not null
+    and t1.ip_type = 'ipaddress'
+    and t1.category = '300'
+    )
+    union
+    /*ip段*/
+    select
+    t1.id as aid,
+    t2.BEGIP as startIp,
+    t2.ENDIP as endIp,
+    t1.ip_type as ip_status,
+    t1.ticket_inst_id
+    from idc_his_ticket_resource t1
+    left join idc_ipsubnet t2 on t1.resourceid = t2.id
+    where exists
+    (
+    select tmp1.* from idc_net_serviceinfo tmp1
+    where tmp1.ticket_inst_id = t1.ticket_inst_id
+    and  tmp1.id = #{aid}/*服务ID*/
+    <if test="ticketInstId != null and ticketInstId != '' ">
+      and t1.ticket_inst_id = #{ticketInstId}
+    </if>
+    and t1.ip_type is not null
+    and t1.ip_type = 'ipsubnet'
+    and t1.category = '300'
+    )
+  </select>
+
+
+  <select id="loadFrameInfoLimitFirst" resultType="Map">
+    select (5000000000 + t1.id) as id,
+           t1.USEFOR as useType,
+           2 as distribution,
+           2 as occupancy,
+           t1.name  as frameName,
+           to_char(t2.create_time,'yyyy-MM-dd HH24:mi:ss') as DISTRIBUTETIME
+     from idc_rack t1 left join idc_run_ticket_resource t2 on t1.id = t2.resourceid and t2.category = '100'
+     where exists
+     (
+        select tmp2.id,tmp1.* from idc_run_ticket_resource tmp1
+        left join idc_net_serviceinfo tmp2 on tmp1.ticket_inst_id = tmp2.ticket_inst_id
+        where tmp1.ticket_inst_id = tmp2.ticket_inst_id
+        and tmp2.id = #{aid}/*服务ID*/
+        <if test="ticketInstId != null and ticketInstId != '' ">
+          and t2.ticket_inst_id = #{ticketInstId}
+        </if>
+        and tmp1.resourceid = t1.id and tmp1.category = '100'
+     )
+  </select>
+
+
+
+  <select id="loadUserInfosByTicketId" resultType="Map">
+    select (5000000000 + t1.id) as id,
+    t1.id AS AID,
+    t1.domain_status as nature,
+    t1.name as unitName,
+    t1.attribute as unitNature,
+    t1.idcardtype as idType,
+    t1.idcardno as idNumber,
+    t1.contactname as name,
+    t1.addr,
+    t1.zipcode,
+    to_char(t1.create_time,'YYYY-MM-dd HH24:mi:ss') createTime,
+    case
+    when t1.contact_idcardtype = '工商营业执照号码' then
+    1
+    when t1.contact_idcardtype = '身份证' then
+    2
+    when t1.contact_idcardtype = '组织机构代码证书' then
+    3
+    when t1.contact_idcardtype = '事业法人证书' then
+    4
+    when t1.contact_idcardtype = '军队代号' then
+    5
+    when t1.contact_idcardtype = '社团法人证书' then
+    6
+    when t1.contact_idcardtype = '护照' then
+    7
+    when t1.contact_idcardtype = '军官证' then
+    8
+    when t1.contact_idcardtype = '台胞证' then
+    9
+    when t1.contact_idcardtype = '其他' then
+    999
+    end contact_idType,
+    t1.contact_idcardno as contact_id,
+    t1.contact_phone as tel,
+    t1.contact_mobile as mobile,
+    t1.contact_email as email
+    from idc_re_customer t1
+    <where>
+      <if test="ticketInstId != null and ticketInstId != '' ">
+        <![CDATA[
+        exists
+        (
+           select * from  idc_run_ticket tmp1
+           where tmp1.ticket_inst_id = #{ticketInstId} and tmp1.customer_id = t1.id
+        )
+      ]]>
+      </if>
+    </where>
+    order by t1.name
+  </select>
+
+
+  <select id="loadUserInfos" resultType="Map">
+   select (5000000000 + t1.id) as id,
+        t1.id AS AID,
+       t1.domain_status as nature,
+       t1.name as unitName,
+       t1.attribute as unitNature,
+       t1.idcardtype as idType,
+       t1.idcardno as idNumber,
+       t1.contactname as name,
+       t1.addr,
+       t1.zipcode,
+       to_char(t1.create_time,'YYYY-MM-dd HH24:mi:ss') createTime,
+       case
+         when t1.contact_idcardtype = '工商营业执照号码' then
+          1
+         when t1.contact_idcardtype = '身份证' then
+          2
+         when t1.contact_idcardtype = '组织机构代码证书' then
+          3
+         when t1.contact_idcardtype = '事业法人证书' then
+          4
+         when t1.contact_idcardtype = '军队代号' then
+          5
+         when t1.contact_idcardtype = '社团法人证书' then
+          6
+         when t1.contact_idcardtype = '护照' then
+          7
+         when t1.contact_idcardtype = '军官证' then
+          8
+         when t1.contact_idcardtype = '台胞证' then
+          9
+         when t1.contact_idcardtype = '其他' then
+          999
+       end contact_idType,
+       t1.contact_idcardno as contact_id,
+       t1.contact_phone as tel,
+       t1.contact_mobile as mobile,
+       t1.contact_email as email
+  from idc_re_customer t1
+  <where>
+    <if test="ticketInstId != null and ticketInstId != '' ">
+      <![CDATA[
+        exists
+        (
+           select * from  idc_run_ticket tmp1
+           where tmp1.ticket_inst_id = #{ticketInstId} and tmp1.customer_id = t1.id
+        )
+      ]]>
+    </if>
+  </where>
+  order by t1.name
+  </select>
+
+
+  <select id="loadServiceInfos" resultType="Map">
+     select
+        t1.customer_id,
+        t1.id as service_aid,
+        5000000000+t1.id as serviceId,
+        case when t1.icpsrvcontentcode = '1000001' then '1'
+        when t1.icpsrvcontentcode = '1000002' then '2'
+        when t1.icpsrvcontentcode = '1000003' then '3'
+        when t1.icpsrvcontentcode = '1000004' then '4'
+        when t1.icpsrvcontentcode = '1000006' then '6'
+        when t1.icpsrvcontentcode = '1000007' then '7'
+        when t1.icpsrvcontentcode = '1000008' then '8'
+        when t1.icpsrvcontentcode = '1000009' then '9'
+        end   as serviceContent,/*以逗号隔开的*/
+        t1.icprecordtype as regType,
+        t1.icprecordno as regId,/*备案号*/
+        t1.icpaccesstype as setMode,/*接入方式*/
+        t1.icpbusinesstype as business,/*业务类型*/
+        t1.icpdomain,/*域名名称*/
+        5000000000+t1.id as icpdomain_id, /*域名ID*/
+        case when t1.distributetime is null then to_char(sysdate,'YYYY-MM-DD HH24:mi:ss') else t1.distributetime end distributetime
+      from idc_net_serviceinfo t1
+      <where>
+        <if test="ticketInstId != null and ticketInstId != '' ">
+          <![CDATA[
+        exists
+        (
+            select * from  idc_his_ticket tmp1
+             where tmp1.ticket_inst_id = #{ticketInstId} and t1.ticket_inst_id = tmp1.ticket_inst_id
+           and t1.customer_id = #{aid}
+        )
+      ]]>
+        </if>
+        <if test="ticketInstId == null or ticketInstId == '' ">
+          <![CDATA[
+        exists
+        (
+            select * from  idc_his_ticket tmp1
+             where t1.ticket_inst_id = tmp1.ticket_inst_id
+           and t1.customer_id = #{aid}
+        )
+      ]]>
+        </if>
+      </where>
+  </select>
+
+
+  <!-- 通过实体类查询记录 -->
+  <select id="getModelByObject" resultType="IdcLocation">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询所有记录 -->
+  <select id="queryList" resultType="IdcLocation">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+  </select>
+
+  <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+  <select id="queryListByMap" resultType="IdcLocation"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询记录:通过实体类查询多条记录 -->
+  <select id="queryListByObject" resultType="IdcLocation">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="queryListPage" parameterType="PageBean" resultType="IdcLocation">
+    select
+    <include refid="baseColumn" />
+    from IDC_LOCATION
+    <include refid="whereLikePageParam" />
+  </select>
+
+  <!-- update -->
+  <update id="updateByObject" parameterType="IdcLocation">
+    update IDC_LOCATION
+    <include refid="updateParam" />
+    where id=#{id}
+  </update>
+
+  <update id="updateByMap" parameterType="Map">
+    update IDC_LOCATION
+    <include refid="updateParam" />
+    <include refid="whereParam" />
+  </update>
+
+  <!-- 慎用此方法 -->
+  <delete id="deleteAll">
+    delete from IDC_LOCATION
+  </delete>
+
+
+  <delete id="deleteById">
+    delete from IDC_LOCATION where ID= #{0}
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByObject" parameterType="IdcLocation">
+    delete from IDC_LOCATION
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByMap" parameterType="Map">
+    delete from IDC_LOCATION
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByList" parameterType="java.util.List">
+    delete from IDC_LOCATION where ID in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- insert保存方法 -->
+  <insert id="insert" parameterType="IdcLocation"
+          useGeneratedKeys="true" keyProperty="ID">
+    <selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+      　　SELECT idc_location_seq.nextval FROM DUAL
+    </selectKey>
+    INSERT INTO IDC_LOCATION
+    (id,
+    <include refid="insertColumn" />
+    ) VALUES
+    (#{id,jdbcType=INTEGER},
+    <include refid="insertColumnParam" />
+    )
+  </insert>
+
+  <!-- 批量保存 -->
+  <insert id="insertList" parameterType="java.util.List">
+    INSERT INTO IDC_LOCATION (
+    <include refid="batchInsertColumn"/>
+    )
+    select idc_location_seq.nextval,idcl.* from (
+    <foreach collection="list" item="item" index="index" separator="union all">
+      select
+      <include refid="batchInsertColumnParam"/>
+      from dual
+    </foreach>
+    ) idcl
+  </insert>
+
+
+  <!-- sql基本映射 -->
+  <sql id="baseColumn">
+    <![CDATA[
+		  	ZIPCODE as zipcode,
+			CONTACTPERSON as contactperson,
+			CONTACTTEL as contacttel,
+			CONTACTFAX as contactfax,
+			REMARK as remark,
+			TOTALBANDWIDTH as totalbandwidth,
+			GATEWAYIP as gatewayip,
+			RATEDCAPACITY as ratedcapacity,
+			ID as id,
+			NAME as name,
+			ADDRESS as address,
+			CODE as code,
+			PROVINCE as province,
+			CITY as city,
+			DISTRICT as district
+	  ]]>
+  </sql>
+  <sql id="whereParam">
+    <where>
+
+      <if test="zipcode != null and zipcode != '' ">  <![CDATA[ and ZIPCODE = #{zipcode} ]]></if>
+
+      <if test="contactperson != null and contactperson != '' ">  <![CDATA[ and CONTACTPERSON = #{contactperson} ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ and CONTACTTEL = #{contacttel} ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ and CONTACTFAX = #{contactfax} ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{totalbandwidth} ]]></if>
+
+      <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ and GATEWAYIP = #{gatewayip} ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ and RATEDCAPACITY = #{ratedcapacity} ]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+      <if test="address != null and address != '' ">  <![CDATA[ and ADDRESS = #{address} ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+      <if test="province != null and province != '' ">  <![CDATA[ and PROVINCE = #{province} ]]></if>
+
+      <if test="city != null and city != '' ">  <![CDATA[ and CITY = #{city} ]]></if>
+
+      <if test="district != null and district != '' ">  <![CDATA[ and DISTRICT = #{district} ]]></if>
+
+    </where>
+  </sql>
+  <sql id="wherePageParam">
+    <where>
+
+      <if test="params.zipcode != null and params.zipcode != '' ">  <![CDATA[ and ZIPCODE = #{params.zipcode} ]]></if>
+
+      <if test="params.contactperson != null and params.contactperson != '' ">  <![CDATA[ and CONTACTPERSON = #{params.contactperson} ]]></if>
+
+      <if test="params.contacttel != null and params.contacttel != '' ">  <![CDATA[ and CONTACTTEL = #{params.contacttel} ]]></if>
+
+      <if test="params.contactfax != null and params.contactfax != '' ">  <![CDATA[ and CONTACTFAX = #{params.contactfax} ]]></if>
+
+      <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+      <if test="params.totalbandwidth != null and params.totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{params.totalbandwidth} ]]></if>
+
+      <if test="params.gatewayip != null and params.gatewayip != '' ">  <![CDATA[ and GATEWAYIP = #{params.gatewayip} ]]></if>
+
+      <if test="params.ratedcapacity != null and params.ratedcapacity != '' ">  <![CDATA[ and RATEDCAPACITY = #{params.ratedcapacity} ]]></if>
+
+      <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+      <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+      <if test="params.address != null and params.address != '' ">  <![CDATA[ and ADDRESS = #{params.address} ]]></if>
+
+      <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+      <if test="params.province != null and params.province != '' ">  <![CDATA[ and PROVINCE = #{params.province} ]]></if>
+
+      <if test="params.city != null and params.city != '' ">  <![CDATA[ and CITY = #{params.city} ]]></if>
+
+      <if test="params.district != null and params.district != '' ">  <![CDATA[ and DISTRICT = #{params.district} ]]></if>
+
+    </where>
+  </sql>
+
+  <!-- update sql -->
+  <sql id="updateParam">
+    <set>
+
+      <if test="zipcode != null and zipcode != '' ">  <![CDATA[  ZIPCODE = #{zipcode } ,]]></if>
+
+      <if test="contactperson != null and contactperson != '' ">  <![CDATA[  CONTACTPERSON = #{contactperson } ,]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[  CONTACTTEL = #{contacttel } ,]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[  CONTACTFAX = #{contactfax } ,]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[  TOTALBANDWIDTH = #{totalbandwidth } ,]]></if>
+
+      <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[  GATEWAYIP = #{gatewayip } ,]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[  RATEDCAPACITY = #{ratedcapacity } ,]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+      <if test="address != null and address != '' ">  <![CDATA[  ADDRESS = #{address } ,]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+      <if test="province != null and province != '' ">  <![CDATA[  PROVINCE = #{province } ,]]></if>
+
+      <if test="city != null and city != '' ">  <![CDATA[  CITY = #{city } ,]]></if>
+
+      <if test="district != null and district != '' ">  <![CDATA[  DISTRICT = #{district } ,]]></if>
+
+    </set>
+  </sql>
+
+  <!-- insert sql -->
+  <sql id="insertColumn">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="zipcode != null and zipcode != '' ">  <![CDATA[ ZIPCODE , ]]></if>
+
+      <if test="contactperson != null and contactperson != '' ">  <![CDATA[ CONTACTPERSON , ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ CONTACTTEL , ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ CONTACTFAX , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ TOTALBANDWIDTH , ]]></if>
+
+      <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ GATEWAYIP , ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ RATEDCAPACITY , ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+      <if test="address != null and address != '' ">  <![CDATA[ ADDRESS , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+      <if test="province != null and province != '' ">  <![CDATA[ PROVINCE , ]]></if>
+
+      <if test="city != null and city != '' ">  <![CDATA[ CITY , ]]></if>
+
+      <if test="district != null and district != '' ">  <![CDATA[ DISTRICT , ]]></if>
+    </trim>
+  </sql>
+
+  <sql id="insertColumnParam">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="zipcode != null and zipcode != '' ">  <![CDATA[ #{zipcode } , ]]></if>
+
+      <if test="contactperson != null and contactperson != '' ">  <![CDATA[ #{contactperson } , ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ #{contacttel } , ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ #{contactfax } , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ #{totalbandwidth } , ]]></if>
+
+      <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ #{gatewayip } , ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ #{ratedcapacity } , ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+      <if test="address != null and address != '' ">  <![CDATA[ #{address } , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+      <if test="province != null and province != '' ">  <![CDATA[ #{province } , ]]></if>
+
+      <if test="city != null and city != '' ">  <![CDATA[ #{city } , ]]></if>
+
+      <if test="district != null and district != '' ">  <![CDATA[ #{district } , ]]></if>
+    </trim>
+  </sql>
+
+  <!-- 批量保存 -->
+  <sql id="batchInsertColumn">
+    ID,ZIPCODE,CONTACTPERSON,CONTACTTEL,CONTACTFAX,REMARK,TOTALBANDWIDTH,GATEWAYIP,RATEDCAPACITY,NAME,ADDRESS,CODE,PROVINCE,CITY,DISTRICT
+  </sql>
+
+  <sql id="batchInsertColumnParam">
+    #{item.zipcode},#{item.contactperson},#{item.contacttel},#{item.contactfax},#{item.remark},#{item.totalbandwidth},#{item.gatewayip},#{item.ratedcapacity},#{item.name},#{item.address},#{item.code},#{item.province},#{item.city},#{item.district}
+  </sql>
+  <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+      deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+  <!-- The above code is static code of small changes, the business code start
+      from here -->
+
+  <select id="getAllIcLocationInfo" resultType="map">
+    select
+    <include refid="batchInsertColumn" />
+    from IDC_LOCATION
+  </select>
+
+  <insert id="saveIdcLocation" parameterType="com.idc.model.IdcLocation" >
+    <selectKey keyProperty="id" resultType="INTEGER" order="BEFORE">
+      　　SELECT SEQ_RESULT_ID.nextval as ID FROM DUAL
+    </selectKey>
+    insert into IDC_LOCATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="province != null" >
+        PROVINCE,
+      </if>
+      <if test="city != null" >
+        CITY,
+      </if>
+      <if test="district != null" >
+        DISTRICT,
+      </if>
+      <if test="zipcode != null" >
+        ZIPCODE,
+      </if>
+      <if test="contactperson != null" >
+        CONTACTPERSON,
+      </if>
+      <if test="contacttel != null" >
+        CONTACTTEL,
+      </if>
+      <if test="contactfax != null" >
+        CONTACTFAX,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="totalbandwidth != null" >
+        TOTALBANDWIDTH,
+      </if>
+      <if test="gatewayip != null" >
+        GATEWAYIP,
+      </if>
+      <if test="ratedcapacity != null" >
+        RATEDCAPACITY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactperson != null" >
+        #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contacttel != null" >
+        #{contacttel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactfax != null" >
+        #{contactfax,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="totalbandwidth != null" >
+        #{totalbandwidth,jdbcType=DECIMAL},
+      </if>
+      <if test="gatewayip != null" >
+        #{gatewayip,jdbcType=VARCHAR},
+      </if>
+      <if test="ratedcapacity != null" >
+        #{ratedcapacity,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.idc.model.IdcLocation" >
+    update IDC_LOCATION
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        DISTRICT = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null" >
+        ZIPCODE = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="contactperson != null" >
+        CONTACTPERSON = #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contacttel != null" >
+        CONTACTTEL = #{contacttel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactfax != null" >
+        CONTACTFAX = #{contactfax,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="totalbandwidth != null" >
+        TOTALBANDWIDTH = #{totalbandwidth,jdbcType=DECIMAL},
+      </if>
+      <if test="gatewayip != null" >
+        GATEWAYIP = #{gatewayip,jdbcType=VARCHAR},
+      </if>
+      <if test="ratedcapacity != null" >
+        RATEDCAPACITY = #{ratedcapacity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+
+  <!--模糊查询-->
+  <sql id="whereLikePageParam">
+    <where>
+      <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME like '%${params.name}%' ]]></if>
+    </where>
+  </sql>
+
+  <select id="getLocalCountByLocationId" resultType="IdcLocationCount">
+    select * from idc_location_count where id=#{0}
+  </select>
+
+  <!-- 统计数据中心带宽总数及使用率 -->
+  <select id="getTotalBandWidthNum" resultType="Map">
+    select (select sum(m.bandwidth)
+    from idc_re_port_model m
+    where exists (select 1
+    from idc_his_ticket t
+    where t.ticket_inst_id = m.id
+    and exists
+    (select 1
+    from idc_re_product p
+    where p.procticket_status in (31, 71, 81)
+    and p.id = t.prod_inst_id))) totalRoomB,
+    l.totalbandwidth locationB
+    from idc_location l
+    where l.id = #{0}
+  </select>
+
+  <!-- 资源分配资源列表 -->
+  <select id="queryDistributionResourceList" parameterType="PageBean" resultType="Map">
+    select t.ticketId,/*工单ID*/
+    t.xqName,/*需求名称*/
+    t.protId,/*产品ID*/
+    t.busname,/*业务名称*/
+    t.serialNumber,/*工单号*/
+    t.ticketCategory,/*自有/政企*/
+    t.createTime,/*业务开通时间*/
+    t.customerId,/*客户ID*/
+    t.customerName,/*客户名称*/
+    t.roomStr,/*占用机房*/
+    t.rackNameStr,/*机架Str*/
+    t.rackNum,/*机架数*/
+    t.ipStr,/*ipStr*/
+    t.ipNum,/*IP数*/
+    t.procticketStatus,/*业务状态*/
+    t.bandwidth,/*带宽*/
+    t.contactPhone,/*联系电话*/
+    t.distriTime /*分配时间*/
+    from view_distr_resource_report t
+    <where>
+      <if test="params.name!=null and params.name!='' ">
+        <![CDATA[ and upper(t.busname) like '%'||upper(#{params.name})||'%' ]]>
+      </if>
+      <if test="params.beginTime!=null and params.beginTime!='' ">
+        <![CDATA[ and to_date(t.distriTime,'yyyy-mm-dd hh24:mi:ss') >= to_date(#{params.beginTime},'yyyy-mm-dd hh24:mi:ss')]]>
+      </if>
+      <if test="params.endTime!=null and params.endTime!='' ">
+        <![CDATA[ and to_date(t.distriTime,'yyyy-mm-dd hh24:mi:ss') <= to_date(#{params.endTime},'yyyy-mm-dd hh24:mi:ss')]]>
+      </if>
+    </where>
+      order by t.createTime desc
+  </select>
+
+  <!-- 资源分配资源列表   导出 -->
+  <select id="queryAllDistributionResourceList" resultType="Map">
+    select t.ticketId,/*工单ID*/
+    t.xqName,/*需求名称*/
+    t.protId,/*产品ID*/
+    t.busname,/*业务名称*/
+    t.serialNumber,/*工单号*/
+    t.ticketCategory,/*自有/政企*/
+    t.createTime,/*业务开通时间*/
+    t.customerId,/*客户ID*/
+    t.customerName,/*客户名称*/
+    t.roomStr,/*占用机房*/
+    t.rackNameStr,/*机架Str*/
+    t.rackNum,/*机架数*/
+    t.ipStr,/*ipStr*/
+    t.ipNum,/*IP数*/
+    t.procticketStatus,/*业务状态*/
+    t.bandwidth,/*带宽*/
+    t.contactPhone,/*联系电话*/
+    t.distriTime /*分配时间*/
+    from view_distr_resource_report t
+    order by t.createTime desc
+  </select>
+
+  <!--IP占用报表-->
+  <select id="queryDistributionIpList" parameterType="PageBean" resultType="Map">
+    select t.ticketid,/*工单ID*/
+    t.beginIp,/*IP地址起*/
+    t.endIp,/*IP地址止*/
+    t.busname,/*业务名称*/
+    t.bandwidth,/*带宽*/
+    t.linkNum,/*链路条数*/
+    t.rackNameStr,/*机架Str*/
+    t.contactname,/*联系人*/
+    t.contactPhone,/*联系电话*/
+    t.contactEmail/*邮箱*/
+    from idc_ip_report_temp t
+    <where>
+      <if test="params.name!=null and params.name!='' ">
+        <![CDATA[ and upper(t.busname) like '%'||upper(#{params.name})||'%' ]]>
+      </if>
+    </where>
+    order by t.ticketid
+  </select>
+  <!--预植iP占用的数量-->
+  <select id="insertIpReportData">
+    call idc_distr_ip_report()
+  </select>
+
+  <!-- IP占用列表  导出 -->
+  <select id="queryAllDistributionIpList" resultType="Map">
+    select t.ticketid,/*工单ID*/
+    t.beginIp,/*IP地址起*/
+    t.endIp,/*IP地址止*/
+    t.busname,/*业务名称*/
+    t.bandwidth,/*带宽*/
+    t.linkNum,/*链路条数*/
+    t.rackNameStr,/*机架Str*/
+    t.contactname,/*联系人*/
+    t.contactPhone,/*联系电话*/
+    t.contactEmail/*邮箱*/
+    from idc_ip_report_temp t
+    order by t.busname
+  </select>
+
+  <select id="recycleResourceReport" parameterType="PageBean" resultType="Map">
+    select t.ticketid,/*工单ID*/
+    t.busiType,/*业务类型*/
+    t.busname,/*业务名称*/
+    t.ticketCategory,/*类别*/
+    t.roomStr,/*机房STR*/
+    t.rackStr,/*机架STR*/
+    t.rackNum,/*机架数*/
+    t.ipStr,/*IPSTR*/
+    t.ipNum,/*IP数*/
+    t.bandwidth,/*带宽*/
+    t.cysTime,/*回收时间*/
+    t.connectStr/*联系方式*/
+    from view_recycle_resource_report t
+    <where>
+      <if test="params.name!=null and params.name!='' ">
+        <![CDATA[ and upper(t.busname) like '%'||upper(#{params.name})||'%' ]]>
+      </if>
+    </where>
+      order by t.cysTime desc
+  </select>
+
+  <select id="recycleAllResourceReport" resultType="Map">
+     select t.ticketid,/*工单ID*/
+        t.busiType,/*业务类型*/
+        t.busname,/*业务名称*/
+        t.ticketCategory,/*类别*/
+        t.roomStr,/*机房STR*/
+        t.rackStr,/*机架STR*/
+        t.rackNum,/*机架数*/
+        t.ipStr,/*IPSTR*/
+        t.ipNum,/*IP数*/
+        t.bandwidth,/*带宽*/
+        t.cysTime,/*回收时间*/
+        t.connectStr/*联系方式*/
+        from view_recycle_resource_report t
+        order by t.cysTime desc
+  </select>
+
+  <!-- 获取机架、核心端口、ip、出口带宽利用率   不区分数据中心 -->
+  <select id="getIdcLocationResourceRatio" resultType="Map">
+      select (select count(1)
+                from idc_rack r
+               where r.isdelete = 0
+                 and r.businesstype_id in ('equipment', 'cabinet')
+                 and exists(select 1 from zb_machineroom m where m.id=r.roomid and m.isdelete=0 and m.roomtype=1)) as rackCount, ---机架总数
+             (select count(1)
+                from idc_rack r
+               where r.isdelete = 0
+                 and r.businesstype_id in ('equipment', 'cabinet')
+                 and r.status in (20, 50, 55, 60)
+                 and exists(select 1 from zb_machineroom m where m.id=r.roomid and m.isdelete=0 and m.roomtype=1)) as usedRackNum, --机架占用数
+             (select count(1) from idc_ipinfo) as ipCount, ---ip总数
+             (select count(1) from idc_ipinfo i where i.status > 0) as usedIpNum, ---ip占用数
+             (select count(1)
+                from net_port p
+               where exists (select 1
+                        from net_device d
+                       where d.deviceid = p.deviceid
+                         and d.networklayer = '核心')) as hportCount,
+             (select count(1)
+                from net_port p
+               where exists (select 1
+                        from net_device d
+                       where d.deviceid = p.deviceid
+                         and d.networklayer = '核心')
+                 and p.status in (50, 60)) as usedHportNum,
+              0 as bandWidthCount,
+              0 as usedBandWidthNum
+        from dual
+  </select>
+</mapper>

@@ -1,0 +1,108 @@
+<div name="topo_toolbar_template">
+    <div name='topo_toolbar' class='panel panel-default'>
+        <div class='panel-body'>
+            <div class='btn-group'>
+                <button name='return' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='返回' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-share-alt'></span>
+                </button>
+                <div class='btn-group' data-toggle='buttons'>
+                    <label class='btn btn-sm btn-primary' name='topo_mode' data-toggle='tooltip' title='平移'
+                           data-placement='bottom'>
+                        <input type='radio' value='drag'>
+                        <span class='glyphicon glyphicon-log-out'></span>
+                    </label>
+                    <label class='btn btn-sm btn-primary' name='topo_mode' data-toggle='tooltip' title='框选'
+                           data-placement='bottom'>
+                        <input type='radio' value='select'>
+                        <span class='glyphicon glyphicon-check'></span>
+                    </label>
+                    <label class='btn btn-sm btn-primary' name='topo_mode' data-toggle='tooltip' title='编辑'
+                           data-placement='bottom'>
+                        <input type='radio' value='edit'><span class='glyphicon glyphicon-edit'></span>
+                    </label>
+                </div>
+                <button name='full_screen' type='button' class='btn btn-sm btn-primary' data-toggle='button;tooltip'
+                        title='全屏' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-fullscreen'></span>
+                </button>
+                <button name='center' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='居中缩放' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-screenshot'></span>
+                </button>
+                <button name='common' type='button' class='btn btn-sm btn-primary'
+                        data-toggle='tooltip'
+                        title='正常展示' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-move'></span>
+                </button>
+                <button name='zoom_checkbox' type='button' class='btn btn-sm btn-primary'
+                        data-toggle='button;tooltip'
+                        title='鼠标缩放' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-resize-small'></span>
+                </button>
+                <button name='zoom_out' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='放大'
+                        data-placement='bottom'>
+                    <span class='glyphicon glyphicon-zoom-in'></span>
+                </button>
+                <button name='zoom_in' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='缩小'
+                        data-placement='bottom'>
+                    <span class='glyphicon glyphicon-zoom-out'></span>
+                </button>
+                <button name='export_image' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='导出PNG' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-picture'></span>
+                </button>
+                <button name='print' type='button' class='btn btn-sm btn-primary' data-toggle='tooltip'
+                        title='打印' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-print'></span>
+                </button>
+                <button name='eagle_eye' type='button' class='btn btn-sm btn-primary'
+                        data-toggle='button;tooltip'
+                        title='鹰眼1' data-placement='bottom'>
+                    <span class='glyphicon glyphicon-eye-open'></span>
+                </button>
+                <div class='input-group input-group-sm'>
+                    <select name='search_mode' class='form-control'>
+                    </select>
+                    <input name='search_text' type='text' class='form-control' placeholder='属性搜索为key=value'>
+                    <span class='input-group-btn'>
+                        <button name='search' class='btn btn-primary' type='button' data-toggle='tooltip' title='搜索' data-placement='bottom'>
+                            <span class='glyphicon glyphicon-search'></span>
+                        </button>
+                    </span>
+                </div>
+                <select name='search_result' class='form-control' placeholder="请选择">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div name='topo_toolbar_child' class='panel panel-default'>
+        <div class='panel-body'>
+            <div class='btn-group'>
+                <button name='auto_layout' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='自动布局'
+                        data-placement='bottom'><span class='glyphicon glyphicon-th'></span></button>
+                <button name='create_image' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='创建图片对象'
+                        data-placement='bottom'><span class='glyphicon glyphicon-picture'></span></button>
+                <button name='create_text' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='创建文本对象'
+                        data-placement='bottom'><span class='glyphicon glyphicon-font'></span></button>
+                <button name='create_link' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='创建链接'
+                        data-placement='bottom'><span class='glyphicon glyphicon-sort'></span></button>
+                <button name='create_line' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='画线对象'
+                        data-placement='bottom'><span class='glyphicon glyphicon-pencil'></span></button>
+                <button name='edit_save' type='button' class='btn btn-xs btn-primary' data-toggle='tooltip' title='保存'
+                        data-placement='bottom'><span class='glyphicon glyphicon-floppy-saved'></span></button>
+                <button name='draw_alarm' type='button' class='btn btn-xs btn-primary' data-toggle='button;tooltip'
+                        title='告警渲染'
+                        data-placement='bottom'><span class='glyphicon glyphicon-warning-sign'></span></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspInfoMapper">
+	<!-- 查询链路信息 -->
+	<select id="loadGatewayInfoList" resultType="GatewayInfo">
+		select t.id,
+			   t.band_width  as bandWidth,
+			   t.link_type   as linkType,
+			   t.access_unit as accessUnit,
+			   t.gateway_ip  as gatewayIp
+		  from IDC_ISP_GATEWAY_INFO t
+	</select>
+	<select id="loadIpSegInfoForIpList" resultType="IpSegInfo">
+		select
+		t.id,
+		t.start_ip as startIp,
+		t.end_ip as endIp,
+		t.type as "type",
+		t.user_ as "user",
+		t.id_type as idType,
+		t.id_number as idNumber,
+		t.source_unit as sourceUnit,
+		t.allocation_unit as allocationUnit,
+		t.use_time as useTime
+		from IDC_ISP_IPSEG_INFO t
+	</select>
+
+	<select id="loadIpSegInfoList" resultType="IpSegInfo">
+		select
+			(5000000000 + t1.id) as aid
+		 from  idc_his_ticket_resource t1
+		where t1.category = '300' /*and t1.ticket_inst_id = #{0}*/
+	</select>
+
+	<select id="loadFrameInfoListByTicketInstId" resultType="FrameInfo">
+		select
+		to_number(5000000000)+t.id as id,
+		t.usefor as useType,
+		2 as distribution,
+		case when t.status = 40 then 1 else 2 end occupancy,
+		t.name as frameName
+		from idc_rack t
+		where t.is_send_isp = #{isSendIsp}
+		AND t.BUSINESSTYPE_ID = 'equipment'
+		<if test=" ticketInstId != null and ticketInstId != '' ">
+			and t.TICKET_ID = #{ticketInstId}
+		</if>
+	</select>
+
+	<select id="loadFrameInfoList" resultType="FrameInfo">
+		select
+		   to_number(5000000000)+t.id as id,
+		   t.usefor as useType,
+		   2 as distribution,
+		   case when t.status = 40 then 1 else 2 end occupancy,
+		   t.name as frameName
+		from idc_rack t
+		where t.is_send_isp = 0
+		AND t.BUSINESSTYPE_ID = 'equipment'
+	</select>
+
+	<select id="loadIspSolidData" resultType="IspSolidData">
+			select
+			   t.idc_id as idcId,
+			   t.name as idcName,
+			   t.address as houseAdd,
+			   t.zipcode as houseZip,
+			   t.corp,
+			   1 as houseCount,
+			   t.provid as houseId,
+			   t.name as houseName,
+			   t.nature as houseType,
+			   t.houseprovince as houseProvincel,
+			   t.housecity as houseCity,
+			   t.HOUSECOUNTY as houseCounty,
+			   t.address ,
+			   t.zipcode,
+			   OFFER_NAME as offerName,
+			   OFFER_ID_TYPE as offerIdType,
+			   OFFER_ID as offerId,
+			   OFFER_TEL as offerTel,
+			   OFFER_MOBILE as offerMobile,
+			   OFFER_EMAIL as offerEmail,
+			   EMERGENCY_NAME as emergencyName,
+			   EMERGENCYID_TYPE as emergencyIdType,
+			   EMERGENCY_ID as emergencyId,
+			   EMERGENCY_TEL as emergencyTel,
+			   EMERGENCY_MOBILE as emergencyMobile,
+			   EMERGENCY_EMAIL as emergencyEmail
+			from idc_location t
+			where t.houseid = #{0}
+	</select>
+	<select id="loadIdcOfficerList" resultType="IdcOfficer">
+		select t.name,
+			   t.id_type as idType,
+			   t.id,
+			   t.tel,
+			   t.mobile,
+			   t.email,
+			   t.category
+		  from IDC_ISP_COFFICER_INFO t
+	</select>
+
+	<select id="loadReCustomerDataById" resultType="UserInfo">
+		select
+		(5000000000 + t1.id) as id,
+		t1.id as aid,
+		(select case when max(t2.domain_status) > 0 then 1 else 2/*1：提供域名用户；2其他用户*/ end from idc_net_serviceinfo t2 where t2.customer_id = t1.id) as nature,
+		t1.name as unitName,
+		t1.ATTRIBUTE as unitNature,/*单位属性*/
+		t1.IDCARDTYPE as idType,/*证件类型*/
+		t1.idcardno as idNumber,/*证件号*/
+		t1.addr as "add",/*地址*/
+		t1.zipcode as zipCode,/*邮件*/
+		to_char(t1.create_time,'yyyy-MM-dd') as registerTime/*注册时间*/
+		from idc_re_customer t1
+		WHERE  t1.id = #{0}
+	</select>
+	<select id="loadReCustomerData" resultType="UserInfo">
+		select
+		  (5000000000 + t1.id) as id,
+		  t1.id as aid,
+		  (select case when max(t2.domain_status) > 0 then 1 else 2/*1：提供域名用户；2其他用户*/ end from idc_net_serviceinfo t2 where t2.customer_id = t1.id) as nature,
+		  t1.name as unitName,
+		  t1.ATTRIBUTE as unitNature,/*单位属性*/
+		  t1.IDCARDTYPE as idType,/*证件类型*/
+		  t1.idcardno as idNumber,/*证件号*/
+		  t1.addr as "add",/*地址*/
+		  t1.zipcode as zipCode,/*邮件*/
+		  to_char(t1.create_time,'yyyy-MM-dd') as registerTime/*注册时间*/
+		from idc_re_customer t1
+	</select>
+	<select id="getRandomSingleRackId" resultType="String">
+		<![CDATA[ select (5000000000 + t1.rack_id) rackId from idc_his_ticket_resource t1
+		where t1.category='100' and t1.ticket_category <> '600' and t1.ticket_inst_id = #{0}
+		and rownum <= 1]]>
+	</select>
+	<select id="loadNetServiceinfoList" resultType="ServiceInfo">
+		select (5000000000 + t1.id) as serviceId, /*域名服务ID*/
+			   t1.id as aid,
+			   t1.icpsrvcontentcode as serviceContent, /*服务内容.以逗号隔开*/
+			   t1.Icprecordtype as regType, /*备案类型*/
+			   t1.Icprecordno as regId,/*网站备案号或许可证号*/
+			   t1.Icpaccesstype as setMode, /*接入方式*/
+			   t1.Icpbusinesstype as business, /*业务类型*/
+			   (6000000000 + t1.id) as domainId, /*域名ID*/
+			   (5000000000 + t1.Customer_Id) as customerId,/*客户ID*/
+			   t1.Customer_Id as customerIdTmp,/*客户ID*/
+			   t1.Icpdomain as domainName, /*域名名称*/
+        	   t1.ticket_inst_id as ticketInstId,
+        	   (5000000000 + t1.ticket_inst_id) as hhid,
+        	   case when t1.open_time is null then
+        	   		to_char(sysdate,'yyyy-MM-dd')
+        	   		else
+        	   		to_char(t1.open_time,'yyyy-MM-dd')
+        	  end serviceRegTime,
+        	   case when t1.domain_status > 0 then 1 else 2 end nature,/*1：提供域名用户；2其他用户*/
+         	   (select p.bandwidth from idc_re_port_model p where p.ticket_inst_id = t1.ticket_inst_id) as bandWidth,
+				 t1.vm_name as virtualhostName,
+				 t1.vm_status as virtualhostState,
+				 t1.vm_category as virtualhostType,
+				 t1.vm_net_addr as virtualhostAddress,
+				 t1.vm_manager_addr as virtualhostManagementAddress
+		from idc_net_serviceinfo t1 where t1.ACTIVE_STATUS = 1
+	</select>
+	<select id="callIspCustomerPro" statementType="CALLABLE">
+		CALL ISP_LOCAL.customer_data_proc()
+	</select>
+
+	<select id="callIpSection" statementType="CALLABLE">
+		CALL resource_proc.house_section_func(#{0})
+	</select>
+	<!-- isp资源信息调用 -->
+	<select id="callIspResourcePro" statementType="CALLABLE">
+		CALL ISP_LOCAL.resource_data_proc()
+	</select>
+
+	<select id="callCustSectionPro" statementType="CALLABLE">
+		CALL resource_proc.customer_section_func()
+	</select>
+
+	<select id="callProc_resource_hs" statementType="CALLABLE">
+		CALL jbpm_process_back.proc_resource_hs(
+			#{ticketInstId,mode=IN,jdbcType=INTEGER},
+			#{ticketStatus,mode=IN,jdbcType=INTEGER},
+			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+  			)
+	</select>
+
+	<select id="callProcResourceBh" statementType="CALLABLE">
+		CALL jbpm_process_back.PROC_NOT_SERVER_UNIT(
+		#{ticketInstId,mode=IN,jdbcType=INTEGER},
+		#{ticketStatus,mode=IN,jdbcType=INTEGER},
+		#{rowcount,jdbcType=INTEGER,mode=OUT},
+		#{msg,jdbcType=VARCHAR,mode=OUT}
+		)
+	</select>
+
+
+
+	<select id="getIsUploadStatus" resultType="Boolean">
+		 select t.is_upload_status from LOCAL_ISP_CFG t where t.category = #{0}
+	</select>
+
+
+	<select id="updateIsUploadStatus">
+		update LOCAL_ISP_CFG t set t.is_upload_status = 1
+		where t.category = #{0}
+	</select>
+
+	<select id="loadDomainByTicketId" resultType="ISPDomain">
+		 select id as aid,domain_name as name from idc_domain_section t where t.TICKET_INST_ID=#{0}
+	</select>
+
+	<select id="loadLocalIspServerList" resultType="LocalIspServer">
+		select
+			AID as aid,
+			SERVICE_NODE_ID as serviceNodeId,
+			SERVICE_CONTENT as serviceContent,
+			REG_TYPE as regType,
+			REG_ID as regId,
+			SET_MODE as setMode,
+			BUSINESS as business,
+			DOMAIN_ID as domainId,
+			DOMAIN_NAME as domainName,
+			FK_ISP_CUSTOMER_ID as fkIspCustomerId,
+			SERVICE_REG_TIME as serviceRegTime,
+			NATURE as nature
+		from LOCAL_ISP_SERVER
+		where FK_ISP_CUSTOMER_ID = #{aid}
+		and NATURE = #{nature}
+		order by CREATE_TIME desc
+	</select>
+
+	<select id="loadLocalIspHouseholdList" resultType="LocalIspHousehold">
+		select
+		AID as aid,
+		HH_ID as hhId,
+		HOUSE_ID as houseId,
+		DISTRIBUTE_TIME as distributeTime,
+		VIRTUALHOST_NAME as virtualhostName,
+		VIRTUALHOST_STATE as virtualhostState,
+		VIRTUALHOST_TYPE as virtualhostType,
+		VIRTUALHOST_ADDRESS as virtualhostAddress,
+		VIRTUALHOST_MANAGEMENT_ADDRESS as virtualhostManagementAddress,
+		FRAME_INFO_ID as frameInfoId,
+		BAND_WIDTH as bandWidth,
+		FK_SERVER_ID as fkServerId
+		from LOCAL_ISP_HOUSEHOLD
+		where FK_SERVER_ID = #{0}
+	</select>
+
+
+	<select id="loadLocalIspIpSeg"   resultType="LocalIspIpSeg">
+		select id,
+			   ip_id as ipId,
+			   start_ip as startIp,
+			   end_ip as endIp,
+			   type_ as "type",
+			   user_ as "user",
+			   id_type as idType,
+			   id_number as idNumber,
+			   source_unit as sourceUnit,
+			   allocation_unit as allocationUnit,
+			   use_time as useTime,
+         	   house_id as houseId
+		  from local_isp_ip_seg
+		  where house_id = #{0}
+	</select>
+
+
+	<select id="loadGateByHouseId"   resultType="GatewayInfo">
+		select t.id,
+			   t.band_width  as bandWidth,
+			   t.link_type   as linkType,
+			   t.access_unit as accessUnit,
+			   t.gateway_ip  as gatewayIp
+		  from IDC_ISP_GATEWAY_INFO t
+		where t.HOUSE_ID = #{0}
+	</select>
+
+
+	<select id="getFindHouseIds" resultType="String">
+		select houseid from idc_location
+	</select>
+
+
+	<select id="getHouseInfoByTicketId" resultType="LocalIspHousehold">
+		select
+			  t.ID as hhId,
+			  t.house_id as houseId,
+			  t.distribute_time as distributeTime,
+			  t.band_width as bandWidth,
+			  t2.frame_info_id as frameInfoId,
+			  t2.ip_section_start as startIp,
+			  t2.ip_section_end as endIp,
+			  t2.id as ipId
+		from IDC_HOUSE_SECTION t left join IDC_IPINFO_SECTION t2
+		on t.id = t2.house_section_id
+		where t.TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="loadLocalIspIframe" resultType="LocalIspIframe">
+		select aid,
+		 	   hh_id as hhId,
+		 	   use_type as useType,
+		 	   distribution as distribution,
+		 	   occupancy as occupancy,
+		 	   frame_name as frameName,
+			   HOUSE_ID as houseId
+  			from local_isp_iframe
+  		 where HOUSE_ID = #{0}
+	</select>
+	<select id="loadLocalIspHouseholdAll" resultType="LocalIspHousehold">
+		select
+			AID as aid,
+			HH_ID as hhId,
+			HOUSE_ID as houseId,
+			DISTRIBUTE_TIME as distributeTime,
+			VIRTUALHOST_NAME as virtualhostName,
+			VIRTUALHOST_STATE as virtualhostState,
+			VIRTUALHOST_TYPE as virtualhostType,
+			VIRTUALHOST_ADDRESS as virtualhostAddress,
+			VIRTUALHOST_MANAGEMENT_ADDRESS as virtualhostManagementAddress,
+			FRAME_INFO_ID as frameInfoId,
+			BAND_WIDTH as bandWidth,
+			FK_SERVER_ID as fkServerId,
+			USER_TYPE as userType,
+			DISTRIBUTION as distribution,
+			OCCUPANCY as occupancy,
+			FRAME_NAME as frameName
+	  	from LOCAL_ISP_HOUSEHOLD
+	</select>
+	<select id="loadLocalIspHousehold" resultType="LocalIspHousehold">
+		select
+			AID as aid,
+			HH_ID as hhId,
+			HOUSE_ID as houseId,
+			DISTRIBUTE_TIME as distributeTime,
+			VIRTUALHOST_NAME as virtualhostName,
+			VIRTUALHOST_STATE as virtualhostState,
+			VIRTUALHOST_TYPE as virtualhostType,
+			VIRTUALHOST_ADDRESS as virtualhostAddress,
+			VIRTUALHOST_MANAGEMENT_ADDRESS as virtualhostManagementAddress,
+			FRAME_INFO_ID as frameInfoId,
+			BAND_WIDTH as bandWidth,
+			FK_SERVER_ID as fkServerId
+		from LOCAL_ISP_HOUSEHOLD
+		where FK_SERVER_ID = #{0}
+	</select>
+
+	<select id="loadLocalIspIpInfo" resultType="LocalIspIpInfo">
+		select
+			AID as aid,
+			START_IP as startIp,
+			END_IP as endIp,
+			FK_HOUSEHOLD_ID as fkHouseholdId,
+			FK_SERVER_ID as fkServerId,
+			IP_ID as ipId,
+			"TYPE" as type,
+			"USER" as "user",
+			ID_TYPE as idType,
+			ID_NUMBER as idNumber,
+			SOURCE_UNIT as sourceUnit,
+			ALLOCATION_UNIT as allocationUnit,
+			USE_TIME as useTime
+		from LOCAL_ISP_IP_INFO
+		where FK_HOUSEHOLD_ID = #{0}
+	</select>
+
+	<select id="loadAllLocalIspIpInfo" resultType="LocalIspIpInfo">
+		select
+		AID as aid,
+		START_IP as startIp,
+		END_IP as endIp,
+		FK_HOUSEHOLD_ID as fkHouseholdId,
+		FK_SERVER_ID as fkServerId,
+		IP_ID as ipId,
+		"TYPE" as type,
+		"USER" as "user",
+		ID_TYPE as idType,
+		ID_NUMBER as idNumber,
+		SOURCE_UNIT as sourceUnit,
+		ALLOCATION_UNIT as allocationUnit,
+		USE_TIME as useTime
+		from LOCAL_ISP_IP_INFO
+	</select>
+
+	<select id="getCountRack" resultType="Integer">
+		select count(*) from idc_rack t where t.ticket_id = #{0}
+	</select>
+	<select id="getCountIP" resultType="Integer">
+		select count(*) from idc_ipinfo_section t where t.ticket_inst_id = #{0}
+	</select>
+
+	<select id="getDomainIdFromSeq" resultType="Long">
+		select Seq_Ticket_Domain.Nextval from dual
+	</select>
+
+
+	<select id="getServerIspByServerId" resultType="LocalIspServer">
+		select
+		   t1.id as aid,/*服务ID*/
+		   '1,2,3,4,5' as serviceContent, /*服务内容*/
+		   /*t1.icpsrvcontentcode as serviceContent,服务内容*/
+		   t1.ICPRECORDTYPE as regType,/*备案类型*/
+		   t1.ICPRECORDNO as regId,/*备案号或许可证号*/
+		   t1.ICPACCESSTYPE as setMode,/*接入方式  1代表是具有虚拟主机*/
+		   t1.ICPBUSINESSTYPE as business,/*业务类型*/
+		   t1.ICPDOMAIN as domainName,/*域名信息*/
+		   to_char(t1.open_time,'YYYY-MM-dd') as serviceRegTime,/*服务开通时间*/
+		   nvl(t4.bandwidth,0) as bandWidth
+		from idc_net_serviceinfo t1
+			 left join idc_re_product t2 on t1.prod_inst_id = t2.id
+			 left join idc_re_proddef t3 on t2.id = t3.prod_inst_id and t3.CATEGORY=200 and t1.ticket_inst_id = t3.ticket_inst_id
+			 left join idc_re_port_model t4 on t3.id = t4.id
+		where t1.id = #{0}
+	</select>
+	<!-- 获取客户信息 -->
+	<select id="loadCustomersWithAll" resultType="LocalIspCustomer">
+		select
+		t.id as aid,/*用户ID*/
+		t.domain_status as nature,/*用户属性*/
+		t.name as unitName,/*单位名称*/
+		t.ATTRIBUTE as unitNature,/*单位属性*/
+		t.IDCARDTYPE as idType,/*证件类型*/
+		t.idcardno as idNumber,/*证件号码*/
+		/*officer*/
+		t.offer_name as offerName,/*人员名称*/
+		t.offer_id_type as offerIdType,/*人员证件类型*/
+		t.offer_id as offerId,/*人员证件号码*/
+		t.offer_tel as offerTel,/*人员固定电话*/
+		t.offer_mobile as offerMobile,/*人员移动电话*/
+		t.offer_email as offerEmail,/*人员联系email*/
+		t.addr as addr,/*单位地址*/
+		t.zipcode as  zipCode,/*邮政编码*/
+		/*服务信息*/
+		t.service_ids as serviceIds,/*服务信息IDS*/
+		t.ticket_ids as ticketIds,/*工单号*/
+		t.registerTime, /*注册时间*/
+		to_char(sysdate,'YYYY-MM-dd') as serviceRegTime/* 服务开通时间 */
+		from view_customer t where t.houseid = #{0}
+	</select>
+	<!-- 获取客户信息 -->
+	<select id="loadCustomers" resultType="LocalIspCustomer">
+		select
+			  t.id as aid,/*用户ID*/
+			  t.domain_status as nature,/*用户属性*/
+			  t.name as unitName,/*单位名称*/
+			  t.ATTRIBUTE as unitNature,/*单位属性*/
+			  t.IDCARDTYPE as idType,/*证件类型*/
+			  t.idcardno as idNumber,/*证件号码*/
+			  /*officer*/
+			  t.offer_name as offerName,/*人员名称*/
+			  t.offer_id_type as offerIdType,/*人员证件类型*/
+			  t.offer_id as offerId,/*人员证件号码*/
+			  t.offer_tel as offerTel,/*人员固定电话*/
+			  t.offer_mobile as offerMobile,/*人员移动电话*/
+			  t.offer_email as offerEmail,/*人员联系email*/
+			  t.addr as addr,/*单位地址*/
+			  t.zipcode as  zipCode,/*邮政编码*/
+			  /*服务信息*/
+			  t.service_ids as serviceIds,/*服务信息IDS*/
+			  t.ticket_ids as ticketIds,/*工单号*/
+			  t.registerTime, /*注册时间*/
+			  to_char(sysdate,'YYYY-MM-dd') as serviceRegTime/* 服务开通时间 */
+			from view_customer t
+		  where t.domain_status=#{nature} and t.houseid=#{houseId}
+	</select>
+
+
+	<select id="loadIspCustomerParamList" resultType="LocalIspCustomer">
+		select
+			  AID as aid,
+			  CUSTOMER_ID as customerId,
+			  NATURE as nature,
+			  UNIT_NAME as unitName,
+			  UNIT_NATURE as unitNature,
+			  ID_TYPE as idType,
+			  ID_NUMBER as idNumber,
+			  OFFER_NAME as offerName,
+			  OFFER_ID_TYPE as offerIdType,
+			  OFFER_ID as offerId,
+			  OFFER_TEL as offerTel,
+			  OFFER_MOBILE as offerMobile,
+			  OFFER_EMAIL as offerEmail,
+			  ADDR as addr,
+			  ZIP_CODE as zipCode,
+			  REGISTER_TIME as registerTime,
+			  SERVICE_REG_TIME as serviceRegTime
+		  from local_isp_customer
+		  where HOUSE_ID=#{0}
+	</select>
+
+
+	<select id="getIspServerParamList" resultType="LocalIspServer">
+		select
+		AID as aid,
+		SERVICE_NODE_ID as serviceNodeId,
+		SERVICE_CONTENT as serviceContent,
+		REG_TYPE as regType,
+		REG_ID as regId,
+		SET_MODE as setMode,
+		BUSINESS as business,
+		DOMAIN_ID as domainId,
+		DOMAIN_NAME as domainName,
+		FK_ISP_CUSTOMER_ID as fkIspCustomerId,
+		SERVICE_REG_TIME as serviceRegTime,
+		NATURE as nature,
+		BAND_WIDTH as bandWidth
+		from LOCAL_ISP_SERVER
+		where FK_ISP_CUSTOMER_ID = #{aid}
+		order by CREATE_TIME desc
+	</select>
+
+
+	<select id="getIspHouseHolde" resultType="LocalIspHousehold">
+		select
+		  t.frame_info_id as frameInfoId,
+		  to_char(sysdate,'YYYY-MM-dd') as distributeTime
+		from local_isp_ip_info t
+		where t.service_id = #{0}
+		group by t.frame_info_id
+	</select>
+
+
+	<select id="getIspIpInfoList" resultType="LocalIspIpInfo">
+		select
+		IP_ID as ipId,
+		START_IP as startIp,
+		END_IP as endIp
+		from LOCAL_ISP_IP_INFO
+		where SERVICE_ID = #{serviceNodeId} and FRAME_INFO_ID = #{frameInfoId}
+	</select>
+
+
+	<select id="loadNetServiceinfoListByTicketId" resultType="ServiceInfo">
+		select (5000000000 + t1.id) as serviceId, /*域名服务ID*/
+		t1.id as aid,
+		t1.icpsrvcontentcode as serviceContent, /*服务内容.以逗号隔开*/
+		t1.Icprecordtype as regType, /*备案类型*/
+		t1.Icprecordno as regId,/*网站备案号或许可证号*/
+		t1.Icpaccesstype as setMode, /*接入方式*/
+		t1.Icpbusinesstype as business, /*业务类型*/
+		(6000000000 + t1.id) as domainId, /*域名ID*/
+		(5000000000 + t1.Customer_Id) as customerId,/*客户ID*/
+		t1.Customer_Id as customerIdTmp,/*客户ID*/
+		t1.Icpdomain as domainName, /*域名名称*/
+		t1.ticket_inst_id as ticketInstId,
+		(5000000000 + t1.ticket_inst_id) as hhid,
+		case when t1.open_time is null then
+		to_char(sysdate,'yyyy-MM-dd')
+		else
+		to_char(t1.open_time,'yyyy-MM-dd')
+		end serviceRegTime,
+		case when t1.domain_status > 0 then 1 else 2 end nature,/*1：提供域名用户；2其他用户*/
+		(select p.bandwidth from idc_re_port_model p where p.ticket_inst_id = t1.ticket_inst_id) as bandWidth,
+		t1.vm_name as virtualhostName,
+		t1.vm_status as virtualhostState,
+		t1.vm_category as virtualhostType,
+		t1.vm_net_addr as virtualhostAddress,
+		t1.vm_manager_addr as virtualhostManagementAddress
+		from idc_net_serviceinfo t1 where t1.ACTIVE_STATUS = 1
+		and t1.ticket_inst_id = #{0}
+	</select>
+
+	<select id="loadNetServiceinfoListByCustomerId" resultType="ServiceInfo">
+		select (5000000000 + t1.id) as serviceId, /*域名服务ID*/
+				t1.id as aid,
+				t1.icpsrvcontentcode as serviceContent, /*服务内容.以逗号隔开*/
+				t1.Icprecordtype as regType, /*备案类型*/
+				t1.Icprecordno as regId,/*网站备案号或许可证号*/
+				t1.Icpaccesstype as setMode, /*接入方式*/
+				t1.Icpbusinesstype as business, /*业务类型*/
+				(6000000000 + t1.id) as domainId, /*域名ID*/
+				(5000000000 + t1.Customer_Id) as customerId,/*客户ID*/
+				t1.Customer_Id as customerIdTmp,/*客户ID*/
+				t1.Icpdomain as domainName, /*域名名称*/
+				t1.ticket_inst_id as ticketInstId,
+				(5000000000 + t1.ticket_inst_id) as hhid,
+				case when t1.open_time is null then
+				to_char(sysdate,'yyyy-MM-dd')
+				else
+				to_char(t1.open_time,'yyyy-MM-dd')
+				end serviceRegTime,
+				case when t1.domain_status > 0 then 1 else 2 end nature,/*1：提供域名用户；2其他用户*/
+				(select p.bandwidth from idc_re_port_model p where p.ticket_inst_id = t1.ticket_inst_id) as bandWidth,
+				t1.vm_name as virtualhostName,
+				t1.vm_status as virtualhostState,
+				t1.vm_category as virtualhostType,
+				t1.vm_net_addr as virtualhostAddress,
+				t1.vm_manager_addr as virtualhostManagementAddress
+		from idc_net_serviceinfo t1 where  t1.customer_id = #{0}
+		and t1.domain_status = 1 and t1.ACTIVE_STATUS = 1
+	</select>
+
+	<select id="getLoadFrameInfoId" resultType="String">
+		<![CDATA[ select
+		(5000000000 + t1.id),
+		t1.ticket_inst_id
+		from idc_his_ticket_resource t1 where
+		t1.CATEGORY = '100' and
+		t1.ticket_inst_id = #{0} and rownum <= 1 ]]>
+	</select>
+	<select id="loadIpAttrList" resultType="IpAttr">
+		select (5090000000 + t.id) as aid,
+				t.ip_name as startIp,
+				t.end_ip as endIp,
+		 		to_char(t.create_time,'yyyy-MM-dd') as distributeTime
+				from idc_his_ticket_resource t
+				where
+				<if test=" ticketInstId != null and ticketInstId != '' ">
+					t.ticket_inst_id = #{ticketInstId}
+				</if>
+				<if test="status != 999 ">
+					and t.status = #{status}
+				</if>
+				and t.category = '300'
+	</select>
+	<!--    -->
+	<select id="loadHousesHoldInfoList" resultType="HousesHoldInfo">
+	  select
+			(5000000000 + t1.id) as aid,
+		 	to_char(t1.create_time,'yyyy-MM-dd') as distributeTime,
+		  <![CDATA[  (select (5000000000 + tmp.id) from idc_his_ticket_resource tmp where  tmp.CATEGORY = '100' and tmp.ticket_inst_id = t1.ticket_inst_id and rownum <= 1) as frameInfoId]]>
+		 from  idc_his_ticket_resource t1
+		where t1.category = '100' and t1.ticket_inst_id = #{0}
+	</select>
+
+	<select id="loadHousesHoldInfoListForDelUser" resultType="HousesHoldInfo">
+		select (5000000000 + t2.roomid)  aid
+		from
+		idc_his_ticket_resource t1 left join idc_rack t2 on t1.rack_id = t2.id
+		where t1.category = '100' and t1.ticket_inst_id = #{0}
+	</select>
+</mapper>

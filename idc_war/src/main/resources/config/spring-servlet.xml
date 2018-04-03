@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+	<context:component-scan base-package="com.idc.action,org.activiti.action,com.bpm">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
+
+	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理 ，并处理jar包中对应目录资源-->
+	<mvc:resources mapping="/framework/**" location="/framework/" cache-period="31556926" />
+	<mvc:resources mapping="/globalstatic/**" location="/globalstatic/" cache-period="31556926" />
+	<mvc:resources mapping="/js/**" location="/js/" cache-period="31556926" />
+	<mvc:resources mapping="/activiti-moduler/**" location="/activiti-moduler/" cache-period="31556926" />
+	<mvc:resources mapping="/error/**" location="/error/" cache-period="31556926" />
+	<!--<mvc:resources mapping="/editor-app/**" location="/editor-app/" cache-period="31556926" />
+	<mvc:resources mapping="/VAADIN/**" location="/VAADIN/" cache-period="31556926" />
+	<mvc:resources mapping="/*.html" location="./modeler.html" cache-period="31556926" />-->
+	<mvc:resources mapping="/init/**" location="/init/" cache-period="31556926" />
+	<mvc:resources mapping="/assets/**" location="/assets/" cache-period="31556926" />
+	<mvc:resources mapping="/*.jsp" location="./login.jsp" cache-period="31556926" />
+	<mvc:resources mapping="/*.json" location="./service.json" cache-period="31556926" />
+	<mvc:resources mapping="/*.json" location="/service.json" cache-period="31556926" />
+    <mvc:resources mapping="/moudles/**" location="/moudles/" cache-period="31556926" />
+	<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"></bean>
+	<bean id="customObjectMapper" class="modules.utils.CustomObjectMapper"></bean>
+
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"></bean>
+	<!-- 定义跳转的文件的前后缀 ，视图模式配置-->
+	<bean class="system.view.MyUrlBasedViewResolver" p:order="1">
+		<property name="viewClass"><value>org.springframework.web.servlet.view.JstlView</value></property>
+		<!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+		<property name="prefix"><value>/WEB-INF/page/</value></property>
+		<property name="suffix"><value>.jsp</value></property>
+	</bean>
+	<!-- 国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="config/messages" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+
+	<!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="utf-8" />
+		<!-- 文件大小最大值 -->
+		<property name="maxUploadSize" value="10485760000" />
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+                        <value>text/json;charset=UTF-8</value>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/x-www-form-urlencoded;charset=UTF-8</value>
+					</list>
+				</property>
+				<property name="objectMapper" ref="customObjectMapper"/>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<context:component-scan base-package="system.systemlog"/>
+
+</beans>

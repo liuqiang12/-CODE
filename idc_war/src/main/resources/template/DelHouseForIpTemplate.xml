@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<deleteInfo>
+		<deleteData>
+			#foreach($item in $ipAttrList)#*5删除IP*#
+			<house>
+				<houseId>$ispSolidData.houseId</houseId>
+				<ipSegId>$!item.aid</ipSegId>
+			</house>
+			#end#*#*//5删除IP*#
+		</deleteData>
+	</deleteInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.BusPortMapper">
+
+    <!-- 返回类型 -->
+    <resultMap id="resultTestResoucesMap" type="com.idc.model.NetBusiPort">
+        <!-- 数据库属性和实体类属性对应关系 -->
+        <id property="id" column="id"/>
+        <result column="desc" property="desc"/>
+        <result column="customer" property="customer"/>
+        <result column="busiportname" property="busiportname"/>
+        <result column="bandwidth" property="bandwidth"/>
+        <!--<result column="typeid" property="typeid" />-->
+        <collection property="portids" ofType="Long" javaType="list">
+            <result column="portid"/>
+            <!--<id property="portid" column="portid"/>-->
+        </collection>
+        <collection property="groups" ofType="Long" javaType="list">
+            <result column="groupid"/>
+            <!--<id property="portid" column="portid"/>-->
+        </collection>
+    </resultMap>
+
+    <select id="queryListPage" resultMap="resultTestResoucesMap" fetchSize="1000">
+        SELECT
+        a.id  ,
+        a.busiportname ,
+        d.portid,
+        c.groupid as groupid,
+        A.CUSTOMER as customer,
+        A .descr,
+        A.bandwidth
+        from NET_BUSIPORT a
+        LEFT JOIN NET_BUSI_PORT D on a.id=d.busiid
+        LEFT JOIN NET_BUSIPORT_GROUP C ON A . ID = C.BUSIID
+        <where>
+            <if test="key!=null and key!=''"><![CDATA[ and (A.busiPortName like  '%${key}%') ]]></if>
+            <if test="groupids!=null and  groupids.size>0">
+                and c.groupid in
+                <foreach collection="groupids" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER by a.busiportname
+    </select>
+
+    <select id="queryById" resultMap="resultTestResoucesMap">
+        SELECT
+            A . ID,
+            d .portid,
+            A .busiportname,
+            A .descr,
+            A.bandwidth,
+--             b. PORTNAME AS portname,
+--             b.ALIAS as alias,
+--             b.deviceid as deviceid,
+--             c.routname as devicename,
+            e.groupid as groupid,
+            A.CUSTOMER as customer
+        FROM
+            NET_BUSIPORT A
+            LEFT JOIN net_busi_port D ON A . ID = D .busiid
+            LEFT JOIN net_busiport_group e ON A . ID = e .busiid
+--             LEFT JOIN NET_PORT b ON D .portid = b.PORTID
+--             LEFT JOIN net_device c ON c .deviceid = b. deviceid
+       WHERE  a.id=#{id}
+
+            order by a.busiportname
+    </select>
+    <delete id="deleteByTypeID">
+        DELETE FROM NET_BUSIPORT WHERE id=#{0}
+    </delete>
+    <!--<insert id="insertBusi">-->
+        <!--&lt;!&ndash;INSERT INTO NET_BUSIPORT(&ndash;&gt;-->
+        <!--&lt;!&ndash;busiPortName,portid,descr&ndash;&gt;-->
+        <!--&lt;!&ndash;) VALUES&ndash;&gt;-->
+        <!--&lt;!&ndash;<foreach collection="ports" item="item" index="index"&ndash;&gt;-->
+        <!--&lt;!&ndash;separator=",">&ndash;&gt;-->
+        <!--&lt;!&ndash;(&ndash;&gt;-->
+        <!--&lt;!&ndash;#{busiPortName},#{item},#{descr}&ndash;&gt;-->
+        <!--&lt;!&ndash;)&ndash;&gt;-->
+        <!--&lt;!&ndash;</foreach>&ndash;&gt;-->
+        <!--INSERT INTO NET_BUSIPORT(-->
+        <!--id,busiPortName,typeid,portid,descr-->
+        <!--<if test="customer !=null and customer!=''">,customer</if>-->
+        <!--)-->
+        <!--select NET_BUSIPORT_SEQ.NEXTVAL,cd.* from(-->
+        <!--<foreach collection="ports" item="item" index="index" separator="union all">-->
+            <!--select-->
+            <!--#{busiPortName},#{typeid},#{item},#{descr}-->
+            <!--<if test="customer !=null and customer!=''">,#{customer}</if>-->
+            <!--from dual-->
+        <!--</foreach>-->
+        <!--) cd-->
+    <!--</insert>-->
+
+    <select id="getTypeID" resultType="Long">
+       select NET_BUSIPORT_SEQ.NEXTVAL from dual
+    </select>
+    <!--<select id="deal" resultType="com.idc.model.NetPortFlow">-->
+        <!--SELECT-->
+	<!--TO_DATE (-->
+		<!--TO_CHAR (-->
+			<!--s.RECORDTIME,-->
+			<!--'YYYY-MM-DD hh24'-->
+		<!--) || ':' || LPAD (-->
+			<!--FLOOR (-->
+				<!--TO_CHAR (s.RECORDTIME, 'mi') / 5-->
+			<!--) * 5,-->
+			<!--2,-->
+			<!--0-->
+		<!--),-->
+		<!--'YYYY-MM-DD hh24:mi'-->
+	<!--) AS RECORDTIME,-->
+	<!--SUM (s.INPUTFLUX) inFlow,-->
+	<!--SUM (s.OUTPUTFLUX) outFlow,-->
+	<!--s.portname,-->
+	<!--s.bandwidth-->
+<!--FROM-->
+	<!--(-->
+		<!--SELECT-->
+			<!--b.busiportname AS portname,-->
+			<!--b.TYPEID,-->
+			<!--A .inputflux,-->
+			<!--A .OUTPUTFLUX,-->
+			<!--A .RECORDTIME,-->
+			<!--c.bandwidth-->
+		<!--FROM-->
+			<!--NET_CAP_PORT A-->
+		<!--LEFT JOIN Net_busiport B ON A .portid = b.portid-->
+		<!--LEFT JOIN (-->
+			<!--SELECT-->
+				<!--A .TYPEID,-->
+				<!--SUM (b.bandwidth) AS bandwidth-->
+			<!--FROM-->
+				<!--Net_busiport A-->
+			<!--LEFT JOIN NET_PORT b ON A .portid = b.portid-->
+			<!--GROUP BY-->
+				<!--A .TYPEID-->
+		<!--) c ON b.TYPEID = c.TYPEID-->
+		<!--WHERE-->
+			<!--b.TYPEID =#{0}-->
+			<!--and A.RECORDTIME &gt;= add_months(sysdate,-1)-->
+            <!--and A.RECORDTIME &lt; sysdate-->
+	<!--) s-->
+<!--GROUP BY-->
+	<!--s.portname,-->
+	<!--s.bandwidth,-->
+	<!--TO_CHAR (-->
+		<!--s.RECORDTIME,-->
+		<!--'YYYY-MM-DD hh24'-->
+	<!--) || ':' || LPAD (-->
+		<!--FLOOR (-->
+			<!--TO_CHAR (s.RECORDTIME, 'mi') / 5-->
+		<!--) * 5,-->
+		<!--2,-->
+		<!--0-->
+	<!--)-->
+    <!--ORDER BY-->
+	<!--RECORDTIME,-->
+	<!--portname-->
+    <!--</select>-->
+    <!--<select id="getCurrFlow" resultType="com.idc.model.NetPortFlow">-->
+        <!--SELECT a.TYPEID as portid,a.busiportname as portname,count(*) as count,sum(b.inputflux) as-->
+        <!--inflow,sum(b.outputflux) as-->
+        <!--outflow-->
+        <!--from Net_busiport a LEFT JOIN NET_CAP_PORT_CURR b on a.portid =b.portid-->
+        <!--where A.TYPEID in-->
+        <!--<foreach collection="typeids" index="index" item="item" open="("-->
+                 <!--separator="," close=")">-->
+            <!--#{item}-->
+        <!--</foreach>-->
+        <!--GROUP BY a.TYPEID,a.busiportname-->
+    <!--</select>-->
+    <!--<select id="getCurrFlowByUser" resultType="com.idc.model.NetPortFlow">-->
+        <!--SELECT a.TYPEID as portid,a.busiportname as portname,count(*) as count,sum(b.inputflux) as inflow,sum(b.outputflux) as-->
+        <!--outflow-->
+        <!--from Net_busiport a LEFT JOIN NET_CAP_PORT_CURR b on a.portid =b.portid-->
+        <!--where A.customer =#{0}-->
+        <!--GROUP BY a.TYPEID,a.busiportname-->
+    <!--</select>-->
+
+    <!-- 通过客户ID获取该客户所有业务端口名称 -->
+    <select id="queryPortNameListByCustomerId" resultType="java.lang.String">
+        select distinct p.busiportname from NET_BUSIPORT p where p.customer = #{customerId}
+    </select>
+    <select id="getByBusiName" resultMap="resultTestResoucesMap">
+
+--          SELECT * from (SELECT  A.ID,A.DESCR,A.BUSIPORTNAME,A.CUSTOMER,B.PORTID FROM NET_BUSIPORT A LEFT  JOIN NET_BUSI_PORT B ON A.ID = B.BUSIID)
+             SELECT
+         A.ID,A.DESCR,A.BUSIPORTNAME,A.CUSTOMER,B.PORTID,a.bandwidth,d.groupid
+      FROM
+        NET_BUSIPORT A
+        LEFT  JOIN NET_BUSI_PORT B on a.id= b.busiid
+        LEFT  JOIN NET_BUSIPORT_GROUP D on a.id= D.busiid
+    WHERE a.busiportname = #{0}
+        </select>
+    <select id="getById" resultMap="resultTestResoucesMap">
+          SELECT
+         A.ID,A.DESCR,A.BUSIPORTNAME,A.CUSTOMER,B.PORTID,a.bandwidth,d.groupid
+      FROM
+        NET_BUSIPORT A
+        LEFT  JOIN NET_BUSI_PORT B on a.id= b.busiid
+         LEFT  JOIN NET_BUSIPORT_GROUP D on a.id= D.busiid
+    WHERE a.id = #{0}
+        </select>
+    <select id="groupList" resultType="com.idc.model.NetBusiGroup">
+        SELECT ID,groupname as name ,pid as parentId from NET_BUSI_GROUP
+    </select>
+
+    <insert id="insertGroup" parameterType="com.idc.model.NetBusiGroup"
+            useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select NET_BUSIPORT_SEQ.nextval from dual
+        </selectKey>
+        INSERT INTO NET_BUSI_GROUP
+        (id,
+        groupname,
+        pid
+        ) VALUES
+        (#{id},
+        #{name},
+        #{parentId}
+        )
+    </insert>
+    <update id="updateGroup" parameterType="com.idc.model.NetBusiGroup">
+        update NET_BUSI_GROUP
+        set groupname = #{name},pid=#{parentId}
+        WHERE id=#{id}
+        <!--<include refid="whereParam"/>-->
+    </update>
+    <delete id="delGroup">
+           delete from NET_BUSI_GROUP  WHERE id=#{0}
+    </delete>
+    <insert id="bindPort">
+        insert into NET_BUSI_PORT(busiid,portid)
+        select
+        a.*
+       from (
+        <foreach collection="portids" item="item" index="index" separator="union all">
+            (Select  #{busiid},#{item}From dual)
+        </foreach>
+        )a
+        <!--INSERT  INTO NET_BUSI_PORT (busiid, portid) values-->
+        <!--<foreach collection="portids" item="item" index="index" separator=",">-->
+            <!--(#{busiid},#{item})-->
+        <!--</foreach>-->
+
+        <!-- -->
+        <!--insert into NET_BUSI_PORT(BUSIID,PORTID) values-->
+        <!--<foreach collection="portids" item="item" index="index" separator=",">-->
+            <!--(#{busiid},#{item})-->
+        <!--</foreach>-->
+    </insert>
+    <insert id="bindGroup">
+        insert into NET_BUSIPORT_GROUP(busiid, groupid)
+        select
+        a.*
+        from (
+        <foreach collection="groupids" item="item" index="index" separator="union all">
+            (Select  #{busiid},#{item} From dual)
+        </foreach>
+        )a
+        <!--INSERT INTO NET_BUSIPORT_GROUP (busiid, groupid) values-->
+        <!--<foreach collection="groupids" item="item" index="index" separator=",">-->
+            <!--(#{busiid},#{item})-->
+        <!--</foreach>-->
+
+        <!--insert into NET_BUSI_GROUP(BUSIID,GROUPID) values-->
+        <!--<foreach collection="groupids" item="item" index="index" separator=",">-->
+            <!--(#{busiid},#{item})-->
+        <!--</foreach>-->
+    </insert>
+
+    <insert id="insertBusiByObj" parameterType="com.idc.model.NetBusiPort">
+        insert into NET_BUSIPORT(ID,BUSIPORTNAME,BANDWIDTH
+        <if test="desc!=null and desc!=''">,DESCR</if>
+        <if test="customer!=null and customer!=''">,CUSTOMER</if>
+        ) values (#{id},#{busiportname},#{bandwidth}
+        <if test="desc!=null and desc!=''">,#{desc}</if>
+        <if test="customer!=null and customer!=''">,#{customer}</if>
+       )
+    </insert>
+    <update id="updateBusiByObj" parameterType="com.idc.model.NetBusiPort">
+        UPDATE  NET_BUSIPORT set BUSIPORTNAME=#{busiportname},DESCR=#{desc},CUSTOMER=#{customer},BANDWIDTH=#{bandwidth} where id=#{id}
+    </update>
+    <delete id="deleteGroupByBusiID">
+        delete from NET_BUSIPORT_GROUP  WHERE busiid=#{0}
+    </delete>
+    <delete id="deletePortByBusiID">
+        delete from NET_BUSI_PORT  WHERE busiid=#{0}
+    </delete>
+    <select id="queryList" resultMap="resultTestResoucesMap">
+        SELECT
+        A . ID,
+        d .portid,
+        A .busiportname,
+        A .descr,
+        --             b. PORTNAME AS portname,
+        --             b.ALIAS as alias,
+        --             b.deviceid as deviceid,
+        --             c.routname as devicename,
+        a.bandwidth as bandwidth,
+        e.groupid as groupid,
+        A.CUSTOMER as customer
+        FROM
+        NET_BUSIPORT A
+        LEFT JOIN net_busi_port D ON A . ID = D .busiid
+        LEFT JOIN net_busiport_group e ON A . ID = e .busiid
+        --             LEFT JOIN NET_PORT b ON D .portid = b.PORTID
+        --             LEFT JOIN net_device c ON c .deviceid = b. deviceid
+        <where>
+            <if test="id!=null and id!=''">
+                and a.id=#{0}
+            </if>
+        </where>
+        order by a.busiportname
+    </select>
+    <select id="getCap" resultType="com.idc.model.NetPortFlow" fetchSize="2000">
+        SELECT
+        s.busiid as portid,
+        s.RECORDTIME AS RECORDTIME,
+        s.INPUTFLUX inFlow,
+        s.OUTPUTFLUX outFlow,
+        s.portname,
+        s.bandwidth
+        from net_Cap_busi s
+        WHERE
+        s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+        and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+       <if test="busiids!=null and busiids.size>0">
+           and s.busiid in
+           <foreach collection="busiids" index="index" item="item" open="("
+                    separator="," close=")">
+               #{item}
+           </foreach>
+       </if>
+        ORDER BY s.portname,s.RECORDTIME
+    </select>
+</mapper>

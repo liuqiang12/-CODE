@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<newInfo>
+		<idcId>$ispSolidData.idcId</idcId>
+		<idcName>$ispSolidData.idcName</idcName>
+		<idcAdd>$ispSolidData.houseAdd</idcAdd>
+		<idcZip>$ispSolidData.houseZip</idcZip>
+		<corp>$ispSolidData.corp</corp>
+		<idcOfficer>
+			<name>$ispSolidData.offerName</name>
+			<idType>$ispSolidData.offerIdType</idType>
+			<id>$ispSolidData.offerId</id>
+			<tel>$ispSolidData.offerTel</tel>
+			<mobile>$ispSolidData.offerMobile</mobile>
+			<email>$ispSolidData.offerEmail</email>
+		</idcOfficer>
+		<emergencyContact>
+			<name>$ispSolidData.emergencyName</name>
+			<idType>$ispSolidData.emergencyIdType</idType>
+			<id>$ispSolidData.emergencyId</id>
+			<tel>$ispSolidData.emergencyTel</tel>
+			<mobile>$ispSolidData.emergencyMobile</mobile>
+			<email>$ispSolidData.emergencyEmail</email>
+		</emergencyContact>
+		<houseCount>$ispSolidData.houseCount</houseCount>
+		<houseInfo>
+			<houseId>$ispSolidData.houseId</houseId>
+			<houseName>$ispSolidData.houseName</houseName>
+			<houseType>$ispSolidData.houseType</houseType>
+			<houseProvince>$ispSolidData.houseProvincel</houseProvince>
+			<houseCity>$ispSolidData.houseCity</houseCity>
+			<houseCounty>$ispSolidData.houseCounty</houseCounty>
+			<houseAdd>$ispSolidData.houseAdd</houseAdd>
+			<houseZip>$ispSolidData.houseZip</houseZip>
+			<houseOfficer>
+				<name>$ispSolidData.emergencyName</name>
+				<idType>$ispSolidData.emergencyIdType</idType>
+				<id>$ispSolidData.emergencyId</id>
+				<tel>$ispSolidData.emergencyTel</tel>
+				<mobile>$ispSolidData.emergencyMobile</mobile>
+				<email>$ispSolidData.emergencyEmail</email>
+			</houseOfficer>
+			#foreach($item in $gatewayInfoList)#*54#*链路信息:通过表中数据固化*#
+			<gatewayInfo>
+				<id>$item.id</id>
+				<bandWidth>$item.bandWidth</bandWidth>
+				<linkType>$item.linkType</linkType>
+				<accessUnit>$item.accessUnit</accessUnit>
+				<gatewayIp>$item.gatewayIp</gatewayIp>
+			</gatewayInfo>
+			#end#*//54*#
+			#foreach($item_ip in $localIspIpSegList)#*62ip地址 *#
+			<ipSegInfo>
+				<id>$item_ip.id</id>
+				<startIp>$item_ip.startIp</startIp>
+				<endIp>$item_ip.endIp</endIp>
+				<type>$item_ip.type</type>
+				#if($item_ip.user)<user>$item_ip.user</user>#end#* 判断非空 *#
+				#if($item_ip.idType)<idType>$item_ip.idType</idType>#end#* 判断非空 *#
+				#if($item_ip.idNumber)<idNumber>$item_ip.idNumber</idNumber>#end#* 判断非空 *#
+				<sourceUnit>$item_ip.sourceUnit</sourceUnit>
+				<allocationUnit>$item_ip.allocationUnit</allocationUnit>
+				<useTime>$item_ip.useTime</useTime>
+			</ipSegInfo>
+			#end#*//62ip地址 *#
+			#foreach($item in $frameInfoList)#*76机架信息*#
+			<frameInfo>
+				<id>$item.hhId</id>
+				<useType>$item.useType</useType>
+				<distribution>$item.distribution</distribution>
+				<occupancy>$item.occupancy</occupancy>
+				<frameName>$item.frameName</frameName>
+			</frameInfo>
+			#end#*//76机架信息*#
+		</houseInfo>
+	</newInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

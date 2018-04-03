@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetPortFlowMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultNetPortFlowMap" type="com.idc.model.NetPortFlow">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="DEVICEID" property="deviceid"/>
+
+        <result column="DEVICECLASS" property="deviceclass"/>
+
+        <result column="ROUTTYPE" property="routtype"/>
+
+        <result column="ROUTNAME" property="routname"/>
+
+        <result column="NETWORKLAYER" property="networklayer"/>
+
+        <result column="LOGINUSER" property="loginuser"/>
+
+        <result column="LOGINPSW" property="loginpsw"/>
+
+        <result column="PRIVILEGEPSW" property="privilegepsw"/>
+
+        <result column="FACTORY" property="factory"/>
+
+        <result column="STATUS" property="status"/>
+
+        <result column="SNMPVERSION" property="snmpversion"/>
+
+        <result column="SNMPPORT" property="snmpport"/>
+
+        <result column="SNMPCOMMUNITY" property="snmpcommunity"/>
+
+        <result column="SNMPSETCOMMUNITY" property="snmpsetcommunity"/>
+
+        <result column="SNMPPASSWORD" property="snmppassword"/>
+
+        <result column="SNMPSCTTYPE" property="snmpscttype"/>
+
+        <result column="SNMPKEYSCTTYPE" property="snmpkeyscttype"/>
+
+        <result column="SNMPKEY" property="snmpkey"/>
+
+        <result column="DEVICEVERSION" property="deviceversion"/>
+
+        <result column="LOGINMODEL" property="loginmodel"/>
+
+        <result column="TELNETPORT" property="telnetport"/>
+
+        <result column="TELNETFLOWID" property="telnetflowid"/>
+
+        <result column="TELNETJUMPID" property="telnetjumpid"/>
+
+        <result column="TELNETVPNPARM" property="telnetvpnparm"/>
+
+        <result column="SYSDESCR" property="sysdescr"/>
+
+        <result column="SYSUPTIME" property="sysuptime"/>
+
+        <result column="OUTFLOW" property="outflow"/>
+        <result column="INFLOW" property="inflow"/>
+        <result column="RECORDTIME" property="RecordTime"/>
+    </resultMap>
+    <select id="queryListJoinFlowByObject" resultType="com.idc.model.NetPortFlow">
+        select
+            A.PORTID as portid,
+			A.DEVICEID as deviceid,
+			A.NOTE as note,
+			A.IP as ip,
+			A.MAC as mac,
+			A.alias as alias,
+			A.NETMASK as netmask,
+			A.PORTNAME as portname,
+			a.portactive as portactive,
+			A.DESCR as descr,
+			A.ADMINSTATUS AS adminstatus,
+			A.BANDWIDTH as bandwidth,
+			C.NAME as DEVICENAME
+        from NET_PORT A
+        left join  IDC_DEVICE C ON C.DEVICEID = A.DEVICEID
+        where A.DEVICEID= #{deviceid} and C.isdelete = 0
+        ORDER by a.portindex
+    </select>
+    <!--<select id="hisqueryFlowByWeek" resultType="Map">-->
+        <!--<![CDATA[-->
+<!--SELECT TO_CHAR(T.RECORDTIME,'YYYY-MM-DD') as RECORDTIME,-->
+<!--SUM (INPUTFLUX) AS inflow,-->
+<!--SUM (OUTPUTFLUX) AS outflow-->
+<!--FROM   NET_CAP_PORT   T-->
+<!--WHERE T.PORTID = #{portid}-->
+<!--&#45;&#45;这里可加查询条件 WHERE TO_CHAR(T.MODIFIEDTIME,'YYYY') = TO_CHAR(SYSDATE,'YYYY')-->
+<!--GROUP BY TO_CHAR(T.RECORDTIME,'YYYY-MM-DD')   &#45;&#45;根据日期来分组-->
+<!--ORDER BY TO_CHAR(T.RECORDTIME,'YYYY-MM-DD') ASC NULLS LAST &#45;&#45;根据日期排序-->
+        <!--]]>-->
+    <!--</select>-->
+    <select id="queryFlowByWeek" resultType="com.idc.model.NetPortFlow">
+        SELECT
+        TO_DATE(TO_CHAR(A.RECORDTIME,'YYYY-MM-DD HH24:mi'),'YYYY-MM-DD HH24:mi') as RECORDTIME,
+        A.inflow,
+        A.outflow
+        FROM
+        (
+        SELECT
+        T .RECORDTIME AS RECORDTIME,
+        T.INPUTFLUX AS inflow,
+        T.OUTPUTFLUX AS outflow FROM NET_CAP_PORT T
+        WHERE  T.PORTID = #{portid}
+           and T.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+           and T.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        ORDER BY
+        T .RECORDTIME DESC
+        ) A
+--         WHERE
+--         ROWNUM &lt;= 100
+        ORDER BY
+        A.RECORDTIME asc
+    </select>
+    <select id="queryFlowBy" resultType="com.idc.model.NetPortFlow">
+        SELECT
+        <if test="type == 1">
+            <![CDATA[  TO_DATE(TO_CHAR(T.RECORDTIME,'YYYY-MM-DD HH24'),'YYYY-MM-DD HH24') as RECORDTIME, ]]></if>
+        <if test="type == 2">
+            <![CDATA[  TO_DATE(TO_CHAR(T.RECORDTIME,'YYYY-MM-DD'),'YYYY-MM-DD') as RECORDTIME, ]]></if>
+        <if test="type == 1">
+            <![CDATA[  TO_DATE(TO_CHAR(T.RECORDTIME,'YYYY-MM-DD'),'YYYY-MM-DD') as RECORDTIME, ]]></if>
+
+        SUM (INPUTFLUX) AS inflow,
+        SUM (OUTPUTFLUX) AS outflow
+        FROM NET_CAP_PORT T
+        WHERE T.PORTID = #{portid}
+        --这里可加查询条件 WHERE TO_CHAR(T.MODIFIEDTIME,'YYYY') = TO_CHAR(SYSDATE,'YYYY')
+        GROUP BY TO_CHAR(T.RECORDTIME,'YYYY-MM-DD') --根据日期来分组
+        ORDER BY TO_CHAR(T.RECORDTIME,'YYYY-MM-DD') ASC NULLS LAST --根据日期排序
+    </select>
+    <select id="getUsage" resultType="java.util.HashMap">
+SELECT
+	nvl(CPU.PROCESSVALUE,0) AS CPU,
+	nvl(MEN.USEDVALUE ,0)AS MEMORY,
+	nvl(C.TEMPERATURE,0) AS TEMPERATURE
+FROM
+IDC_DEVICE A
+LEFT JOIN	NET_CAP_CPU_CURR CPU on A.DEVICEID = CPU.routid
+LEFT JOIN NET_CAP_MEM_CURR MEN ON A.DEVICEID = MEN.ROUTID
+LEFT JOIN NET_CAP_TEMPERATURE_CURR C ON A.DEVICEID = C.ROUTID
+        WHERE CPU.ROUTID = #{deviceid} and A.isdelete = 0
+    </select>
+    <sql id="cycmi">
+         <![CDATA[
+			TO_CHAR (
+				s.RECORDTIME,
+				'YYYY-MM-DD hh24'
+			) || ':' || LPAD (
+				FLOOR (
+					TO_CHAR (s.RECORDTIME, 'mi') / 5
+				) * 5,
+				2,
+				0
+			)
+        ]]>
+    </sql>
+    <sql id="cychour">
+        <![CDATA[
+			TO_CHAR (
+				s.RECORDTIME,
+				'YYYY-MM-DD hh24'
+			)
+        ]]>
+    </sql>
+    <sql id="cycday">
+        <![CDATA[
+			TO_CHAR (
+				s.RECORDTIME,
+				'YYYY-MM-DD'
+			)
+        ]]>
+    </sql>
+    <sql id="getFlowByCycNew">
+        SELECT TO_DATE(
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+        </if>
+        ,'YYYY-MM-DD hh24:mi'
+        )AS RECORDTIME,
+        SUM (s.INPUTFLUX) inFlow,
+        SUM (s.OUTPUTFLUX) outFlow,
+        <if test="portType==0">c.portname, c.bandwidth</if>
+        <if test="portType==1">s.portname, s.bandwidth</if>
+        FROM
+        <if test="portType==0">
+            NET_CAP_PORT s
+            LEFT JOIN NET_PORT c ON c.portid = s.portid
+            INNER join (<include refid="getMaxId"/>) d
+            ON s .ID = d. ID
+            WHERE s.portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY c.portname,c.bandwidth,
+        </if>
+        <if test="portType==1">
+            (
+            SELECT
+            b.busiportname AS portname,
+            b.id AS portid,
+            A .inputflux,
+            A .OUTPUTFLUX,
+            A .RECORDTIME,
+            c.bandwidth
+            FROM
+            NET_CAP_PORT A
+            left join net_busi_port bp on bp.portid=a.portid
+            LEFT JOIN Net_busiport B ON bp .busiid = b.id
+            LEFT JOIN (
+            SELECT
+            A .id,
+            SUM (b.bandwidth) AS bandwidth
+            FROM
+            Net_busiport A
+            left join net_busi_port bp on bp.busiid=a.id
+            LEFT JOIN NET_PORT b ON bp .portid = b.portid
+            GROUP BY
+            A .id
+            ) c ON b.id = c.id
+            INNER join (<include refid="getMaxId"/>) d
+            ON A .ID = d. ID
+            ) s
+            WHERE s.portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY s.portname,
+            <if test="portType==0">c.bandwidth</if>
+            <if test="portType==1">s.bandwidth</if>,
+        </if>
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+        </if>
+    </sql>
+    <sql id="getFlowByCyc">
+        SELECT TO_DATE(
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+        </if>
+        ,'YYYY-MM-DD hh24:mi'
+        )AS RECORDTIME,
+        SUM (s.INPUTFLUX) inFlow,
+        SUM (s.OUTPUTFLUX) outFlow,
+        <if test="portType==0">c.portname, c.bandwidth</if>
+        <if test="portType==1">s.portname, s.bandwidth</if>
+        FROM
+        <if test="portType==0">
+            NET_CAP_PORT s
+            LEFT JOIN NET_PORT c ON c.portid = s.portid
+            INNER join (<include refid="getMaxId"/>) d
+             ON s .ID = d. ID
+            WHERE s.portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY c.portname,c.bandwidth,
+        </if>
+        <if test="portType==1">
+            (
+            SELECT
+            b.busiportname AS portname,
+            b.typeid AS portid,
+            A .inputflux,
+            A .OUTPUTFLUX,
+            A .RECORDTIME,
+            c.bandwidth
+            FROM
+            NET_CAP_PORT A
+            LEFT JOIN Net_busiport B ON A .portid = b.portid
+            LEFT JOIN (
+            SELECT
+            A .busiportname,
+            SUM (b.bandwidth) AS bandwidth
+            FROM
+            Net_busiport A
+            LEFT JOIN NET_PORT b ON A .portid = b.portid
+            GROUP BY
+            A .busiportname
+            ) c ON b.busiportname = c.busiportname
+            INNER join (<include refid="getMaxId"/>) d
+             ON A .ID = d. ID
+            ) s
+            WHERE s.portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY s.portname,
+            <if test="portType==0">c.bandwidth</if>
+            <if test="portType==1">s.bandwidth</if>,
+        </if>
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+        </if>
+    </sql>
+
+    <!--<sql id="getFlowByCycback">-->
+        <!--SELECT TO_DATE(-->
+        <!--<if test="cyc=='mi'">-->
+            <!--<include refid="cycmi"/>-->
+        <!--</if>-->
+        <!--<if test="cyc=='day'">-->
+            <!--<include refid="cycday"/>-->
+        <!--</if>-->
+        <!--<if test="cyc=='hour'">-->
+            <!--<include refid="cychour"/>-->
+        <!--</if>-->
+        <!--,'YYYY-MM-DD hh24:mi'-->
+        <!--)AS RECORDTIME,-->
+        <!--SUM (s.INPUTFLUX) inFlow,-->
+        <!--SUM (s.OUTPUTFLUX) outFlow,-->
+        <!--<if test="portType==0">c.portname, c.bandwidth</if>-->
+        <!--<if test="portType==1">s.portname, s.bandwidth</if>-->
+        <!--FROM-->
+        <!--<if test="portType==0">-->
+            <!--NET_CAP_PORT s-->
+            <!--LEFT JOIN NET_PORT c ON c.portid = s.portid-->
+            <!--WHERE s.portid in-->
+            <!--<foreach collection="portids" index="index" item="item" open="("-->
+                     <!--separator="," close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+            <!--and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--GROUP BY c.portname,c.bandwidth,-->
+        <!--</if>-->
+        <!--<if test="portType==1">-->
+            <!--(-->
+            <!--SELECT-->
+            <!--b.busiportname AS portname,-->
+            <!--A .inputflux,-->
+            <!--A .OUTPUTFLUX,-->
+            <!--A .RECORDTIME,-->
+            <!--c.bandwidth-->
+            <!--FROM-->
+            <!--NET_CAP_PORT A-->
+            <!--LEFT JOIN Net_busiport B ON A .portid = b.portid-->
+            <!--LEFT JOIN (-->
+            <!--SELECT-->
+            <!--A .busiportname,-->
+            <!--SUM (b.bandwidth) AS bandwidth-->
+            <!--FROM-->
+            <!--Net_busiport A-->
+            <!--LEFT JOIN NET_PORT b ON A .portid = b.portid-->
+            <!--GROUP BY-->
+            <!--A .busiportname-->
+            <!--) c ON b.busiportname = c.busiportname-->
+            <!--) s-->
+            <!--WHERE s.portname in-->
+            <!--<foreach collection="portids" index="index" item="item" open="("-->
+                     <!--separator="," close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+            <!--and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--GROUP BY s.portname,-->
+            <!--<if test="portType==0">c.bandwidth</if>-->
+            <!--<if test="portType==1">s.bandwidth</if>,-->
+        <!--</if>-->
+        <!--<if test="cyc=='mi'">-->
+            <!--<include refid="cycmi"/>-->
+        <!--</if>-->
+        <!--<if test="cyc=='day'">-->
+            <!--<include refid="cycday"/>-->
+        <!--</if>-->
+        <!--<if test="cyc=='hour'">-->
+            <!--<include refid="cychour"/>-->
+        <!--</if>-->
+    <!--</sql>-->
+    <!--<sql id="getCheackDataGroup">-->
+        <!--SELECT-->
+        <!--TO_DATE (-->
+        <!--TO_CHAR (-->
+        <!--s.RECORDTIME,-->
+        <!--'YYYY-MM-DD hh24:mi'-->
+        <!--),-->
+        <!--'YYYY-MM-DD hh24:mi'-->
+        <!--) AS RECORDTIME,-->
+        <!--(s.INPUTFLUX) inFlow,-->
+        <!--(s.OUTPUTFLUX) outFlow,-->
+        <!--s.portname,-->
+        <!--s.bandwidth-->
+        <!--FROM-->
+        <!--(-->
+        <!--<if test="portType==0">-->
+            <!--SELECT-->
+            <!--c.portname AS portname,-->
+            <!--A .inputflux,-->
+            <!--A .OUTPUTFLUX,-->
+            <!--A .RECORDTIME,-->
+            <!--c.bandwidth-->
+            <!--FROM-->
+            <!--NET_CAP_PORT A-->
+            <!--LEFT JOIN NET_PORT c ON c.portid = s.portid-->
+            <!--WHERE c.portid in-->
+            <!--<foreach collection="portids" index="index" item="item" open="("-->
+                     <!--separator="," close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+            <!--and a.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--and a.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')-->
+        <!--</if>-->
+        <!--<if test="portType==1">-->
+            <!--SELECT-->
+            <!--b.busiportname AS portname,-->
+            <!--A .inputflux,-->
+            <!--A .OUTPUTFLUX,-->
+            <!--A .RECORDTIME,-->
+            <!--c.bandwidth-->
+            <!--FROM-->
+            <!--NET_CAP_PORT A-->
+            <!--LEFT JOIN Net_busiport B ON A .portid = b.portid-->
+            <!--LEFT JOIN (-->
+            <!--SELECT-->
+            <!--A .busiportname,-->
+            <!--SUM (b.bandwidth) AS bandwidth-->
+            <!--FROM-->
+            <!--Net_busiport A-->
+            <!--LEFT JOIN NET_PORT b ON A .portid = b.portid-->
+            <!--GROUP BY-->
+            <!--A .busiportname-->
+            <!--) c ON b.busiportname = c.busiportname-->
+            <!--WHERE b.busiportname in-->
+            <!--<foreach collection="portids" index="index" item="item" open="("-->
+                     <!--separator="," close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+            <!--and a.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')-->
+            <!--and a.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')-->
+        <!--</if>-->
+        <!--) s-->
+        <!--ORDER BY-->
+        <!--RECORDTIME,-->
+        <!--portname-->
+    <!--</sql>-->
+    <!--<sql id="countTimeData">-->
+        <!--SELECT-->
+        <!--portname,-->
+        <!--bandwidth,-->
+        <!--recordtime,-->
+        <!--SUM (inflow)inflow,-->
+        <!--SUM (outflow)outflow-->
+        <!--FROM-->
+        <!--(<include refid="getCheackDataGroup"/>) A-->
+        <!--GROUP BY-->
+        <!--portname,-->
+        <!--bandwidth,-->
+        <!--recordtime-->
+    <!--</sql>-->
+    <!--<sql id="getCheackData">-->
+        <!--SELECT-->
+        <!--*-->
+        <!--FROM-->
+        <!--(SELECT-->
+        <!--ROW_NUMBER () OVER (-->
+        <!--PARTITION BY TO_DATE (-->
+        <!--TO_CHAR (-->
+        <!--RECORDTIME,-->
+        <!--'YYYY-MM-DD hh24'-->
+        <!--) || ':' || LPAD (-->
+        <!--FLOOR (TO_CHAR(RECORDTIME, 'mi') / 5) * 5,-->
+        <!--2,-->
+        <!--0-->
+        <!--),-->
+        <!--'YYYY-MM-DD hh24:mi'-->
+        <!--)-->
+        <!--ORDER BY-->
+        <!--recordtime DESC-->
+        <!--) rn,-->
+        <!--A .*-->
+        <!--FROM-->
+        <!--(-->
+          <!--<include refid="countTimeData"/>-->
+        <!--) A)-->
+        <!--WHERE-->
+        <!--rn = 1-->
+    <!--</sql>-->
+
+    <sql id="getMaxId">
+        <if test="portType==0">
+            SELECT
+            MAX (s. ID) AS ID
+            FROM
+            net_Cap_port s
+            WHERE
+            s .portid IN
+            <foreach collection="portids" index="index" item="item" open="("
+                                              separator="," close=")">
+            #{item}
+              </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY
+            s.portid,
+            TO_DATE (
+            TO_CHAR (
+            s.RECORDTIME,
+            'YYYY-MM-DD hh24'
+            ) || ':' || LPAD (
+            FLOOR (
+            TO_CHAR (s.RECORDTIME, 'mi') / 5
+            ) * 5,
+            2,
+            0
+            ),
+            'YYYY-MM-DD hh24:mi'
+            )
+        </if>
+        <if test="portType==1">
+            SELECT
+            MAX (s. ID) AS ID
+            FROM
+            net_Cap_port s
+            LEFT JOIN Net_busi_port bp ON bp.PORTID = s.portid
+            LEFT JOIN Net_busiport A ON A .id = bp.busiid
+            WHERE
+            A .id IN
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY
+            s.portid,
+            TO_DATE (
+            TO_CHAR (
+            s.RECORDTIME,
+            'YYYY-MM-DD hh24'
+            ) || ':' || LPAD (
+            FLOOR (
+            TO_CHAR (s.RECORDTIME, 'mi') / 5
+            ) * 5,
+            2,
+            0
+            ),
+            'YYYY-MM-DD hh24:mi'
+            )
+        </if>
+
+    </sql>
+    <select id="getFlowCap" resultType="com.idc.model.NetPortFlowCap">
+        SELECT portname,AVG (inflow) avginflow,AVG (outflow) avgoutflow,max(inflow) maxinflow
+        ,min(inflow)mininflow,max(outflow) maxoutflow ,min(outflow) as minoutflow,bandwidth
+        from (
+        <include refid="getFlowByCycNew"/>
+        ) GROUP BY portname,bandwidth
+    </select>
+    <select id="getFlowCapDetail" resultType="com.idc.model.NetPortFlow">
+        <include refid="getFlowByCyc"/>
+        ORDER BY RECORDTIME,portname
+    </select>
+    <select id="getFlow" resultType="com.idc.model.NetPortFlow">
+        select
+        A.PORTID as portid,
+        A.DEVICEID as deviceid,
+        A.NOTE as note,
+        A.IP as ip,
+        A.MAC as mac,
+        A.NETMASK as netmask,
+        A.PORTNAME as portname,
+        A.DESCR as descr,
+        A.ADMINSTATUS AS adminstatus,
+        A.BANDWIDTH as bandwidth,
+        B.OutputFlux as outflow,
+        B.InputFlux as inflow,
+        B.RECORDTIME as recordtime,
+        C.NAME as DEVICENAME
+        from NET_PORT A
+        LEFT JOIN NET_CAP_PORT_CURR B on A.PORTID=B.PORTID
+        LEFT join IDC_DEVICE C ON C.DEVICEID = A.DEVICEID
+        LEFT JOIN NET_TOPOVIEWOBJ D ON C.DEVICEID = D .OBJFID
+        <where>
+            <foreach collection="query" index="index" item="item">
+                or (D.objpid = #{item.deviceid} and A.portname in
+                <foreach collection="item.ports" index="index" item="itemp" open="("
+                         separator="," close=")">
+                    #{itemp}
+                </foreach>)
+
+            </foreach>
+        </where>
+
+    </select>
+    <select id="getOutFlowTopN" resultType="NetPortFlow">
+        SELECT  * from (select a.*,b.portname from (
+SELECT
+	E .portid,
+	sum(E .OutputFlux) as outflow
+FROM
+	NET_CAP_PORT_CURR E
+GROUP BY e.portid
+        )a LEFT JOIN NET_PORT b on a.portid = b.portid order by outflow desc ) u where rownum &lt;= 10
+    </select>
+    <select id="getBusiPortFlowCapWeek" resultType="com.idc.model.NetPortFlowCap">
+        SELECT portname,AVG (inflow) avginflow,
+        TO_CHAR (
+        RECORDTIME,
+        'YYYY-MM-DD'
+        ) AS RECORDTIME,AVG (outflow) avgoutflow,max(inflow) maxinflow ,min(inflow)mininflow,max(outflow) maxoutflow
+        ,min(outflow) as minoutflow,bandwidth
+        from (
+        <include refid="getFlowByCyc"/>
+        ) GROUP BY portname, TO_CHAR (
+        RECORDTIME,
+        'YYYY-MM-DD'
+        ),bandwidth ORDER BY RECORDTIME,portname
+    </select>
+    <select id="getAllFlowByViewId" resultType="com.idc.model.NetPortFlow">
+        SELECT
+	A .PORTID AS portid,
+	A .DEVICEID AS deviceid,
+	A .NOTE AS note,
+	A .IP AS ip,
+	A .MAC AS mac,
+	a.alias as alias,
+	A .NETMASK AS netmask,
+	A .PORTNAME AS portname,
+	A .DESCR AS descr,
+	A .ADMINSTATUS AS adminstatus,
+	A .BANDWIDTH AS bandwidth,
+	D.OutputFlux AS outflow,
+	D.InputFlux AS inflow,
+	D.RECORDTIME AS recordtime,
+	E. NAME AS DEVICENAME
+FROM
+        NET_PORT A
+INNER JOIN NET_TOPOVIEWOBJ C ON A .DEVICEID = c.OBJFID
+INNER JOIN NET_TOPO_OBJ_LINK B ON (
+	(
+		A .portname = b.srcportname
+	AND a.deviceid = B.srcDeviceId
+	)
+	OR (
+		A .portname = b.desportname
+		AND a.deviceid = B.desDeviceId
+	)
+-- 	(
+-- 		A .portid = b.srcid
+-- 		AND c.objpid = B.srcdeviceid
+-- 	)
+-- 	OR (
+-- 		A .portid = b.desid
+-- 		AND c.objpid = B.desdeviceid
+-- 	)
+)
+INNER JOIN IDC_DEVICE E ON A .deviceid = E.deviceid
+LEFT  JOIN NET_CAP_PORT_CURR D ON A .PORTID = D.PORTID
+WHERE
+        B.VIEWID = #{viewid} and A.delflag=0 and E.isdelete = 0
+GROUP BY
+	A .PORTID,
+	A .DEVICEID,
+	A .NOTE,
+	A .IP,
+	A .MAC,
+	A . ALIAS,
+	A .NETMASK,
+	A .PORTNAME,
+	A .DESCR,
+	A .ADMINSTATUS,
+	A .BANDWIDTH,
+	D .OutputFlux,
+	D .InputFlux,
+	D .RECORDTIME,
+	E . NAME
+    </select>
+
+    <!-- 获取当前客户业务端口最近30天流量峰值 -->
+    <select id="queryCustomerMaxPortFlowByCustomerId" resultType="Map">
+        <![CDATA[
+        select max(t.outflow) as maxOutFlow,
+        max(inflow) as minOutFlow,
+        to_char(t.recordtime, 'YYYY-MM-DD') as recordTime,
+        t.portname as portname
+        from (SELECT TO_DATE(TO_CHAR(s.RECORDTIME, 'YYYY-MM-DD hh24') || ':' ||
+        LPAD(FLOOR(TO_CHAR(s.RECORDTIME, 'mi') / 5) * 5, 2, 0),
+        'YYYY-MM-DD hh24:mi') AS RECORDTIME,
+        SUM(s.INPUTFLUX) inFlow,
+        SUM(s.OUTPUTFLUX) outFlow,
+        s.portname,
+        s.bandwidth
+        FROM (SELECT b.busiportname AS portname,
+        A             .inputflux,
+        A             .OUTPUTFLUX,
+        A             .RECORDTIME,
+        c.bandwidth
+        FROM NET_CAP_PORT A
+        LEFT JOIN Net_busiport B
+        left join net_busi_port t on b.id=t.busiid
+        ON A.portid = t.portid
+        LEFT JOIN (SELECT A.busiportname,
+        SUM(b.bandwidth) AS bandwidth
+        FROM Net_busiport A
+        left join net_busi_port t on a.id=t.busiid
+        LEFT JOIN NET_PORT b
+        ON t.portid = b.portid
+        GROUP BY A.busiportname) c
+        ON b.busiportname = c.busiportname
+        where B.Customer = #{customerId}) s
+        WHERE s.RECORDTIME >=
+        to_date(to_char(sysdate, 'yyyy-mm-dd') || ' 00:00:00',
+        'yyyy-mm-dd hh24:mi:ss')
+        and s.RECORDTIME <
+            to_date(to_char(sysdate - 30, 'yyyy-mm-dd') || ' 23:59:59',
+        'yyyy-mm-dd hh24:mi:ss')
+        GROUP BY s.portname,
+        s.bandwidth,
+        TO_CHAR(s.RECORDTIME, 'YYYY-MM-DD hh24') || ':' ||
+        LPAD(FLOOR(TO_CHAR(s.RECORDTIME, 'mi') / 5) * 5, 2, 0)
+        ORDER BY portname, RECORDTIME) t
+        group by t.portname, to_char(t.recordtime, 'YYYY-MM-DD')
+        order by t.portname,
+        to_date(to_char(t.recordtime, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+        ]]>
+    </select>
+    <select id="getPortFlowDetail" resultType="com.idc.model.NetPortFlow">
+        SELECT TO_DATE(
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+        </if>
+        ,'YYYY-MM-DD hh24:mi'
+        )AS RECORDTIME,
+        SUM (s.INPUTFLUX) inFlow,
+        SUM (s.OUTPUTFLUX) outFlow,
+        c.portid,
+        c.portname,
+        c.bandwidth
+        FROM
+            NET_CAP_PORT_bak s
+            LEFT JOIN NET_PORT c ON c.portid = s.portid
+            INNER join (
+        SELECT
+        MAX (s. ID) AS ID
+        FROM
+        net_Cap_port s
+        WHERE
+        s .portid IN
+        <foreach collection="portids" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+        and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+        GROUP BY
+        s.portid,
+        TO_DATE (
+        TO_CHAR (
+        s.RECORDTIME,
+        'YYYY-MM-DD hh24'
+        ) || ':' || LPAD (
+        FLOOR (
+        TO_CHAR (s.RECORDTIME, 'mi') / 5
+        ) * 5,
+        2,
+        0
+        ),
+        'YYYY-MM-DD hh24:mi'
+        )
+        ) d
+            ON s .ID = d. ID
+            WHERE s.portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+            and s.RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+            and s.RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+            GROUP BY c.portname,c.portid,c.bandwidth,
+        <if test="cyc=='mi'">
+            <include refid="cycmi"/>
+        </if>
+        <if test="cyc=='day'">
+            <include refid="cycday"/>
+        </if>
+        <if test="cyc=='hour'">
+            <include refid="cychour"/>
+
+        </if>ORDER BY portid,recordtime
+    </select>
+    <select id="getPortFlow" resultType="com.idc.vo.NetCapPort">
+        SELECT portid,recordtime,inputflux as inflow, outputflux as outflow FROM net_cap_port_bak
+       where
+            portid in
+            <foreach collection="portids" index="index" item="item" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        and RECORDTIME &gt;= to_date( #{startTime},'yyyy-mm-dd hh24:mi:ss')
+        and RECORDTIME &lt; to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+    </select>
+        <select id="test" fetchSize="30000" resultType="com.idc.vo.NetCapPort">
+            SELECT
+            *
+            FROM
+            (
+            SELECT
+            A .*, ROWNUM AS rn
+            FROM
+            (
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_11
+            WHERE
+            portid = 841240
+            AND RECORDTIME >= TO_DATE (
+            '2017-11-17 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-11-30 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_12
+            WHERE
+            portid = 841240
+            AND RECORDTIME >= TO_DATE (
+            '2017-12-01 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-12-05 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_11
+            WHERE
+            portid = 841111
+            AND RECORDTIME >= TO_DATE (
+            '2017-11-17 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-11-30 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_12
+            WHERE
+            portid = 841111
+            AND RECORDTIME >= TO_DATE (
+            '2017-12-01 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-12-05 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_11
+            WHERE
+            portid = 841238
+            AND RECORDTIME >= TO_DATE (
+            '2017-11-17 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-11-30 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_12
+            WHERE
+            portid = 841238
+            AND RECORDTIME >= TO_DATE (
+            '2017-12-01 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-12-05 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_11
+            WHERE
+            portid = 861791
+            AND RECORDTIME >= TO_DATE (
+            '2017-11-17 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-11-30 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            UNION ALL
+            SELECT
+            portid,
+            recordtime,
+            inputflux AS inflow,
+            outputflux AS outflow
+            FROM
+            NET_CAP_PORT_2017_12
+            WHERE
+            portid = 861791
+            AND RECORDTIME >= TO_DATE (
+            '2017-12-01 00:00:00',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            AND RECORDTIME &lt; TO_DATE (
+            '2017-12-05 23:59:59',
+            'yyyy-mm-dd hh24:mi:ss'
+            )
+            ) A
+            )
+            WHERE
+            rn BETWEEN #{a}
+            AND #{b}
+        </select>
+    <select id="queryCustomerMaxPortFlowByCustomerIdTable" resultType="Map">
+        <![CDATA[
+         select t.portname,t.recordtime,t.outflow,t.inflow,t.bandwidth
+          from ${table} t
+          where t.Customer = #{customerId}
+          order by t.recordtime
+        ]]>
+    </select>
+
+    <select id="queryCustomerMaxPortFlowByMap" resultType="Map" parameterType="Map">
+         select t.portname,t.recordtime,t.outflow,t.inflow,t.bandwidth
+          from ${table} t
+          where t.Customer = #{customerId}
+          <if test="busiportids!=null and busiportids.size()>0">
+              and t.busiportid in
+              <foreach collection="busiportids" index="index" item="item" open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+          order by t.recordtime
+    </select>
+
+    <!-- 通过客户id 获取客户业务端口名称、ID -->
+    <select id="queryBusinessPortNameByCustomerId" parameterType="PageBean" resultType="Map">
+      select t.busiportid,t.portname from ${params.table} t where t.Customer=#{params.customerId} group by t.busiportid,t.portname
+    </select>
+</mapper>
+
+        <!--SELECT-->
+        <!--A .PORTID AS portid,-->
+        <!--A .DEVICEID AS deviceid,-->
+        <!--A .NOTE AS note,-->
+        <!--A .IP AS ip,-->
+        <!--A .MAC AS mac,-->
+        <!--A .NETMASK AS netmask,-->
+        <!--A .PORTNAME AS portname,-->
+        <!--A .DESCR AS descr,-->
+        <!--A .ADMINSTATUS AS adminstatus,-->
+        <!--A .BANDWIDTH AS bandwidth,-->
+        <!--B.OutputFlux AS outflow,-->
+        <!--B.InputFlux AS inflow,-->
+        <!--B.RECORDTIME AS recordtime,-->
+        <!--C. NAME AS DEVICENAME-->
+        <!--FROM-->
+        <!--NET_TOPOVIEWOBJ D-->
+        <!--INNER JOIN IDC_DEVICE C on D.OBJFID = C.deviceid-->
+        <!--INNER JOIN  NET_PORT A ON C.DEVICEID = A .DEviceid-->
+        <!--INNER JOIN NET_CAP_PORT_CURR B ON A .PORTID = B.PORTID-->
+        <!--where D.viewid=#{viewid}-->

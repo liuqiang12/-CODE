@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<basicInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<deleteInfo>
+		<idcId>$ispSolidData.idcId</idcId>
+		<deleteData>
+			<house>
+				<houseId>$ispSolidData.houseId</houseId>
+			</house>
+		</deleteData>
+	</deleteInfo>
+	<timeStamp>${timeStamp}</timeStamp>#*上报当前时间:注意格式*#
+</basicInfo>

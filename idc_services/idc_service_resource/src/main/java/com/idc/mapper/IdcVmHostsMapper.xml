@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcVmHostsMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcVmHostsMap" type="com.idc.model.IdcVmHosts">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="IDC_RESOURCES_POOL_ID" property="idcResourcesPoolId" />
+				
+		<result column="IDC_VM_HOSTS_ID" property="idcVmHostsId" />
+				
+		<result column="IDC_VM_HOSTS_NAME" property="idcVmHostsName" />
+				
+		<result column="IDC_PHYSICS_HOSTS_ID" property="idcPhysicsHostsId" />
+				
+		<result column="IDC_VM_HOSTS_SYSTEM" property="idcVmHostsSystem" />
+				
+		<result column="IDC_VM_HOSTS_VERSION" property="idcVmHostsVersion" />
+				
+		<result column="IDC_VM_HOSTS_STUTAS" property="idcVmHostsStutas" />
+				
+		<result column="IDC_VM_HOSTS_ACCOUNT" property="idcVmHostsAccount" />
+				
+		<result column="IDC_VM_HOSTS_PWD" property="idcVmHostsPwd" />
+				
+		<result column="IDC_VM_HOSTS_MEM_SIZE" property="idcVmHostsMemSize" />
+				
+		<result column="IDC_VM_HOSTS_VCPU_SIZE" property="idcVmHostsVcpuSize" />
+				
+		<result column="IDC_BILL_ID" property="idcBillId" />
+				
+		<result column="IDC_USER_ID" property="idcUserId" />
+				
+		<result column="IDC_DEVICEID" property="idcDeviceid" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.IdcVmHosts">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS where IDC_VM_HOSTS_ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.IdcVmHosts"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.IdcVmHosts">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.IdcVmHosts">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.IdcVmHosts"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.IdcVmHosts">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.IdcVmHosts">
+		select
+		<include refid="baseColumn" />
+		from IDC_VM_HOSTS
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.IdcVmHosts">
+		update IDC_VM_HOSTS
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_VM_HOSTS
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_VM_HOSTS
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_VM_HOSTS where IDC_VM_HOSTS_ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.IdcVmHosts">
+		delete from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_VM_HOSTS
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_VM_HOSTS where IDC_VM_HOSTS_ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.IdcVmHosts"
+		useGeneratedKeys="true" keyProperty="IDC_VM_HOSTS_ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select IDC_VM_HOSTS_seq.nextval from dual
+        </selectKey>
+		INSERT INTO IDC_VM_HOSTS
+		(IDC_VM_HOSTS_ID
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id,jdbcType=INTEGER},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_VM_HOSTS (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	IDC_RESOURCES_POOL_ID as idcResourcesPoolId,
+			IDC_VM_HOSTS_ID as idcVmHostsId,
+			IDC_VM_HOSTS_NAME as idcVmHostsName,
+			IDC_PHYSICS_HOSTS_ID as idcPhysicsHostsId,
+			IDC_VM_HOSTS_SYSTEM as idcVmHostsSystem,
+			IDC_VM_HOSTS_VERSION as idcVmHostsVersion,
+			IDC_VM_HOSTS_STUTAS as idcVmHostsStutas,
+			IDC_VM_HOSTS_ACCOUNT as idcVmHostsAccount,
+			IDC_VM_HOSTS_PWD as idcVmHostsPwd,
+			IDC_VM_HOSTS_MEM_SIZE as idcVmHostsMemSize,
+			IDC_VM_HOSTS_VCPU_SIZE as idcVmHostsVcpuSize,
+			IDC_BILL_ID as idcBillId,
+			IDC_USER_ID as idcUserId,
+			IDC_DEVICEID as idcDeviceid
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId} ]]></if>
+						
+			<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ and IDC_VM_HOSTS_ID = #{idcVmHostsId} ]]></if>
+						
+			<if test="idcVmHostsName != null and idcVmHostsName != '' ">  <![CDATA[ and IDC_VM_HOSTS_NAME = #{idcVmHostsName} ]]></if>
+						
+			<if test="idcPhysicsHostsId != null and idcPhysicsHostsId != '' ">  <![CDATA[ and IDC_PHYSICS_HOSTS_ID = #{idcPhysicsHostsId} ]]></if>
+						
+			<if test="idcVmHostsSystem != null and idcVmHostsSystem != '' ">  <![CDATA[ and IDC_VM_HOSTS_SYSTEM = #{idcVmHostsSystem} ]]></if>
+						
+			<if test="idcVmHostsVersion != null and idcVmHostsVersion != '' ">  <![CDATA[ and IDC_VM_HOSTS_VERSION = #{idcVmHostsVersion} ]]></if>
+						
+			<if test="idcVmHostsStutas != null and idcVmHostsStutas != '' ">  <![CDATA[ and IDC_VM_HOSTS_STUTAS = #{idcVmHostsStutas} ]]></if>
+						
+			<if test="idcVmHostsAccount != null and idcVmHostsAccount != '' ">  <![CDATA[ and IDC_VM_HOSTS_ACCOUNT = #{idcVmHostsAccount} ]]></if>
+						
+			<if test="idcVmHostsPwd != null and idcVmHostsPwd != '' ">  <![CDATA[ and IDC_VM_HOSTS_PWD = #{idcVmHostsPwd} ]]></if>
+						
+			<if test="idcVmHostsMemSize != null and idcVmHostsMemSize != '' ">  <![CDATA[ and IDC_VM_HOSTS_MEM_SIZE = #{idcVmHostsMemSize} ]]></if>
+						
+			<if test="idcVmHostsVcpuSize != null and idcVmHostsVcpuSize != '' ">  <![CDATA[ and IDC_VM_HOSTS_VCPU_SIZE = #{idcVmHostsVcpuSize} ]]></if>
+						
+			<if test="idcBillId != null and idcBillId != '' ">  <![CDATA[ and IDC_BILL_ID = #{idcBillId} ]]></if>
+						
+			<if test="idcUserId != null and idcUserId != '' ">  <![CDATA[ and IDC_USER_ID = #{idcUserId} ]]></if>
+						
+			<if test="idcDeviceid != null and idcDeviceid != '' ">  <![CDATA[ and IDC_DEVICEID = #{idcDeviceid} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.idcResourcesPoolId != null and params.idcResourcesPoolId != '' ">  <![CDATA[ and IDC_RESOURCES_POOL_ID = #{params.idcResourcesPoolId} ]]></if>
+						
+			<if test="params.idcVmHostsId != null and params.idcVmHostsId != '' ">  <![CDATA[ and IDC_VM_HOSTS_ID = #{params.idcVmHostsId} ]]></if>
+						
+			<!--<if test="params.idcVmHostsName != null and params.idcVmHostsName != '' ">  <![CDATA[ and IDC_VM_HOSTS_NAME = #{params.idcVmHostsName} ]]></if>-->
+						
+			<if test="params.idcPhysicsHostsId != null and params.idcPhysicsHostsId != '' ">  <![CDATA[ and IDC_PHYSICS_HOSTS_ID = #{params.idcPhysicsHostsId} ]]></if>
+						
+			<if test="params.idcVmHostsSystem != null and params.idcVmHostsSystem != '' ">  <![CDATA[ and IDC_VM_HOSTS_SYSTEM = #{params.idcVmHostsSystem} ]]></if>
+						
+			<if test="params.idcVmHostsVersion != null and params.idcVmHostsVersion != '' ">  <![CDATA[ and IDC_VM_HOSTS_VERSION = #{params.idcVmHostsVersion} ]]></if>
+						
+			<if test="params.idcVmHostsStutas != null and params.idcVmHostsStutas != '' ">  <![CDATA[ and IDC_VM_HOSTS_STUTAS = #{params.idcVmHostsStutas} ]]></if>
+						
+			<if test="params.idcVmHostsAccount != null and params.idcVmHostsAccount != '' ">  <![CDATA[ and IDC_VM_HOSTS_ACCOUNT = #{params.idcVmHostsAccount} ]]></if>
+						
+			<if test="params.idcVmHostsPwd != null and params.idcVmHostsPwd != '' ">  <![CDATA[ and IDC_VM_HOSTS_PWD = #{params.idcVmHostsPwd} ]]></if>
+						
+			<if test="params.idcVmHostsMemSize != null and params.idcVmHostsMemSize != '' ">  <![CDATA[ and IDC_VM_HOSTS_MEM_SIZE = #{params.idcVmHostsMemSize} ]]></if>
+						
+			<if test="params.idcVmHostsVcpuSize != null and params.idcVmHostsVcpuSize != '' ">  <![CDATA[ and IDC_VM_HOSTS_VCPU_SIZE = #{params.idcVmHostsVcpuSize} ]]></if>
+						
+			<if test="params.idcBillId != null and params.idcBillId != '' ">  <![CDATA[ and IDC_BILL_ID = #{params.idcBillId} ]]></if>
+						
+			<if test="params.idcUserId != null and params.idcUserId != '' ">  <![CDATA[ and IDC_USER_ID = #{params.idcUserId} ]]></if>
+						
+			<if test="params.idcDeviceid != null and params.idcDeviceid != '' ">  <![CDATA[ and IDC_DEVICEID = #{params.idcDeviceid} ]]></if>
+            <if test="params.idcVmHostsName!=null and params.idcVmHostsName!=''">
+                <![CDATA[ and ( IDC_VM_HOSTS_NAME like  '%${params.idcVmHostsName}%' ) ]]>
+            </if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[  IDC_RESOURCES_POOL_ID = #{idcResourcesPoolId } ,]]></if>
+						
+			<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[  IDC_VM_HOSTS_ID = #{idcVmHostsId } ,]]></if>
+						
+			<if test="idcVmHostsName != null and idcVmHostsName != '' ">  <![CDATA[  IDC_VM_HOSTS_NAME = #{idcVmHostsName } ,]]></if>
+						
+			<if test="idcPhysicsHostsId != null and idcPhysicsHostsId != '' ">  <![CDATA[  IDC_PHYSICS_HOSTS_ID = #{idcPhysicsHostsId } ,]]></if>
+						
+			<if test="idcVmHostsSystem != null and idcVmHostsSystem != '' ">  <![CDATA[  IDC_VM_HOSTS_SYSTEM = #{idcVmHostsSystem } ,]]></if>
+						
+			<if test="idcVmHostsVersion != null and idcVmHostsVersion != '' ">  <![CDATA[  IDC_VM_HOSTS_VERSION = #{idcVmHostsVersion } ,]]></if>
+						
+			<if test="idcVmHostsStutas != null and idcVmHostsStutas != '' ">  <![CDATA[  IDC_VM_HOSTS_STUTAS = #{idcVmHostsStutas } ,]]></if>
+						
+			<if test="idcVmHostsAccount != null and idcVmHostsAccount != '' ">  <![CDATA[  IDC_VM_HOSTS_ACCOUNT = #{idcVmHostsAccount } ,]]></if>
+						
+			<if test="idcVmHostsPwd != null and idcVmHostsPwd != '' ">  <![CDATA[  IDC_VM_HOSTS_PWD = #{idcVmHostsPwd } ,]]></if>
+						
+			<if test="idcVmHostsMemSize != null and idcVmHostsMemSize != '' ">  <![CDATA[  IDC_VM_HOSTS_MEM_SIZE = #{idcVmHostsMemSize } ,]]></if>
+						
+			<if test="idcVmHostsVcpuSize != null and idcVmHostsVcpuSize != '' ">  <![CDATA[  IDC_VM_HOSTS_VCPU_SIZE = #{idcVmHostsVcpuSize } ,]]></if>
+						
+			<if test="idcBillId != null and idcBillId != '' ">  <![CDATA[  IDC_BILL_ID = #{idcBillId } ,]]></if>
+						
+			<if test="idcUserId != null and idcUserId != '' ">  <![CDATA[  IDC_USER_ID = #{idcUserId } ,]]></if>
+						
+			<if test="idcDeviceid != null and idcDeviceid != '' ">  <![CDATA[  IDC_DEVICEID = #{idcDeviceid } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ IDC_RESOURCES_POOL_ID , ]]></if>
+				
+		<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ IDC_VM_HOSTS_ID , ]]></if>
+				
+		<if test="idcVmHostsName != null and idcVmHostsName != '' ">  <![CDATA[ IDC_VM_HOSTS_NAME , ]]></if>
+				
+		<if test="idcPhysicsHostsId != null and idcPhysicsHostsId != '' ">  <![CDATA[ IDC_PHYSICS_HOSTS_ID , ]]></if>
+				
+		<if test="idcVmHostsSystem != null and idcVmHostsSystem != '' ">  <![CDATA[ IDC_VM_HOSTS_SYSTEM , ]]></if>
+				
+		<if test="idcVmHostsVersion != null and idcVmHostsVersion != '' ">  <![CDATA[ IDC_VM_HOSTS_VERSION , ]]></if>
+				
+		<if test="idcVmHostsStutas != null and idcVmHostsStutas != '' ">  <![CDATA[ IDC_VM_HOSTS_STUTAS , ]]></if>
+				
+		<if test="idcVmHostsAccount != null and idcVmHostsAccount != '' ">  <![CDATA[ IDC_VM_HOSTS_ACCOUNT , ]]></if>
+				
+		<if test="idcVmHostsPwd != null and idcVmHostsPwd != '' ">  <![CDATA[ IDC_VM_HOSTS_PWD , ]]></if>
+				
+		<if test="idcVmHostsMemSize != null and idcVmHostsMemSize != '' ">  <![CDATA[ IDC_VM_HOSTS_MEM_SIZE , ]]></if>
+				
+		<if test="idcVmHostsVcpuSize != null and idcVmHostsVcpuSize != '' ">  <![CDATA[ IDC_VM_HOSTS_VCPU_SIZE , ]]></if>
+				
+		<if test="idcBillId != null and idcBillId != '' ">  <![CDATA[ IDC_BILL_ID , ]]></if>
+				
+		<if test="idcUserId != null and idcUserId != '' ">  <![CDATA[ IDC_USER_ID , ]]></if>
+				
+		<if test="idcDeviceid != null and idcDeviceid != '' ">  <![CDATA[ IDC_DEVICEID , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="idcResourcesPoolId != null and idcResourcesPoolId != '' ">  <![CDATA[ #{idcResourcesPoolId } , ]]></if>
+				
+		<if test="idcVmHostsId != null and idcVmHostsId != '' ">  <![CDATA[ #{idcVmHostsId } , ]]></if>
+				
+		<if test="idcVmHostsName != null and idcVmHostsName != '' ">  <![CDATA[ #{idcVmHostsName } , ]]></if>
+				
+		<if test="idcPhysicsHostsId != null and idcPhysicsHostsId != '' ">  <![CDATA[ #{idcPhysicsHostsId } , ]]></if>
+				
+		<if test="idcVmHostsSystem != null and idcVmHostsSystem != '' ">  <![CDATA[ #{idcVmHostsSystem } , ]]></if>
+				
+		<if test="idcVmHostsVersion != null and idcVmHostsVersion != '' ">  <![CDATA[ #{idcVmHostsVersion } , ]]></if>
+				
+		<if test="idcVmHostsStutas != null and idcVmHostsStutas != '' ">  <![CDATA[ #{idcVmHostsStutas } , ]]></if>
+				
+		<if test="idcVmHostsAccount != null and idcVmHostsAccount != '' ">  <![CDATA[ #{idcVmHostsAccount } , ]]></if>
+				
+		<if test="idcVmHostsPwd != null and idcVmHostsPwd != '' ">  <![CDATA[ #{idcVmHostsPwd } , ]]></if>
+				
+		<if test="idcVmHostsMemSize != null and idcVmHostsMemSize != '' ">  <![CDATA[ #{idcVmHostsMemSize } , ]]></if>
+				
+		<if test="idcVmHostsVcpuSize != null and idcVmHostsVcpuSize != '' ">  <![CDATA[ #{idcVmHostsVcpuSize } , ]]></if>
+				
+		<if test="idcBillId != null and idcBillId != '' ">  <![CDATA[ #{idcBillId } , ]]></if>
+				
+		<if test="idcUserId != null and idcUserId != '' ">  <![CDATA[ #{idcUserId } , ]]></if>
+				
+		<if test="idcDeviceid != null and idcDeviceid != '' ">  <![CDATA[ #{idcDeviceid } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			IDC_RESOURCES_POOL_ID,IDC_VM_HOSTS_ID,IDC_VM_HOSTS_NAME,IDC_PHYSICS_HOSTS_ID,IDC_VM_HOSTS_SYSTEM,IDC_VM_HOSTS_VERSION,IDC_VM_HOSTS_STUTAS,IDC_VM_HOSTS_ACCOUNT,IDC_VM_HOSTS_PWD,IDC_VM_HOSTS_MEM_SIZE,IDC_VM_HOSTS_VCPU_SIZE,IDC_BILL_ID,IDC_USER_ID,IDC_DEVICEID
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.idcResourcesPoolId},#{item.idcVmHostsId},#{item.idcVmHostsName},#{item.idcPhysicsHostsId},#{item.idcVmHostsSystem},#{item.idcVmHostsVersion},#{item.idcVmHostsStutas},#{item.idcVmHostsAccount},#{item.idcVmHostsPwd},#{item.idcVmHostsMemSize},#{item.idcVmHostsVcpuSize},#{item.idcBillId},#{item.idcUserId},#{item.idcDeviceid}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

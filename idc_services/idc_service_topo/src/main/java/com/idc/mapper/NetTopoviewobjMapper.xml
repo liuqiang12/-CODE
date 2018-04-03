@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.NetTopoviewobjMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultNetTopoviewobjMap" type="com.idc.model.NetTopoViewObj">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="OBJPID" property="objpid" />
+				
+		<result column="ICON" property="icon" />
+				
+		<result column="OBJFID" property="objfid" />
+				
+		<result column="OBJTYPE" property="objtype" />
+				
+		<result column="SUBVIEWID" property="subviewid" />
+				
+		<result column="VIEWID" property="viewid" />
+				
+		<result column="VIEWPOSITION" property="viewposition" />
+
+		<result column="EXT" property="ext" />
+
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="com.idc.model.NetTopoViewObj">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ where OBJPID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="com.idc.model.NetTopoViewObj"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="com.idc.model.NetTopoViewObj">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="com.idc.model.NetTopoViewObj">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="com.idc.model.NetTopoViewObj"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="com.idc.model.NetTopoViewObj">
+        <include refid="tmpTable"/>
+		select
+		<include refid="baseColumn" />
+        ,NAME
+		from NET_TOPOVIEWOBJ_TMP A
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetTopoViewObj">
+		select
+		<include refid="baseColumn" />
+		from NET_TOPOVIEWOBJ
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="com.idc.model.NetTopoViewObj">
+		update NET_TOPOVIEWOBJ
+		<include refid="updateParam" />
+        WHERE  OBJPID = #{objpid}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update NET_TOPOVIEWOBJ
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from NET_TOPOVIEWOBJ
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from NET_TOPOVIEWOBJ where OBJPID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="com.idc.model.NetTopoViewObj">
+		delete from NET_TOPOVIEWOBJ
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from NET_TOPOVIEWOBJ
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from NET_TOPOVIEWOBJ where OBJPID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.objpid}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="com.idc.model.NetTopoViewObj"
+		useGeneratedKeys="true" keyProperty="objpid">
+        <selectKey keyProperty="objpid" resultType="java.lang.Long" order="BEFORE">
+            select NET_TOPOVIEWOBJ_seq.nextval from dual
+        </selectKey>
+		INSERT INTO NET_TOPOVIEWOBJ
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+    <sql id="tmpTable">
+      WITH NET_TOPOVIEWOBJ_TMP as (
+      SELECT
+		B. NAME AS NAME,
+		A .*
+	FROM
+		NET_TOPOVIEWOBJ A
+	INNER  JOIN IDC_DEVICE B ON A .OBJFID = B.DEVICEID
+	WHERE
+        A .OBJTYPE = 0 and B.isdelete = 0
+	UNION ALL
+		SELECT
+		    nvl(c.viewname,a.ext) AS NAME,
+			A .*
+		FROM
+			NET_TOPOVIEWOBJ A
+		INNER JOIN NET_TOPOVIEW c ON A .OBJFID = c.VIEWID
+		WHERE
+			A .OBJTYPE = 2
+			UNION ALL
+			SELECT
+				A .EXT AS NAME,
+				A .*
+			FROM
+				NET_TOPOVIEWOBJ A
+			WHERE
+				A .OBJTYPE =1
+      )
+    </sql>
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO NET_TOPOVIEWOBJ (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	OBJPID as objpid,
+			ICON as icon,
+			OBJFID as objfid,
+			OBJTYPE as objtype,
+			SUBVIEWID as subviewid,
+			VIEWID as viewid,
+			VIEWPOSITION as viewposition,
+			ext as ext
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="objpid != null and objpid != '' ">  <![CDATA[ and OBJPID = #{objpid} ]]></if>
+						
+			<if test="icon != null and icon != '' ">  <![CDATA[ and ICON = #{icon} ]]></if>
+						
+			<if test="objfid != null and objfid != '' ">  <![CDATA[ and OBJFID = #{objfid} ]]></if>
+						
+			<if test="objtype != null and objtype != '' ">  <![CDATA[ and OBJTYPE = #{objtype} ]]></if>
+						
+			<if test="subviewid != null and subviewid != '' ">  <![CDATA[ and SUBVIEWID = #{subviewid} ]]></if>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[ and VIEWID = #{viewid} ]]></if>
+						
+			<if test="viewposition != null and viewposition != '' ">  <![CDATA[ and VIEWPOSITION = #{viewposition} ]]></if>
+
+			<if test="ext != null and ext != '' ">  <![CDATA[ and ext = #{ext} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.objpid != null and params.objpid != '' ">  <![CDATA[ and OBJPID = #{params.objpid} ]]></if>
+						
+			<if test="params.icon != null and params.icon != '' ">  <![CDATA[ and ICON = #{params.icon} ]]></if>
+						
+			<if test="params.objfid != null and params.objfid != '' ">  <![CDATA[ and OBJFID = #{params.objfid} ]]></if>
+						
+			<if test="params.objtype != null and params.objtype != '' ">  <![CDATA[ and OBJTYPE = #{params.objtype} ]]></if>
+						
+			<if test="params.subviewid != null and params.subviewid != '' ">  <![CDATA[ and SUBVIEWID = #{params.subviewid} ]]></if>
+						
+			<if test="params.viewid != null and params.viewid != '' ">  <![CDATA[ and VIEWID = #{params.viewid} ]]></if>
+						
+			<if test="params.viewposition != null and params.viewposition != '' ">  <![CDATA[ and VIEWPOSITION = #{params.viewposition} ]]></if>
+
+			<if test="params.ext != null and params.ext != '' ">  <![CDATA[ and ext = #{params.ext} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="objpid != null and objpid != '' ">  <![CDATA[  OBJPID = #{objpid } ,]]></if>
+						
+			<if test="icon != null and icon != '' ">  <![CDATA[  ICON = #{icon } ,]]></if>
+						
+			<if test="objfid != null and objfid != '' ">  <![CDATA[  OBJFID = #{objfid } ,]]></if>
+						
+			<if test="objtype != null and objtype != '' ">  <![CDATA[  OBJTYPE = #{objtype } ,]]></if>
+						
+			<if test="subviewid != null and subviewid != '' ">  <![CDATA[  SUBVIEWID = #{subviewid } ,]]></if>
+						
+			<if test="viewid != null and viewid != '' ">  <![CDATA[  VIEWID = #{viewid } ,]]></if>
+						
+			<if test="viewposition != null and viewposition != '' ">  <![CDATA[  VIEWPOSITION = #{viewposition } ,]]></if>
+
+			<if test="ext != null and ext != '' ">  <![CDATA[  ext = #{ext } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="objpid != null and objpid != '' ">  <![CDATA[ OBJPID , ]]></if>
+				
+		<if test="icon != null and icon != '' ">  <![CDATA[ ICON , ]]></if>
+				
+		<if test="objfid != null and objfid != '' ">  <![CDATA[ OBJFID , ]]></if>
+				
+		<if test="objtype == 0 or objtype != null ">  <![CDATA[ OBJTYPE , ]]></if>
+				
+		<if test="subviewid != null and subviewid != '' ">  <![CDATA[ SUBVIEWID , ]]></if>
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ VIEWID , ]]></if>
+				
+		<if test="viewposition != null and viewposition != '' ">  <![CDATA[ VIEWPOSITION , ]]></if>
+			<if test="ext != null and ext != '' ">  <![CDATA[ ext , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="objpid != null and objpid != '' ">  <![CDATA[ #{objpid } , ]]></if>
+				
+		<if test="icon != null and icon != '' ">  <![CDATA[ #{icon } , ]]></if>
+				
+		<if test="objfid != null and objfid != '' ">  <![CDATA[ #{objfid } , ]]></if>
+				
+		<if test="objtype == 0 or objtype != null  ">  <![CDATA[ #{objtype } , ]]></if>
+				
+		<if test="subviewid != null and subviewid != '' ">  <![CDATA[ #{subviewid } , ]]></if>
+				
+		<if test="viewid != null and viewid != '' ">  <![CDATA[ #{viewid } , ]]></if>
+				
+		<if test="viewposition != null and viewposition != '' ">  <![CDATA[ #{viewposition } , ]]></if>
+			<if test="ext != null and ext != '' ">  <![CDATA[ #{ext} , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			OBJPID,ICON,OBJFID,OBJTYPE,SUBVIEWID,VIEWID,VIEWPOSITION
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.objpid},#{item.icon},#{item.objfid},#{item.objtype},#{item.subviewid},#{item.viewid},#{item.viewposition}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

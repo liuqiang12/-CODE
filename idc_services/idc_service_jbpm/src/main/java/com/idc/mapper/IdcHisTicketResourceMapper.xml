@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcHisTicketResourceMapper">
+
+
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcHisTicketResourceMap" type="IdcHisTicketResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="RESOURCEID" property="resourceid" />
+		<result column="STATUS" property="status" />
+		<result column="MANUAL" property="manual" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+		<association property="ticketIdcRackVo" javaType="TicketIdcRackVo" column="RESOURCEID" columnPrefix="rack_">
+			<result column="RACKID" property="rackId" />
+			<result column="RACKNAME" property="rackName" />
+			<result column="RACKMODE" property="rackMode" />
+			<result column="MACHINEROOMID" property="machineroomId" />
+			<result column="MACHINEROOMNAME" property="machineroomName" />
+			<result column="DIRECTIONNAME" property="directionName" />
+			<result column="RACKSIZE" property="rackSize" />
+			<result column="MANUFACTUREID" property="manufactureId" />
+		</association>
+		<collection property="ticketIdcMcbVos" javaType="ArrayList" ofType="TicketIdcMcbVo" column="RESOURCEID" columnPrefix="mcb_">
+			<result column="CUSTOMERRACKID" property="customerRackId" />
+			<result column="POWERSTATUS" property="powerStatus" />
+			<result column="POWERSTATUSNAME" property="powerStatusName" />
+			<result column="MCBNO" property="mcbNo" />
+			<result column="PDFINSTALLEDID" property="pdfInstalledId" />
+			<result column="PDFNAME" property="pdfName" />
+			<result column="PDFPOWERTYPE" property="pdfPowerType" />
+			<result column="PDFPOWERTYPENAME" property="pdfPowerTypeName" />
+		</collection>
+	</resultMap>
+
+	<resultMap id="resourceStatusMap" type="IdcHisTicketResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<result column="RESOURCEID" property="resourceid" jdbcType="INTEGER"/>
+		<result column="TICKET_INST_ID" property="ticketInstId"  jdbcType="INTEGER"/>
+		<result column="CATEGORY" property="category"  jdbcType="INTEGER"/>
+		<result column="TICKET_CATEGORY" property="ticketCategory"  jdbcType="INTEGER"/>
+		<result column="IP_TYPE" property="ipType"  jdbcType="VARCHAR"/>
+		<result column="RACK_ID" property="rack_Id"  jdbcType="INTEGER"/>
+		<result column="PROD_INST_ID" property="prodInstId"  jdbcType="INTEGER"/>
+		<result column="CUSTOMER_ID" property="customerId"  jdbcType="INTEGER"/>
+		<result column="NAME" property="customerName"  jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="resultIdcHisTicketResourceMapForProc" type="IdcHisTicketResource">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="RESOURCEID" property="resourceid" />
+		<result column="STATUS" property="status" />
+		<result column="MANUAL" property="manual" />
+		<result column="REV" property="rev" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CATEGORY" property="category" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="IP_TYPE" property="ipType" />
+		<result column="STATUS_PRE" property="statusPre" />
+		<result column="RACK_ID" property="rack_Id" />
+		<result column="RESOURCENAME" property="resourcename" />
+	</resultMap>
+
+	<update id="updatePortResourceAssignation">
+		update idc_his_ticket_resource t1
+		<set>
+			<if test="inputValues != null and inputValues != '' and resourceCategory == 200">  <![CDATA[ t1.PORTASSIGATION = #{inputValues } , ]]></if>
+			<if test="inputValues != null and inputValues != '' and resourceCategory == 300">  <![CDATA[ t1.USED_RACK_UNIT = #{inputValues } , ]]></if>
+		</set>
+		where t1.ticket_Inst_Id=#{ticketInstId} and t1.RESOURCEID=#{resourceId} and category=#{resourceCategory }
+	</update>
+
+	<select id="isAllotResource" resultType="Boolean">
+		select count('a') from idc_his_ticket_resource t where t.ticket_inst_id = #{0}
+	</select>
+
+	<select id="queryRackResourceListPage" parameterType="PageBean" resultType="TicketIdcRackVo">
+		select  t1.rackId, /*机架*/
+				t1.rackName, /*机架名称*/
+				t1.rackMode, /* 机架型号*/
+				t1.machineroomId, /*机房ID*/
+				t1.machineroomName, /*所属机房*/
+				t1.directionName, /*机架方向*/
+				t1.rackSize, /*机架尺寸*/
+				t1.manufactureId, /*品牌*/
+				t1.rackStatus, /*状态*/
+				t1.renttype,/*出租类型*/
+				t1.rackStatusName,
+				t1.ratedelectricenergy,/*额定电量*/
+				t1.pdu_powertype as pduPowertype, /*用电类型*/
+				t1.locationid/*数据中心ID*/
+		from VIEW_RACK t1
+		<where>
+			<if test="params.nodeParam != null and params.nodeParam != '' ">
+				<![CDATA[ and t1.machineroomId = #{params.nodeParam}]]>
+			</if>
+			<if test="params.locationId != null and params.locationId != '' ">
+				<![CDATA[ and t1.locationid = #{params.locationId}]]>
+			</if>
+            <if test="params.rackName != null and params.rackName != '' ">
+                <![CDATA[ and upper(t1.rackName) like '%' || upper(#{params.rackName}) || '%']]></if>
+			<choose>
+				<!-- 按机位分配-->
+				<when test="params.rackOrracunit != null and params.rackOrracunit =='66002'">
+					<![CDATA[ and t1.rackStatus in (20,40)]]>
+				</when>
+				<!-- 按机架分配-->
+				<otherwise>
+					<![CDATA[ and t1.rackStatus = 40]]>
+				</otherwise>
+			</choose>
+			<!--<if test="params.statusList != null ">-->
+			<!--AND t1.rackStatus in-->
+			<!--<foreach collection="params.statusList" item="item" index="index" separator="," close=")" open="(">-->
+			<!--${item}-->
+			<!--</foreach>-->
+			<!--</if>-->
+		</where>
+	</select>
+	<select id="queryTicketResourceListPage" parameterType="PageBean" resultType="IdcHisTicketResource">
+		select
+		t.id,
+		t.ticket_inst_id as ticketInstId,
+		t.resourceid,
+		t.status,
+		t.manual,
+		t.rev,
+		t.create_time createTime,
+		t.category,
+		t.ticket_category ticketCategory,
+		t.ip_type ipType,
+		t.status_pre statusPre,
+		t.rack_id rackId,
+		t.resourceName as resourceName,
+		t.BELONG_NAME as belongName,
+		t.prod_inst_id prodInstId,
+		t.ticket_rack_grid ticketRackGrid,
+		t.USED_RACK_UNIT  usedRackUnIt,
+		t.uheight uheight,
+		t.RESOURCE_STATUS as resourceStatus,
+		t.PDU_POWERTYPE pduPowertype,
+		T.BELONG_ID AS belongId,
+		T.MCB_BELONG_NAME AS mcbBelongName,
+		t.IP_NAME as ipName,
+		t.PORTBANDWIDTH as portbandwidth,
+		t.PORTASSIGATION as portassigation,
+		t.END_IP as endip,
+		t.OS as OS,
+		case when t.VENDOR = 0 then '华为'
+		when t.VENDOR = 1 then '思科'
+		when t.VENDOR = 2 then '阿尔卡特'
+		when t.VENDOR = 3 then '3Com'
+		when t.VENDOR = 4 then 'HP'
+		when t.VENDOR = 5 then 'Linux'
+		when t.VENDOR = 6 then 'Microsoft'
+		when t.VENDOR = 17 then 'D-Link'
+		when t.VENDOR = 54 then 'Juniper'
+		when t.VENDOR = 59 then 'H3C'
+		end as VENDOR ,
+
+		case when t.OWNERTYPE = 1 then '自建'
+		when t.OWNERTYPE = 2 then '租用'
+		when t.OWNERTYPE = 3 then '客户'
+		when t.OWNERTYPE = 4 then '自有业务'
+		end as OWNERTYPE,
+		t.TICKET_CATEGORY_FROM as ticketCategoryFrom,
+		t.PARENT_TICKET_INST_ID as parentTicketInstId,
+		t.RACK_OR_RACKUNIT as rackOrRackUnit
+		from idc_his_ticket_resource t
+		WHERE t.ticket_inst_id = #{params.ticketInstId} AND t.category = #{params.category }
+		<if test="params.resourcename != null and params.resourcename != '' ">  <![CDATA[ and t.resourcename like '%' || #{params.resourcename} || '%']]></if>
+		order by t.id desc
+	</select>
+	<select id="queryTicketRackResourceListPage" parameterType="PageBean" resultType="IdcHisTicketResource">
+		select
+		t.id,
+		t.ticket_inst_id as ticketInstId,
+		t.resourceid,
+		t.status,
+		t.manual,
+		t.rev,
+		t.create_time createTime,
+		t.category,
+		t.ticket_category ticketCategory,
+		t.ip_type ipType,
+		t.status_pre statusPre,
+		t.resourceName as resourceName,
+		t.BELONG_NAME as belongName,
+		t.prod_inst_id prodInstId,
+		t.ticket_rack_grid ticketRackGrid,
+		t.USED_RACK_UNIT  usedRackUnIt,
+		t.uheight uheight,
+		t.RESOURCE_STATUS as resourceStatus,
+		t.PDU_POWERTYPE pduPowertype,
+		T.BELONG_ID AS belongId,
+		T.MCB_BELONG_NAME AS mcbBelongName
+		from idc_his_ticket_resource t
+		WHERE t.ticket_inst_id = #{params.ticketInstId} AND t.category = #{params.category } AND t.resourcename is not null
+		<if test="params.rackName != null and params.rackName != '' ">  <![CDATA[ and t.resourcename like '%' || #{params.rackName} || '%']]></if>
+		order by t.create_time desc
+	</select>
+
+	<select id="queryTicketPortResourceListPage" parameterType="PageBean" resultType="TicketPortVo">
+		select
+				t1.id,
+				t1.status,
+				t1.statusName,
+				t1.manual, /*添加方式*/
+				t1.manualName,
+				t1.ticketInstId,
+				t1.category,
+				t1.resourceid,
+				t1.portId, /*端口ID*/
+				t1.portName, /*端口名称*/
+				t1.portActiveName, /*端口状态*/
+				t1.portMediaTypeName, /*端口光电特性*/
+				t1.portAdminStatusName, /*操作状态名称*/
+				t1.portBandWidth, /*端口带宽*/
+				t1.portAssigation, /*端口分派带宽*/
+				t1.portIp, /*端口对应的IP*/
+				t1.portMac, /*端口对应的mac*/
+				t1.portNetmask, /*端口对应的子网掩码*/
+				t1.rackId,/*所属机架ID*/
+				t1.deviceName   /*设备名称*/
+		from view_ticket_port_his t1
+		/*条件是通过工单实例ID查询相关信息*/
+		WHERE t1.ticketInstId = #{params.ticketInstId} AND t1.category = #{params.category }
+		<if test="params.portName != null and params.portName != '' ">  <![CDATA[ and t1.portName like '%'|| #{params.portName}||'%' ]]></if>
+	</select>
+
+
+	<select id="getRackNameByResourceId" resultType="String">
+        select name from idc_rack t where t.id = #{0} and t.isdelete = 0
+	</select>
+
+	<!--  -->
+	<select id="queryServerResourceListPage" parameterType="PageBean" resultType="WinServerVo">
+		select
+			t1.server_deviceId as serverDeviceId,/*设备id*/
+			t1.server_os as serverOs, /*操作系统*/
+			t1.server_cpusize as serverCpusize, /*主频大小*/
+			t1.server_memsize as serverMemsize, /*内存大小*/
+			t1.server_disksize as serverDisksize, /*硬盘大小*/
+			t1.server_deviceName as serverDeviceName,/*设备名称*/
+			t1.server_deviceRackId as serverDeviceRackId,/*所属机架ID*/
+			t1.server_deviceModel as serverDeviceModel,/*设备规格*/
+			t1.server_deviceStatusName as serverDeviceStatusName,/*使用状态*/
+			t1.server_deviceVendorName as serverDeviceVendorName,/*厂商*/
+			t1.server_deviceOwner as serverdeviceOwner,/*联系人*/
+			t1.server_ownertypeName as serverOwnertypeName,/*产权性质*/
+			t1.server_rackName as serverRackName/*所属机架名称*/
+		from view_server t1
+		/*条件是通过工单实例ID查询相关信息*/
+		<where>
+			<!-- 迭代过滤树形结构 -->
+			<if test="params.nodeParam != null and params.nodeParam != '' ">
+				exists
+				(
+					select * from
+					(
+					select t2.id from VIEW_LOCATION_BUILD_ROOM_ZTREE t2
+					start with t2.id = #{params.nodeParam}
+					connect by prior t2.id = t2.pid
+					)it
+					where  'idcroom_'||t1.roomid = it.id
+				)
+			</if>
+			<if test="params.serverDeviceName != null and params.serverDeviceName != '' ">  <![CDATA[ and t1.server_deviceName like '%' || #{params.serverDeviceName} || '%']]></if>
+			<if test="params.statusList != null ">
+				AND t1.server_status in
+				<foreach collection="params.statusList" item="item" index="index" separator="," close=")" open="(">
+					${item}
+				</foreach>
+			</if>
+		</where>
+		order by t1.server_rackName,t1.server_deviceName
+	</select>
+
+	<select id="queryIpResourceListPage" parameterType="PageBean" resultType="TicketIPVo">
+		select t1.ip_id as ipId, /*ip主键*/
+		t1.ip_ipaddress as ipIpaddress, /*ip地址*/
+		t1.ip_subnetip as ipSubnetip, /*子网*/
+		t1.ip_MASKSTR as ipMaskstr, /*掩码*/
+		t1.status as ipStatus, /*状态*/
+		t1.ip_statusName as ipStatusName /*使用状态*/
+		from view_ip t1
+		/*条件是通过工单实例ID查询相关信息*/
+		<where>
+			<if test="params.ipIpaddress != null and params.ipIpaddress != '' ">  <![CDATA[ and t1.ip_ipaddress like '%' || #{params.ipIpaddress} || '%']]></if>
+			<if test="params.statusList != null ">
+				AND t1.status in
+				<foreach collection="params.statusList" item="item" index="index" separator="," close=")" open="(">
+					${item}
+				</foreach>
+			</if>
+		</where>
+		order by t1.ip_ipaddress,t1.ip_subnetip
+	</select>
+
+	<select id="queryTicketServerResourceListPage" parameterType="PageBean" resultType="TicketServerVo">
+		select
+		t1.id,
+		t1.status,
+		t1.statusName,
+		t1.manual, /*添加方式*/
+		t1.manualName,
+		t1.ticketInstId,
+		t1.category,
+		t1.resourceid,
+		t1.server_deviceId as serverDeviceId,/*设备id*/
+		t1.server_os as serverOs, /*操作系统*/
+		t1.server_cpusize as serverCpusize, /*主频大小*/
+		t1.server_memsize as serverMemsize, /*内存大小*/
+		t1.server_disksize as serverDisksize, /*硬盘大小*/
+		t1.server_deviceName as serverDeviceName,/*设备名称*/
+		t1.server_deviceRackId as serverDeviceRackId,/*所属机架ID*/
+		t1.server_deviceModel as serverDeviceModel,/*设备规格*/
+		t1.server_deviceStatusName as serverDeviceStatusName,/*使用状态*/
+		t1.server_deviceVendorName as serverDeviceVendorName,/*厂商*/
+		t1.server_deviceOwner as serverdeviceOwner,/*联系人*/
+		t1.server_ownertypeName as serverOwnertypeName,/*产权性质*/
+		t1.server_rackName as serverRackName/*所属机架名称*/
+		from view_ticket_server_his t1
+		/*条件是通过工单实例ID查询相关信息*/
+		WHERE t1.ticketInstId = #{params.ticketInstId} AND t1.category = #{params.category }
+		<if test="params.serverDeviceName != null and params.serverDeviceName != '' ">  <![CDATA[ and t1.server_deviceName like '%' || #{params.serverDeviceName} || '%']]></if>
+	</select>
+
+	<select id="queryTicketIpResourceListPage" parameterType="PageBean" resultType="TicketIPVo">
+		select
+		t1.id,
+		t1.status,
+		t1.statusName,
+		t1.manual, /*添加方式*/
+		t1.manualName,
+		t1.ticketInstId,
+		t1.category,
+		t1.resourceid,
+		t1.ip_id as ipId,/*ip主键*/
+		t1.ip_ipaddress as ipIpaddress,/*ip地址*/
+		t1.ip_subnetip as ipSubnetip,/*子网*/
+		t1.ip_MASKSTR AS ipMaskstr,/*掩码*/
+		t1.ip_status as ipStatus,
+		t1.ip_statusName as ipStatusName,/*使用状态*/
+		t1.IPTYPE ipType
+		from view_ticket_ip_his t1
+		/*条件是通过工单实例ID查询相关信息*/
+		WHERE t1.ticketInstId = #{params.ticketInstId} AND t1.category = #{params.category }
+		<if test="params.ipIpaddress != null and params.ipIpaddress != '' ">  <![CDATA[ and t1.ip_ipaddress like '%'|| #{params.ipIpaddress}||'%' ]]></if>
+	</select>
+
+	<select id="queryTicketRackMCBResourceListPage" parameterType="PageBean" resultType="IdcHisTicketResource">
+		select
+		t.id,
+		t.ticket_inst_id as ticketInstId,
+		t.resourceid,
+		t.status,
+		t.manual,
+		t.rev,
+		t.create_time createTime,
+		t.category,
+		t.ticket_category ticketCategory,
+		t.ip_type ipType,
+		t.status_pre statusPre,
+		t.rack_id rackId,
+		t.resourceName as resourceName,
+		t.BELONG_NAME as belongName,
+		t.prod_inst_id prodInstId,
+		t.ticket_rack_grid ticketRackGrid,
+		t.USED_RACK_UNIT  usedRackUnIt,
+		t.uheight uheight,
+		t.RESOURCE_STATUS as resourceStatus,
+		t.PDU_POWERTYPE pduPowertype,
+		T.BELONG_ID AS belongId,
+		T.MCB_BELONG_NAME AS mcbBelongName
+		from idc_his_ticket_resource t
+		WHERE t.ticket_inst_id = #{params.ticketInstId} AND t.category = #{params.category } AND t.resourcename is not null
+		<if test="params.mcbNo != null and params.mcbNo != '' ">  <![CDATA[ and t.mcbNo like '%' || #{params.mcbNo} || '%']]></if>
+		order by t.create_time desc
+	</select>
+
+	<!-- 合体方法 -->
+	<update id="mergeInto" parameterType="IdcHisTicketResource" >
+		merge into IDC_HIS_TICKET_RESOURCE t
+		using (SELECT #{id } as id from dual) t1
+		on( t1.id = t.id )
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ RESOURCEID , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ CATEGORY , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ MANUAL , ]]></if>
+			<if test="ticketCategory != null and ticketCategory != '' ">  <![CDATA[ TICKET_CATEGORY , ]]></if>
+			<if test="endTime != null ">  <![CDATA[ END_TIME , ]]></if>
+            <if test="rack_Id != null ">  <![CDATA[ RACK_ID , ]]></if>
+            <if test="resourcename != null ">  <![CDATA[ RESOURCENAME , ]]></if>
+            <if test="prodInstId != null  and prodInstId != ''">  <![CDATA[ PROD_INST_ID , ]]></if>
+            <if test="ipType != null  and ipType != ''">  <![CDATA[ IP_TYPE , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null and id != '' ">  <![CDATA[ #{id} , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ #{resourceid } , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ #{category } , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ #{manual } , ]]></if>
+			<if test="ticketCategory != null and ticketCategory != '' ">  <![CDATA[ #{ticketCategory } , ]]></if>
+			<if test="endTime != null ">  <![CDATA[ #{endTime} , ]]></if>
+            <if test="rack_Id != null ">  <![CDATA[ #{rack_Id} , ]]></if>
+            <if test="resourcename != null ">  <![CDATA[ #{resourcename} , ]]></if>
+            <if test="prodInstId != null  and prodInstId != ''">  <![CDATA[ #{prodInstId} , ]]></if>
+            <if test="ipType != null  and ipType != ''">  <![CDATA[ #{ipType} , ]]></if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID = #{ticketInstId } , ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ RESOURCEID = #{resourceid } , ]]></if>
+			<if test="category != null and category != '' ">  <![CDATA[ CATEGORY = #{category } , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ STATUS = #{status } , ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ MANUAL = #{manual } , ]]></if>
+			<if test="ticketCategory != null and ticketCategory != '' ">  <![CDATA[ TICKET_CATEGORY = #{ticketCategory } , ]]></if>
+            <if test="endTime != null ">  <![CDATA[ END_TIME = #{endTime} , ]]></if>
+            <if test="rack_Id != null ">  <![CDATA[ RACK_ID = #{rack_Id} , ]]></if>
+            <if test="resourcename != null ">  <![CDATA[ RESOURCENAME = #{resourcename} , ]]></if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<insert id="foreachSaveInfo" parameterType="java.util.List">
+		INSERT INTO IDC_HIS_TICKET_RESOURCE (
+			TICKET_INST_ID ,RESOURCEID ,STATUS ,MANUAL ,CATEGORY
+		)
+		<foreach collection="list" item="item" index="index" separator="UNION ALL">
+			SELECT
+				#{item.ticketInstId},#{item.resourceid},#{item.status},#{item.manual},#{item.category}
+			FROM  dual
+		</foreach>
+	</insert>
+
+	<delete id="delResource">
+		DELETE  FROM IDC_HIS_TICKET_RESOURCE
+		WHERE TICKET_INST_ID = #{ticketInstId} AND
+		RESOURCEID = #{resourceId} AND
+		CATEGORY = #{resourceCategory}
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcHisTicketResource" useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_HIS_TICKET_RESOURCE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!--  NetPort 通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByNetPort" resultType="Map">
+		<![CDATA[
+			select * from (
+				select distinct t11.ticket_inst_id,
+								t12.portid,
+								t12.portname as resource_name
+				  from (select t1.*
+						  from IDC_HIS_TICKET_RESOURCE t1
+						 where exists
+						 (select 1
+								  from IDC_HIS_TICKET t2
+								 where t2.ticket_inst_id = t1.ticket_inst_id
+								   and exists (select 1
+										  from idc_re_customer t3
+										 where t3.id = t2.customer_id
+										   and t3.name =#{cusName}))
+						   and t1.category = 200) t11
+				  left join NET_PORT t12
+					on t11.resourceid = t12.portid
+				 order by ticket_inst_id desc)
+			where 1=1
+			]]>
+			<if test="rowNum != null and rowNum != '' "> <![CDATA[ and rownum<#{rowNum}  ]]></if>
+
+	</select>
+
+
+	<!--Rack  通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByRack" resultType="Map">
+		<![CDATA[
+			select * from (
+				select t1.id,
+					   t1.ticket_inst_id,
+					   t1.resourceid,
+					   t1.category,
+					   (case
+						 when t1.category = 100 then
+						  (select r1.name from idc_rack r1 where r1.id = t1.resourceid and r1.isdelete = 0)
+						 else
+						  (select r1.name
+							 from idc_rack r1
+							where r1.isdelete = 0 and r1.id = (select ru.rackid
+											 from idc_rackunit ru
+											where ru.id = t1.resourceid))
+					   end) as resource_name
+				  from IDC_HIS_TICKET_RESOURCE t1
+				 where exists (select 1
+						  from IDC_HIS_TICKET t2
+						 where t2.ticket_inst_id = t1.ticket_inst_id
+						   and exists (select 1
+								  from idc_re_customer t3
+								 where t3.id = t2.customer_id
+								   and t3.name =#{cusName}))
+				   and t1.category in (100, 600))
+			where 1=1
+			]]>
+		<if test="rowNum != null and rowNum != '' "> <![CDATA[ and rownum<#{rowNum}  ]]></if>
+
+	</select>
+
+	<select id="callUpdateTicketResourceAttribute" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_ticket_resource_attr(
+			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+			#{resourceid,jdbcType=INTEGER,mode=IN},
+			#{status,jdbcType=INTEGER,mode=IN},
+			#{category,jdbcType=VARCHAR,mode=IN},
+			#{resourceCategory,jdbcType=VARCHAR,mode=IN},
+			#{rowcount,jdbcType=INTEGER,mode=OUT},
+			#{msg,jdbcType=VARCHAR,mode=OUT},
+			#{remoteResourcestatus,jdbcType=VARCHAR,mode=OUT}
+		) ]]>
+	</select>
+
+	<select id="getResourceById" resultType="Map">
+
+		select t.ticket_inst_id as ticketInstId,
+			t.resourceid,
+			t.status,
+			t.rack_id rackId,
+			t.ip_type as ipType,
+			t.category,
+			t.ticket_category as ticketCategory,
+			t2.customer_id as customerId,
+			t2.customer_name as customerName
+		from idc_his_ticket_resource t, idc_his_ticket t2
+		 where t.ticket_inst_id = t2.ticket_inst_id and t.ticket_inst_id=#{0}
+
+	</select>
+
+	<select id="queryAllResourceByTicketInstId" resultType="Map">
+		select   t.category as resoruceCategory,
+				t.resourceid,
+				t.rack_id,
+				t.rack_or_rackunit,
+				t.ip_type
+		  from idc_his_ticket_resource t
+		 where t.ticket_inst_id=#{ticketInstId} and t.category=#{resourceCategory}
+	</select>
+
+	<delete id="deleteResourceByResourceCategory">
+		delete idc_his_ticket_resource t where t.ticket_inst_id=#{ticketInstId} and t.category=#{resourceCategory}
+	</delete>
+
+	<delete id="deleteMCBResourceByTicket">
+		delete idc_his_ticket_resource t where t.ticket_inst_id=#{0} and t.category=700
+	</delete>
+
+	<select id="getAllByTicketInstId" resultType="Map">
+
+		select * from idc_his_ticket_resource t where t.ticket_inst_id =#{0}
+
+	</select>
+
+	<select id="findMCBByRackTicket" resultType="Map">
+		select t.resourceid
+		  from idc_his_ticket_resource t
+		 where t.category = 700
+		   and t.ticket_inst_id = #{ticketInstId}
+	</select>
+
+	<update id="updateRackUnitFree">
+		update idc_rackunit t
+		   set t.status       = 20,
+			   t.customerid   = null,
+			   t.customername = null,
+			   t.orderid      = null
+		 where t.orderid = #{ticketInstId}
+		   and t.rackid = #{rackId}
+	</update>
+
+	<select id="queryAllByTicketIdAndResourceId" resultType="Map">
+		select t1.ticket_inst_id as ticketInstId,
+			   t1.id as deleteId,
+			   t1.resourceid as resourceId,
+			   t1.category,
+			   t1.ticket_category,
+			   t1.ip_type,
+			   t1.rack_id,
+			   t2.prod_inst_id as prodInstId,
+			   t3.id as customerId,
+			   t3.name as customerName
+		  from Idc_his_Ticket_Resource t1
+		  left join idc_his_ticket t2
+			on t1.ticket_inst_id = t2.ticket_inst_id
+		  left join
+		idc_re_customer t3
+			on t2.customer_id = t3.id
+		 where t1.ticket_Inst_Id=#{ticketInstId} and t1.resourceId=#{resourceId}
+	</select>
+
+	<select id="queryResourceByResource" resultType="Map">
+		select T1.ID,t1.ticket_inst_id  as ticketInstId,
+		t1.resourceid as resourceid,
+		t1.category,
+		t1.ticket_category ticketCategory,
+		t1.ip_type ipType,
+		t1.rack_id rack_Id,
+		t2.prod_inst_id prodInstId,
+		t2.customer_id as customerId,
+		t3.name as customerName
+		from Idc_his_Ticket_Resource t1
+		left join idc_his_ticket t2
+		on t1.ticket_inst_id = t2.ticket_inst_id
+		left join
+		idc_re_customer t3
+		on t2.customer_id = t3.id
+		<where>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and t1.TICKET_INST_ID = #{ticketInstId} ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ and t1.RESOURCEID = #{resourceid} ]]></if>
+			<if test="resourceCategory != null and resourceCategory != '' ">  <![CDATA[ and t1.CATEGORY = #{resourceCategory} ]]></if>
+		</where>
+		order by t1.id
+	</select>
+
+
+	<select id="callResouceAbout" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL process_resource.resource_about(
+			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+			#{delOrGoOn,jdbcType=INTEGER,mode=IN},
+			#{rack_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+			#{rack_unit_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+			#{mbc_currsor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+			#{port_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+			#{ip_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+			#{server_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=com.idc.mapper.IdcHisTicketResourceMapper.resourceStatusMap}
+		) ]]>
+	</select>
+
+ 	<!-- IP 通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByIP" resultType="Map">
+		<![CDATA[
+			select * from (
+				select distinct t11.id,
+					   t11.ticket_inst_id,
+					   t11.resourceid,
+					   t11.category,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.begip from idc_ipsubnet r1 where r1.id = t11.resourceid)
+						 end) as begip,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.endip from idc_ipsubnet r1 where r1.id = t11.resourceid)
+						 end) as endip,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.IPADDRESS from idc_ipinfo r1 where r1.id = t11.resourceid)
+						 end) as ipaddress
+				from (select t1.*
+				  from IDC_HIS_TICKET_RESOURCE t1
+				  where exists (select 1
+						  from IDC_HIS_TICKET t2
+						 where t2.ticket_inst_id = t1.ticket_inst_id
+						   and exists (select 1
+								  from idc_re_customer t3
+								 where t3.id = t2.customer_id
+								   and t3.name =#{cusName}))
+								   and  t1.category=300 ) t11)
+		where 1=1
+			]]>
+		<if test="rowNum != null and rowNum != '' "> <![CDATA[ and rownum<#{rowNum}  ]]></if>
+
+	</select>
+<!--  NetPort 通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByNetPortPage" parameterType="PageBean" resultType="Map">
+		<![CDATA[
+				select distinct t11.ticket_inst_id,
+								t12.portid,
+								t12.portname as resource_name
+				  from (select t1.*
+						  from IDC_HIS_TICKET_RESOURCE t1
+						 where exists
+						 (select 1
+								  from IDC_HIS_TICKET t2
+								 where t2.ticket_inst_id = t1.ticket_inst_id
+								   and exists (select 1
+										  from idc_re_customer t3
+										 where t3.id = t2.customer_id
+										   and t3.name =#{params.cusName}))
+						   and t1.category = 200) t11
+				  left join NET_PORT t12
+					on t11.resourceid = t12.portid
+				 order by ticket_inst_id desc
+			]]>
+
+	</select>
+
+
+	<!--Rack  通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByRackPage" parameterType="PageBean" resultType="Map">
+		<![CDATA[
+				select t1.id,
+					   t1.ticket_inst_id,
+					   t1.resourceid,
+					   t1.category,
+					   (case
+						 when t1.category = 100 then
+						  (select r1.name from idc_rack r1 where r1.id = t1.resourceid and r1.isdelete =0)
+						 else
+						  (select r1.name
+							 from idc_rack r1
+							where r1.isdelete =0 and r1.id = (select ru.rackid
+											 from idc_rackunit ru
+											where ru.id = t1.resourceid))
+					   end) as resource_name
+				  from IDC_HIS_TICKET_RESOURCE t1
+				 where exists (select 1
+						  from IDC_HIS_TICKET t2
+						 where t2.ticket_inst_id = t1.ticket_inst_id
+						   and exists (select 1
+								  from idc_re_customer t3
+								 where t3.id = t2.customer_id
+								   and t3.name =#{params.cusName}))
+				   and t1.category in (100, 600)
+			]]>
+
+		</select>
+
+	<!-- IP 通过客户的名称查询  工单id+资源端口名称-->
+	<select id="queryTicketIdAndResourceNameByIPPage" parameterType="PageBean" resultType="Map">
+		<![CDATA[
+				select distinct t11.id,
+					   t11.ticket_inst_id,
+					   t11.resourceid,
+					   t11.category,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.begip from idc_ipsubnet r1 where r1.id = t11.resourceid)
+						 end) as begip,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.endip from idc_ipsubnet r1 where r1.id = t11.resourceid)
+						 end) as endip,
+					   (case
+						 when t11.ip_type = 'ipaddress' then
+						 (select r1.IPADDRESS from idc_ipinfo r1 where r1.id = t11.resourceid)
+						 end) as ipaddress
+				from (select t1.*
+				  from IDC_HIS_TICKET_RESOURCE t1
+				  where exists (select 1
+						  from IDC_HIS_TICKET t2
+						 where t2.ticket_inst_id = t1.ticket_inst_id
+						   and exists (select 1
+								  from idc_re_customer t3
+								 where t3.id = t2.customer_id
+								   and t3.name =#{params.cusName}))
+								   and  t1.category=300 ) t11
+			]]>
+
+	</select>
+
+
+	<update id="updateResource">
+		   update idc_his_ticket_resource t1 set t1.status=-1
+			  where  not exists
+			  ( select * from Idc_Re_Proddef t2
+				where t1.prod_inst_id = t2.prod_inst_id and t1.ticket_inst_id = t2.ticket_inst_id
+				and t1.CATEGORY =  t2.category　
+			  ) and t1.ticket_Inst_Id=#{0}   <![CDATA[ and t1.CATEGORY <> 700 ]]>
+
+	</update>
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+		<![CDATA[
+		  	ID as id,
+			TICKET_INST_ID as ticketInstId,
+			RESOURCEID as resourceid,
+			STATUS as status,
+			MANUAL as manual,
+			REV as rev,
+			CREATE_TIME as createTime
+	  	]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{ticketInstId} ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ and RESOURCEID = #{resourceid} ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ and MANUAL = #{manual} ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ and REV = #{rev} ]]></if>
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+			<if test="params.ticketInstId != null and params.ticketInstId != '' ">  <![CDATA[ and TICKET_INST_ID = #{params.ticketInstId} ]]></if>
+			<if test="params.resourceid != null and params.resourceid != '' ">  <![CDATA[ and RESOURCEID = #{params.resourceid} ]]></if>
+			<if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+			<if test="params.manual != null and params.manual != '' ">  <![CDATA[ and MANUAL = #{params.manual} ]]></if>
+			<if test="params.rev != null and params.rev != '' ">  <![CDATA[ and REV = #{params.rev} ]]></if>
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[  TICKET_INST_ID = #{ticketInstId } ,]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[  RESOURCEID = #{resourceid } ,]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[  MANUAL = #{manual } ,]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[  REV = #{rev } ,]]></if>
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+			<if test="resourcename != null and resourcename != '' ">  <![CDATA[  RESOURCENAME = #{resourcename } ,]]></if>
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ RESOURCEID , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ MANUAL , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ CREATE_TIME , ]]></if>
+			<if test="resourcename != null and resourcename != '' ">  <![CDATA[ RESOURCENAME , ]]></if>
+		</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+		<trim suffix="" suffixOverrides=",">
+			<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+			<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+			<if test="resourceid != null and resourceid != '' ">  <![CDATA[ #{resourceid } , ]]></if>
+			<if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+			<if test="manual != null and manual != '' ">  <![CDATA[ #{manual } , ]]></if>
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+			<if test="resourcename != null and resourcename != '' ">  <![CDATA[ #{RESOURCENAME } , ]]></if>
+		</trim>
+	</sql>
+
+</mapper>

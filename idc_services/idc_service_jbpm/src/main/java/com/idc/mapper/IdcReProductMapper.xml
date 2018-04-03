@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReProductMapper">
+	<resultMap id="resultIdcReProductMap" type="IdcReProduct">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="APPLYNAME" property="applyname" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="VALIDITY" property="validity" />
+		<result column="IDCNAME" property="idcName" />
+		<result column="BUSNAME" property="busName" />
+		<result column="REV" property="rev" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="IS_ACTIVE" property="isActive" />
+		<result column="PROD_STATUS" property="prodStatus" />
+		<result column="PROD_NAME" property="prodName" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="END_TIME" property="endTime" />
+		<result column="PROD_CATEGORY" property="prodCategory" />
+		<result column="PROCTICKET_STATUS" property="procticketStatus" />
+		<result column="APPLYERNAME" property="applyerName" />
+		<result column="APPLYERNAME" property="applyerName" />
+
+	</resultMap>
+
+	<!-- 嵌套查询 -->
+	<!--<resultMap type="IdcReProduct" id="IdcReProductResultMap">
+		<id column="ID" property="id" />
+		<result column="PROD_CATEGORY" property="prodCategory" />
+		<result column="REV" property="rev" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="CONTRACT_ID" property="contractId" />
+		<result column="IS_ACTIVE" property="isActive" />
+		<result column="PROD_STATUS" property="prodStatus" />
+		<result column="PROD_NAME" property="prodName" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="END_TIME" property="endTime" />
+		<result column="username" property="applyName" />
+		<result column="name" property="customerName" />
+		<association property="idcReRackModel" column="id" javaType="IdcReRackModel" columnPrefix="rack_">
+			<id column="ID" property="id" />
+			<result column="REV" property="rev" />
+			<result column="SPEC" property="spec" />
+			<result column="RACK_NUM" property="rackNum" />
+			<result column="SEAT_NUM" property="seatNum" />
+			<result column="RATED_POWER" property="ratedPower" />
+			<result column="DESC" property="desc" />
+			<result column="CREATE_TIME" property="createTime" />
+		</association>
+		<association property="idcRePortModel" column="id" javaType="IdcRePortModel" columnPrefix="port_">
+			<id column="ID" property="id" />
+			<result column="REV" property="rev" />
+			<result column="PORT_MODE" property="portMode" />
+			<result column="BANDWIDTH" property="bandwidth" />
+			<result column="NUM" property="num" />
+			<result column="DESC" property="desc" />
+			<result column="CREATE_TIME" property="createTime" />
+		</association>
+		&lt;!&ndash; IP出租 &ndash;&gt;
+		<association property="idcReIpModel" column="id" javaType="IdcReIpModel" columnPrefix="ip_">
+			<id column="ID" property="id" />
+			<result column="REV" property="rev" />
+			<result column="PORT_MODE" property="portMode" />
+			<result column="NUM" property="num" />
+			<result column="DESC" property="desc" />
+			<result column="CREATE_TIME" property="createTime" />
+		</association>
+		&lt;!&ndash; 主机租赁 &ndash;&gt;
+		<association property="idcReServerModel" column="id" javaType="IdcReServerModel" columnPrefix="server_">
+			<id column="ID" property="id" />
+			<result column="REV" property="rev" />
+			<result column="TYPE_MODE" property="typeMode" />
+			<result column="BRAND" property="brand" />
+			<result column="CODE" property="code" />
+			<result column="SPEC_NUMBER" property="specNumber" />
+			<result column="RATED_POWER" property="ratedPower" />
+			<result column="NUM" property="num" />
+			<result column="DESC" property="desc" />
+			<result column="CREATE_TIME" property="createTime" />
+		</association>
+		&lt;!&ndash; 增值业务 &ndash;&gt;
+		<association property="idcReNewlyModel" column="id" javaType="IdcReNewlyModel" columnPrefix="newly_">
+			<id column="ID" property="id" />
+			<result column="REV" property="rev" />
+			<result column="NAME" property="name" />
+			<result column="CATEGORY" property="category" />
+			<result column="DESC" property="desc" />
+			<result column="CREATE_TIME" property="createTime" />
+		</association>
+	</resultMap>-->
+	<!-- queryGridFilterListPage:分页过滤相应的节点信息 -->
+	<select id="queryGridFilterListPage" parameterType="PageBean" resultType="IdcReProduct">
+			select
+				t1.ID as id,
+				t1.REV as rev,
+				t1.PROD_INST_ID as prodInstId,
+				t1.IS_ACTIVE as isActive,
+				t1.PROD_STATUS as prodStatus,
+				t1.PROD_NAME as prodName,
+				t1.APPLY_ID as applyId,
+				t1.applyName as applyName,/*申请人名称*/
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime,
+				t1.CUSTOMER_ID as customerId,
+				t1.CUSTOMER_NAME as customerName,/*客户名称*/
+				to_char(t1.END_TIME,'yyyy-MM-dd HH24:mi:ss')  as endTime,
+				t1.PROD_CATEGORY as prodCategory,
+				tmp.categoryLinked,
+				/*获取当前工单ID*/
+				(select count('X') from idc_run_ticket t5 where t5.prod_inst_id = t1.id) isRunTiket,/*是否有正在执行的工单*/
+				t1.PROCTICKET_STATUS as procticketStatus,/*状态*/
+					case when t1.PROCTICKET_STATUS = 10 then '草稿'
+					when t1.PROCTICKET_STATUS = 20 then '预勘/预占流程'
+					when t1.PROCTICKET_STATUS = 21 then '预勘/预占完成'
+					when t1.PROCTICKET_STATUS = 30 then '开通流程'
+					when t1.PROCTICKET_STATUS = 31 then '开通完成'
+					when t1.PROCTICKET_STATUS = 40 then '停机流程'
+					when t1.PROCTICKET_STATUS = 41 then '已经停机'
+					when t1.PROCTICKET_STATUS = 50 then '下线流程'
+					when t1.PROCTICKET_STATUS = 51 then '已经下线'
+					when t1.PROCTICKET_STATUS = 60 then '变更预勘'
+					when t1.PROCTICKET_STATUS = 61 then '变更预勘结束'
+					when t1.PROCTICKET_STATUS = 70 then '变更开通中'
+					when t1.PROCTICKET_STATUS = 71 then '变更开通结束'
+					when t1.PROCTICKET_STATUS = 80 then '复通流程'
+					when t1.PROCTICKET_STATUS = 81 then '复通完成'
+					when t1.PROCTICKET_STATUS = 90 then '测试中'
+					when t1.PROCTICKET_STATUS = 91 then '测试完成'
+					when t1.PROCTICKET_STATUS = 100 then '业务变更中'
+					when t1.PROCTICKET_STATUS = 101 then '业务变更结束'
+					end procticketStatusName
+		from IDC_RE_PRODUCT t1
+				left join (
+					<![CDATA[
+						/*目的根据不同的服务可以弹出相应的服务信息*/
+						select listagg(decode(t4.category,
+							'100','<a href="javascript:void(0)"; onclick="linkCategoryWin(100,'|| T4.PROD_INST_ID ||')">机架机位</a>',
+							'200','<a href="javascript:void(0)"; onclick="linkCategoryWin(200,'|| T4.PROD_INST_ID ||')">端口带宽出租</a>',
+							'300','<a href="javascript:void(0)"; onclick="linkCategoryWin(300,'|| T4.PROD_INST_ID ||')">IP租用</a>',
+							'400','<a href="javascript:void(0)"; onclick="linkCategoryWin(400,'|| T4.PROD_INST_ID ||')">主机租赁</a>',
+							'500','<a href="javascript:void(0)"; onclick="linkCategoryWin(500,'|| T4.PROD_INST_ID ||')">增值业务</a>'
+							),'  ') within group (order by t4.category) as categoryLinked,/*类别情况*/
+							t4.Prod_Inst_Id
+							from IDC_RE_PRODDEF t4 group by t4.prod_inst_id
+					  ]]>
+				)tmp  on tmp.Prod_Inst_Id = t1.id
+				/*资源名称集中*/
+				<where>
+					<!-- 过滤状态情况 -->
+					<if test="params.exclude_pre == 'false'">
+						<if test="params.procticketStatusList != null ">
+							EXISTS
+							<foreach collection="params.procticketStatusList" item="item" index="index" separator="union" close=")" open="(">
+								select  ${item} from dual t
+								where ${item} = t1.PROCTICKET_STATUS
+							</foreach>
+						</if>
+					</if>
+					<if test="params.exclude_pre == 'true'">
+						<![CDATA[ and t1.PROCTICKET_STATUS <> '10' ]]>
+					</if>
+					<if test="params.prodStatus != null and params.prodStatus != '' ">  <![CDATA[ and t1.PROD_STATUS = #{params.prodStatus} ]]></if>
+					<if test="params.prodCategory != null ">  <![CDATA[ and t1.PROD_CATEGORY = #{params.prodCategory}  ]]></if>
+					<if test="params.customerId != null and params.customerId != '' ">  <![CDATA[ and t1.CUSTOMER_ID = #{params.customerId}  ]]></if>
+					<if test="params.applyId != null and params.applyId != '' ">  <![CDATA[ and t1.APPLY_ID = #{params.applyId}  ]]></if>
+
+				</where>
+				order by t1.PROCTICKET_STATUS,t1.PROD_STATUS,t1.CREATE_TIME desc ,t1.CUSTOMER_ID,t1.END_TIME desc
+		</select>
+
+
+	<select id="getFilterModelByProductId" parameterType="Long" resultType="IdcReProduct">
+		select t.id,
+			t.apply_id as applyId,
+			t.applyname as applyName ,
+			t.customer_id as customerId,
+			t.customer_name as customerName,
+			t.validity as validity,
+      		(select x.name from idc_location x where x.code=t.idcname) as idcname,
+			t.busname as busname,
+			t.prod_inst_id as prodInstId,
+			t.is_active as isActive,
+			t.prod_status as prodStatus,
+			t.prod_category as prodCategory,
+			t.APPLYERNAME as applyerName,
+			t.APPLYERROLES as applyerRoles,
+			t.APPLYERPHONE as applyerPhone,
+			t.lscs_start_time as lscsStartTime,
+			t.lscs_end_time as lscsEntTime
+		from idc_re_product t where t.ID = #{0}
+	</select>
+		<select id="getModelByProductId" parameterType="Long" resultType="IdcReProduct">
+			select t.id,
+					t.PROD_INST_ID as prodInstId,
+					t.apply_id as applyId,
+					t.applyname as applyName ,
+					t.customer_id as customerId,
+					t.customer_name as customerName,
+					t.validity as validity,
+					t.idcname as idcname,
+					t.busname as busname,
+					t.prod_inst_id as prodInstId,
+					t.is_active as isActive,
+					t.prod_status as prodStatus,
+					t.prod_category as prodCategory,
+					t.APPLYERNAME as applyerName,
+					t.APPLYERROLES as applyerRoles,
+					t.APPLYERPHONE as applyerPhone
+					from idc_re_product t where t.PROD_INST_ID = #{0}
+		</select>
+	<!-- 附带五类模型实体 -->
+		<!--<select id="getModelWithCatalogModelByProductId" parameterType="Long" resultMap="IdcReProductResultMap">
+			select
+			t1.ID as id,
+			t1.REV as rev,
+			t1.PROD_INST_ID as prodInstId,
+			t1.CONTRACT_ID as contractId,
+			t1.IS_ACTIVE as isActive,
+			t1.PROD_STATUS as prodStatus,
+			t1.PROD_NAME as prodName,
+			t1.APPLY_ID as applyId,
+			t2.username as applyName,/*申请人名称*/
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime,
+			t1.CUSTOMER_ID as customerId,
+			t3.name as customerName,/*客户名称*/
+			to_char(t1.END_TIME,'yyyy-MM-dd HH24:mi:ss')  as endTime,
+			t1.PROD_CATEGORY as prodCategory
+			from IDC_RE_PRODUCT t1
+			left join sys_userinfo t2 on t1.apply_id = t2.id
+			left join idc_re_customer t3 on t1.customer_id = t3.id
+			<where>
+				t1.ID = #{0}
+			</where>
+		</select>-->
+
+
+	<!-- 合体方法mergeInto -->
+
+	<select id="callProcSaveProductArry" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_save_product_arry(
+  			#{itemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.ProductArrayObjectHandler},
+  			#{product_obj_meta_curr_id,jdbcType=INTEGER,mode=OUT},
+  			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{isEXIST,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+		) ]]>
+	</select>
+
+	<select id="getIdcNameByTicketID" resultType="String">
+		select t3.id
+		  from idc_location t3
+		 where t3.code = (select distinct (t2.idcname)
+							   from idc_re_product t2
+							  where t2.prod_inst_id =
+									(select distinct (t1.prod_inst_id)
+									   from idc_his_ticket t1
+									  where t1.ticket_inst_id = #{0}))
+	</select>
+	<!--  【订单业务信息】 -->
+	<select id="callProcSaveProductDefModelArry" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL jbpm_process_back.proc_save_defmodel_arry(
+  			#{prodInstId,jdbcType=INTEGER,mode=IN},
+  			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+  			#{parentTicketInstId,jdbcType=INTEGER,mode=IN},
+  			#{rackIitemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.RackArrayObjectHandler},
+			#{portIitemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.PortArrayObjectHandler},
+			#{ipIitemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.IpArrayObjectHandler},
+			#{serverIitemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.ServerArrayObjectHandler},
+			#{newlyIitemList,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.NewlyArrayObjectHandler},
+  			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{isEXIST,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+		) ]]>
+	</select>
+
+	<!--  【订单业务信息】 -->
+	<select id="copyIdcReProddef" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[  CALL process_resource.copy_idcreproddef(
+  			#{newTicketInstId,jdbcType=INTEGER,mode=IN},
+  			#{oldTicketInstId,jdbcType=INTEGER,mode=IN},
+  			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{isEXIST,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+		) ]]>
+	</select>
+
+	<!-- 合体方法mergeInto -->
+	<insert id="mergeInto" parameterType="IdcReProduct" >
+		merge into IDC_RE_PRODUCT t
+		using (
+			select #{prodName} as prodName from dual
+		) t1 on( t.PROD_NAME = t1.prodName )
+		when not matched then
+		insert
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			 PROD_CATEGORY ,
+			<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			<if test="isActive != null and isActive != '' ">  <![CDATA[ IS_ACTIVE , ]]></if>
+			<if test="prodStatus != null and prodStatus != '' ">  <![CDATA[ PROD_STATUS , ]]></if>
+			<if test="prodName != null and prodName != '' ">  <![CDATA[ PROD_NAME , ]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[ APPLY_ID , ]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLYNAME , ]]></if>
+			<if test="createTime != null ">  <![CDATA[ CREATE_TIME , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME , ]]></if>
+			<if test="endTime != null and endTime != '' ">  <![CDATA[ END_TIME , ]]></if>
+			<if test="validity != null and validity != '' ">  <![CDATA[ VALIDITY , ]]></if>
+			<if test="idcName != null and idcName != '' ">  <![CDATA[ IDCNAME , ]]></if>
+			<if test="busName != null and busName != '' ">  <![CDATA[ BUSNAME , ]]></if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			  #{prodCategory} ,
+			<if test="rev != null and rev != '' ">  <![CDATA[ #{rev ,jdbcType=DECIMAL} , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId ,jdbcType=DECIMAL} , ]]></if>
+			<if test="isActive != null and isActive != '' ">  <![CDATA[ #{isActive ,jdbcType=DECIMAL} , ]]></if>
+			<if test="prodStatus != null and prodStatus != '' ">  <![CDATA[ #{prodStatus ,jdbcType=VARCHAR} , ]]></if>
+			<if test="prodName != null and prodName != '' ">  <![CDATA[ #{prodName} , ]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[ #{applyId ,jdbcType=VARCHAR} , ]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ #{applyName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="createTime != null ">  <![CDATA[ #{createTime ,jdbcType=TIMESTAMP} , ]]></if>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ #{customerId} , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ #{customerName} , ]]></if>
+			<if test="endTime != null and endTime != '' ">  <![CDATA[ #{endTime ,jdbcType=TIMESTAMP} , ]]></if>
+			<if test="validity != null and validity != '' ">  <![CDATA[ #{validity ,jdbcType=VARCHAR} , ]]></if>
+			<if test="idcName != null and idcName != '' ">  <![CDATA[ #{idcName ,jdbcType=VARCHAR} , ]]></if>
+			<if test="busName != null and busName != '' ">  <![CDATA[ #{busName ,jdbcType=VARCHAR} , ]]></if>
+		</trim>
+		when matched then
+		update
+		<set>
+			<![CDATA[  REV = rev+1 ,]]>
+			<if test="customerId != null and customerId != '' ">  <![CDATA[ CUSTOMER_ID = #{customerId} , ]]></if>
+			<if test="customerName != null and customerName != '' ">  <![CDATA[ CUSTOMER_NAME = #{customerName} , ]]></if>
+			<if test="prodCategory != null and prodCategory != '' ">  <![CDATA[ PROD_CATEGORY = #{prodCategory} , ]]></if>
+			<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[  PROD_INST_ID = #{prodInstId ,jdbcType=DECIMAL} ,]]></if>
+			<if test="isActive != null and isActive != '' ">  <![CDATA[  IS_ACTIVE = #{isActive,jdbcType=DECIMAL} ,]]></if>
+			<if test="prodStatus != null and prodStatus != '' ">  <![CDATA[  PROD_STATUS = #{prodStatus ,jdbcType=VARCHAR} ,]]></if>
+			<if test="applyId != null and applyId != '' ">  <![CDATA[  APPLY_ID = #{applyId ,jdbcType=VARCHAR} ,]]></if>
+			<if test="applyName != null and applyName != '' ">  <![CDATA[ APPLYNAME = #{applyName ,jdbcType=VARCHAR}  , ]]></if>
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime ,jdbcType=TIMESTAMP} ,]]></if>
+			<if test="validity != null and validity != '' ">  <![CDATA[  validity = #{validity ,jdbcType=VARCHAR} ,]]></if>
+			<if test="idcName != null and idcName != '' ">  <![CDATA[  idcName = #{idcName ,jdbcType=VARCHAR} ,]]></if>
+			<if test="busName != null and busName != '' ">  <![CDATA[  busName = #{busName ,jdbcType=VARCHAR} ,]]></if>
+		</set>
+		where PROD_NAME= #{prodName,jdbcType=VARCHAR}
+	</insert>
+	<!-- 修改实例ID -->
+	<update id="updateProdInstIdById" parameterType="Long">
+		update IDC_RE_PRODUCT set PROD_INST_ID = id
+		where id = #{0}
+	</update>
+	<!--  查询客户需求  -->
+	<select id="findId" resultType="Long" parameterType="IdcReProduct">
+		select DISTINCT id from IDC_RE_PRODUCT
+		where PROD_NAME = #{prodName}
+		and  CUSTOMER_ID = #{customerId}
+		and  PROD_CATEGORY= #{prodCategory}
+	</select>
+
+
+	<update id="updateRcordByIdWithIsActive">
+		update IDC_RE_PRODUCT set IS_ACTIVE = #{isActive,jdbcType=DECIMAL}
+		where id = #{id}
+	</update>
+
+	<update id="updateProdStatusByProdInstIdAndStatus">
+		update IDC_RE_PRODUCT set PROCTICKET_STATUS = #{procticketStatus}
+		where PROD_INST_ID = #{prodInstId}
+	</update>
+
+	<update id="updateLSCS">
+		update IDC_RE_PRODUCT set lscs_start_time = #{lscsStartTime}, lscs_end_time = #{lscsEntTime}
+		where PROD_INST_ID = #{prodInstId}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="deleteRecordById" parameterType="Long">
+		delete FROM IDC_RE_PRODUCT where id = #{0}
+	</delete>
+	<!-- 通过模型KEY获取模型ID -->
+	<select id="getActModelByKey" parameterType="String" resultType="Map">
+		select
+			  tmp.id_ as modelId,
+			  tmp.editor_source_value_id_ as editorSourceValueId,
+			  tmp.editor_source_extra_value_id_ as editorSourceExtraValueId,
+			  tmp.deployment_id_ as deploymentId
+		from
+		(
+		/*
+		  通过key分组，同时按照最新修改时间倒叙排序
+		*/
+		select
+		 t.id_,t.editor_source_value_id_,t.editor_source_extra_value_id_,t.deployment_id_,rank() over (partition by t.key_ order by t.last_update_time_ desc) orderNum
+		from ACT_RE_MODEL t
+		where t.key_ = #{0}
+		)tmp where tmp.orderNum = 1
+	</select>
+	<!-- 获取模型设计的二进制图片 -->
+	<select id="getActBytesByEditorSourceExtraValueId" parameterType="String" resultType="ActJBPM">
+		select t.bytes_ as bpmBytes,ID_ as id, DEPLOYMENT_ID_ as deployId from act_ge_bytearray t where t.id_ = #{0}
+	</select>
+
+	<select id="getCreateTicketModelByProdId"  resultType="CreateTicketModel">
+		select
+			t.id as prodInstId,
+			t.prod_category as prodCategory,
+			t.busname as busname,
+			null as parentTicketId,
+			#{ticketCategoryFrom} as ticketCategoryFrom,
+			#{ticketCategoryTo} as ticketCategoryTo,
+			t.customer_id as customerId,
+			c.name as customerName,
+			case when c.attribute = '1' then '军队'
+			  when c.attribute = '2' then '政府机关'
+			  when c.attribute = '3' then '事业单位'
+			  when c.attribute = '4' then '企业'
+			  when c.attribute = '5' then '个人'
+			  when c.attribute = '6' then '社会团体'
+			  when c.attribute = '999' then '其他'
+			  end attributeName,
+			c.contact_mobile as contactMobile,
+			(select distinct tmp.processdefinitonkey from idc_jbpm_tasknode tmp where tmp.ticket_category=#{ticketCategoryFrom} and tmp.prod_category=#{prodCategory}) processdefinitonkeyFrom,
+			  (select distinct tmp.processdefinitonkey from idc_jbpm_tasknode tmp where tmp.ticket_category=#{ticketCategoryTo} and tmp.prod_category=#{prodCategory}) processdefinitonkeyTo,
+			  (select  tmp.form_key from idc_jbpm_tasknode tmp where tmp.ticket_category=#{ticketCategoryFrom} and tmp.prod_category=#{prodCategory} and tmp.form_key like '%comment_form') formKeyFrom,
+			  (select  tmp.form_key from idc_jbpm_tasknode tmp where tmp.ticket_category=#{ticketCategoryTo} and tmp.prod_category=#{prodCategory} and tmp.jbpm_step =1 ) formKeyTo,
+			  case when #{ticketCategoryTo} = '100' then 20
+				   when #{ticketCategoryTo} = '200' then 30
+				   when #{ticketCategoryTo} = '900' then 100
+				   when #{ticketCategoryTo} = '700' then 70
+				   when #{ticketCategoryTo} = '400' then 40
+				   when #{ticketCategoryTo} = '600' then 50
+				   when #{ticketCategoryTo} = '300' then 60
+				   when #{ticketCategoryTo} = '500' then 80
+				   when #{ticketCategoryTo} = '800' then 90
+			  end procticketStatus
+			from idc_re_product t
+			left join idc_re_customer c on t.customer_id = c.id  where t.id = #{prodInstId}
+	</select>
+
+
+	<select id="getProductCategoryByProdInstId"  resultType="ProductCategory">
+		 select prod_inst_id as prodInstId,nvl(RACK,0) rack,nvl(PORT,0) port,nvl(IP,0) ip,nvl(SERVER,0) server,nvl("add",0) "add" from (
+			 select prod_inst_id,
+					category,
+					case when category = '100' then '1'
+					   when category = '200' then '1'
+					   when category = '300' then '1'
+					   when category = '400' then '1'
+					   when category = '500' then '1'
+					end categoryName
+				 from idc_re_proddef  where prod_inst_id = #{prodInstId} and ticket_inst_id = #{ticketInstId}
+			)pivot(
+				 max(categoryName) for category in ('100' as rack,
+							'200' AS port,
+							'300' AS ip,
+							'400' AS server,
+							'500' AS "add"
+							)
+			)
+	</select>
+
+	<!--修改模型表的部署ID-->
+	<update id="updateActModelDeployIdByModelId">
+		UPDATE ACT_RE_MODEL SET DEPLOYMENT_ID_ = #{deploymentId}
+		where ID_ = #{modelId}
+	</update>
+	<!--修改图形表的部署ID-->
+	<update id="updateActByteArrayDeployIdByByteId">
+		UPDATE ACT_GE_BYTEARRAY SET DEPLOYMENT_ID_ = #{deploymentId}
+		where ID_ = #{bytearrayId}
+	</update>
+
+	<update id="updateActByteArrayDeployIdByImageId">
+		UPDATE ACT_GE_BYTEARRAY SET DEPLOYMENT_ID_ = #{deploymentId}
+		where ID_ = #{bytearrayId}
+	</update>
+	<!-- 根据模型流程图  修改成部署流程图 -->
+	<update id="updateActByteArrayBytesById">
+		UPDATE ACT_GE_BYTEARRAY SET
+		   BYTES_ = (
+			   SELECT t1.BYTES_ FROM ACT_GE_BYTEARRAY t1
+			   WHERE t1.DEPLOYMENT_ID_ = #{deploymentId}
+			   and t1.id_=#{editorSourceExtraValueId}
+		   )
+			where DEPLOYMENT_ID_ = #{deploymentId}
+		and NAME_ = #{imageName}
+	</update>
+
+
+</mapper>

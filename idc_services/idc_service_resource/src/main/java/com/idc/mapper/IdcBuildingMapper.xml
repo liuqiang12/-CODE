@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcBuildingMapper">
+  <!-- 返回类型 -->
+  <resultMap id="resultIdcBuildingMap" type="IdcBuilding">
+    <!-- 数据库属性和实体类属性对应关系 -->
+
+    <result column="TOTALBANDWIDTH" property="totalbandwidth" />
+
+    <result column="ID" property="id" />
+
+    <result column="NAME" property="name" />
+
+    <result column="CODE" property="code" />
+
+    <result column="LOCATIONID" property="locationid" />
+
+    <result column="CONTACTTEL" property="contacttel" />
+
+    <result column="CONTACTFAX" property="contactfax" />
+
+    <result column="FLOORNUMBER" property="floornumber" />
+
+    <result column="REMARK" property="remark" />
+
+    <result column="SEISMICGRADE" property="seismicgrade" />
+
+    <result column="RATEDCAPACITY" property="ratedcapacity" />
+
+    <result column="GATEWAYIP" property="gatewayip"/>
+
+    <result column="RACKCOUNT" property="rackcount"/>
+
+    <result column="RACKSPARE" property="rackspare"/>
+
+    <result column="RACKUSAGE" property="rackusage"/>
+
+    <result column="ISDELETE" property="isdelete"/>
+
+  </resultMap>
+
+  <!-- 通过主键查询记录 -->
+  <select id="getModelById" resultType="IdcBuilding">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING where ID= #{0} and isdelete = 0
+  </select>
+
+  <!-- map对应的key和实体类中的属性一致 -->
+  <select id="getModelByMap" resultType="IdcBuilding"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 通过实体类查询记录 -->
+  <select id="getModelByObject" resultType="IdcBuilding">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询所有记录 -->
+  <select id="queryList" resultType="IdcBuilding">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING where isdelete = 0
+  </select>
+
+  <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+  <select id="queryListByMap" resultType="IdcBuilding"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询记录:通过实体类查询多条记录 -->
+  <select id="queryListByObject" resultType="IdcBuilding">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="queryListPage" parameterType="PageBean" resultType="IdcBuilding">
+    select
+    <include refid="baseColumn" />
+    from IDC_BUILDING
+    <include refid="wherePageParam" />
+  </select>
+
+  <!-- update -->
+  <update id="updateByObject" parameterType="IdcBuilding">
+    update IDC_BUILDING
+    <include refid="updateParam" />
+    where id=#{id}
+  </update>
+
+  <update id="updateByMap" parameterType="Map">
+    update IDC_BUILDING
+    <include refid="updateParam" />
+    <include refid="whereParam" />
+  </update>
+
+  <!-- 慎用此方法 -->
+  <delete id="deleteAll">
+    delete from IDC_BUILDING where isdelete = 0
+  </delete>
+
+
+  <delete id="deleteById">
+    delete from IDC_BUILDING where ID= #{0} and isdelete = 0
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByObject" parameterType="IdcBuilding">
+    delete from IDC_BUILDING
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByMap" parameterType="Map">
+    delete from IDC_BUILDING
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByList" parameterType="java.util.List">
+    delete from IDC_BUILDING where isdelete = 0 and ID in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- insert保存方法 -->
+  <insert id="insert" parameterType="IdcBuilding"
+          useGeneratedKeys="true" keyProperty="ID">
+    <selectKey keyProperty="id" resultType="Integer" order="BEFORE">
+      　　SELECT idc_building_seq.nextval FROM DUAL
+    </selectKey>
+    INSERT INTO IDC_BUILDING
+    (id,
+    <include refid="insertColumn" />
+    ) VALUES
+    (#{id,jdbcType=INTEGER},
+    <include refid="insertColumnParam" />
+    )
+  </insert>
+
+  <!-- 批量保存 -->
+  <insert id="insertList" parameterType="java.util.List">
+    INSERT INTO IDC_BUILDING (
+    <include refid="batchInsertColumn" />
+    )
+    select idc_building_seq.nextval,sol.* from (
+    <foreach collection="list" item="item" index="index" separator="union all">
+      select
+      <include refid="batchInsertColumnParam"/>
+      from dual
+    </foreach>
+    ) sol
+  </insert>
+
+
+
+  <!-- sql基本映射 -->
+  <sql id="baseColumn">
+    <![CDATA[
+		  	TOTALBANDWIDTH as totalbandwidth,
+			ID as id,
+			NAME as name,
+			CODE as code,
+			LOCATIONID as locationid,
+			CONTACTTEL as contacttel,
+			CONTACTFAX as contactfax,
+			FLOORNUMBER as floornumber,
+			REMARK as remark,
+			SEISMICGRADE as seismicgrade,
+			RATEDCAPACITY as ratedcapacity,
+			GATEWAYIP as gatewayip,
+			RACKCOUNT as rackcount,
+			RACKSPARE as rackspare,
+			RACKUSAGE as rackusage,
+			ISDELETE as isdelete
+	  ]]>
+  </sql>
+  <sql id="whereParam">
+    <where>
+
+      isdelete = 0
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{totalbandwidth} ]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+      <if test="locationid != null and locationid != '' ">  <![CDATA[ and LOCATIONID = #{locationid} ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ and CONTACTTEL = #{contacttel} ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ and CONTACTFAX = #{contactfax} ]]></if>
+
+      <if test="floornumber != null and floornumber != '' ">  <![CDATA[ and FLOORNUMBER = #{floornumber} ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ and REMARK = #{remark} ]]></if>
+
+      <if test="seismicgrade != null and seismicgrade != '' ">  <![CDATA[ and SEISMICGRADE = #{seismicgrade} ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ and RATEDCAPACITY = #{ratedcapacity} ]]></if>
+
+        <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ and GATEWAYIP = #{gatewayip} ]]></if>
+
+        <if test="rackcount != null and rackcount != '' ">  <![CDATA[ and RACKCOUNT = #{rackcount} ]]></if>
+
+        <if test="rackspare != null and rackspare != '' ">  <![CDATA[ and RACKSPARE = #{rackspare} ]]></if>
+
+        <if test="rackusage != null and rackusage != '' ">  <![CDATA[ and RACKUSAGE = #{rackusage} ]]></if>
+
+    </where>
+  </sql>
+  <sql id="wherePageParam">
+    <where>
+
+      isdelete = 0
+
+      <if test="params.totalbandwidth != null and params.totalbandwidth != '' ">  <![CDATA[ and TOTALBANDWIDTH = #{params.totalbandwidth} ]]></if>
+
+      <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+      <if test="params.name != null and params.name != '' ">  <![CDATA[ and NAME = #{params.name} ]]></if>
+
+      <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+      <if test="params.locationid != null and params.locationid != '' ">  <![CDATA[ and LOCATIONID = #{params.locationid} ]]></if>
+
+      <if test="params.contacttel != null and params.contacttel != '' ">  <![CDATA[ and CONTACTTEL = #{params.contacttel} ]]></if>
+
+      <if test="params.contactfax != null and params.contactfax != '' ">  <![CDATA[ and CONTACTFAX = #{params.contactfax} ]]></if>
+
+      <if test="params.floornumber != null and params.floornumber != '' ">  <![CDATA[ and FLOORNUMBER = #{params.floornumber} ]]></if>
+
+      <if test="params.remark != null and params.remark != '' ">  <![CDATA[ and REMARK = #{params.remark} ]]></if>
+
+      <if test="params.seismicgrade != null and params.seismicgrade != '' ">  <![CDATA[ and SEISMICGRADE = #{params.seismicgrade} ]]></if>
+
+      <if test="params.ratedcapacity != null and params.ratedcapacity != '' ">  <![CDATA[ and RATEDCAPACITY = #{params.ratedcapacity} ]]></if>
+
+        <if test="params.gatewayip != null and params.gatewayip != '' ">
+            <![CDATA[ and GATEWAYIP = #{params.gatewayip} ]]></if>
+
+        <if test="params.rackcount != null and params.rackcount != '' ">
+            <![CDATA[ and RACKCOUNT = #{params.rackcount} ]]></if>
+
+        <if test="params.rackspare != null and params.rackspare != '' ">
+            <![CDATA[ and RACKSPARE = #{params.rackspare} ]]></if>
+
+        <if test="params.rackusage != null and params.rackusage != '' ">
+            <![CDATA[ and RACKUSAGE = #{params.rackusage} ]]></if>
+
+    </where>
+  </sql>
+
+  <!-- update sql -->
+  <sql id="updateParam">
+    <set>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[  TOTALBANDWIDTH = #{totalbandwidth } ,]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+      <if test="locationid != null and locationid != '' ">  <![CDATA[  LOCATIONID = #{locationid } ,]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[  CONTACTTEL = #{contacttel } ,]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[  CONTACTFAX = #{contactfax } ,]]></if>
+
+      <if test="floornumber != null and floornumber != '' ">  <![CDATA[  FLOORNUMBER = #{floornumber } ,]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[  REMARK = #{remark } ,]]></if>
+
+      <if test="seismicgrade != null and seismicgrade != '' ">  <![CDATA[  SEISMICGRADE = #{seismicgrade } ,]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[  RATEDCAPACITY = #{ratedcapacity } ,]]></if>
+
+      <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[  GATEWAYIP = #{gatewayip } ,]]></if>
+
+      <if test="rackcount != null and rackcount != '' ">  <![CDATA[  RACKCOUNT = #{rackcount } ,]]></if>
+
+      <if test="rackspare != null and rackspare != '' ">  <![CDATA[  RACKSPARE = #{rackspare } ,]]></if>
+
+      <if test="rackusage != null and rackusage != '' ">  <![CDATA[  RACKUSAGE = #{rackusage } ,]]></if>
+
+      <if test="isdelete != null or isdelete == '0' ">  <![CDATA[  ISDELETE = #{isdelete } ,]]></if>
+
+    </set>
+  </sql>
+
+  <!-- insert sql -->
+  <sql id="insertColumn">
+    <trim suffix="" suffixOverrides=",">
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>-->
+
+      <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+      <if test="locationid != null and locationid != '' ">  <![CDATA[ LOCATIONID , ]]></if>
+
+      <if test="seismicgrade != null and seismicgrade != '' ">  <![CDATA[ SEISMICGRADE , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ TOTALBANDWIDTH , ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ CONTACTTEL , ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ CONTACTFAX , ]]></if>
+
+      <if test="floornumber != null and floornumber != '' ">  <![CDATA[ FLOORNUMBER , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ RATEDCAPACITY , ]]></if>
+
+        <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ GATEWAYIP , ]]></if>
+
+        <if test="rackcount != null and rackcount != '' ">  <![CDATA[ RACKCOUNT , ]]></if>
+
+        <if test="rackspare != null and rackspare != '' ">  <![CDATA[ RACKSPARE , ]]></if>
+
+        <if test="rackusage != null and rackusage != '' ">  <![CDATA[ RACKUSAGE , ]]></if>
+    </trim>
+  </sql>
+
+  <sql id="insertColumnParam">
+    <trim suffix="" suffixOverrides=",">
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+      <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+      <if test="locationid != null and locationid != '' ">  <![CDATA[ #{locationid } , ]]></if>
+
+      <if test="seismicgrade != null and seismicgrade != '' ">  <![CDATA[ #{seismicgrade } , ]]></if>
+
+      <if test="totalbandwidth != null and totalbandwidth != '' ">  <![CDATA[ #{totalbandwidth } , ]]></if>
+
+      <if test="contacttel != null and contacttel != '' ">  <![CDATA[ #{contacttel } , ]]></if>
+
+      <if test="contactfax != null and contactfax != '' ">  <![CDATA[ #{contactfax } , ]]></if>
+
+      <if test="floornumber != null and floornumber != '' ">  <![CDATA[ #{floornumber } , ]]></if>
+
+      <if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+
+      <if test="ratedcapacity != null and ratedcapacity != '' ">  <![CDATA[ #{ratedcapacity } , ]]></if>
+
+        <if test="gatewayip != null and gatewayip != '' ">  <![CDATA[ #{gatewayip } , ]]></if>
+
+        <if test="rackcount != null and rackcount != '' ">  <![CDATA[ #{rackcount } , ]]></if>
+
+        <if test="rackspare != null and rackspare != '' ">  <![CDATA[ #{rackspare } , ]]></if>
+
+        <if test="rackusage != null and rackusage != '' ">  <![CDATA[ #{rackusage } , ]]></if>
+    </trim>
+  </sql>
+
+  <!-- 批量保存 -->
+  <sql id="batchInsertColumn">
+      ID,NAME,CODE,LOCATIONID,SEISMICGRADE,TOTALBANDWIDTH,CONTACTTEL,CONTACTFAX,FLOORNUMBER,REMARK,RATEDCAPACITY,GATEWAYIP,RACKCOUNT,RACKSPARE,RACKUSAGE
+  </sql>
+
+  <sql id="batchInsertColumnParam">
+      #{item.name},#{item.code},#{item.locationid},#{item.seismicgrade},#{item.totalbandwidth},#{item.CONTACTTEL},#{item.CONTACTFAX},
+      #{item.FLOORNUMBER},#{item.REMARK},#{item.RATEDCAPACITY},#{item.GATEWAYIP},#{item.RACKCOUNT},#{item.RACKSPARE},#{item.RACKUSAGE}
+  </sql>
+
+  <sql id="Base_Column_List" >
+    A.ID, A.NAME, A.CODE, A.LOCATIONID, A.CONTACTTEL, A.CONTACTFAX, A.FLOORNUMBER, A.REMARK, A.SEISMICGRADE,
+      A.RATEDCAPACITY, A.TOTALBANDWIDTH,A.GATEWAYIP,A.RACKCOUNT,A.RACKSPARE,A.RACKUSAGE,B.NAME AS BNAME,B.CODE AS
+      BCODE,B.ID AS BID
+  </sql>
+
+  <select id="getAllIdcBuildingInfo" resultType="map">
+    select
+    <include refid="Base_Column_List" />
+    from IDC_BUILDING A
+    LEFT JOIN IDC_LOCATION B ON A.LOCATIONID = B.ID where A.isdelete = 0
+  </select>
+
+  <!-- 分页查询 -->
+  <select id="queryBuildingInfoListPage" parameterType="PageBean" resultType="map">
+    select
+    <include refid="Base_Column_List" />
+    from IDC_BUILDING A
+    LEFT JOIN IDC_LOCATION B ON  A.LOCATIONID = B.ID
+    <include refid="whereJoinParam" />
+      order by A.name
+  </select>
+
+  <select id="queryAllBuildingInfoList" resultType="map">
+    select
+    <include refid="Base_Column_List" />
+    from IDC_BUILDING A
+    LEFT JOIN IDC_LOCATION B ON A.LOCATIONID = B.ID where A.isdelete = 0
+      order by A.name
+  </select>
+
+  <select id="getMapModelById" resultType="map">
+    select
+    <include refid="Base_Column_List" />
+    from IDC_BUILDING A
+    LEFT JOIN IDC_LOCATION B ON  A.LOCATIONID = B.ID
+    where A.ID = #{0} and A.isdelete = 0
+  </select>
+
+  <sql id="whereJoinParam">
+    <where>
+      A.isdelete = 0
+        <if test="params.name!=null and params.name!=''">
+            <![CDATA[ and upper(A.name) like  '%'||upper(#{params.name})||'%' ]]></if>
+    </where>
+  </sql>
+
+    <!-- 资源报表  获取各个机楼中机架的各种统计数据 -->
+    <select id="queryResourceReportInfo" parameterType="Map" resultType="Map">
+        select * from rack_statistics_info
+        <where>
+            <if test="locationIds!=null">
+                and locationid in
+                <foreach collection="locationIds" index="index" item="item" open="("
+                         separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+            <if test="buildingIds!=null">
+                and buildingid in
+                <foreach collection="buildingIds" index="index" item="item" open="("
+                         separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+            <if test="roomIds!=null">
+                and roomid in
+                <foreach collection="roomIds" index="index" item="item" open="("
+                         separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getRoomByIds" resultType="map">
+        SELECT build.id as buildid,count(room.id) as roomcount from IDC_BUILDING build
+      INNER JOIN ZB_MACHINEROOM room on build.ID=ROOM.BUILDINGID where build.isdelete = 0 and room.isdelete = 0
+       and build.locationid in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item.locationid}
+        </foreach>
+        GROUP BY build.id
+    </select>
+
+    <!-- 通过数据中心IDs获取所有机楼 -->
+    <select id="queryListByLocationIdList" parameterType="java.util.List" resultType="IdcBuilding">
+        select
+        <include refid="baseColumn"/>
+        from IDC_BUILDING
+        <where>
+          isdelete = 0
+            <if test="list!=null">
+                and LOCATIONID in
+                <foreach collection="list" index="index" item="item" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+  <!-- 根据机楼ID获取各个机楼的机房数量 -->
+  <select id="getRoomNumByIds" parameterType="java.util.List" resultType="Map">
+    SELECT build.id as buildid,build.name as buildname,count(room.id) as roomcount from IDC_BUILDING build
+    left JOIN ZB_MACHINEROOM room on build.ID=ROOM.BUILDINGID
+    where build.isdelete = 0 and room.isdelete = 0 and build.id in
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    GROUP BY build.id,build.name
+  </select>
+
+  <!--删除机楼  对机楼进行软删除-->
+  <update id="updateBuildingToInvalidByIds" parameterType="java.util.List">
+    update IDC_BUILDING set isdelete = 1 where isdelete = 0 and id IN
+    <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </update>
+
+  <!-- 查询满足条件的机楼信息   包括已删除的数据 -->
+  <select id="getBuildingModelByMap" parameterType="Map" resultType="IdcBuilding">
+    SELECT
+    <include refid="baseColumn"/>
+    from IDC_BUILDING
+    <where>
+      <if test="name != null and name != '' ">
+        <![CDATA[ and name = #{name} ]]>
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,20 @@
+/*
+	菜单情况
+*/
+$(function(){
+	$("div.menuheader:not(.expanded)").siblings("ul.categoryitems").hide();
+	/* 增加点击事件 */
+	$("div.menuheader").bind("click",function(){
+		//关闭其他节点
+		$(this).parents("li.arrowlistmenuLI").siblings("li.arrowlistmenuLI").children("div.menuheader").removeClass("expanded"); 
+		//关闭其余所有的ul.categoryitems
+		$(this).parents("li.arrowlistmenuLI").siblings("li.arrowlistmenuLI").children("ul.categoryitems").hide("200");
+		if($(this).hasClass("expanded")){
+			$(this).siblings("ul.categoryitems").hide(200); 
+		}else{
+			$(this).siblings("ul.categoryitems").show();  
+		}
+		//改变样式
+		$(this).toggleClass("expanded");
+	});  
+});

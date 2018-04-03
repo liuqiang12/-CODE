@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 目前针对mysql -->
+<codeMapper>
+	<!-- 查询所有的表信息 -->
+	<sql id="queryTablesAll">
+		 <![CDATA[ 
+		 	select
+				t1.TABLE_NAME as tableName,
+				t1.TABLE_COMMENT as
+				tableComment,
+				case when t1.AUTO_INCREMENT > 0 then 1 else 0 end as
+				autoIncrement,
+				case when t1.TABLE_COMMENT is null or t1.TABLE_COMMENT =
+					'' then
+					t1.TABLE_NAME
+				ELSE
+					CONCAT(t1.TABLE_NAME,':',t1.TABLE_COMMENT)
+				end tableAlias
+			from information_schema.`TABLES` t1
+			where TABLE_SCHEMA = #{ table_schema } and	TABLE_TYPE='BASE TABLE'
+		  ]]>
+	</sql>
+	<!-- 获取单张表信息 -->
+	<sql id="queryTable">
+		 <![CDATA[ 
+		 	select
+				t1.TABLE_NAME as tableName,
+				t1.TABLE_COMMENT as
+				tableComment,
+				case when t1.AUTO_INCREMENT > 0 then 1 else 0 end as
+				autoIncrement,
+				case when t1.TABLE_COMMENT is null or t1.TABLE_COMMENT =
+					'' then
+					t1.TABLE_NAME
+				ELSE
+					CONCAT(t1.TABLE_NAME,':',t1.TABLE_COMMENT)
+				end tableAlias
+			from information_schema.`TABLES` t1
+			where TABLE_SCHEMA = #{ table_schema } and	TABLE_TYPE='BASE TABLE'
+			and t1.TABLE_NAME = #{   tableName   }
+		  ]]>
+	</sql>
+	<!-- 模糊查询表信息-->
+	<sql id="queryFuzzyTable">
+		 <![CDATA[ 
+		 	select
+				t1.TABLE_NAME as tableName,
+				t1.TABLE_COMMENT as
+				tableComment,
+				case when t1.AUTO_INCREMENT > 0 then 1 else 0 end as
+				autoIncrement,
+				case when t1.TABLE_COMMENT is null or t1.TABLE_COMMENT =
+					'' then
+					t1.TABLE_NAME
+				ELSE
+					CONCAT(t1.TABLE_NAME,':',t1.TABLE_COMMENT)
+				end tableAlias
+			from information_schema.`TABLES` t1
+			where TABLE_SCHEMA = #{ table_schema } and	TABLE_TYPE='BASE TABLE'
+			and t1.TABLE_NAME like CONCAT('%',#{   params   },'%')
+		  ]]>
+	</sql>
+	<!-- 获取某表的列信息 -->
+	<sql id="queryColumnWithTable">
+		 <![CDATA[ 
+		 	SELECT 
+				t.TABLE_NAME as belong_to_table,
+				t.COLUMN_NAME as columnName,
+				t.ORDINAL_POSITION as ordinalPosition,
+				t.COLUMN_DEFAULT as columnDefault,
+				t.IS_NULLABLE as nullable,
+				t.DATA_TYPE as dataType,
+				t.NUMERIC_PRECISION as `precision`,
+				t.NUMERIC_SCALE as scale,
+				t.COLUMN_TYPE as columnType,
+				t.COLUMN_KEY as columnKey,
+				t.COLUMN_COMMENT as columnComment ,
+				t.CHARACTER_MAXIMUM_LENGTH as charmaxLength
+			FROM
+				information_schema.COLUMNS t
+			WHERE
+			 	table_schema = #{ table_schema }
+			AND	table_name = #{tableName }
+		  ]]>
+	</sql>
+	
+	<!-- 获取关联表信息-->
+	<sql id="queryRefTables">
+		 <![CDATA[ 
+		 	select
+					t.TABLE_NAME as tableName,
+					t.COLUMN_NAME as columnName,
+					t.REFERENCED_TABLE_NAME as refTableName,
+					t.REFERENCED_COLUMN_NAME as refColName   
+			from  
+			    information_schema.key_column_usage  t
+			where  
+			    table_schema= #{ table_schema } and  
+			  TABLE_NAME = #{tableName } and
+			    referenced_table_name is not null
+		  ]]>
+	</sql>
+	
+	
+</codeMapper>

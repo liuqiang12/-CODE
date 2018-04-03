@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.CostAnalysisRackMapper">
+  <resultMap id="BaseResultMap" type="com.idc.model.CostAnalysisRack">
+    <id column="COST_ANALYSIS_RACK_ID" jdbcType="VARCHAR" property="costAnalysisRackId" />
+    <result column="COST_RACK_ID" jdbcType="VARCHAR" property="costRackId" />
+    <result column="COST_MAINTENANCE" jdbcType="DECIMAL" property="costMaintenance" />
+    <result column="COST_REPAIR" jdbcType="DECIMAL" property="costRepair" />
+    <result column="COST_RACK_POWER_FEE" jdbcType="DECIMAL" property="costRackPowerFee" />
+    <result column="COST_WORK" jdbcType="DECIMAL" property="costWork" />
+    <result column="COST_WATER_RATE" jdbcType="DECIMAL" property="costWaterRate" />
+    <result column="COST_MARKETTING" jdbcType="DECIMAL" property="costMarketting" />
+    <result column="COST_OTHER" jdbcType="DECIMAL" property="costOther" />
+    <result column="COST_COLLIGATE" jdbcType="DECIMAL" property="costColligate" />
+    <result column="COST_YEAR" jdbcType="VARCHAR" property="costYear" />
+    <result column="COST_START_TIME" jdbcType="DATE" property="costStartTime" />
+    <result column="COST_END_TIME" jdbcType="DATE" property="costEndTime" />
+    <result column="COST_CREATE_TIME" jdbcType="DATE" property="costCreateTime" />
+    <result column="BANDWIDTH_INCOME" jdbcType="DECIMAL" property="bandwidthIncome" />
+    <result column="SOLD_INCOME_FEE" jdbcType="DECIMAL" property="soldIncomeFee" />
+    <result column="COST_BANDWIDTH" jdbcType="DECIMAL" property="costBandwidth" />
+    <result column="COST_ROCK_INCOME" jdbcType="DECIMAL" property="costRockIncome" />
+    <result column="SOLD_ROCK_FEE" jdbcType="DECIMAL" property="soldRockFee" />
+    <result column="AVG_DEPRECIATION_YEAR" jdbcType="DECIMAL" property="avgDepreciationYear" />
+    <result column="COST_PROFIT_RATE" jdbcType="DECIMAL" property="costProfitRate" />
+    <result column="COST_CREATE_USER" jdbcType="VARCHAR" property="costCreateUser" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    COST_ANALYSIS_RACK_ID, COST_RACK_ID, COST_MAINTENANCE, COST_REPAIR, COST_RACK_POWER_FEE, 
+    COST_WORK, COST_WATER_RATE, COST_MARKETTING, COST_OTHER, COST_COLLIGATE, COST_YEAR, 
+    COST_START_TIME, COST_END_TIME, COST_CREATE_TIME, BANDWIDTH_INCOME, SOLD_INCOME_FEE, 
+    COST_BANDWIDTH, COST_ROCK_INCOME, SOLD_ROCK_FEE, AVG_DEPRECIATION_YEAR, COST_PROFIT_RATE, 
+    COST_CREATE_USER
+  </sql>
+  <select id="selectByExample" parameterType="com.idc.model.CostAnalysisRackExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from COST_ANALYSIS_RACK
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from COST_ANALYSIS_RACK
+    where COST_ANALYSIS_RACK_ID = #{costAnalysisRackId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from COST_ANALYSIS_RACK
+    where COST_ANALYSIS_RACK_ID = #{costAnalysisRackId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.idc.model.CostAnalysisRackExample">
+    delete from COST_ANALYSIS_RACK
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.idc.model.CostAnalysisRack">
+    insert into COST_ANALYSIS_RACK (COST_ANALYSIS_RACK_ID, COST_RACK_ID, COST_MAINTENANCE, 
+      COST_REPAIR, COST_RACK_POWER_FEE, COST_WORK, 
+      COST_WATER_RATE, COST_MARKETTING, COST_OTHER, 
+      COST_COLLIGATE, COST_YEAR, COST_START_TIME, 
+      COST_END_TIME, COST_CREATE_TIME, BANDWIDTH_INCOME, 
+      SOLD_INCOME_FEE, COST_BANDWIDTH, COST_ROCK_INCOME, 
+      SOLD_ROCK_FEE, AVG_DEPRECIATION_YEAR, COST_PROFIT_RATE, 
+      COST_CREATE_USER)
+    values (#{costAnalysisRackId,jdbcType=VARCHAR}, #{costRackId,jdbcType=VARCHAR}, #{costMaintenance,jdbcType=DECIMAL}, 
+      #{costRepair,jdbcType=DECIMAL}, #{costRackPowerFee,jdbcType=DECIMAL}, #{costWork,jdbcType=DECIMAL}, 
+      #{costWaterRate,jdbcType=DECIMAL}, #{costMarketting,jdbcType=DECIMAL}, #{costOther,jdbcType=DECIMAL}, 
+      #{costColligate,jdbcType=DECIMAL}, #{costYear,jdbcType=VARCHAR}, #{costStartTime,jdbcType=DATE}, 
+      #{costEndTime,jdbcType=DATE}, #{costCreateTime,jdbcType=DATE}, #{bandwidthIncome,jdbcType=DECIMAL}, 
+      #{soldIncomeFee,jdbcType=DECIMAL}, #{costBandwidth,jdbcType=DECIMAL}, #{costRockIncome,jdbcType=DECIMAL}, 
+      #{soldRockFee,jdbcType=DECIMAL}, #{avgDepreciationYear,jdbcType=DECIMAL}, #{costProfitRate,jdbcType=DECIMAL}, 
+      #{costCreateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.idc.model.CostAnalysisRack">
+    insert into COST_ANALYSIS_RACK
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="costAnalysisRackId != null">
+        COST_ANALYSIS_RACK_ID,
+      </if>
+      <if test="costRackId != null">
+        COST_RACK_ID,
+      </if>
+      <if test="costMaintenance != null">
+        COST_MAINTENANCE,
+      </if>
+      <if test="costRepair != null">
+        COST_REPAIR,
+      </if>
+      <if test="costRackPowerFee != null">
+        COST_RACK_POWER_FEE,
+      </if>
+      <if test="costWork != null">
+        COST_WORK,
+      </if>
+      <if test="costWaterRate != null">
+        COST_WATER_RATE,
+      </if>
+      <if test="costMarketting != null">
+        COST_MARKETTING,
+      </if>
+      <if test="costOther != null">
+        COST_OTHER,
+      </if>
+      <if test="costColligate != null">
+        COST_COLLIGATE,
+      </if>
+      <if test="costYear != null">
+        COST_YEAR,
+      </if>
+      <if test="costStartTime != null">
+        COST_START_TIME,
+      </if>
+      <if test="costEndTime != null">
+        COST_END_TIME,
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME,
+      </if>
+      <if test="bandwidthIncome != null">
+        BANDWIDTH_INCOME,
+      </if>
+      <if test="soldIncomeFee != null">
+        SOLD_INCOME_FEE,
+      </if>
+      <if test="costBandwidth != null">
+        COST_BANDWIDTH,
+      </if>
+      <if test="costRockIncome != null">
+        COST_ROCK_INCOME,
+      </if>
+      <if test="soldRockFee != null">
+        SOLD_ROCK_FEE,
+      </if>
+      <if test="avgDepreciationYear != null">
+        AVG_DEPRECIATION_YEAR,
+      </if>
+      <if test="costProfitRate != null">
+        COST_PROFIT_RATE,
+      </if>
+      <if test="costCreateUser != null">
+        COST_CREATE_USER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="costAnalysisRackId != null">
+        #{costAnalysisRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="costRackId != null">
+        #{costRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="costMaintenance != null">
+        #{costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="costRepair != null">
+        #{costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costRackPowerFee != null">
+        #{costRackPowerFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costWork != null">
+        #{costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="costWaterRate != null">
+        #{costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costMarketting != null">
+        #{costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="costOther != null">
+        #{costOther,jdbcType=DECIMAL},
+      </if>
+      <if test="costColligate != null">
+        #{costColligate,jdbcType=DECIMAL},
+      </if>
+      <if test="costYear != null">
+        #{costYear,jdbcType=VARCHAR},
+      </if>
+      <if test="costStartTime != null">
+        #{costStartTime,jdbcType=DATE},
+      </if>
+      <if test="costEndTime != null">
+        #{costEndTime,jdbcType=DATE},
+      </if>
+      <if test="costCreateTime != null">
+        #{costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="bandwidthIncome != null">
+        #{bandwidthIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="soldIncomeFee != null">
+        #{soldIncomeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costBandwidth != null">
+        #{costBandwidth,jdbcType=DECIMAL},
+      </if>
+      <if test="costRockIncome != null">
+        #{costRockIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="soldRockFee != null">
+        #{soldRockFee,jdbcType=DECIMAL},
+      </if>
+      <if test="avgDepreciationYear != null">
+        #{avgDepreciationYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costProfitRate != null">
+        #{costProfitRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costCreateUser != null">
+        #{costCreateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.idc.model.CostAnalysisRackExample" resultType="java.lang.Long">
+    select count(*) from COST_ANALYSIS_RACK
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update COST_ANALYSIS_RACK
+    <set>
+      <if test="record.costAnalysisRackId != null">
+        COST_ANALYSIS_RACK_ID = #{record.costAnalysisRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costRackId != null">
+        COST_RACK_ID = #{record.costRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costMaintenance != null">
+        COST_MAINTENANCE = #{record.costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRepair != null">
+        COST_REPAIR = #{record.costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRackPowerFee != null">
+        COST_RACK_POWER_FEE = #{record.costRackPowerFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costWork != null">
+        COST_WORK = #{record.costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costWaterRate != null">
+        COST_WATER_RATE = #{record.costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costMarketting != null">
+        COST_MARKETTING = #{record.costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costOther != null">
+        COST_OTHER = #{record.costOther,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costColligate != null">
+        COST_COLLIGATE = #{record.costColligate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costYear != null">
+        COST_YEAR = #{record.costYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.costStartTime != null">
+        COST_START_TIME = #{record.costStartTime,jdbcType=DATE},
+      </if>
+      <if test="record.costEndTime != null">
+        COST_END_TIME = #{record.costEndTime,jdbcType=DATE},
+      </if>
+      <if test="record.costCreateTime != null">
+        COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="record.bandwidthIncome != null">
+        BANDWIDTH_INCOME = #{record.bandwidthIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="record.soldIncomeFee != null">
+        SOLD_INCOME_FEE = #{record.soldIncomeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costBandwidth != null">
+        COST_BANDWIDTH = #{record.costBandwidth,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costRockIncome != null">
+        COST_ROCK_INCOME = #{record.costRockIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="record.soldRockFee != null">
+        SOLD_ROCK_FEE = #{record.soldRockFee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.avgDepreciationYear != null">
+        AVG_DEPRECIATION_YEAR = #{record.avgDepreciationYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costProfitRate != null">
+        COST_PROFIT_RATE = #{record.costProfitRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.costCreateUser != null">
+        COST_CREATE_USER = #{record.costCreateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update COST_ANALYSIS_RACK
+    set COST_ANALYSIS_RACK_ID = #{record.costAnalysisRackId,jdbcType=VARCHAR},
+      COST_RACK_ID = #{record.costRackId,jdbcType=VARCHAR},
+      COST_MAINTENANCE = #{record.costMaintenance,jdbcType=DECIMAL},
+      COST_REPAIR = #{record.costRepair,jdbcType=DECIMAL},
+      COST_RACK_POWER_FEE = #{record.costRackPowerFee,jdbcType=DECIMAL},
+      COST_WORK = #{record.costWork,jdbcType=DECIMAL},
+      COST_WATER_RATE = #{record.costWaterRate,jdbcType=DECIMAL},
+      COST_MARKETTING = #{record.costMarketting,jdbcType=DECIMAL},
+      COST_OTHER = #{record.costOther,jdbcType=DECIMAL},
+      COST_COLLIGATE = #{record.costColligate,jdbcType=DECIMAL},
+      COST_YEAR = #{record.costYear,jdbcType=VARCHAR},
+      COST_START_TIME = #{record.costStartTime,jdbcType=DATE},
+      COST_END_TIME = #{record.costEndTime,jdbcType=DATE},
+      COST_CREATE_TIME = #{record.costCreateTime,jdbcType=DATE},
+      BANDWIDTH_INCOME = #{record.bandwidthIncome,jdbcType=DECIMAL},
+      SOLD_INCOME_FEE = #{record.soldIncomeFee,jdbcType=DECIMAL},
+      COST_BANDWIDTH = #{record.costBandwidth,jdbcType=DECIMAL},
+      COST_ROCK_INCOME = #{record.costRockIncome,jdbcType=DECIMAL},
+      SOLD_ROCK_FEE = #{record.soldRockFee,jdbcType=DECIMAL},
+      AVG_DEPRECIATION_YEAR = #{record.avgDepreciationYear,jdbcType=DECIMAL},
+      COST_PROFIT_RATE = #{record.costProfitRate,jdbcType=DECIMAL},
+      COST_CREATE_USER = #{record.costCreateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.idc.model.CostAnalysisRack">
+    update COST_ANALYSIS_RACK
+    <set>
+      <if test="costRackId != null">
+        COST_RACK_ID = #{costRackId,jdbcType=VARCHAR},
+      </if>
+      <if test="costMaintenance != null">
+        COST_MAINTENANCE = #{costMaintenance,jdbcType=DECIMAL},
+      </if>
+      <if test="costRepair != null">
+        COST_REPAIR = #{costRepair,jdbcType=DECIMAL},
+      </if>
+      <if test="costRackPowerFee != null">
+        COST_RACK_POWER_FEE = #{costRackPowerFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costWork != null">
+        COST_WORK = #{costWork,jdbcType=DECIMAL},
+      </if>
+      <if test="costWaterRate != null">
+        COST_WATER_RATE = #{costWaterRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costMarketting != null">
+        COST_MARKETTING = #{costMarketting,jdbcType=DECIMAL},
+      </if>
+      <if test="costOther != null">
+        COST_OTHER = #{costOther,jdbcType=DECIMAL},
+      </if>
+      <if test="costColligate != null">
+        COST_COLLIGATE = #{costColligate,jdbcType=DECIMAL},
+      </if>
+      <if test="costYear != null">
+        COST_YEAR = #{costYear,jdbcType=VARCHAR},
+      </if>
+      <if test="costStartTime != null">
+        COST_START_TIME = #{costStartTime,jdbcType=DATE},
+      </if>
+      <if test="costEndTime != null">
+        COST_END_TIME = #{costEndTime,jdbcType=DATE},
+      </if>
+      <if test="costCreateTime != null">
+        COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE},
+      </if>
+      <if test="bandwidthIncome != null">
+        BANDWIDTH_INCOME = #{bandwidthIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="soldIncomeFee != null">
+        SOLD_INCOME_FEE = #{soldIncomeFee,jdbcType=DECIMAL},
+      </if>
+      <if test="costBandwidth != null">
+        COST_BANDWIDTH = #{costBandwidth,jdbcType=DECIMAL},
+      </if>
+      <if test="costRockIncome != null">
+        COST_ROCK_INCOME = #{costRockIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="soldRockFee != null">
+        SOLD_ROCK_FEE = #{soldRockFee,jdbcType=DECIMAL},
+      </if>
+      <if test="avgDepreciationYear != null">
+        AVG_DEPRECIATION_YEAR = #{avgDepreciationYear,jdbcType=DECIMAL},
+      </if>
+      <if test="costProfitRate != null">
+        COST_PROFIT_RATE = #{costProfitRate,jdbcType=DECIMAL},
+      </if>
+      <if test="costCreateUser != null">
+        COST_CREATE_USER = #{costCreateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where COST_ANALYSIS_RACK_ID = #{costAnalysisRackId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.idc.model.CostAnalysisRack">
+    update COST_ANALYSIS_RACK
+    set COST_RACK_ID = #{costRackId,jdbcType=VARCHAR},
+      COST_MAINTENANCE = #{costMaintenance,jdbcType=DECIMAL},
+      COST_REPAIR = #{costRepair,jdbcType=DECIMAL},
+      COST_RACK_POWER_FEE = #{costRackPowerFee,jdbcType=DECIMAL},
+      COST_WORK = #{costWork,jdbcType=DECIMAL},
+      COST_WATER_RATE = #{costWaterRate,jdbcType=DECIMAL},
+      COST_MARKETTING = #{costMarketting,jdbcType=DECIMAL},
+      COST_OTHER = #{costOther,jdbcType=DECIMAL},
+      COST_COLLIGATE = #{costColligate,jdbcType=DECIMAL},
+      COST_YEAR = #{costYear,jdbcType=VARCHAR},
+      COST_START_TIME = #{costStartTime,jdbcType=DATE},
+      COST_END_TIME = #{costEndTime,jdbcType=DATE},
+      COST_CREATE_TIME = #{costCreateTime,jdbcType=DATE},
+      BANDWIDTH_INCOME = #{bandwidthIncome,jdbcType=DECIMAL},
+      SOLD_INCOME_FEE = #{soldIncomeFee,jdbcType=DECIMAL},
+      COST_BANDWIDTH = #{costBandwidth,jdbcType=DECIMAL},
+      COST_ROCK_INCOME = #{costRockIncome,jdbcType=DECIMAL},
+      SOLD_ROCK_FEE = #{soldRockFee,jdbcType=DECIMAL},
+      AVG_DEPRECIATION_YEAR = #{avgDepreciationYear,jdbcType=DECIMAL},
+      COST_PROFIT_RATE = #{costProfitRate,jdbcType=DECIMAL},
+      COST_CREATE_USER = #{costCreateUser,jdbcType=VARCHAR}
+    where COST_ANALYSIS_RACK_ID = #{costAnalysisRackId,jdbcType=VARCHAR}
+  </update>
+</mapper>

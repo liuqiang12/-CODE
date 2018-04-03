@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.AlarmConfigSendMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultAlarmConfigSendMap" type="com.idc.model.NetKpiAlarmSendConfig">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="ID" property="id"/>
+
+        <result column="kpiid" property="kpiid"/>
+
+        <result column="alarmlevel" property="alarmlevel"/>
+
+        <result column="alarmMode" property="alarmmode"/>
+
+        <result column="alarmAddress" property="alarmaddress"/>
+
+    </resultMap>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="com.idc.model.NetKpiAlarmSendConfig">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG where ID= #{0}
+    </select>
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="com.idc.model.NetKpiAlarmSendConfig"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="com.idc.model.NetKpiAlarmSendConfig">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="com.idc.model.NetKpiAlarmSendConfig">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="com.idc.model.NetKpiAlarmSendConfig"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="com.idc.model.NetKpiAlarmSendConfig">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="com.idc.model.NetKpiAlarmSendConfig">
+        select
+        <include refid="baseColumn"/>
+        from NET_KPIALARMSENDCONFIG
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="com.idc.model.NetKpiAlarmSendConfig">
+        update NET_KPIALARMSENDCONFIG
+        <include refid="updateParam"/>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update NET_KPIALARMSENDCONFIG
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+		delete from NET_KPIALARMSENDCONFIG
+	</delete>
+
+
+    <delete id="deleteById">
+		delete from NET_KPIALARMSENDCONFIG where ID= #{0}
+	</delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="com.idc.model.NetKpiAlarmSendConfig">
+        delete from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from NET_KPIALARMSENDCONFIG
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from NET_KPIALARMSENDCONFIG where ID in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="com.idc.model.NetKpiAlarmSendConfig"
+            useGeneratedKeys="true" keyProperty="ID">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select NET_KPIALARMSENDCONFIG_seq.nextval from dual
+        </selectKey>
+        INSERT INTO NET_KPIALARMSENDCONFIG
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO NET_KPIALARMSENDCONFIG (
+        <include refid="insertColumn"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            <include refid="batchInsertColumnParam"/>
+            )
+        </foreach>
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+	  <![CDATA[
+        
+		  	ID as id,
+		  	kpiid as kpiid,
+			alarmlevel as alarmlevel,
+			alarmMode as alarmmode,
+			alarmAddress as alarmaddress
+	  
+        ]]>
+	</sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+            <if test="kpiid != null and kpiid != '' ">  <![CDATA[ and KPIID = #{kpiid} ]]></if>
+
+            <if test="alarmlevel != null and alarmlevel != '' or alarmlevel==0">
+                <![CDATA[ and alarmlevel = #{alarmlevel} ]]></if>
+
+            <if test="alarmmode != null and alarmmode != '' or alarmmode==0 ">
+                <![CDATA[ and alarmMode = #{alarmmode} ]]></if>
+
+            <if test="alarmaddress != null and alarmaddress != '' ">
+                <![CDATA[ and alarmAddress = #{alarmaddress} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+            <if test="params.alarmlevel != null and params.alarmlevel != '' ">
+                <![CDATA[ and alarmlevel = #{params.alarmlevel} ]]></if>
+
+            <if test="params.alarmmode != null and params.alarmmode != '' ">
+                <![CDATA[ and alarmMode = #{params.alarmmode} ]]></if>
+
+            <if test="params.alarmaddress != null and params.alarmaddress != '' ">
+                <![CDATA[ and alarmAddress = #{params.alarmaddress} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+            <if test="alarmlevel != null and alarmlevel != '' ">  <![CDATA[  alarmlevel = #{alarmlevel } ,]]></if>
+
+            <if test="alarmmode != null and alarmmode != '' ">  <![CDATA[  alarmMode = #{alarmmode } ,]]></if>
+
+            <if test="alarmaddress != null and alarmaddress != '' ">
+                <![CDATA[  alarmAddress = #{alarmaddress } ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+
+            <if test="kpiid != null and kpiid != '' ">  <![CDATA[ kpiid , ]]></if>
+
+            <if test="alarmlevel != null and alarmlevel != '' or alarmlevel==0 ">  <![CDATA[ alarmlevel , ]]></if>
+
+            <if test="alarmmode != null and alarmmode != '' or alarmmode==0 ">  <![CDATA[ alarmMode , ]]></if>
+
+            <if test="alarmaddress != null and alarmaddress != '' ">  <![CDATA[ alarmAddress , ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+
+            <if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+
+            <if test="kpiid != null and kpiid != '' ">  <![CDATA[ #{kpiid } , ]]></if>
+
+            <if test="alarmlevel != null and alarmlevel != ''  or alarmlevel==0 ">  <![CDATA[ #{alarmlevel } , ]]></if>
+
+            <if test="alarmmode != null and alarmmode != ''   or alarmmode==0">  <![CDATA[ #{alarmmode } , ]]></if>
+
+            <if test="alarmaddress != null and alarmaddress != '' ">  <![CDATA[ #{alarmaddress } , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+			ID,alarmlevel,alarmMode,alarmAddress
+	</sql>
+
+    <sql id="batchInsertColumnParam">
+			#{item.id},#{item.alarmlevel},#{item.alarmmode},#{item.alarmaddress}
+	</sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start 
+        from here -->
+
+
+</mapper>

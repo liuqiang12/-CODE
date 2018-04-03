@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspHousesholdInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspHousesholdInfoMap" type="HousesHoldInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="HHID" property="hhId" />
+		<result column="HOUSE_ID" property="houseId" />
+		<result column="DISTRIBUTE_TIME" property="distributeTime" />
+		<result column="BAND_WIDTH" property="bandWidth" />
+		<result column="FRAMEINFO_ID" property="frameInfoId" />
+		<result column="FK_SERVICE_INFO_ID" property="fkServiceInfoId" />
+		<collection property="ipTrans" ofType="List"  select="selectIpTrans" column="{fkHousesholdInfoId=AID}"   >
+		</collection>
+	</resultMap>
+	<!-- 获取ip信息列表 -->
+	<select id="selectIpTrans" resultMap="com.idc.mapper.IdcIspHousesholdIptranMapper.resultIdcIspHousesholdIptranMap">
+		select t1.aid,
+			   t1.fk_houseshold_info_id,
+			   t1.TICKET_INST_ID
+		from IDC_ISP_HOUSESHOLD_IPTRAN t1
+		where t1.fk_houseshold_info_id = #{fkHousesholdInfoId}
+	</select>
+	
+</mapper>

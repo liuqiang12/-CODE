@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysOrganizationMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysOrganizationMap" type="SysOrganization">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="region_id" property="regionId" />
+				
+		<result column="name" property="name" />
+				
+		<result column="parent_id" property="parentId" />
+				
+		<result column="description" property="description" />
+				
+		<result column="tree_type" property="treeType" />
+				
+		<result column="create_time" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysOrganization">
+		select
+		<include refid="baseColumn" />
+		from sys_organization where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysOrganization"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+		<include refid="whereParam" />
+	</select>
+
+
+    <!--获取通过区域获取跟-->
+    <select id="getRootNodesByRegion" resultType="SysOrganization">
+        select
+        tmp.id as id,
+        tmp.region_id as regionId,
+        tmp.name as name,
+        tmp.parent_id as parentId,
+        tmp.description as description,
+        tmp.tree_type as treeType,
+        tmp.create_time as createTime
+        from sys_organization tmp
+        where EXISTS
+        (
+        select t1.descendant from sys_organization_tree_closure t1
+        where t1.isRootNode = 1
+        and tmp.id = t1.descendant
+        )
+        <if test="region!=null and region!=0">
+            AND  tmp.region_id = #{region}
+        </if>
+    </select>
+
+    <select id="getNodesByPid" resultType="SysOrganization">
+        SELECT
+		    t1.id as id,
+        t1.region_id as regionId,
+        t1.name as name,
+        t1.parent_id as parentId,
+        t1.description as description,
+        t1.tree_type as treeType,
+        t1.create_time as createTime
+         FROM sys_organization t1
+        INNER JOIN sys_organization_tree_closure t2 on t1.id = t2.descendant
+        WHERE t2.ancestor = #{0} and t2.distance = 1
+        order by t1.`name`
+    </select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysOrganization">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysOrganization">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysOrganization"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysOrganization">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysOrganization">
+		select
+		<include refid="baseColumn" />
+		from sys_organization
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysOrganization">
+		update sys_organization
+		<include refid="updateParam" />
+        WHERE id=#{id}
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_organization
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_organization
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_organization where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysOrganization">
+		delete from sys_organization
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_organization
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_organization where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysOrganization"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_organization
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_organization (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			region_id as regionId,
+			name as name,
+			parent_id as parentId,
+			description as description,
+			tree_type as treeType,
+			create_time as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="regionId != null and regionId != '' ">  <![CDATA[ and region_id = #{regionId} ]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[ and name = #{name} ]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[ and parent_id = #{parentId} ]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[ and description = #{description} ]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[ and tree_type = #{treeType} ]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.regionId != null and params.regionId != '' ">  <![CDATA[ and region_id = #{params.regionId} ]]></if>
+						
+			<if test="params.name != null and params.name != '' ">  <![CDATA[ and name = #{params.name} ]]></if>
+						
+			<if test="params.parentId != null and params.parentId != '' ">  <![CDATA[ and parent_id = #{params.parentId} ]]></if>
+						
+			<if test="params.description != null and params.description != '' ">  <![CDATA[ and description = #{params.description} ]]></if>
+						
+			<if test="params.treeType != null and params.treeType != '' ">  <![CDATA[ and tree_type = #{params.treeType} ]]></if>
+						
+			<if test="params.createTime != null  ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+						
+			<if test="regionId != null and regionId != '' ">  <![CDATA[  region_id = #{regionId } ,]]></if>
+						
+			<if test="name != null and name != '' ">  <![CDATA[  name = #{name } ,]]></if>
+						
+			<if test="parentId != null and parentId != '' ">  <![CDATA[  parent_id = #{parentId } ,]]></if>
+						
+			<if test="description != null and description != '' ">  <![CDATA[  description = #{description } ,]]></if>
+						
+			<if test="treeType != null and treeType != '' ">  <![CDATA[  tree_type = #{treeType } ,]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>
+				
+		<if test="regionId != null and regionId != '' ">  <![CDATA[ region_id , ]]></if>
+				
+		<if test="name != null and name != '' ">  <![CDATA[ name , ]]></if>
+				
+		<if test="parentId != null and parentId != '' ">  <![CDATA[ parent_id , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ description , ]]></if>
+				
+		<if test="treeType != null and treeType != '' ">  <![CDATA[ tree_type , ]]></if>
+				
+		<if test="createTime != null  ">  <![CDATA[ create_time , ]]></if>
+			</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="regionId != null and regionId != '' ">  <![CDATA[ #{regionId } , ]]></if>
+				
+		<if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+				
+		<if test="parentId != null and parentId != '' ">  <![CDATA[ #{parentId } , ]]></if>
+				
+		<if test="description != null and description != '' ">  <![CDATA[ #{description } , ]]></if>
+				
+		<if test="treeType != null and treeType != '' ">  <![CDATA[ #{treeType } , ]]></if>
+				
+		<if test="createTime != null  ">  <![CDATA[ #{createTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			id,region_id,name,parent_id,description,tree_type,create_time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.regionId},#{item.name},#{item.parentId},#{item.description},#{item.treeType},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

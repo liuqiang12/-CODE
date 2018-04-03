@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcReProddefMapper">
+	<!-- 查询具体的服务 -->
+	<select id="getModelRackToBeanByCategory" resultType="IdcReRackModel">
+			select
+			t1.ID as id,
+			t1.REV as rev,
+			t1.SPEC as spec,
+			t1.RACK_NUM as rackNum,
+			t1.SEAT_NUM as seatNum,
+			t1.RATED_POWER as ratedPower,
+			t1."DESC" as "desc",
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime,
+			t1.SUPPLYTYPE as supplyType
+			from idc_re_rack_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+	</select>
+	<select id="getModelPortToBeanByCategory" resultType="IdcRePortModel">
+		select
+			t1.ID as id,
+			t1.REV as rev,
+			t1.PORT_MODE as portMode,
+			t1.BANDWIDTH as bandwidth,
+			t1.NUM as num,
+			t1."DESC" "desc",
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+		from idc_re_port_model t1
+		left join idc_re_proddef t2 on t1.id = t2.id
+		where t2.category = #{category}
+		and t2.prod_inst_id = #{prodInstId}
+		and t2.ticket_inst_id = #{ticketInstId}
+	</select>
+	<select id="getModelIpToBeanByCategory" resultType="IdcReIpModel">
+		select
+			t1.ID as id,
+			t1.REV as rev,
+			t1.PORT_MODE as portMode,
+			t1.NUM as num,
+			t1."DESC" as "desc",
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+			from idc_re_ip_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+	</select>
+
+	<select id="getModelServerToBeanByCategory" resultType="IdcReServerModel">
+		<!-- 主机租赁 -->
+		select
+		t1.ID as id,
+		t1.REV as rev,
+		t1.TYPE_MODE as typeMode,
+		t1.BRAND as brand,
+		t1.CODE as code,
+		t1.SPEC_NUMBER as specNumber,
+		t1.RATED_POWER as ratedPower,
+		t1.NUM as num,
+		t1."DESC" as "desc",
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+		from idc_re_server_model t1
+		left join idc_re_proddef t2 on t1.id = t2.id
+		where t2.category = #{category}
+		and t2.prod_inst_id = #{prodInstId}
+		and t2.ticket_inst_id = #{ticketInstId}
+	</select>
+
+	<select id="getModelAddNewlyToBeanByCategory" resultType="IdcReNewlyModel">
+		<!-- 增值业务 -->
+		select
+		t1.ID as id,
+		t1.REV as rev,
+		t1.NAME as name,
+		t1.CATEGORY as category,
+		t1."DESC" "desc",
+		to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+		from idc_re_newly_model t1
+		left join idc_re_proddef t2 on t1.id = t2.id
+		where t2.category = #{category}
+		and t2.prod_inst_id = #{prodInstId}
+		and t2.ticket_inst_id = #{ticketInstId}
+	</select>
+
+
+
+	 <!-- 查询具体的服务 -->
+	<select id="getModelByCategory" resultType="Map">
+		<if test=" category == '100' ">
+			<!-- 机架机位 -->
+			select
+				t1.ID as id,
+				t1.REV as rev,
+				t1.SPEC as spec,
+				t1.RACK_NUM as rackNum,
+				t1.SEAT_NUM as seatNum,
+				t1.RATED_POWER as ratedPower,
+				t1."DESC",
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime,
+				t1.SUPPLYTYPE,
+				t1.RACKORRACUNIT
+			from idc_re_rack_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+		</if>
+		<if test=" category == '200' ">
+			<!-- 带宽端口 -->
+			select
+				t1.ID as id,
+				t1.REV as rev,
+				t1.PORT_MODE as portMode,
+				t1.BANDWIDTH as bandwidth,
+				t1.NUM as num,
+				t1."DESC",
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+			from idc_re_port_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+		</if>
+		<if test=" category == '300' ">
+			<!-- IP出租 -->
+			select
+			t1.ID as id,
+			t1.REV as rev,
+			t1.PORT_MODE as portMode,
+			t1.NUM as num,
+			t1."DESC",
+			to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+			from idc_re_ip_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+		</if>
+		<if test=" category == '400' ">
+			<!-- 主机租赁 -->
+			select
+				t1.ID as id,
+				t1.REV as rev,
+				t1.TYPE_MODE as typeMode,
+				t1.BRAND as brand,
+				t1.CODE as code,
+				t1.SPEC_NUMBER as specNumber,
+				t1.RATED_POWER as ratedPower,
+				t1.NUM as num,
+				t1."DESC",
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+				from idc_re_server_model t1
+				left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+		</if>
+
+		<if test=" category == '500' ">
+			<!-- 增值业务 -->
+			select
+				t1.ID as id,
+				t1.REV as rev,
+				t1.NAME as name,
+				t1.CATEGORY as category,
+				t1."DESC",
+				to_char(t1.CREATE_TIME,'yyyy-MM-dd HH24:mi:ss') createTime
+			from idc_re_newly_model t1
+			left join idc_re_proddef t2 on t1.id = t2.id
+			where t2.category = #{category}
+			and t2.prod_inst_id = #{prodInstId}
+			and t2.ticket_inst_id = #{ticketInstId}
+		</if>
+	</select>
+	<!-- getSelfModelByProdInstId -->
+	<select id="getSelfModelByProdInstId" parameterType="Long" resultType="ServiceApplyImgStatus">
+			select * from (
+					   select prod_inst_id,
+							  category,
+							  case when category = '100' then '1'
+								   when category = '200' then '1'
+								   when category = '300' then '1'
+								   when category = '400' then '1'
+								   when category = '500' then '1'
+							  end categoryName
+					   from idc_re_proddef  where prod_inst_id = #{0}
+				)pivot(
+					   max(categoryName) for category in ('100' as rack,
+											  '200' AS port,
+											  '300' AS ip,
+											  '400' AS server,
+											  '500' AS "add"
+											  )
+				)
+	</select>
+	<select id="getAllByTicketInstId" parameterType="Long" resultType="IdcReProddef">
+			select * from idc_re_proddef where ticket_inst_id=#{0}
+	</select>
+	<!--  getListByProdInstId  -->
+	<delete id="deleteWithProcedureByProdInstId" parameterType="Long" >
+		<!-- 批量删除不同表 -->
+		CALL delIdcModelWithProdInstId(#{0})
+	</delete>
+	<!-- 保存保存实体-->
+	<insert id="insertModel" parameterType="IdcReProddef">
+		<selectKey  keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_RE_PRODDEF.CURRVAL AS id FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_RE_PRODDEF
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="category != null and category != '' ">  <![CDATA[ CATEGORY , ]]></if>
+				<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="category != null and category != '' ">  <![CDATA[ #{category } , ]]></if>
+				<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+			</trim>
+		)
+	</insert>
+
+</mapper>

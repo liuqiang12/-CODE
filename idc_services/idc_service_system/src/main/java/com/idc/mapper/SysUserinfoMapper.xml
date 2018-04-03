@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysUserinfoMapper">
+    <!-- 返回类型 -->
+    <resultMap id="resultSysUserinfoMap" type="SysUserinfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+        <result column="id" property="id"/>
+        <result column="region_id" property="region"/>
+
+        <result column="username" property="username"/>
+
+        <result column="nick" property="nick"/>
+
+        <result column="phone" property="phone"/>
+
+        <result column="age" property="age"/>
+
+        <result column="password" property="password"/>
+
+        <result column="native_str" property="nativeStr"/>
+
+        <result column="sex" property="sex"/>
+
+        <result column="count" property="count"/>
+
+        <result column="is_depart_leading" property="isDepartLeading"/>
+
+        <result column="enabled" property="enabled"/>
+
+        <result column="accountNonLocked" property="accountnonlocked"/>
+
+        <result column="credentialsNonExpired" property="credentialsnonexpired"/>
+
+        <result column="accountNonExpired" property="accountnonexpired"/>
+
+        <result column="create_time" property="createTime"/>
+
+        <result column="department" property="department"/>
+
+        <result column="email" property="email"/>
+
+        <result column="lose_efficacy_time" property="loseEfficacyTime"/>
+
+        <result column="location_code" property="locationCode"/>
+
+    </resultMap>
+
+
+
+    <!-- 配置一对多 用户对应角色的关系 -->
+    <resultMap id="resultwithNotRoles" type="SysUserinfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="id" property="id"/>
+
+        <result column="region_id" property="region"/>
+
+        <result column="username" property="username"/>
+
+        <result column="nick" property="nick"/>
+
+        <result column="phone" property="phone"/>
+
+        <result column="age" property="age"/>
+
+        <result column="password" property="password"/>
+
+        <result column="native_str" property="nativeStr"/>
+
+        <result column="sex" property="sex"/>
+
+        <result column="count" property="count"/>
+
+        <result column="is_depart_leading" property="isDepartLeading"/>
+
+        <result column="enabled" property="enabled"/>
+
+        <result column="accountNonLocked" property="accountnonlocked"/>
+
+        <result column="credentialsNonExpired" property="credentialsnonexpired"/>
+
+        <result column="accountNonExpired" property="accountnonexpired"/>
+
+        <result column="create_time" property="createTime"/>
+
+        <result column="department" property="department"/>
+
+        <result column="email" property="email"/>
+
+        <result column="lose_efficacy_time" property="loseEfficacyTime"/>
+
+        <result column="location_code" property="locationCode"/>
+        <!-- 多角色关系 -->
+        <collection  property="sysRoleinfoTypes" ofType="Long" javaType="List" columnPrefix="r_">
+            <!-- 数据库属性和实体类属性对应关系 -->
+            <result column="type" javaType="string"/>
+        </collection>
+    </resultMap>
+
+    <!-- 配置一对多 用户对应角色的关系 -->
+    <resultMap id="resultWithRoles" type="SysUserinfo">
+        <!-- 数据库属性和实体类属性对应关系 -->
+
+        <result column="id" property="id"/>
+
+        <result column="region_id" property="region"/>
+
+        <result column="username" property="username"/>
+
+        <result column="nick" property="nick"/>
+
+        <result column="phone" property="phone"/>
+
+        <result column="age" property="age"/>
+
+        <result column="password" property="password"/>
+
+        <result column="native_str" property="nativeStr"/>
+
+        <result column="sex" property="sex"/>
+
+        <result column="count" property="count"/>
+
+        <result column="is_depart_leading" property="isDepartLeading"/>
+
+        <result column="enabled" property="enabled"/>
+
+        <result column="accountNonLocked" property="accountnonlocked"/>
+
+        <result column="credentialsNonExpired" property="credentialsnonexpired"/>
+
+        <result column="accountNonExpired" property="accountnonexpired"/>
+
+        <result column="create_time" property="createTime"/>
+
+        <result column="department" property="department"/>
+
+        <result column="email" property="email"/>
+
+        <result column="lose_efficacy_time" property="loseEfficacyTime"/>
+
+        <result column="location_code" property="locationCode"/>
+        <!-- 多角色关系 -->
+        <collection property="sysRoleinfoTypes" ofType="List" select="selectAuthority" column="{user_id=id}">
+            <!-- 数据库属性和实体类属性对应关系 -->
+            <result column="type" property="type"/>
+        </collection>
+    </resultMap>
+
+
+    <!-- 通过主键查询记录 -->
+    <select id="queryUserAndRoleListThroughUsernameNotJl" parameterType="String" resultMap="resultwithNotRoles">
+        SELECT
+          distinct  t1.id,
+          t1.username,
+          t1.password,
+          t1.enabled,
+          t1.phone,
+          t1.nick,
+          t2.role_type r_roleType
+        from
+        sys_userinfo t1
+        left join jbpm_oa_author t2 on t1.id = t2.author_id
+        where t1.username = #{0}
+    </select>
+
+    <select id="getAdminNams" resultType="String">
+        select t.user_name from JBPM_OA_AUTHOR t where t.role_type = 'admin'
+    </select>
+
+    <select id="queryUserAreaById" resultType="String">
+      select t.LOCATION_CODE from sys_userinfo t where t.id=#{0}
+    </select>
+
+    <!-- 通过主键查询记录 -->
+    <select id="queryUserAndRoleListThroughUsername" parameterType="String" resultMap="resultWithRoles">
+        SELECT
+          t1.id,
+        t1.username,
+        t1.password,
+        t1.enabled,
+        t1.phone,
+        t1.nick,
+        t1.create_time,
+        t1.lose_efficacy_time
+        from
+        sys_userinfo t1
+        where t1.username = #{0}
+    </select>
+    <!-- activiti通过用户查询组信息,即用户角色                 start -->
+    <select id="getRoleToActByUserName" parameterType="String" resultType="Map">
+        select
+        distinct t.id as user_id,
+        t.username as user_name,
+        to_char(t.roleId) as role_id,
+        to_char(t.type) as role_type,
+        to_char(t.name) as role_name
+        from
+        (
+        select t1.id,
+        t1.username,
+        t3.id as roleId,
+        t3.type,
+        t3.name
+        from sys_userinfo t1 left join sys_ln_user_role t2 on t1.id = t2.user_id
+        left join sys_roleinfo t3 on t2.role_id = t3.id
+        where t3.id is not null
+        and t1.username = #{0}
+        union
+        /*用户组概念*/
+        select t1.id,
+        t1.username,
+        t4.id as roleId,
+        t4.type,
+        t4.name
+        from sys_userinfo t1 left join sys_ln_user_usergrp t2 on t1.id = t2.user_id
+        left join sys_ln_usergrp_role t3 on t2.ugrp_id = t3.ugrp_id
+        left join sys_roleinfo t4 on t3.role_id = t4.id
+        where t4.id is not null
+        and t1.username = #{0}
+        )t
+    </select>
+    <!--lcw添加  获取组内所有用户-->
+    <select id="getAllUser"  resultType="Map">
+    select t1.id,
+    t1.username
+    from sys_userinfo t1 ,sys_ln_user_usergrp t2 where
+    t1.id = t2.user_id and
+    t1.enabled=1
+    </select>
+    <select id="getUserToActMapByUserName" parameterType="String" resultType="Map">
+        select id,username from sys_userinfo where username= #{0}
+    </select>
+
+    <select id="getRoleToActByGroupCode" parameterType="String" resultType="Map">
+        select t1.id as role_id,
+        t1.type as role_type,
+        t1.name as role_name
+        from sys_roleinfo t1
+        where t1.type = #{0}
+    </select>
+
+
+    <!-- activiti通过用户查询组信息,即用户角色                 end -->
+    <select id="selectAuthority" parameterType="java.util.HashMap" resultType="String">
+        select t1.role_type as type from jbpm_oa_author t1 where t1.author_id = #{user_id}
+    </select>
+
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="SysUserinfo">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo where id= #{0}
+    </select>
+
+    <!-- 通过主键查询记录 -->
+    <select id="queryUserById" resultType="SysUserinfo">
+        select t.id,
+               t.region_id,
+               t.username,
+               t.nick,
+               t.sex,
+               t.count,
+               t.enabled,
+               t.phone,
+               t.department,
+               t.email,
+               t.location_code from sys_userinfo t where id= #{0}
+    </select>
+
+    <!-- 通过主键查询记录 -->
+    <select id="queryApplyIDByTicket" resultType="String">
+        select t.apply_id from idc_his_ticket t where ticket_inst_id= #{0}
+    </select>
+
+    <select id="getUserListByTicketUserIds" resultType="SysUserinfo">
+        select t.* from sys_userinfo t where regexp_like(','||#{0}||','  ,  ','||t.id||',' )
+    </select>
+
+
+    <!-- map对应的key和实体类中的属性一致 -->
+    <select id="getModelByMap" resultType="SysUserinfo"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 通过实体类查询记录 -->
+    <select id="getModelByObject" resultType="SysUserinfo">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryList" resultType="SysUserinfo">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+    </select>
+
+    <!-- 查询所有记录 map-->
+    <select id="queryListMap" resultType="Map">
+        select
+        <include refid="userinfoAndRegionAndDepartment"/>
+        from sys_userinfo t1
+        left join (select lup.user_id as userId, replace(wm_concat(to_char(up.name)),',','、') as gname
+        from sys_ln_user_usergrp lup
+        left join sys_user_group up
+        on (up.id = lup.ugrp_id)
+        group by lup.user_id) t2 on (t2.userId = t1.id)
+        left join (select lre.user_id as userId, replace(wm_concat(to_char(re.name)),',','、') as rname
+        from sys_ln_user_region lre
+        left join sys_region re
+        on (re.id = lre.region_id)
+        group by lre.user_id) t3 on (t3.userId = t1.id)
+        left join (select ldp.user_id as userId, replace(wm_concat(to_char(dp.name)),',','、') as dname
+        from sys_ln_user_department ldp
+        left join sys_department dp
+        on (dp.id = ldp.dpt_id)
+        group by ldp.user_id) t4 on (t4.userId = t1.id)
+        left join idc_location t5 on(t5.code=t1.location_code)
+        <where>
+            <if test="username!=null and username!=''">
+                <![CDATA[ and upper(t1.username) like '%'||upper(#{username})||'%']]></if>
+            <if test="nick!=null and nick!=''"><![CDATA[ and upper(t1.nick) like '%'||upper(#{nick})||'%']]></if>
+        </where>
+    </select>
+
+    <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+    <select id="queryListByMap" resultType="SysUserinfo"
+            parameterType="Map">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 查询记录:通过实体类查询多条记录 -->
+    <select id="queryListByObject" resultType="SysUserinfo">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="whereParam"/>
+    </select>
+
+    <select id="getIdByUserNameAndPassword" resultType="String">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="whereParam"/>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="queryListPage" parameterType="PageBean" resultType="SysUserinfo">
+        select
+        <include refid="baseColumn"/>
+        from sys_userinfo
+        <include refid="wherePageParam"/>
+    </select>
+
+    <!-- 分页查询 map-->
+    <select id="queryListPageMap" parameterType="PageBean" resultType="Map">
+        select
+        <include refid="userinfoAndRegionAndDepartment"/>
+        from sys_userinfo t1
+        left join (select lup.user_id as userId, replace(wm_concat(to_char(up.name)),',','、') as gname
+        from sys_ln_user_usergrp lup
+        left join sys_user_group up
+        on (up.id = lup.ugrp_id)
+        group by lup.user_id) t2
+        on (t2.userId = t1.id)
+        left join (select lre.user_id as userId, replace(wm_concat(to_char(re.name)),',','、') as rname
+        from sys_ln_user_region lre
+        left join sys_region re
+        on (re.id = lre.region_id)
+        group by lre.user_id) t3
+        on (t3.userId = t1.id)
+        left join (select ldp.user_id as userId, replace(wm_concat(to_char(dp.name)),',','、') as dname
+        from sys_ln_user_department ldp
+        left join sys_department dp
+        on (dp.id = ldp.dpt_id)
+        group by ldp.user_id) t4 on (t4.userId = t1.id)
+        left join idc_location t5 on(t5.code=t1.location_code)
+        <where>
+            <if test="params.username!=null and params.username!=''">
+                <![CDATA[ and upper(t1.username) like '%'||upper(#{params.username})||'%']]></if>
+            <if test="params.nick!=null and params.nick!=''">
+                <![CDATA[ and upper(t1.nick) like '%'||upper(#{params.nick})||'%']]></if>
+        </where>
+    </select>
+
+    <!-- 获取未绑定当前组的用户 -->
+    <select id="queryUnbindUserList" parameterType="PageBean" resultType="SysUserinfo">
+        select i.*
+        from sys_userinfo i
+        <where>
+            <choose>
+                <when test="params.type!=null and params.type == 'view' ">
+                    <if test="params.groupId!=null and params.groupId!=''">
+                        <![CDATA[ and EXISTS (select 1 from sys_ln_user_usergrp p where p.user_id = i.id and p.ugrp_id = #{params.groupId})]]>
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="params.groupId!=null and params.groupId!=''">
+                        <![CDATA[ and not EXISTS (select 1 from sys_ln_user_usergrp p where p.user_id = i.id and p.ugrp_id = #{params.groupId})]]>
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="params.name!=null and params.name!=''">
+                <![CDATA[ and upper(i.username) like '%'||upper(#{params.name})||'%']]></if>
+        </where>
+    </select>
+
+    <!-- update -->
+    <update id="updateByObject" parameterType="SysUserinfo">
+        update sys_userinfo
+        <include refid="updateParam"/>
+        WHERE  id=#{id}
+        <!--<include refid="whereParam"/>-->
+    </update>
+
+    <update id="updateByMap" parameterType="Map">
+        update sys_userinfo
+        <include refid="updateParam"/>
+        <include refid="whereParam"/>
+    </update>
+
+    <!-- 慎用此方法 -->
+    <delete id="deleteAll">
+        delete from sys_userinfo
+    </delete>
+
+
+    <delete id="deleteById">
+        delete from sys_userinfo where id= #{0}
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByObject" parameterType="SysUserinfo">
+        delete from sys_userinfo
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByMap" parameterType="Map">
+        delete from sys_userinfo
+        <include refid="whereParam"/>
+    </delete>
+
+    <!-- 删除数据 -->
+    <delete id="deleteByList" parameterType="java.util.List">
+        delete from sys_userinfo where id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="SysUserinfo"
+            useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+            select sys_userinfo_seq.nextval from dual
+        </selectKey>
+        INSERT INTO sys_userinfo
+        (id,
+        <include refid="insertColumn"/>
+        ) VALUES
+        (#{id},
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+
+    <!-- 批量保存 -->
+
+    <insert id="insertList" parameterType="java.util.List">
+        INSERT INTO sys_userinfo (
+        <include refid="batchInsertColumn"/>
+        )
+        select sys_userinfo_seq.nextval,uis.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select
+                  <include refid="batchInsertColumnParam"/>
+                from dual
+            </foreach>
+        ) uis
+    </insert>
+
+
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+        <![CDATA[
+		  	id as id,
+			username as username,
+			region_id as region,
+			nick as nick,
+			age as age,
+			password as password,
+			native_str as nativeStr,
+			sex as sex,
+			count as count,
+			is_depart_leading as isDepartLeading,
+			enabled as enabled,
+			accountNonLocked as accountnonlocked,
+			credentialsNonExpired as credentialsnonexpired,
+			accountNonExpired as accountnonexpired,
+			create_time as createTime,
+			department as department,
+			phone as phone,
+			email as email,
+			lose_efficacy_time as loseEfficacyTime,
+			location_code as locationCode
+        ]]>
+    </sql>
+    <sql id="whereParam">
+        <where>
+
+            <if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+
+            <if test="region != null and region != '' ">  <![CDATA[ and region_id = #{region} ]]></if>
+
+            <if test="username != null and username != '' ">  <![CDATA[ and username = #{username} ]]></if>
+
+            <if test="nick != null and nick != '' ">  <![CDATA[ and nick = #{nick} ]]></if>
+
+            <if test="phone != null and phone != '' ">  <![CDATA[ and phone = #{phone} ]]></if>
+
+            <if test="age != null and age != '' ">  <![CDATA[ and age = #{age} ]]></if>
+
+            <if test="password != null and password != '' ">  <![CDATA[ and password = #{password} ]]></if>
+
+            <if test="nativeStr != null and nativeStr != '' ">  <![CDATA[ and native_str = #{nativeStr} ]]></if>
+
+            <if test="sex != null and sex != '' ">  <![CDATA[ and sex = #{sex} ]]></if>
+
+            <if test="count != null and count != '' ">  <![CDATA[ and count = #{count} ]]></if>
+
+            <if test="isDepartLeading != null and isDepartLeading != '' ">
+                <![CDATA[ and is_depart_leading = #{isDepartLeading} ]]></if>
+
+            <if test="enabled != null and enabled != '' ">  <![CDATA[ and enabled = #{enabled} ]]></if>
+
+            <if test="accountnonlocked != null and accountnonlocked != '' ">
+                <![CDATA[ and accountNonLocked = #{accountnonlocked} ]]></if>
+
+            <if test="credentialsnonexpired != null and credentialsnonexpired != '' ">
+                <![CDATA[ and credentialsNonExpired = #{credentialsnonexpired} ]]></if>
+
+            <if test="accountnonexpired != null and accountnonexpired != '' ">
+                <![CDATA[ and accountNonExpired = #{accountnonexpired} ]]></if>
+
+            <if test="createTime != null ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+
+            <if test="department != null and department != '' ">  <![CDATA[ and department = #{department} ]]></if>
+
+            <if test="email != null and email != '' ">  <![CDATA[ and email = #{email} ]]></if>
+
+            <if test="loseEfficacyTime != null">  <![CDATA[ and lose_efficacy_time = #{loseEfficacyTime} ]]></if>
+
+            <if test="locationCode != null and locationCode != '' ">  <![CDATA[ and location_code = #{locationCode} ]]></if>
+
+        </where>
+    </sql>
+    <sql id="wherePageParam">
+        <where>
+
+            <if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+
+            <if test="params.region != null and params.region != '' ">
+                <![CDATA[ and region_id = #{params.region} ]]></if>
+
+            <if test="params.username != null and params.username != '' ">
+                <![CDATA[ and username = #{params.username} ]]></if>
+
+            <if test="params.nick != null and params.nick != '' ">  <![CDATA[ and nick = #{params.nick} ]]></if>
+
+            <if test="params.phone != null and params.phone != '' ">  <![CDATA[ and phone = #{params.phone} ]]></if>
+
+            <if test="params.age != null and params.age != '' ">  <![CDATA[ and age = #{params.age} ]]></if>
+
+            <if test="params.password != null and params.password != '' ">
+                <![CDATA[ and password = #{params.password} ]]></if>
+
+            <if test="params.nativeStr != null and params.nativeStr != '' ">
+                <![CDATA[ and native_str = #{params.nativeStr} ]]></if>
+
+            <if test="params.sex != null and params.sex != '' ">  <![CDATA[ and sex = #{params.sex} ]]></if>
+
+            <if test="params.count != null and params.count != '' ">  <![CDATA[ and count = #{params.count} ]]></if>
+
+            <if test="params.isDepartLeading != null and params.isDepartLeading != '' ">
+                <![CDATA[ and is_depart_leading = #{params.isDepartLeading} ]]></if>
+
+            <if test="params.enabled != null and params.enabled != '' ">
+                <![CDATA[ and enabled = #{params.enabled} ]]></if>
+
+            <if test="params.accountnonlocked != null and params.accountnonlocked != '' ">
+                <![CDATA[ and accountNonLocked = #{params.accountnonlocked} ]]></if>
+
+            <if test="params.credentialsnonexpired != null and params.credentialsnonexpired != '' ">
+                <![CDATA[ and credentialsNonExpired = #{params.credentialsnonexpired} ]]></if>
+
+            <if test="params.accountnonexpired != null and params.accountnonexpired != '' ">
+                <![CDATA[ and accountNonExpired = #{params.accountnonexpired} ]]></if>
+
+            <if test="params.createTime != null "> <![CDATA[ and create_time = #{params.createTime} ]]></if>
+
+            <if test="params.department != null and params.department != '' ">
+                <![CDATA[ and department = #{params.department} ]]></if>
+
+            <if test="params.email != null and params.email != '' ">  <![CDATA[ and email = #{params.email} ]]></if>
+
+            <if test="params.loseEfficacyTime != null ">  <![CDATA[ and lose_efficacy_time = #{params.loseEfficacyTime} ]]></if>
+
+            <if test="params.locationCode != null and params.locationCode != '' ">  <![CDATA[ and location_code = #{params.locationCode} ]]></if>
+
+        </where>
+    </sql>
+
+    <!-- update sql -->
+    <sql id="updateParam">
+        <set>
+
+            <if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+
+            <if test="region != null and region != '' ">  <![CDATA[  region_id = #{region}, ]]></if>
+
+            <if test="username != null and username != '' ">  <![CDATA[  username = #{username } ,]]></if>
+
+            <if test="nick != null and nick != '' ">  <![CDATA[  nick = #{nick } ,]]></if>
+
+            <if test="phone != null and phone != '' ">  <![CDATA[ phone = #{phone}, ]]></if>
+
+            <if test="age != null and age != '' ">  <![CDATA[  age = #{age } ,]]></if>
+
+            <if test="password != null and password != '' ">  <![CDATA[  password = #{password } ,]]></if>
+
+            <if test="nativeStr != null and nativeStr != '' ">  <![CDATA[  native_str = #{nativeStr } ,]]></if>
+
+            <if test="sex != null and sex != '' ">  <![CDATA[  sex = #{sex } ,]]></if>
+
+            <if test="count != null and count != '' ">  <![CDATA[  count = #{count } ,]]></if>
+
+            <if test="isDepartLeading != null and isDepartLeading != '' ">
+                <![CDATA[  is_depart_leading = #{isDepartLeading } ,]]></if>
+
+            <if test="enabled != null and enabled != '' ">  <![CDATA[  enabled = #{enabled } ,]]></if>
+
+            <if test="accountnonlocked != null and accountnonlocked != '' ">
+                <![CDATA[  accountNonLocked = #{accountnonlocked } ,]]></if>
+
+            <if test="credentialsnonexpired != null and credentialsnonexpired != '' ">
+                <![CDATA[  credentialsNonExpired = #{credentialsnonexpired } ,]]></if>
+
+            <if test="accountnonexpired != null and accountnonexpired != '' ">
+                <![CDATA[  accountNonExpired = #{accountnonexpired } ,]]></if>
+
+            <if test="createTime != null ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+
+            <if test="department != null and department != '' ">  <![CDATA[ department = #{department} ,]]></if>
+
+            <if test="email != null and email != '' ">  <![CDATA[ email = #{email} ,]]></if>
+
+            <if test="loseEfficacyTime != null">  <![CDATA[ lose_efficacy_time = #{loseEfficacyTime} ,]]></if>
+
+            <if test="locationCode != null and locationCode != '' ">  <![CDATA[ location_code = #{locationCode} ,]]></if>
+
+        </set>
+    </sql>
+
+    <!-- insert sql -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+
+        <!--<if test="id != null and id != '' ">  <![CDATA[ id , ]]></if>-->
+
+        <if test="region != null and region != '' ">  <![CDATA[region_id, ]]></if>
+
+        <if test="username != null and username != '' ">  <![CDATA[ username , ]]></if>
+
+        <if test="nick != null and nick != '' ">  <![CDATA[ nick , ]]></if>
+
+            <if test="phone != null and phone != '' ">  <![CDATA[ phone , ]]></if>
+
+            <if test="age != null and age != '' ">  <![CDATA[ age , ]]></if>
+
+        <if test="password != null and password != '' ">  <![CDATA[ password , ]]></if>
+
+        <if test="nativeStr != null and nativeStr != '' ">  <![CDATA[ native_str , ]]></if>
+
+        <if test="sex != null and sex != '' ">  <![CDATA[ sex , ]]></if>
+
+        <if test="count != null and count != '' ">  <![CDATA[ count , ]]></if>
+
+        <if test="isDepartLeading != null and isDepartLeading != '' ">  <![CDATA[ is_depart_leading , ]]></if>
+
+        <if test="enabled != null and enabled != '' ">  <![CDATA[ enabled , ]]></if>
+
+        <if test="accountnonlocked != null and accountnonlocked != '' ">  <![CDATA[ accountNonLocked , ]]></if>
+
+            <if test="credentialsnonexpired != null and credentialsnonexpired != '' ">
+                <![CDATA[ credentialsNonExpired , ]]></if>
+
+        <if test="accountnonexpired != null and accountnonexpired != '' ">  <![CDATA[ accountNonExpired, ]]></if>
+
+            <if test="createTime != null ">  <![CDATA[ create_time, ]]></if>
+
+            <if test="department != null and department != '' ">  <![CDATA[ department, ]]></if>
+
+            <if test="email != null and email != '' ">  <![CDATA[ email, ]]></if>
+
+            <if test="loseEfficacyTime != null ">  <![CDATA[ lose_efficacy_time, ]]></if>
+
+            <if test="locationCode != null and locationCode != '' ">  <![CDATA[ location_code, ]]></if>
+        </trim>
+    </sql>
+
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+            <!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+            <if test="region != null and region != '' ">  <![CDATA[ #{region}, ]]></if>
+
+            <if test="username != null and username != '' ">  <![CDATA[ #{username } , ]]></if>
+
+            <if test="nick != null and nick != '' ">  <![CDATA[ #{nick } , ]]></if>
+
+            <if test="phone != null and phone != '' ">  <![CDATA[ #{phone}, ]]></if>
+
+            <if test="age != null and age != '' ">  <![CDATA[ #{age } , ]]></if>
+
+            <if test="password != null and password != '' ">  <![CDATA[ #{password } , ]]></if>
+
+            <if test="nativeStr != null and nativeStr != '' ">  <![CDATA[ #{nativeStr } , ]]></if>
+
+            <if test="sex != null and sex != '' ">  <![CDATA[ #{sex } , ]]></if>
+
+            <if test="count != null and count != '' ">  <![CDATA[ #{count } , ]]></if>
+
+            <if test="isDepartLeading != null and isDepartLeading != '' ">  <![CDATA[ #{isDepartLeading } , ]]></if>
+
+            <if test="enabled != null and enabled != '' ">  <![CDATA[ #{enabled } , ]]></if>
+
+            <if test="accountnonlocked != null and accountnonlocked != '' ">  <![CDATA[ #{accountnonlocked } , ]]></if>
+
+            <if test="credentialsnonexpired != null and credentialsnonexpired != '' ">
+                <![CDATA[ #{credentialsnonexpired } , ]]></if>
+
+            <if test="accountnonexpired != null and accountnonexpired != '' ">  <![CDATA[ #{accountnonexpired } , ]]></if>
+
+            <if test="createTime != null  ">  <![CDATA[ #{createTime },]]></if>
+
+            <if test="department != null and department != '' ">  <![CDATA[ #{department}, ]]></if>
+
+            <if test="email != null and email != '' ">  <![CDATA[ #{email}, ]]></if>
+
+            <if test="loseEfficacyTime != null ">  <![CDATA[ #{loseEfficacyTime}, ]]></if>
+
+            <if test="locationCode != null and locationCode != '' ">  <![CDATA[ #{locationCode}, ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 批量保存 -->
+    <sql id="batchInsertColumn">
+        id,region_id,username,nick,phone,age,password,native_str,sex,count,is_depart_leading,enabled,accountNonLocked,credentialsNonExpired,accountNonExpired,create_time,lose_efficacy_time,location_code
+    </sql>
+
+    <sql id="batchInsertColumnParam">
+        #{item.id},#{item.region},#{item.username},#{item.nick},#{item.phone},#{item.age},#{item.password},#{item.nativeStr},#{item.sex},#{item.count},#{item.isDepartLeading},#{item.enabled},#{item.accountnonlocked},#{item.credentialsnonexpired},#{item.accountnonexpired},#{item.createTime},#{loseEfficacyTime},#{locationCode}
+    </sql>
+    <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+        deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+    <!-- The above code is static code of small changes, the business code start
+        from here -->
+    <!--  -->
+    <sql id="userinfoAndRegionAndDepartment">
+        <![CDATA[
+
+		  	t1.id as id,
+			t1.username as username,
+			t1.region_id as region,
+			t1.nick as nick,
+			t1.age as age,
+			t1.password as password,
+			t1.native_str as nativeStr,
+			t1.sex as sex,
+			t1.count as count,
+			t1.is_depart_leading as isDepartLeading,
+			t1.enabled as enabled,
+			t1.accountNonLocked as accountnonlocked,
+			t1.credentialsNonExpired as credentialsnonexpired,
+			t1.accountNonExpired as accountnonexpired,
+			t1.create_time as createTime,
+			t1.department as department,
+			t1.phone as phone,
+			t1.email as email,
+			t1.lose_efficacy_time as loseEfficacyTime,
+			t1.location_code as locationCode,
+			t2.gname as gname,
+			t3.rname as rname,
+			t4.dname as dname,
+			t5.name as locationName,
+			t5.id as locationId
+        ]]>
+    </sql>
+
+    <!-- 查询满足条件的所有用户 -->
+    <select id="queryUserListByObjectMap" parameterType="Map" resultType="Map">
+        select t1.id as id,
+        t1.username as username,
+        t1.region_id as region,
+        t1.nick as nick,
+        t1.age as age,
+        t1.password as password,
+        t1.native_str as nativeStr,
+        t1.sex as sex,
+        t1.count as count,
+        t1.is_depart_leading as isDepartLeading,
+        t1.enabled as enabled,
+        t1.accountNonLocked as accountnonlocked,
+        t1.credentialsNonExpired as credentialsnonexpired,
+        t1.accountNonExpired as accountnonexpired,
+        t1.create_time as createTime,
+        t1.department as department,
+        t1.phone as phone,
+        t1.email as email,
+        t1.lose_efficacy_time as loseEfficacyTime,
+        t3.rname as rname,
+        t4.dname as dname
+        from sys_userinfo t1
+        left join (select lre.user_id as userId, replace(wm_concat(to_char(re.name)),',','、') as rname
+        from sys_ln_user_region lre
+        left join sys_region re
+        on (re.id = lre.region_id)
+        group by lre.user_id) t3 on (t3.userId = t1.id)
+        left join (select ldp.user_id as userId, replace(wm_concat(to_char(dp.name)),',','、') as dname
+        from sys_ln_user_department ldp
+        left join sys_department dp on (dp.id = ldp.dpt_id)
+        group by ldp.user_id) t4
+        on (t4.userId = t1.id)
+        <where>
+            <if test="username != null and username != '' ">
+                <![CDATA[ and upper(t1.username) like '%'||upper(#{username})||'%']]>
+            </if>
+            <if test="nick != null and nick != '' ">
+                <![CDATA[ and upper(t1.nick) like '%'||upper(#{nick})||'%']]>
+            </if>
+            <choose>
+                <when test="isbind != null and isbind == 'unbind' ">
+                    <if test="groupId != null and groupId != '' ">
+                        <![CDATA[ and not exists(select 1 from sys_ln_user_usergrp up where up.user_id = t1.id and up.ugrp_id = #{groupId})]]>
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="groupId != null and groupId != '' ">
+                        <![CDATA[ and exists(select 1 from sys_ln_user_usergrp up where up.user_id = t1.id and up.ugrp_id = #{groupId})]]>
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 查询满足条件的所有用户 page-->
+    <select id="queryUserListPageByObjectMap" parameterType="PageBean" resultType="Map">
+        select t1.id as id,
+        t1.username as username,
+        t1.region_id as region,
+        t1.nick as nick,
+        t1.age as age,
+        t1.password as password,
+        t1.native_str as nativeStr,
+        t1.sex as sex,
+        t1.count as count,
+        t1.is_depart_leading as isDepartLeading,
+        t1.enabled as enabled,
+        t1.accountNonLocked as accountnonlocked,
+        t1.credentialsNonExpired as credentialsnonexpired,
+        t1.accountNonExpired as accountnonexpired,
+        t1.create_time as createTime,
+        t1.department as department,
+        t1.phone as phone,
+        t1.email as email,
+        t1.lose_efficacy_time as loseEfficacyTime,
+        t3.rname as rname,
+        t4.dname as dname
+        from sys_userinfo t1
+        left join (select lre.user_id as userId, replace(wm_concat(to_char(re.name)),',','、') as rname
+        from sys_ln_user_region lre
+        left join sys_region re
+        on (re.id = lre.region_id)
+        group by lre.user_id) t3 on (t3.userId = t1.id)
+        left join (select ldp.user_id as userId, replace(wm_concat(to_char(dp.name)),',','、') as dname
+        from sys_ln_user_department ldp
+        left join sys_department dp on (dp.id = ldp.dpt_id)
+        group by ldp.user_id) t4
+        on (t4.userId = t1.id)
+        <where>
+            <if test="params.username != null and params.username != '' ">
+                <![CDATA[ and upper(t1.username) like '%'||upper(#{params.username})||'%']]>
+            </if>
+            <if test="params.nick != null and params.nick != '' ">
+                <![CDATA[ and upper(t1.nick) like '%'||upper(#{params.nick})||'%']]>
+            </if>
+            <choose>
+                <when test="params.isbind != null and params.isbind == 'unbind' ">
+                    <if test="params.groupId != null and params.groupId != '' ">
+                        <![CDATA[ and not exists(select 1 from sys_ln_user_usergrp up where up.user_id = t1.id and up.ugrp_id = #{params.groupId})]]>
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="params.groupId != null and params.groupId != '' ">
+                        <![CDATA[ and exists(select 1 from sys_ln_user_usergrp up where up.user_id = t1.id and up.ugrp_id = #{params.groupId})]]>
+                    </if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 通过角色将相关用户信息维护到表JBPM_OA_AUTHOR -->
+    <select id="authorFromGroup">
+        call JBPM_OA_FUNCION.author_from_group()
+    </select>
+</mapper>

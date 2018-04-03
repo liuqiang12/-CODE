@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcJbpmTaskNodeMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcJbpmTaskNodeMap" type="IdcJbpmTaskNode">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="ID" property="id" />
+				
+		<result column="PROCESSDEFINITONKEY" property="processdefinitonkey" />
+				
+		<result column="TASKNODE_NAME" property="tasknodeName" />
+				
+		<result column="FORM_KEY" property="formKey" />
+				
+		<result column="FORM_URL" property="formUrl" />
+				
+		<result column="JBPM_STEP" property="jbpmStep" />
+				
+		<result column="IS_UPDATE_HANDLER" property="isUpdateHandler" />
+				
+		<result column="IS_SHOW_HANDBAR" property="isShowHandbar" />
+				
+		<result column="CREATE_TIME" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getProcessdefinitonkey" resultType="String">
+		select distinct PROCESSDEFINITONKEY from idc_jbpm_tasknode t where t.prod_category=#{prodCategory} and t.ticket_category= #{ticketCategory}
+	</select>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="IdcJbpmTaskNode">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE where ID= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="IdcJbpmTaskNode"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="IdcJbpmTaskNode">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="IdcJbpmTaskNode">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+	</select>
+
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="IdcJbpmTaskNode"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="IdcJbpmTaskNode">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="IdcJbpmTaskNode">
+		select
+		<include refid="baseColumn" />
+		from IDC_JBPM_TASKNODE
+		<include refid="wherePageParam" />
+	</select>
+	
+	<!-- update -->
+	<update id="updateByObject" parameterType="IdcJbpmTaskNode">
+		update IDC_JBPM_TASKNODE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update IDC_JBPM_TASKNODE
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from IDC_JBPM_TASKNODE
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from IDC_JBPM_TASKNODE where ID= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="IdcJbpmTaskNode">
+		delete from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from IDC_JBPM_TASKNODE
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from IDC_JBPM_TASKNODE where ID in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="IdcJbpmTaskNode"
+		useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO IDC_JBPM_TASKNODE
+		(
+		<include refid="insertColumn" />
+		) VALUES
+		(
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO IDC_JBPM_TASKNODE (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	ID as id,
+			PROCESSDEFINITONKEY as processdefinitonkey,
+			TASKNODE_NAME as tasknodeName,
+			FORM_KEY as formKey,
+			FORM_URL as formUrl,
+			JBPM_STEP as jbpmStep,
+			IS_UPDATE_HANDLER as isUpdateHandler,
+			IS_SHOW_HANDBAR as isShowHandbar,
+			CREATE_TIME as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+						
+			<if test="processdefinitonkey != null and processdefinitonkey != '' ">  <![CDATA[ and PROCESSDEFINITONKEY = #{processdefinitonkey} ]]></if>
+						
+			<if test="tasknodeName != null and tasknodeName != '' ">  <![CDATA[ and TASKNODE_NAME = #{tasknodeName} ]]></if>
+						
+			<if test="formKey != null and formKey != '' ">  <![CDATA[ and FORM_KEY = #{formKey} ]]></if>
+						
+			<if test="formUrl != null and formUrl != '' ">  <![CDATA[ and FORM_URL = #{formUrl} ]]></if>
+						
+			<if test="jbpmStep != null and jbpmStep != '' ">  <![CDATA[ and JBPM_STEP = #{jbpmStep} ]]></if>
+						
+			<if test="isUpdateHandler != null and isUpdateHandler != '' ">  <![CDATA[ and IS_UPDATE_HANDLER = #{isUpdateHandler} ]]></if>
+						
+			<if test="isShowHandbar != null and isShowHandbar != '' ">  <![CDATA[ and IS_SHOW_HANDBAR = #{isShowHandbar} ]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[ and CREATE_TIME = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+						
+			<if test="params.processdefinitonkey != null and params.processdefinitonkey != '' ">  <![CDATA[ and PROCESSDEFINITONKEY = #{params.processdefinitonkey} ]]></if>
+						
+			<if test="params.tasknodeName != null and params.tasknodeName != '' ">  <![CDATA[ and TASKNODE_NAME = #{params.tasknodeName} ]]></if>
+						
+			<if test="params.formKey != null and params.formKey != '' ">  <![CDATA[ and FORM_KEY = #{params.formKey} ]]></if>
+						
+			<if test="params.formUrl != null and params.formUrl != '' ">  <![CDATA[ and FORM_URL = #{params.formUrl} ]]></if>
+						
+			<if test="params.jbpmStep != null and params.jbpmStep != '' ">  <![CDATA[ and JBPM_STEP = #{params.jbpmStep} ]]></if>
+						
+			<if test="params.isUpdateHandler != null and params.isUpdateHandler != '' ">  <![CDATA[ and IS_UPDATE_HANDLER = #{params.isUpdateHandler} ]]></if>
+						
+			<if test="params.isShowHandbar != null and params.isShowHandbar != '' ">  <![CDATA[ and IS_SHOW_HANDBAR = #{params.isShowHandbar} ]]></if>
+						
+			<if test="params.createTime != null and params.createTime != '' ">  <![CDATA[ and CREATE_TIME = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+						
+			<if test="processdefinitonkey != null and processdefinitonkey != '' ">  <![CDATA[  PROCESSDEFINITONKEY = #{processdefinitonkey } ,]]></if>
+						
+			<if test="tasknodeName != null and tasknodeName != '' ">  <![CDATA[  TASKNODE_NAME = #{tasknodeName } ,]]></if>
+						
+			<if test="formKey != null and formKey != '' ">  <![CDATA[  FORM_KEY = #{formKey } ,]]></if>
+						
+			<if test="formUrl != null and formUrl != '' ">  <![CDATA[  FORM_URL = #{formUrl } ,]]></if>
+						
+			<if test="jbpmStep != null and jbpmStep != '' ">  <![CDATA[  JBPM_STEP = #{jbpmStep } ,]]></if>
+						
+			<if test="isUpdateHandler != null and isUpdateHandler != '' ">  <![CDATA[  IS_UPDATE_HANDLER = #{isUpdateHandler } ,]]></if>
+						
+			<if test="isShowHandbar != null and isShowHandbar != '' ">  <![CDATA[  IS_SHOW_HANDBAR = #{isShowHandbar } ,]]></if>
+						
+			<if test="createTime != null and createTime != '' ">  <![CDATA[  CREATE_TIME = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>
+				
+		<if test="processdefinitonkey != null and processdefinitonkey != '' ">  <![CDATA[ PROCESSDEFINITONKEY , ]]></if>
+				
+		<if test="tasknodeName != null and tasknodeName != '' ">  <![CDATA[ TASKNODE_NAME , ]]></if>
+				
+		<if test="formKey != null and formKey != '' ">  <![CDATA[ FORM_KEY , ]]></if>
+				
+		<if test="formUrl != null and formUrl != '' ">  <![CDATA[ FORM_URL , ]]></if>
+				
+		<if test="jbpmStep != null and jbpmStep != '' ">  <![CDATA[ JBPM_STEP , ]]></if>
+				
+		<if test="isUpdateHandler != null and isUpdateHandler != '' ">  <![CDATA[ IS_UPDATE_HANDLER , ]]></if>
+				
+		<if test="isShowHandbar != null and isShowHandbar != '' ">  <![CDATA[ IS_SHOW_HANDBAR , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ CREATE_TIME , ]]></if>
+				</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+				
+		<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>
+				
+		<if test="processdefinitonkey != null and processdefinitonkey != '' ">  <![CDATA[ #{processdefinitonkey } , ]]></if>
+				
+		<if test="tasknodeName != null and tasknodeName != '' ">  <![CDATA[ #{tasknodeName } , ]]></if>
+				
+		<if test="formKey != null and formKey != '' ">  <![CDATA[ #{formKey } , ]]></if>
+				
+		<if test="formUrl != null and formUrl != '' ">  <![CDATA[ #{formUrl } , ]]></if>
+				
+		<if test="jbpmStep != null and jbpmStep != '' ">  <![CDATA[ #{jbpmStep } , ]]></if>
+				
+		<if test="isUpdateHandler != null and isUpdateHandler != '' ">  <![CDATA[ #{isUpdateHandler } , ]]></if>
+				
+		<if test="isShowHandbar != null and isShowHandbar != '' ">  <![CDATA[ #{isShowHandbar } , ]]></if>
+				
+		<if test="createTime != null and createTime != '' ">  <![CDATA[ #{createTime } , ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			ID,PROCESSDEFINITONKEY,TASKNODE_NAME,FORM_KEY,FORM_URL,JBPM_STEP,IS_UPDATE_HANDLER,IS_SHOW_HANDBAR,CREATE_TIME
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.processdefinitonkey},#{item.tasknodeName},#{item.formKey},#{item.formUrl},#{item.jbpmStep},#{item.isUpdateHandler},#{item.isShowHandbar},#{item.createTime}
+	</sql>
+</mapper>

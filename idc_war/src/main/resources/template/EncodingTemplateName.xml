@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<fileLoad>
+	<idcId>A2.B1.B2-20100001</idcId>
+	<dataUpload>${fileLoad.dataUpload}</dataUpload>
+	<encryptAlgorithm>1</encryptAlgorithm>
+	<compressionFormat>1</compressionFormat>
+	<hashAlgorithm>1</hashAlgorithm>
+	<dataHash>${fileLoad.dataHash}</dataHash>
+	<commandVersion>V2.0</commandVersion>
+</fileLoad>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+					    http://www.springframework.org/schema/tx
+					    http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+
+
+					    http://www.springframework.org/schema/aop
+					     http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+					     http://www.springframework.org/schema/task
+					    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    <!--  定时器开关  开始 spring才能识别@Scheduled注解-->
+     <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <!--  定时器开关  结束-->
+     <task:scheduler id="qbScheduler" pool-size="10"/>
+    <!-- 注解方式配置事物 -->
+    <tx:annotation-driven transaction-manager="transactionManager" order="2"/>
+    <!-- 自动扫描 [不必扫描顶级实现类]-->
+    <context:component-scan base-package="com.idc">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--wcg 定时器  start-->
+    <!-- bean触发方法配置 -->
+    <!--<bean id="timerQuartz" class="com.idc.quartz.TimerSendEmailJBPM"></bean>
+
+    &lt;!&ndash; bean触发方法配置 &ndash;&gt;
+    <bean name="quartzBean"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        &lt;!&ndash; bean名字 &ndash;&gt;
+        <property name="targetObject" ref="timerQuartz" />&lt;!&ndash;目标对象&ndash;&gt;
+        &lt;!&ndash; bean方法 &ndash;&gt;
+        <property name="targetMethod">&lt;!&ndash;目标方法&ndash;&gt;
+            <value>sendEmail</value>
+        </property>
+        <property name="concurrent">&lt;!&ndash;配置为false不允许任务并发执行&ndash;&gt;
+            <value>false</value>
+        </property>
+    </bean>
+
+    &lt;!&ndash; bean触发时间配置,指定具体的时间执行 &ndash;&gt;
+    <bean id="quartzTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        &lt;!&ndash; 触发bean配置 &ndash;&gt;
+        &lt;!&ndash; 触发时间配置 &ndash;&gt;
+        <property name="cronExpression">
+            <value>0 * * * * ? *</value>
+            &lt;!&ndash;<value>0 0 8,9,10,11,12,13,14,15,16,17,18,19 * * ?</value>&ndash;&gt;
+        </property>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="default" autowire="default">
+        <property name="triggers">
+            <list>
+                <ref bean="quartzTrigger" />
+            </list>
+        </property>
+        <property name="autoStartup" value="true" />
+    </bean>-->
+    <!--wcg 定时器  end-->
+
+
+    <!-- 引入配置文件 -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/jdbc.properties</value>
+                <value>classpath:log4j.properties</value>
+            </list>
+        </property>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <!-- 配置dbcp数据源 -->
+    <bean id="datasource" destroy-method="close" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url.master}"/>
+        <property name="username" value="${jdbc.username.master}"/>
+        <property name="password" value="${jdbc.password.master}"/>
+        <!-- 池启动时创建的连接数量 -->
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <!-- 同一时间可以从池分配的最多连接数量。设置为0时表示无限制。 -->
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <!-- 池里不会被释放的最多空闲连接数量。设置为0时表示无限制。 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <!-- 在不新建连接的条件下，池中保持空闲的最少连接数。 -->
+        <property name="minIdle" value="${jdbc.minIdle}"/>
+        <!-- 等待超时以毫秒为单位，在抛出异常之前，池等待连接被回收的最长时间（当没有可用连接时）。设置为-1表示无限等待。  -->
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <!-- 设置自动回收超时连接 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 自动回收超时时间(以秒数为单位) -->
+        <property name="removeAbandonedTimeout" value="200"/>
+        <!-- 设置在自动回收超时连接的时候打印连接的超时错误  -->
+        <property name="logAbandoned" value="true"/>
+
+        <property name="filters" value="stat" />
+
+    </bean>
+    <!-- 配置c3p0数据源 -->
+    <bean id="datasourcesalve" parent="datasource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url.salve}"/>
+        <property name="username" value="${jdbc.username.salve}"/>
+        <property name="password" value="${jdbc.password.salve}"/>
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="datasource"/>
+        </property>
+    </bean>
+
+    <!-- 绑定多数据源 -->
+    <bean id="multiDataSource" class="system.data.datasource.MultiDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <!-- 注意这里的value是和上面的DataSource的id对应，key要和下面的CustomerContextHolder中的常量对应 -->
+                <entry key="mysql_master" value-ref="datasource"/>
+                <entry key="mysql_salve" value-ref="datasourcesalve"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="datasource"/>
+    </bean>
+
+
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="multiDataSource"/>
+        <!-- 配置文件 -->
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+        <!-- 多个包名称用逗号或者分号分割 -->
+        <property name="typeAliasesPackage" value="com.idc.model"/>
+        <!-- mapper文件:当 mapper文件和对应的mapper接口处于同一位置的时候可以不用指定该属性 -->
+        <property name="mapperLocations">
+            <list>
+                <!-- 表示在com.idc包或以下所有目录中*Mapper.xml -->
+                <value>classpath:com/idc/**/*Mapper.xml</value>
+            </list>
+        </property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <!--使用下面的方式配置参数，一行配置一个 -->
+                        <value>
+                            helperDialect=oracle
+                            reasonable=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        <!-- 其他属性：typeAliases -->
+    </bean>
+
+    <!-- mapper接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 指定Mapper接口文件所在的基包的;多个基包之间可以使用逗号或者分号进行分隔[value：实现结构的包路径而非顶级接口路径]-->
+        <property name="basePackage" value="com.idc.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+    <!--<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="com.isea533.mybatis.mapper"/>-->
+    <!--<property name="properties">-->
+    <!--<value>-->
+    <!--mappers=tk.mybatis.mapper.common.Mapper-->
+    <!--</value>-->
+    <!--</property>-->
+    <!--</bean>-->
+    <!--<bean id="nutDao" class="org.nutz.dao.impl.NutDao">-->
+        <!--<property name="dataSource" ref="multiDataSource"/>-->
+        <!--&lt;!&ndash; 如果要使用Trans,移除springDaoRunner &ndash;&gt;-->
+        <!--<property name="runner" ref="springDaoRunner"/>-->
+    <!--</bean>-->
+    <!--<bean id="springDaoRunner" class="org.nutz.integration.spring.SpringDaoRunner">-->
+    <!--</bean>-->
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="multiDataSource"/>
+    </bean>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <context:component-scan base-package="com.idc.action"/>
+
+    <context:component-scan base-package="system.authority.aop"/>
+    <!-- 分页控制工具 -->
+    <!--<context:component-scan base-package="system.data.page.core"/>-->
+    <context:component-scan base-package="system.authority.security"/>
+    <context:component-scan base-package="system.data"/>
+    <context:component-scan base-package="system.rest"/>
+    <!-- 重复是扫描了 -->
+    <context:component-scan base-package="com.idc.scheduler"/>
+
+    <!-- 隐式地向 Spring 容器注册  -->
+    <context:annotation-config/>
+
+    <context:component-scan base-package="system.systemlog"/>
+    <import resource="explorer/activiti-context.xml"/>
+    <import resource="spring-security.xml"/>
+    <import resource="spring-redis.xml"/>
+    <!-- cxf接口:isp所使用的远程调用接口 -->
+    <import resource="cxf-config.xml"/>
+    <!-- jax-rs接口:常见的内部接口 -->
+    <import resource="rest-config.xml"/>
+</beans>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.RmDevListMapper">
+
+    <!--*****************************************************************查询start*******************************************************************-->
+    <!-- 通过主键查询记录 -->
+    <select id="getModelById" resultType="RmDevList">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_LIST where RM_DEV_LIST_ID= #{0}
+    </select>
+
+    <!-- 通过设备进出申请单ID获取具体的进出设备信息列表 -->
+    <select id="queryRmDevListListByRmDevInOutFormId" resultType="RmDevList">
+        select
+        <include refid="baseColumn"/>
+        from RM_DEV_LIST where RM_DEV_IN_OUT_ID= #{rmDevInOutFormId}
+    </select>
+
+    <!--*****************************************************************查询end*********************************************************************-->
+
+    <!--*****************************************************************修改start*******************************************************************-->
+    <!--*****************************************************************修改end*********************************************************************-->
+
+    <!--*****************************************************************新增start*******************************************************************-->
+    <!-- insert保存方法 -->
+    <insert id="insert" parameterType="RmDevList"
+            useGeneratedKeys="true" keyProperty="RM_DEV_LIST_ID">
+        INSERT INTO RM_DEV_LIST
+        (
+        <include refid="insertColumn"/>
+        ) VALUES
+        (
+        <include refid="insertColumnParam"/>
+        )
+    </insert>
+    <!--*****************************************************************新增end*********************************************************************-->
+
+    <!--*****************************************************************删除start*******************************************************************-->
+    <!-- 通过设备出入申请单ID删除其对应的进出设备 -->
+    <delete id="deleteRmDevListByRmDevInOutFormId">
+        delete FROM RM_DEV_LIST where RM_DEV_IN_OUT_ID = #{rmDevInOutFormId}
+    </delete>
+
+    <!-- 通过设备出入申请单IDS删除其对应的进出设备 -->
+    <delete id="deleteRmDevListByRmDevInOutFormIds" parameterType="java.util.List">
+        delete FROM RM_DEV_LIST where RM_DEV_IN_OUT_ID IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--*****************************************************************删除end*********************************************************************-->
+
+    <!--*****************************************************************sql  satrt *****************************************************************-->
+    <!-- sql基本映射 -->
+    <sql id="baseColumn">
+        <![CDATA[
+		  	RM_DEV_LIST_ID as rmDevListId,
+			RM_DEV_IN_OUT_ID as rmDevInOutId,
+			RM_DEV_NAME as rmDevName,
+			RM_DEV_CODE as rmDevCode,
+			RM_DEV_TYPE as rmDevType,
+			RM_DEV_UNIT as rmDevUnit,
+			RM_DEV_NUM as rmDevNum,
+			NOTE as note
+        ]]>
+    </sql>
+
+    <!-- 新增设备  对应字段 -->
+    <sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmDevListId != null and rmDevListId != '' ">  <![CDATA[ RM_DEV_LIST_ID , ]]></if>
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">  <![CDATA[ RM_DEV_IN_OUT_ID , ]]></if>
+            <if test="rmDevName != null and rmDevName != '' ">  <![CDATA[ RM_DEV_NAME , ]]></if>
+            <if test="rmDevCode != null and rmDevCode != '' ">  <![CDATA[ RM_DEV_CODE , ]]></if>
+            <if test="rmDevType != null and rmDevType != '' ">  <![CDATA[ RM_DEV_TYPE , ]]></if>
+            <if test="rmDevUnit != null and rmDevUnit != '' ">  <![CDATA[ RM_DEV_UNIT , ]]></if>
+            <if test="rmDevNum != null and rmDevNum != '' ">  <![CDATA[ RM_DEV_NUM , ]]></if>
+            <if test="note != null and note != '' ">  <![CDATA[ NOTE , ]]></if>
+        </trim>
+    </sql>
+
+    <!-- 新增设备  字段对应值 -->
+    <sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+            <if test="rmDevListId != null and rmDevListId != '' ">  <![CDATA[ #{rmDevListId } , ]]></if>
+            <if test="rmDevInOutId != null and rmDevInOutId != '' ">  <![CDATA[ #{rmDevInOutId } , ]]></if>
+            <if test="rmDevName != null and rmDevName != '' ">  <![CDATA[ #{rmDevName } , ]]></if>
+            <if test="rmDevCode != null and rmDevCode != '' ">  <![CDATA[ #{rmDevCode } , ]]></if>
+            <if test="rmDevType != null and rmDevType != '' ">  <![CDATA[ #{rmDevType } , ]]></if>
+            <if test="rmDevUnit != null and rmDevUnit != '' ">  <![CDATA[ #{rmDevUnit } , ]]></if>
+            <if test="rmDevNum != null and rmDevNum != '' ">  <![CDATA[ #{rmDevNum } , ]]></if>
+            <if test="note != null and note != '' ">  <![CDATA[ #{note } , ]]></if>
+        </trim>
+    </sql>
+    <!--*****************************************************************sql  end *******************************************************************-->
+
+</mapper>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package>
+	<task gc="1" rule="com.JH.itBusi.business.resource.rule.ResGatherTaskRule" controller="com.JH.itBusi.business.resource.controller.ResGatherController"/>
+     <task gc="2" rule="com.JH.itBusi.business.deviceCap.rule.CapTaskRule" controller="com.JH.itBusi.business.deviceCap.controller.DevCapController"/>
+    <task gc="3" rule="com.JH.itBusi.business.flux.rule.FluxTaskRule" controller="com.JH.itBusi.business.flux.controller.FluxGatherController"/>
+</package>

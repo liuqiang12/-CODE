@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcRunTicketMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcRunTicketMap" type="IdcRunTicket">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="ID" property="id" />
+		<result column="PROD_INST_ID" property="prodInstId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<result column="BUSNAME" property="busname" />
+		<result column="TICKET_CATEGORY" property="ticketCategory" />
+		<result column="SERIAL_NUMBER" property="serialNumber" />
+		<result column="form_key_" property="formKey" />
+		<result column="FORM_URL" property="formUrl" />
+		<result column="PROD_CATEGORY" property="prodCategory" />
+		<result column="CUSTOMER_ID" property="customerId" />
+		<result column="CUSTOMER_NAME" property="customerName" />
+		<result column="APPLY_ID" property="applyId" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="ROLE_KEY" property="roleKey" />
+		<result column="TASK_NAME" property="taskName" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="PROC_DEF_ID_" property="procDefId" />
+		<result column="PROCESSDEFINITONKEY" property="processdefinitonkey" />
+		<result column="PROC_INST_ID" property="procInstId" />
+		<result column="TICKET_STATUS" property="ticketStatus" />
+		<result column="CREATETIMESTR" property="createTimeStr" />
+	</resultMap>
+
+	<!-- insert保存方法 -->
+	<insert id="createRunTicketInst" parameterType="IdcRunTicket"  >
+		<selectKey  keyProperty="id" order="AFTER" resultType="java.lang.Long">
+			SELECT SEQ_IDC_RUN_TICKET.CURRVAL AS id FROM DUAL
+		</selectKey>
+		INSERT INTO IDC_RUN_TICKET
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ PROD_INST_ID , ]]></if>
+				<if test="parentId != null and parentId != '' ">  <![CDATA[ PARENT_ID , ]]></if>
+				<if test="initId != null and initId != '' ">  <![CDATA[ INIT_ID , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ TICKET_INST_ID , ]]></if>
+				<if test="procInstId != null and procInstId != '' ">  <![CDATA[ PROC_INST_ID , ]]></if>
+				<if test="category != null and category != '' ">  <![CDATA[ TICKET_CATEGORY , ]]></if>
+				<if test="approvalStatus != null and approvalStatus != '' ">  <![CDATA[ APPROVAL_STATUS , ]]></if>
+				<if test="remark != null and remark != '' ">  <![CDATA[ REMARK , ]]></if>
+				<if test="rev != null and rev != '' ">  <![CDATA[ REV , ]]></if>
+			</trim>
+		) VALUES
+		(
+			<trim suffix="" suffixOverrides=",">
+				<if test="prodInstId != null and prodInstId != '' ">  <![CDATA[ #{prodInstId } , ]]></if>
+				<if test="parentId != null and parentId != '' ">  <![CDATA[ #{parentId } , ]]></if>
+				<if test="initId != null and initId != '' ">  <![CDATA[ #{initId } , ]]></if>
+				<if test="ticketInstId != null and ticketInstId != '' ">  <![CDATA[ #{ticketInstId } , ]]></if>
+				<if test="procInstId != null and procInstId != '' ">  <![CDATA[ #{procInstId } , ]]></if>
+				<if test="category != null and category != '' ">  <![CDATA[ #{category } , ]]></if>
+				<if test="approvalStatus != null and approvalStatus != '' ">  <![CDATA[ #{approvalStatus } , ]]></if>
+				<if test="remark != null and remark != '' ">  <![CDATA[ #{remark } , ]]></if>
+				<if test="rev != null and rev != '' ">  <![CDATA[ #{rev } , ]]></if>
+			</trim>
+		)
+	</insert>
+	<!-- 保存工单实例ID 和流程实例ID -->
+	<update id="updateTicketInstIdAndProcInstById">
+		update IDC_RUN_TICKET set TICKET_INST_ID = #{id},
+		 	PROC_INST_ID = #{procInstId}
+		where id = #{id}
+	</update>
+
+	<!-- 保存工单实例ID 和流程实例ID -->
+	<update id="updateTaskByTicketIdAndProcInstId">
+		update IDC_RUN_TICKET
+			set
+				TASK_NAME = #{TASK_NAME},
+				TASK_ID = #{TASK_ID},
+				FORM_KEY_ = #{FORM_KEY},
+				PROC_DEF_ID_ = #{PROC_DEF_ID},
+				PROCESSDEFINITONKEY = #{PROCESSDEFINITONKEY}
+			where TICKET_INST_ID = #{ticketInstId}
+	</update>
+
+
+	<!--  callClearRunTicket  -->
+	<delete id="callClearRunTicket" parameterType="Long" >
+		<!-- 批量删除不同表 -->
+		CALL clearRunTicket(#{0})
+	</delete>
+	<!-- 判断是否是最后一步骤 -->
+
+	<select id="getIsLastStepTicket" resultType="Boolean">
+		select count('X') as isLastStep from idc_jbpm_tasknode t where t.PARENT_FORM_KEY = #{0}
+	</select>
+
+
+	<select id="getFormkeyByTicketId" resultType="String">
+		select t.form_key_ from idc_his_ticket t where t.ticket_inst_id = #{0}
+	</select>
+
+	<select id="isRejectByTicketID" resultType="Boolean">
+		select count('a')
+		  from IDC_RUN_TICKET t
+		 WHERE t.TICKET_INST_ID = #{0}
+		   and t.TICKET_CATEGORY = 100
+		   and t.TICKET_STATUS = -1
+	</select>
+
+	<select id="getIsFirstStepTicket" resultType="Boolean">
+		select case
+				 when t.jbpm_step = 1 then
+				  1
+				 else
+				  0
+			   end as isFirstStep
+		  from idc_jbpm_tasknode t
+		 where t.form_key =  #{0}
+	</select>
+
+	<!--  callCreateInitTicket  -->
+	<select id="callCreateInitTicket" statementType="CALLABLE" parameterType="Map">
+		CALL jbpm_process_back.PROC_CREATE_INIT_TICKET(#{prodInstId,jdbcType=INTEGER,mode=IN},
+									#{prodCategory,jdbcType=INTEGER,mode=IN},
+									#{parentId,jdbcType=INTEGER,mode=IN},
+									#{initId,jdbcType=INTEGER,mode=IN},
+									#{catalog,jdbcType=VARCHAR,mode=IN},
+									#{ticketInstId_init,jdbcType=INTEGER,mode=IN},
+									#{ticketInstId,jdbcType=INTEGER,mode=OUT})
+	</select>
+
+	<!--删除或者作废单子 之前需要查询到工单的资源，然后对其修改-->
+	<select id="rubbishDeleteAfterQuery" resultType="Map">
+		select t.ticket_inst_id,
+			t.resourceid,
+			t.category,
+			t.rack_id,
+			t.ticket_category
+		from VIEW_RUBBISH_DELETE_QUERY t
+			where t.TICKET_INST_ID=#{0}
+	</select>
+	<select id="getTicketCategoryByProdInstId" resultType="String">
+		  select
+		  t1.RACKORRACUNIT as rackOrracunit
+		  from idc_re_rack_model t1
+		  left join idc_re_proddef t2 on t1.id = t2.id
+		  where t2.prod_inst_id =#{prodInstId} and t2.TICKET_INST_ID=#{ticketInstId}
+	</select>
+
+	<select id="getAllResourceByProdInstId" resultType="Map">
+		select t.ticket_inst_id,
+			   t.resourceid,
+			   t.category        as resourceCategory,
+			   t.ticket_category as ticketCategory,
+			   t.rack_id,
+			   t.ip_type
+		  from idc_run_ticket_resource t where t.ticket_inst_id=#{0}
+	</select>
+
+	<select id="getTaskName" resultType="String">
+		select t.task_name  from idc_run_ticket t where t.ID=#{0}
+	</select>
+
+
+
+	<select id="callTicketTaskNodeCompleteData" statementType="CALLABLE" parameterType="Map">
+		CALL PROC_CREATE_INIT_TICKET(#{prodInstId,jdbcType=INTEGER,mode=IN},
+		#{ticketInstId,jdbcType=INTEGER,mode=IN})
+	</select>
+
+	<!--删除或者作废单子-->
+	<select id="rubbishTicketDeleteCall" statementType="CALLABLE" parameterType="Map">
+		CALL process_resource.TICKET_RUBBISH_OR_DELETE(#{prodInstId,jdbcType=INTEGER,mode=IN},
+									#{ticketInstId,jdbcType=INTEGER,mode=IN},
+									#{procticketStatus,jdbcType=INTEGER,mode=IN},
+									#{satisfaction,jdbcType=INTEGER,mode=IN})
+	</select>
+	<!-- 删除和作废工单的情况:[都要返回相应的数据] -->
+	<select id="callRubbishOrDeleteTicket" statementType="CALLABLE" parameterType="Map">
+		CALL jbpm_process_back.TICKET_RUBBISH_OR_DELETE_TIP(
+			#{prodInstId,jdbcType=INTEGER,mode=IN},
+			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+			#{operationSign,jdbcType=VARCHAR,mode=IN},
+			#{rowcount,jdbcType=INTEGER,mode=OUT},
+			#{msg,jdbcType=VARCHAR,mode=OUT}
+		)
+	</select>
+
+	<select id="callUpdateORCopyTicketInfo" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[
+		 CALL jbpm_process_back.PROC_UPDATEORCOPY_TICKETINFO(
+			#{jbpmTicketPropertyItems,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.TicketPropertyArrayObjectHandler},
+			#{procInstId,jdbcType=INTEGER,mode=IN},
+			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+			#{processDefinitionId,jdbcType=VARCHAR,mode=IN},
+			#{taskId,jdbcType=VARCHAR,mode=OUT},
+			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+			)
+		]]>
+	</select>
+
+	<select id="callJbpmTicketEntrancet" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[
+		 CALL jbpm_process_back.PROC_CREATE_JBPM_TICKET(
+			#{jbpmTicketPropertyItems,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.TicketPropertyArrayObjectHandler},
+			#{ticketInstId,jdbcType=INTEGER,mode=OUT},
+			#{rowcount,jdbcType=INTEGER,mode=OUT},
+  			#{msg,jdbcType=VARCHAR,mode=OUT}
+			)
+		]]>
+	</select>
+	<!-- 查询是否存在[开通工单信息] -->
+	<select id="getIsHasOpenTicket" resultType="Boolean">
+		select has_open_ticket(#{ticketInstId},#{ticketStatus}) from dual
+	</select>
+
+	<select id="getCandidateEmail" resultType="Map">
+		select f.email,f.nick
+		  from sys_userinfo f
+		 where ',' || (select t.candidate_ids
+						 from idc_run_ticket t
+						where t.ticket_inst_id = #{ticketInstId}) || ',' like
+			   '%,' || f.id || ',%'
+	</select>
+
+	<select id="getIsHasOpenTicketEdit" resultType="Boolean">
+		select has_open_ticket_edit(#{ticketInstId},#{ticketStatus}) from dual
+	</select>
+
+	<!--  callCreateCategoryTicket  -->
+	<select id="callCreateCategoryTicket" statementType="CALLABLE" parameterType="Map">
+		<![CDATA[
+		 CALL jbpm_process_back.create_category_ticket_res(
+			#{prodInstId,jdbcType=INTEGER,mode=IN},
+			#{ticketInstId,jdbcType=INTEGER,mode=IN},
+			#{procInstId,jdbcType=VARCHAR,mode=IN},
+			#{category,jdbcType=VARCHAR,mode=IN},
+			#{procticketStatus,jdbcType=INTEGER,mode=IN},
+			#{ticket_cursor,mode=OUT,jdbcType=CURSOR,javaType=java.sql.ResultSet,resultMap=resultIdcRunTicketMap}
+		)
+		]]>
+	</select>
+
+	<select id="callTicketTaskComplete" statementType="CALLABLE" parameterType="Map">
+		CALL jbpm_process_back.PROC_JBPM_TICKET_TASK(
+				#{jbpmTicketPropertyItems,jdbcType=ARRAY,javaType=list,mode=IN,typeHandler=com.idc.tag.TicketPropertyArrayObjectHandler},
+				#{procInstId,jdbcType=INTEGER,mode=IN},
+				#{ticketInstId,jdbcType=INTEGER,mode=IN},
+				#{processDefinitionId,jdbcType=VARCHAR,mode=IN},
+				#{pre_taskId,jdbcType=VARCHAR,mode=IN},
+				#{pre_taskName,jdbcType=VARCHAR,mode=IN},
+				/*最后一步骤需要评分*/
+				#{comment,jdbcType=VARCHAR,mode=IN},
+				#{satisfaction,jdbcType=INTEGER,mode=IN},
+				#{auditName,jdbcType=VARCHAR,mode=IN},
+				#{auditId,jdbcType=VARCHAR,mode=IN},
+				#{status,jdbcType=INTEGER,mode=IN},
+				#{rowcount,jdbcType=INTEGER,mode=OUT},
+				#{msg,jdbcType=VARCHAR,mode=OUT}
+  			)
+	</select>
+
+	<!--  callClearRunTicket  -->
+	<select id="callProcTicketContractCopyRes">
+		<!-- 暂时不用 -->
+		CALL jbpm_process_back.PROC_TICKET_CONTRACT_COPY_RES(#{prodInstId},#{ticketInstId},#{category})
+	</select>
+
+
+	<!-- 设置获取下一个流程运行工单信息:产品id  父工单id  序列号   开通工单 -->
+	<select id="getNextIdcRunTicketByTicketInstId" resultType="IdcRunTicket">
+		select
+		 	PROD_INST_ID as prodInstId,
+		 	TICKET_INST_ID as parentId,
+		 	#{category} as category,
+		 	SERIAL_NUMBER as serialNumber
+		 from IDC_RUN_TICKET WHERE TICKET_INST_ID = #{ticketInstId}
+	</select>
+
+	<select id="getTicketCategoryById" resultType="String">
+		select  ticket_category as category from IDC_RUN_TICKET WHERE TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getCustomerByTicketInstId" resultType="Map">
+		select t.CUSTOMER_ID,t.CUSTOMER_NAME
+		 from IDC_RUN_TICKET t WHERE TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getTicketResourceCount" resultType="Long">
+		<![CDATA[
+			select case
+					 when (t.ticket_category = 900 and
+						  t2.form_key_ <> 'business_change_shelveuping_form' and
+						  t2.form_key_ <> 'self_business_change_shelveuping_form') or (select count('X')
+						 from idc_his_ticket_resource t
+						WHERE t.TICKET_INST_ID = #{0} and t.status<>-1)>0 then
+					  2
+					 when t.ticket_category <> 900 then
+					  (select count('X')
+						 from idc_his_ticket_resource t
+						WHERE t.TICKET_INST_ID = #{0})
+				   end
+			  from idc_run_ticket t, idc_his_ticket t2
+			 WHERE t.TICKET_INST_ID = #{0}
+			   and t2.ticket_inst_id = #{0}
+		]]>
+	</select>
+
+
+	<select id="getSerialNumber" resultType="String">
+		select SERIAL_NUMBER from IDC_RUN_TICKET WHERE id  =  #{0}
+	</select>
+
+	<select id="getTicketObjMapByTicketInstId" parameterType="java.lang.Long" resultType="IdcRunTicket">
+select
+			t.id,/*工单主键*/
+			t.prod_inst_id AS prodInstId,/*业务实例ID*/
+			t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+			t.busname AS busname,/* 业务名称*/
+			t.serial_number as serialNumber,/*工单号*/
+			t.form_key_ AS formkey,/*表单键*/
+			t.FORM_URL AS formUrl,/*表单URL*/
+			t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+			t.customer_id AS customerId, /* 客户ID */
+			t.customer_name AS customerName,/* 客户名称 */
+			/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+			t.APPLY_ID AS applyId,/*申请人ID*/
+			t.APPLY_NAME AS applyName,/*申请人名称*/
+			t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+			t.TASK_NAME AS taskName,/*任务名称*/
+			t.task_id AS taskId,/*任务ID*/
+			t.proc_def_id_ AS procDefId,/*流程定义ID*/
+			t.proc_inst_id AS procInstId,/*流程实例ID*/
+			t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+			t.ticket_status as ticketStatus,/*工单状态*/
+			t.IS_RELEVANT_TICKET as isRelevantTicket,/*是否存在相关工单*/
+			t.TICKET_CATEGORY as ticketCategory,/*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+			t.audit_name as auditName,/*审批人*/
+      		t.audit_id as auditId,/*审批人ID*/
+      		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+            t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+            t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+			t.PARENT_ID as parentId,/*父工单ID*/
+			TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS')  AS createTimeStr  /*创建时间*/
+		from idc_his_ticket t
+		where t.role_key is not null and t.TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getIdcRunTicketByIdTicketInstIdForPerission"  resultType="IdcRunTicket">
+		select
+		t.id,/*工单主键*/
+		t.prod_inst_id AS prodInstId,/*业务实例ID*/
+		t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+		t.busname AS busname,/* 业务名称*/
+		t.serial_number as serialNumber,/*工单号*/
+		t.form_key_ AS formkey,/*表单键*/
+		t.FORM_URL AS formUrl,/*表单URL*/
+		t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+		t.customer_id AS customerId, /* 客户ID */
+		t.customer_name AS customerName,/* 客户名称 */
+		/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+		t.APPLY_ID AS applyId,/*申请人ID*/
+		t.APPLY_NAME AS applyName,/*申请人名称*/
+		t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+		t.TASK_NAME AS taskName,/*任务名称*/
+		t.task_id AS taskId,/*任务ID*/
+		t.proc_def_id_ AS procDefId,/*流程定义ID*/
+		t.proc_inst_id AS procInstId,/*流程实例ID*/
+		t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+		t.ticket_status as ticketStatus,/*工单状态*/
+		t.IS_RELEVANT_TICKET as isRelevantTicket,/*是否存在相关工单*/
+		t.TICKET_CATEGORY as ticketCategory,/*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+		t.audit_name as auditName,/*审批人*/
+		t.audit_id as auditId,/*审批人ID*/
+		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+		t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+		t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+		t.PARENT_ID as parentId,/*父工单ID*/
+		has_Permission(t.id,t.form_key_,t.ticket_status,t.ROLE_KEY,t.apply_id,#{loginId}) as canPermission,
+		TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS')  AS createTimeStr  /*创建时间*/
+		from idc_run_ticket t
+		where t.role_key is not null and t.TICKET_INST_ID = #{ticketInstId}
+	</select>
+	<select id="getIdcRunTicketByIdTicketInstId" parameterType="java.lang.Long" resultType="IdcRunTicket">
+		select
+			t.id,/*工单主键*/
+			t.prod_inst_id AS prodInstId,/*业务实例ID*/
+			t.ticket_inst_id AS ticketInstId,/*工单实例ID*/
+			t.busname AS busname,/* 业务名称*/
+			t.serial_number as serialNumber,/*工单号*/
+			t.form_key_ AS formkey,/*表单键*/
+			t.FORM_URL AS formUrl,/*表单URL*/
+			t.PROD_CATEGORY AS prodCategory,/* 订单类型:1政企 0自有 */
+			t.customer_id AS customerId, /* 客户ID */
+			t.customer_name AS customerName,/* 客户名称 */
+			/* 任务ID||流程定义ID|流程实例ID|  初始化时不做处理*/
+			t.APPLY_ID AS applyId,/*申请人ID*/
+			t.APPLY_NAME AS applyName,/*申请人名称*/
+			t.ROLE_KEY AS roleKey,/*所有的权限都从这里配置:目前达到动态配置效果*/
+			t.TASK_NAME AS taskName,/*任务名称*/
+			t.task_id AS taskId,/*任务ID*/
+			t.proc_def_id_ AS procDefId,/*流程定义ID*/
+			t.proc_inst_id AS procInstId,/*流程实例ID*/
+			t.processdefinitonkey AS processdefinitonkey,/*流程定义KEY*/
+			t.ticket_status as ticketStatus,/*工单状态*/
+			t.IS_RELEVANT_TICKET as isRelevantTicket,/*是否存在相关工单*/
+			t.TICKET_CATEGORY as ticketCategory,/*100:预勘 200:开通 300:变更 400:停机 500:复通 600:下线 800:临时测试*/
+			t.audit_name as auditName,/*审批人*/
+      		t.audit_id as auditId,/*审批人ID*/
+      		t.RESOURCE_ALLOCATION_STATUS as resourceAllocationStatus,/*显示资源分配 1:可以查看资源分配，0不能查看资源分配*/
+            t.TICKET_RESOURCE_HAND_STATUS as ticketResourceHandStatus,/*资源操作控制   1编辑状态，0查询状态*/
+            t.TICKET_CATEGORY_FROM as ticketCategoryFrom,/*工单来源*/
+			t.PARENT_ID as parentId,/*父工单ID*/
+			TO_CHAR(t.create_time,'YYYY-MM-DD HH24:MI:SS')  AS createTimeStr  /*创建时间*/
+		from idc_run_ticket t
+		where t.role_key is not null and t.TICKET_INST_ID = #{0}
+	</select>
+
+	<select id="getRunTicketDataIntoRedis" resultType="IdcRunTicket">
+		select * from IDC_RUN_TICKET
+	</select>
+
+	<select id="getIdcRunTicketByProductId" resultType="IdcRunTicket">
+		select * from IDC_RUN_TICKET t where t.prod_inst_id=#{0}
+	</select>
+
+	<select id="getMCBByRackId" resultType="Long">
+		select t1.id
+		  from idc_mcb t1
+		  left join idc_rack t2
+		on t1.pwr_servicerack_id = t2.id where t2.id = #{0} and t2.isdelete = 0 and t1.isdelete = 0
+	</select>
+
+
+	<!--通过申请人的名称查询此申请人所有的发起的工单-->
+	<select id="queryApplyTicketForCustomerView" parameterType="Map" resultType="Map">
+		select t1.ID,t1.PROD_INST_ID,t1.PARENT_ID,t1.TICKET_INST_ID,t1.PROC_INST_ID,t1.ticket_category as category ,t1.APPROVAL_STATUS,t1.REMARK,
+			   t1.CREATE_TIME,t1.SERIAL_NUMBER,t1.PROCTICKET_STATUS,t1.APPLY_ID,t1.APPLY_NAME,t1.CUSTOMER_ID,t1.CUSTOMER_NAME,t1.BUSNAME
+		   from IDC_RUN_TICKET t1 where t1.APPLY_NAME=#{APPLY_NAME}
+	</select>
+
+</mapper>

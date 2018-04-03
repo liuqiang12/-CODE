@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.SysPermissioninfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultSysPermissioninfoMap" type="SysPermissioninfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+				
+		<result column="id" property="id" />
+				
+		<result column="permission_type" property="permissionType" />
+				
+		<result column="create_time" property="createTime" />
+				
+	</resultMap>
+
+	<!-- 通过主键查询记录 -->
+	<select id="getModelById" resultType="SysPermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo where id= #{0}
+	</select>
+
+	<!-- map对应的key和实体类中的属性一致 -->
+	<select id="getModelByMap" resultType="SysPermissioninfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 通过实体类查询记录 -->
+	<select id="getModelByObject" resultType="SysPermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询所有记录 -->
+	<select id="queryList" resultType="SysPermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+	</select>
+
+    <select id="getPermissioninfoByTypeAndId" resultType="SysPermissioninfo">
+        select
+       	    a.id as id,
+			a.permission_type as permissionType,
+			a.create_time as createTime
+        from sys_permissioninfo a
+        <if test="type.permissionType==1000">
+            LEFT JOIN  sys_ln_menu_permissioninfo b on a.id=b.permit_id
+            WHERE
+            b.menu_id in
+        </if>
+        <if test="type.permissionType==1003">
+            LEFT JOIN sys_ln_operate_permissioninfo c on a.id=c.permit_id
+            WHERE c.operate_id in
+        </if>
+        <foreach collection="ids" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    <!--
+          and ( b.menu_id in
+
+           or
+           c.operate_id in
+        <foreach collection="ids" index="index" item="item" open="("
+                 separator="," close=")">
+              #{item}
+            </foreach>
+        )-->
+
+    </select>
+	<!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+	<select id="queryListByMap" resultType="SysPermissioninfo"
+		parameterType="Map">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 查询记录:通过实体类查询多条记录 -->
+	<select id="queryListByObject" resultType="SysPermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+		<include refid="whereParam" />
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="queryListPage" parameterType="PageBean" resultType="SysPermissioninfo">
+		select
+		<include refid="baseColumn" />
+		from sys_permissioninfo
+		<include refid="wherePageParam" />
+	</select>
+    <select id="queryPermissionListByRoleId" parameterType="java.util.List" resultType="SysPermissioninfo">
+        SELECT t1.* from sys_permissioninfo t1 LEFT join  sys_ln_role_permissioninfo t2 on t2.permit_id =t1.id where  t2.role_id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+
+    <select id="getKey" parameterType="java.util.List" resultType="java.util.List">
+        SELECT t1.* from sys_permissioninfo t1 LEFT join  sys_ln_role_permissioninfo t2 on t2.permit_id =t1.id where t2.role_id in
+        <foreach collection="list" index="index" item="item" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+	<!-- update -->
+	<update id="updateByObject" parameterType="SysPermissioninfo">
+		update sys_permissioninfo
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<update id="updateByMap" parameterType="Map">
+		update sys_permissioninfo
+		<include refid="updateParam" />
+		<include refid="whereParam" />
+	</update>
+
+	<!-- 慎用此方法 -->
+	<delete id="deleteAll">
+		delete from sys_permissioninfo
+	</delete>
+
+
+	<delete id="deleteById">
+		delete from sys_permissioninfo where id= #{0}
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByObject" parameterType="SysPermissioninfo">
+		delete from sys_permissioninfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByMap" parameterType="Map">
+		delete from sys_permissioninfo
+		<include refid="whereParam" />
+	</delete>
+
+	<!-- 删除数据 -->
+	<delete id="deleteByList" parameterType="java.util.List">
+		delete from sys_permissioninfo where id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+	<!-- insert保存方法 -->
+	<insert id="insert" parameterType="SysPermissioninfo"
+		useGeneratedKeys="true" keyProperty="id">
+		<selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+			select sys_permissioninfo_seq.nextval from dual
+		</selectKey>
+		INSERT INTO sys_permissioninfo
+		(id,
+		<include refid="insertColumn" />
+		) VALUES
+		(#{id},
+		<include refid="insertColumnParam" />
+		)
+	</insert>
+
+    <insert id="bind" >
+        INSERT INTO
+        <if test="type != null and type == 0 ">  <![CDATA[ sys_ln_menu_permissioninfo ]]></if>
+        <if test="type != null and type == 1 ">  <![CDATA[ sys_ln_operate_permissioninfo ]]></if>
+        (
+        permit_id,
+        <if test="type != null and type == 0 ">  <![CDATA[ menu_id ]]></if>
+        <if test="type != null and type == 1 ">  <![CDATA[ operate_id ]]></if>
+        ) VALUES
+        (
+           #{permitid},#{id}
+        )
+    </insert>
+
+	<!-- 批量保存 -->
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO sys_permissioninfo (
+		<include refid="insertColumn" />
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			<include refid="batchInsertColumnParam" />
+			)
+		</foreach>
+	</insert>
+
+
+	<!-- sql基本映射 -->
+	<sql id="baseColumn">
+	  <![CDATA[
+		  	id as id,
+			permission_type as permissionType,
+			create_time as createTime
+	  ]]>
+	</sql>
+	<sql id="whereParam">
+		<where>
+						
+			<if test="id != null and id != '' ">  <![CDATA[ and id = #{id} ]]></if>
+						
+			<if test="permissionType != null and permissionType != '' ">  <![CDATA[ and permission_type = #{permissionType} ]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[ and create_time = #{createTime} ]]></if>
+						
+		</where>
+	</sql>
+	<sql id="wherePageParam">
+		<where>
+						
+			<if test="params.id != null and params.id != '' ">  <![CDATA[ and id = #{params.id} ]]></if>
+						
+			<if test="params.permissionType != null and params.permissionType != '' ">  <![CDATA[ and permission_type = #{params.permissionType} ]]></if>
+						
+			<if test="params.createTime != null ">  <![CDATA[ and create_time = #{params.createTime} ]]></if>
+						
+		</where>
+	</sql>
+
+	<!-- update sql -->
+	<sql id="updateParam">
+		<set>
+						
+			<if test="id != null and id != '' ">  <![CDATA[  id = #{id } ,]]></if>
+						
+			<if test="permissionType != null and permissionType != '' ">  <![CDATA[  permission_type = #{permissionType } ,]]></if>
+						
+			<if test="createTime != null ">  <![CDATA[  create_time = #{createTime } ,]]></if>
+						
+		</set>
+	</sql>
+
+	<!-- insert sql -->
+	<sql id="insertColumn">
+        <trim suffix="" suffixOverrides=",">
+		<!--<if test="id != null and id != '' ">  <![CDATA[ id  , ]]></if>-->
+				
+		<if test="permissionType != null and permissionType != '' ">  <![CDATA[ permission_type  , ]]></if>
+				
+		<if test="createTime != null ">  <![CDATA[ create_time   ]]></if>
+			</trim>
+	</sql>
+
+	<sql id="insertColumnParam">
+        <trim suffix="" suffixOverrides=",">
+		<!--<if test="id != null and id != '' ">  <![CDATA[ #{id } ,]]></if>-->
+		
+		<if test="permissionType != null and permissionType != '' ">  <![CDATA[ #{permissionType } ,]]></if>
+		
+		<if test="createTime != null ">  <![CDATA[ #{createTime } ]]></if>
+				</trim>
+	</sql>
+
+	<!-- 批量保存 -->
+	<sql id="batchInsertColumn">
+			id,permission_type,create_time
+	</sql>
+
+	<sql id="batchInsertColumnParam">
+			#{item.id},#{item.permissionType},#{item.createTime}
+	</sql>
+	<!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll; 
+		deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+	<!-- The above code is static code of small changes, the business code start 
+		from here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcIspUserInfoMapper">
+	<!-- 返回类型 -->
+	<resultMap id="resultIdcIspUserInfoMap" type="UserInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="ID" property="id" />
+		<result column="NATURE" property="nature" />
+		<result column="FK_NEW_INFO_ID" property="fkNewInfoId" />
+		<result column="TICKET_INST_ID" property="ticketInstId" />
+		<!-- 用户具体信息 -->
+		<association property="info" javaType="Info" column="{fkUserInfoId=AID}" select="getInfo">
+		</association>
+	</resultMap>
+
+	<resultMap id="resultIdcIspDeleteUserInfoMap" type="UserInfo">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="ID" property="userId" />
+		<result column="FK_NEW_INFO_ID" property="fkNewInfoId" />
+		<!-- 用户具体信息 -->
+		<collection property="serviceData" javaType="java.util.ArrayList"
+					select="selectServiceDataByFkNewInfoId" column="{fkUserInfoId=aid}">
+		</collection>
+	</resultMap>
+
+	<resultMap id="resultIdcIspUserServerMap" type="ServiceData">
+		<!-- 数据库属性和实体类属性对应关系 -->
+		<id column="AID" property="aid" />
+		<result column="FK_USER_INFO_ID" property="fkUserInfoId" />
+	</resultMap>
+	<!--  -->
+	<select id="selectServiceDataByFkNewInfoId" resultMap="resultIdcIspUserServerMap">
+		select t1.AID  ,
+		t1.FK_USER_INFO_ID
+		from IDC_ISP_USER_SERVICE t1
+		WHERE T1.FK_USER_INFO_ID = #{fkUserInfoId}
+	</select>
+	<select id="getInfo" resultMap="com.idc.mapper.IdcIspUserExtendMapper.resultIdcIspUserExtendMap">
+		select t1.AID  ,
+			   t1.UNIT_NAME,
+			   t1.UNIT_NATURE,
+			   t1.ID_TYPE,
+			   t1.ID_NUMBER,
+			   t1."ADD",
+			   t1.ZIP_CODE,
+			   t1.REGISTER_TIME,
+			   t1.FK_USER_INFO_ID,
+			   t1.TICKET_INST_ID,
+			   t1.FK_OFFICER_ID
+		  from IDC_ISP_USER_EXTEND t1
+		  WHERE T1.FK_USER_INFO_ID = #{fkUserInfoId}
+	</select>
+</mapper>

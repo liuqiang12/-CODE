@@ -1,0 +1,1192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.idc.mapper.IdcRackMapper">
+
+  <!-- 通过主键查询记录 -->
+  <select id="getModelById" resultType="IdcRack">
+    select
+    <include refid="baseColumn" />
+      from IDC_RACK where ID= #{0} and isdelete = 0
+  </select>
+
+  <!-- map对应的key和实体类中的属性一致 -->
+  <select id="getModelByMap" resultType="IdcRack"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_RACK
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 通过实体类查询记录 -->
+  <select id="getModelByObject" resultType="IdcRack">
+    select
+    <include refid="baseColumn" />
+    from IDC_RACK
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询所有记录 -->
+  <select id="queryList" resultType="IdcRack">
+    select
+    <include refid="baseColumn" />
+      from IDC_RACK where isdelete = 0
+  </select>
+
+  <!-- 查询记录:map参数key对应实体类属性 查询多条记录 -->
+  <select id="queryListByMap" resultType="IdcRack"
+          parameterType="Map">
+    select
+    <include refid="baseColumn" />
+    from IDC_RACK
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 查询记录:通过实体类查询多条记录 -->
+  <select id="queryListByObject" resultType="IdcRack">
+    select
+    <include refid="baseColumn" />
+    from IDC_RACK
+    <include refid="whereParam" />
+  </select>
+
+  <!-- 根据机架IDS获取机架 -->
+  <select id="queryListByRackIds" resultType="IdcRack" parameterType="java.util.List">
+    select
+    <include refid="baseColumn"/>
+    from IDC_RACK r
+      where r.isdelete = 0 and r.id IN
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <!-- 根据机房IDS获取机架 -->
+  <select id="queryListByRoomIds" resultType="IdcRack" parameterType="java.util.List">
+    select
+    <include refid="baseColumn"/>
+    from IDC_RACK r
+      where r.isdelete =0 and r.roomid IN
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+    <!-- 通过机房ID获取该机房所有模块 -->
+    <select id="queryModuleByRoomId" resultType="Map">
+        select d.id,d.name from idc_module d where d.roomid=#{0}
+    </select>
+
+    <!-- 分页查询 -->
+  <select id="queryListPage" parameterType="PageBean" resultType="IdcRack">
+    select
+    <include refid="baseColumn" />
+    from IDC_RACK
+    <include refid="wherePageParam" />
+  </select>
+
+  <select id="getRackListByRackIds" parameterType="PageBean" resultType="Map">
+    select
+    <include refid="Join_Column_List"/>
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON (A.RACKMODELID = C.ID)
+    where A.isdelete = 0 and A.id in
+    <foreach collection="params.ids" index="index" item="item" open="("
+             separator="," close=")">
+      ${item}
+    </foreach>
+    <if test="params.name!=null and params.name != ''">
+        <![CDATA[ and upper(A.name) like '%'||upper(#{params.name})||'%' ]]></if>
+    order by A.name
+  </select>
+
+  <!-- 获取上下架设备的机架 -->
+  <select id="upordownForDeviceRackList" parameterType="PageBean" resultType="Map">
+    select
+    <include refid="Join_Column_List"/>
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON (A.RACKMODELID = C.ID)
+    <where>
+      A.isdelete = 0
+      <if test="params.type !=null and params.type == 'device' ">
+        <![CDATA[ and A.businesstype_id in ('equipment','cabinet') ]]></if>
+      <if test="params.type !=null and params.type == 'connector' ">
+        <![CDATA[ and A.businesstype_id = 'df' and A.dftype = 'odf' ]]></if>
+      <if test="params.type !=null and params.type == 'mcb' ">
+        <![CDATA[ and A.businesstype_id = 'pdu' ]]></if>
+      <if test="params.name!=null and params.name != '' ">
+        <![CDATA[ and upper(A.name) like '%'||upper(#{params.name})||'%' ]]></if>
+    </where>
+    order by A.name
+  </select>
+
+  <!-- update -->
+  <update id="updateByObject" parameterType="IdcRack">
+    update IDC_RACK
+    <include refid="updateParam" />
+    WHERE ID = #{id}
+  </update>
+
+  <update id="updateByMap" parameterType="Map">
+    update IDC_RACK
+    <include refid="updateParam" />
+    <include refid="whereParam" />
+  </update>
+
+  <!-- 慎用此方法 -->
+  <delete id="deleteAll">
+      delete from IDC_RACK where isdelete = 0
+  </delete>
+
+
+  <delete id="deleteById">
+      delete from IDC_RACK where ID= #{0} and isdelete = 0
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByObject" parameterType="IdcRack">
+    delete from IDC_RACK
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByMap" parameterType="Map">
+    delete from IDC_RACK
+    <include refid="whereParam" />
+  </delete>
+
+  <!-- 删除数据 -->
+  <delete id="deleteByList" parameterType="java.util.List">
+      delete from IDC_RACK where isdelete = 0 and ID in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+    <!-- insert保存方法 -->
+  <insert id="insert" parameterType="IdcRack"
+          useGeneratedKeys="true" keyProperty="ID">
+    <selectKey keyProperty="id" resultType="java.lang.Integer" order="BEFORE">
+      SELECT IDC_RACK_seq.nextval FROM DUAL
+    </selectKey>
+    INSERT INTO IDC_RACK
+    (id,
+    <include refid="insertColumn" />
+    ) VALUES
+    (#{id,jdbcType=INTEGER},
+    <include refid="insertColumnParam" />
+    )
+  </insert>
+
+  <!-- 批量保存 -->
+
+  <insert id="insertList" parameterType="java.util.List">
+    INSERT INTO IDC_RACK (
+    <include refid="batchInsertColumn"/>
+      )
+    select IDC_RACK_SEQ.NEXTVAL,rac.* from(
+      <foreach collection="list" item="item" index="index" separator="union all">
+        select
+        <include refid="batchInsertColumnParam"/>
+        from dual
+      </foreach>
+    ) rac
+  </insert>
+
+  <!-- sql基本映射 -->
+  <sql id="baseColumn">
+    <![CDATA[
+		  	ROOMAREAID as roomareaid,
+			RACKMODELID as rackmodelid,
+			DIRECTION as direction,
+			USEFOR as usefor,
+			RENTTYPE as renttype,
+			ARRANGEMENT as arrangement,
+			STATUS as status,
+			IPRESOURCE as ipresource,
+			TOPPORTPROPERTY as topportproperty,
+			BUSINESSTYPE_ID as businesstypeId,
+			PDU_POWERTYPE as pduPowertype,
+			RATEDELECTRICENERGY as ratedelectricenergy,
+			ELECTRICTYPE as electrictype,
+			ELECTRICENERGY as electricenergy,
+			APPARENETPOWER as apparenetpower,
+			PDU_LOCATION as pduLocation,
+			X as x,
+			Y as y,
+			ISRACKINSTALLED as israckinstalled,
+			HEIGHT as height,
+			RESERVECUSTOMERID as reservecustomerid,
+			ACTUALCUSTOMER as actualcustomer,
+			ACTUALCUSTOMERID as actualcustomerid,
+			RAKCMODEL as rakcmodel,
+			INTERNETEXPORT_ID as internetexportId,
+			TICKET_ID as ticketId,
+			DFTYPE as dftype,
+			IDCNO as idcno,
+			ID as id,
+			ROOMID as roomid,
+			NAME as name,
+			CODE as code,
+			MODULEID as moduleid,
+			MODULENAME as modulename,
+			ISDELETE as isdelete,
+			CODE_VIEW as codeView,
+			ISDOUBLETANK as isdoubletank
+	  ]]>
+  </sql>
+  <sql id="whereParam">
+    <where>
+        isdelete = 0
+      <if test="roomareaid != null and roomareaid != '' ">  <![CDATA[ and ROOMAREAID = #{roomareaid} ]]></if>
+
+      <if test="rackmodelid != null and rackmodelid != '' ">  <![CDATA[ and RACKMODELID = #{rackmodelid} ]]></if>
+
+      <if test="direction != null and direction != '' ">  <![CDATA[ and DIRECTION = #{direction} ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ and USEFOR = #{usefor} ]]></if>
+
+      <if test="renttype != null or renttype == '0' ">  <![CDATA[ and RENTTYPE = #{renttype} ]]></if>
+
+      <if test="arrangement != null and arrangement != '' ">  <![CDATA[ and ARRANGEMENT = #{arrangement} ]]></if>
+
+      <if test="status != null and status != '' ">  <![CDATA[ and STATUS = #{status} ]]></if>
+
+      <if test="ipresource != null and ipresource != '' ">  <![CDATA[ and IPRESOURCE = #{ipresource} ]]></if>
+
+      <if test="topportproperty != null and topportproperty != '' ">  <![CDATA[ and TOPPORTPROPERTY = #{topportproperty} ]]></if>
+
+      <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+
+      <if test="pduPowertype != null and pduPowertype != '' ">  <![CDATA[ and PDU_POWERTYPE = #{pduPowertype} ]]></if>
+
+      <if test="ratedelectricenergy != null and ratedelectricenergy != '' ">  <![CDATA[ and RATEDELECTRICENERGY = #{ratedelectricenergy} ]]></if>
+
+      <if test="electrictype != null and electrictype != '' ">  <![CDATA[ and ELECTRICTYPE = #{electrictype} ]]></if>
+
+      <if test="electricenergy != null and electricenergy != '' ">  <![CDATA[ and ELECTRICENERGY = #{electricenergy} ]]></if>
+
+      <if test="apparenetpower != null and apparenetpower != '' ">  <![CDATA[ and APPARENETPOWER = #{apparenetpower} ]]></if>
+
+      <if test="pduLocation != null and pduLocation != '' ">  <![CDATA[ and PDU_LOCATION = #{pduLocation} ]]></if>
+
+      <if test="x != null and x != '' ">  <![CDATA[ and X = #{x} ]]></if>
+
+      <if test="y != null and y != '' ">  <![CDATA[ and Y = #{y} ]]></if>
+
+      <if test="israckinstalled != null or israckinstalled == '0' ">
+        <![CDATA[ and ISRACKINSTALLED = #{israckinstalled} ]]></if>
+
+      <if test="height != null and height != '' ">  <![CDATA[ and HEIGHT = #{height} ]]></if>
+
+      <if test="reservecustomerid != null and reservecustomerid != '' ">  <![CDATA[ and RESERVECUSTOMERID = #{reservecustomerid} ]]></if>
+
+      <if test="actualcustomer != null and actualcustomer != '' ">  <![CDATA[ and ACTUALCUSTOMER = #{actualcustomer} ]]></if>
+
+      <if test="actualcustomerid != null and actualcustomerid != '' ">  <![CDATA[ and ACTUALCUSTOMERID = #{actualcustomerid} ]]></if>
+
+      <if test="rakcmodel != null and rakcmodel != '' ">  <![CDATA[ and RAKCMODEL = #{rakcmodel} ]]></if>
+
+      <if test="internetexportId != null and internetexportId != '' ">  <![CDATA[ and INTERNETEXPORT_ID = #{internetexportId} ]]></if>
+
+      <if test="ticketId != null and ticketId != '' ">  <![CDATA[ and TICKET_ID = #{ticketId} ]]></if>
+
+      <if test="dftype != null and dftype != '' ">  <![CDATA[ and DFTYPE = #{dftype} ]]></if>
+
+      <if test="idcno != null and idcno != '' ">  <![CDATA[ and IDCNO = #{idcno} ]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[ and ID = #{id} ]]></if>
+
+      <if test="roomid != null and roomid != '' ">  <![CDATA[ and ROOMID = #{roomid} ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ and NAME = #{name} ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ and CODE = #{code} ]]></if>
+
+      <if test="moduleid != null and moduleid != '' ">  <![CDATA[ and MODULEID = #{moduleid} ]]></if>
+
+      <if test="modulename != null and modulename != '' ">  <![CDATA[ and MODULENAME = #{modulename} ]]></if>
+
+    </where>
+  </sql>
+  <sql id="wherePageParam">
+    <where>
+        isdelete = 0
+      <if test="params.roomareaid != null and params.roomareaid != '' ">  <![CDATA[ and ROOMAREAID = #{params.roomareaid} ]]></if>
+
+      <if test="params.rackmodelid != null and params.rackmodelid != '' ">  <![CDATA[ and RACKMODELID = #{params.rackmodelid} ]]></if>
+
+      <if test="params.direction != null and params.direction != '' ">  <![CDATA[ and DIRECTION = #{params.direction} ]]></if>
+
+      <if test="params.usefor != null and params.usefor != '' ">  <![CDATA[ and USEFOR = #{params.usefor} ]]></if>
+
+      <if test="params.renttype != null or params.renttype == '0' ">
+        <![CDATA[ and RENTTYPE = #{params.renttype} ]]></if>
+
+      <if test="params.arrangement != null and params.arrangement != '' ">  <![CDATA[ and ARRANGEMENT = #{params.arrangement} ]]></if>
+
+      <if test="params.status != null and params.status != '' ">  <![CDATA[ and STATUS = #{params.status} ]]></if>
+
+      <if test="params.ipresource != null and params.ipresource != '' ">  <![CDATA[ and IPRESOURCE = #{params.ipresource} ]]></if>
+
+      <if test="params.topportproperty != null and params.topportproperty != '' ">  <![CDATA[ and TOPPORTPROPERTY = #{params.topportproperty} ]]></if>
+
+      <if test="params.businesstypeId != null and params.businesstypeId != '' ">  <![CDATA[ and BUSINESSTYPE_ID = #{params.businesstypeId} ]]></if>
+
+      <if test="params.pduPowertype != null and params.pduPowertype != '' ">  <![CDATA[ and PDU_POWERTYPE = #{params.pduPowertype} ]]></if>
+
+      <if test="params.ratedelectricenergy != null and params.ratedelectricenergy != '' ">  <![CDATA[ and RATEDELECTRICENERGY = #{params.ratedelectricenergy} ]]></if>
+
+      <if test="params.electrictype != null and params.electrictype != '' ">  <![CDATA[ and ELECTRICTYPE = #{params.electrictype} ]]></if>
+
+      <if test="params.electricenergy != null and params.electricenergy != '' ">  <![CDATA[ and ELECTRICENERGY = #{params.electricenergy} ]]></if>
+
+      <if test="params.apparenetpower != null and params.apparenetpower != '' ">  <![CDATA[ and APPARENETPOWER = #{params.apparenetpower} ]]></if>
+
+      <if test="params.pduLocation != null and params.pduLocation != '' ">  <![CDATA[ and PDU_LOCATION = #{params.pduLocation} ]]></if>
+
+      <if test="params.x != null and params.x != '' ">  <![CDATA[ and X = #{params.x} ]]></if>
+
+      <if test="params.y != null and params.y != '' ">  <![CDATA[ and Y = #{params.y} ]]></if>
+
+      <if test="params.israckinstalled != null or params.israckinstalled == '0' ">
+        <![CDATA[ and ISRACKINSTALLED = #{params.israckinstalled} ]]></if>
+
+      <if test="params.height != null and params.height != '' ">  <![CDATA[ and HEIGHT = #{params.height} ]]></if>
+
+      <if test="params.reservecustomerid != null and params.reservecustomerid != '' ">  <![CDATA[ and RESERVECUSTOMERID = #{params.reservecustomerid} ]]></if>
+
+      <if test="params.actualcustomer != null and params.actualcustomer != '' ">  <![CDATA[ and ACTUALCUSTOMER = #{params.actualcustomer} ]]></if>
+
+      <if test="params.actualcustomerid != null and params.actualcustomerid != '' ">  <![CDATA[ and ACTUALCUSTOMERID = #{params.actualcustomerid} ]]></if>
+
+      <if test="params.rakcmodel != null and params.rakcmodel != '' ">  <![CDATA[ and RAKCMODEL = #{params.rakcmodel} ]]></if>
+
+      <if test="params.internetexportId != null and params.internetexportId != '' ">  <![CDATA[ and INTERNETEXPORT_ID = #{params.internetexportId} ]]></if>
+
+      <if test="params.ticketId != null and params.ticketId != '' ">  <![CDATA[ and TICKET_ID = #{params.ticketId} ]]></if>
+
+      <if test="params.dftype != null and params.dftype != '' ">  <![CDATA[ and DFTYPE = #{params.dftype} ]]></if>
+
+      <if test="params.idcno != null and params.idcno != '' ">  <![CDATA[ and IDCNO = #{params.idcno} ]]></if>
+
+      <if test="params.id != null and params.id != '' ">  <![CDATA[ and ID = #{params.id} ]]></if>
+
+      <if test="params.roomid != null and params.roomid != '' ">  <![CDATA[ and ROOMID = #{params.roomid} ]]></if>
+
+      <if test="params.name != null and params.name != '' ">
+        <![CDATA[ and upper(NAME) like '%'||upper(#{params.name})||'%' ]]></if>
+
+      <if test="params.code != null and params.code != '' ">  <![CDATA[ and CODE = #{params.code} ]]></if>
+
+      <if test="params.moduleid != null and params.moduleid != '' ">
+        <![CDATA[ and MODULEID = #{params.moduleid} ]]></if>
+
+      <if test="params.modulename != null and params.modulename != '' ">
+        <![CDATA[ and MODULENAME = #{params.modulename} ]]></if>
+
+    </where>
+  </sql>
+
+  <!-- update sql -->
+  <sql id="updateParam">
+    <set>
+
+      <if test="roomareaid != null and roomareaid != '' ">  <![CDATA[  ROOMAREAID = #{roomareaid } ,]]></if>
+
+      <if test="rackmodelid != null and rackmodelid != '' ">  <![CDATA[  RACKMODELID = #{rackmodelid } ,]]></if>
+
+      <if test="direction != null and direction != '' ">  <![CDATA[  DIRECTION = #{direction } ,]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[  USEFOR = #{usefor } ,]]></if>
+
+      <if test="renttype != null or renttype == '0' ">  <![CDATA[  RENTTYPE = #{renttype } ,]]></if>
+
+      <if test="arrangement != null and arrangement != '' ">  <![CDATA[  ARRANGEMENT = #{arrangement } ,]]></if>
+
+      <if test="status != null and status != '' ">  <![CDATA[  STATUS = #{status } ,]]></if>
+
+      <if test="ipresource != null and ipresource != '' ">  <![CDATA[  IPRESOURCE = #{ipresource } ,]]></if>
+
+      <if test="topportproperty != null and topportproperty != '' ">  <![CDATA[  TOPPORTPROPERTY = #{topportproperty } ,]]></if>
+
+      <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[  BUSINESSTYPE_ID = #{businesstypeId } ,]]></if>
+
+      <if test="pduPowertype != null and pduPowertype != '' ">  <![CDATA[  PDU_POWERTYPE = #{pduPowertype } ,]]></if>
+
+      <if test="ratedelectricenergy != null and ratedelectricenergy != '' ">  <![CDATA[  RATEDELECTRICENERGY = #{ratedelectricenergy } ,]]></if>
+
+      <if test="electrictype != null and electrictype != '' ">  <![CDATA[  ELECTRICTYPE = #{electrictype } ,]]></if>
+
+      <if test="electricenergy != null and electricenergy != '' ">  <![CDATA[  ELECTRICENERGY = #{electricenergy } ,]]></if>
+
+      <if test="apparenetpower != null and apparenetpower != '' ">  <![CDATA[  APPARENETPOWER = #{apparenetpower } ,]]></if>
+
+      <if test="pduLocation != null and pduLocation != '' ">  <![CDATA[  PDU_LOCATION = #{pduLocation } ,]]></if>
+
+      <if test="x != null and x != '' ">  <![CDATA[  X = #{x } ,]]></if>
+
+      <if test="y != null and y != '' ">  <![CDATA[  Y = #{y } ,]]></if>
+
+      <if test="israckinstalled != null or israckinstalled == '0' ">
+        <![CDATA[  ISRACKINSTALLED = #{israckinstalled } ,]]></if>
+
+      <if test="height != null and height != '' ">  <![CDATA[  HEIGHT = #{height } ,]]></if>
+
+      <if test="reservecustomerid != null and reservecustomerid != '' ">  <![CDATA[  RESERVECUSTOMERID = #{reservecustomerid } ,]]></if>
+
+      <if test="actualcustomer != null and actualcustomer != '' ">  <![CDATA[  ACTUALCUSTOMER = #{actualcustomer } ,]]></if>
+
+      <if test="actualcustomerid != null and actualcustomerid != '' ">  <![CDATA[  ACTUALCUSTOMERID = #{actualcustomerid } ,]]></if>
+
+      <if test="rakcmodel != null and rakcmodel != '' ">  <![CDATA[  RAKCMODEL = #{rakcmodel } ,]]></if>
+
+      <if test="internetexportId != null and internetexportId != '' ">  <![CDATA[  INTERNETEXPORT_ID = #{internetexportId } ,]]></if>
+
+      <if test="ticketId != null and ticketId != '' ">  <![CDATA[  TICKET_ID = #{ticketId } ,]]></if>
+
+      <if test="dftype != null and dftype != '' ">  <![CDATA[  DFTYPE = #{dftype } ,]]></if>
+
+      <if test="idcno != null and idcno != '' ">  <![CDATA[  IDCNO = #{idcno } ,]]></if>
+
+      <if test="id != null and id != '' ">  <![CDATA[  ID = #{id } ,]]></if>
+
+      <if test="roomid != null and roomid != '' ">  <![CDATA[  ROOMID = #{roomid } ,]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[  NAME = #{name } ,]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[  CODE = #{code } ,]]></if>
+
+      <if test="moduleid != null and moduleid != '' ">  <![CDATA[ MODULEID = #{moduleid} , ]]></if>
+
+      <if test="modulename != null and modulename != '' ">  <![CDATA[ MODULENAME = #{modulename} , ]]></if>
+
+      <if test="isdelete != null or isdelete == '0' ">  <![CDATA[ ISDELETE = #{isdelete} , ]]></if>
+
+    </set>
+  </sql>
+
+  <!-- insert sql -->
+  <sql id="insertColumn">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="roomareaid != null and roomareaid != '' ">  <![CDATA[ ROOMAREAID , ]]></if>
+
+      <if test="rackmodelid != null and rackmodelid != '' ">  <![CDATA[ RACKMODELID , ]]></if>
+
+      <if test="direction != null and direction != '' ">  <![CDATA[ DIRECTION , ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ USEFOR , ]]></if>
+
+      <if test="renttype != null or renttype == '0' ">  <![CDATA[ RENTTYPE , ]]></if>
+
+      <if test="arrangement != null and arrangement != '' ">  <![CDATA[ ARRANGEMENT , ]]></if>
+
+      <if test="status != null and status != '' ">  <![CDATA[ STATUS , ]]></if>
+
+      <if test="ipresource != null and ipresource != '' ">  <![CDATA[ IPRESOURCE , ]]></if>
+
+      <if test="topportproperty != null and topportproperty != '' ">  <![CDATA[ TOPPORTPROPERTY , ]]></if>
+
+      <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ BUSINESSTYPE_ID , ]]></if>
+
+      <if test="pduPowertype != null and pduPowertype != '' ">  <![CDATA[ PDU_POWERTYPE , ]]></if>
+
+      <if test="ratedelectricenergy != null and ratedelectricenergy != '' ">  <![CDATA[ RATEDELECTRICENERGY , ]]></if>
+
+      <if test="electrictype != null and electrictype != '' ">  <![CDATA[ ELECTRICTYPE , ]]></if>
+
+      <if test="electricenergy != null and electricenergy != '' ">  <![CDATA[ ELECTRICENERGY , ]]></if>
+
+      <if test="apparenetpower != null and apparenetpower != '' ">  <![CDATA[ APPARENETPOWER , ]]></if>
+
+      <if test="pduLocation != null and pduLocation != '' ">  <![CDATA[ PDU_LOCATION , ]]></if>
+
+      <if test="x != null and x != '' ">  <![CDATA[ X , ]]></if>
+
+      <if test="y != null and y != '' ">  <![CDATA[ Y , ]]></if>
+
+      <if test="israckinstalled != null or israckinstalled == '0' ">  <![CDATA[ ISRACKINSTALLED , ]]></if>
+
+      <if test="height != null and height != '' ">  <![CDATA[ HEIGHT , ]]></if>
+
+      <if test="reservecustomerid != null and reservecustomerid != '' ">  <![CDATA[ RESERVECUSTOMERID , ]]></if>
+
+      <if test="actualcustomer != null and actualcustomer != '' ">  <![CDATA[ ACTUALCUSTOMER , ]]></if>
+
+      <if test="actualcustomerid != null and actualcustomerid != '' ">  <![CDATA[ ACTUALCUSTOMERID , ]]></if>
+
+      <if test="rakcmodel != null and rakcmodel != '' ">  <![CDATA[ RAKCMODEL , ]]></if>
+
+      <if test="internetexportId != null and internetexportId != '' ">  <![CDATA[ INTERNETEXPORT_ID , ]]></if>
+
+      <if test="ticketId != null and ticketId != '' ">  <![CDATA[ TICKET_ID , ]]></if>
+
+      <if test="dftype != null and dftype != '' ">  <![CDATA[ DFTYPE , ]]></if>
+
+      <if test="idcno != null and idcno != '' ">  <![CDATA[ IDCNO , ]]></if>
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ ID , ]]></if>-->
+
+      <if test="roomid != null and roomid != '' ">  <![CDATA[ ROOMID , ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ NAME , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ CODE , ]]></if>
+
+      <if test="moduleid != null and moduleid != '' ">  <![CDATA[ MODULEID , ]]></if>
+
+      <if test="modulename != null and modulename != '' ">  <![CDATA[ MODULENAME , ]]></if>
+
+      <if test="codeView != null and codeView != '' ">  <![CDATA[ CODE_VIEW , ]]></if>
+    </trim>
+  </sql>
+
+
+
+  <sql id="insertColumnParam">
+    <trim suffix="" suffixOverrides=",">
+
+      <if test="roomareaid != null and roomareaid != '' ">  <![CDATA[ #{roomareaid } , ]]></if>
+
+      <if test="rackmodelid != null and rackmodelid != '' ">  <![CDATA[ #{rackmodelid } , ]]></if>
+
+      <if test="direction != null and direction != '' ">  <![CDATA[ #{direction } , ]]></if>
+
+      <if test="usefor != null and usefor != '' ">  <![CDATA[ #{usefor } , ]]></if>
+
+      <if test="renttype != null or renttype == '0' ">  <![CDATA[ #{renttype } , ]]></if>
+
+      <if test="arrangement != null and arrangement != '' ">  <![CDATA[ #{arrangement } , ]]></if>
+
+      <if test="status != null and status != '' ">  <![CDATA[ #{status } , ]]></if>
+
+      <if test="ipresource != null and ipresource != '' ">  <![CDATA[ #{ipresource } , ]]></if>
+
+      <if test="topportproperty != null and topportproperty != '' ">  <![CDATA[ #{topportproperty } , ]]></if>
+
+      <if test="businesstypeId != null and businesstypeId != '' ">  <![CDATA[ #{businesstypeId } , ]]></if>
+
+      <if test="pduPowertype != null and pduPowertype != '' ">  <![CDATA[ #{pduPowertype } , ]]></if>
+
+      <if test="ratedelectricenergy != null and ratedelectricenergy != '' ">  <![CDATA[ #{ratedelectricenergy } , ]]></if>
+
+      <if test="electrictype != null and electrictype != '' ">  <![CDATA[ #{electrictype } , ]]></if>
+
+      <if test="electricenergy != null and electricenergy != '' ">  <![CDATA[ #{electricenergy } , ]]></if>
+
+      <if test="apparenetpower != null and apparenetpower != '' ">  <![CDATA[ #{apparenetpower } , ]]></if>
+
+      <if test="pduLocation != null and pduLocation != '' ">  <![CDATA[ #{pduLocation } , ]]></if>
+
+      <if test="x != null and x != '' ">  <![CDATA[ #{x } , ]]></if>
+
+      <if test="y != null and y != '' ">  <![CDATA[ #{y } , ]]></if>
+
+      <if test="israckinstalled != null or israckinstalled == '0' ">  <![CDATA[ #{israckinstalled } , ]]></if>
+
+      <if test="height != null and height != '' ">  <![CDATA[ #{height } , ]]></if>
+
+      <if test="reservecustomerid != null and reservecustomerid != '' ">  <![CDATA[ #{reservecustomerid } , ]]></if>
+
+      <if test="actualcustomer != null and actualcustomer != '' ">  <![CDATA[ #{actualcustomer } , ]]></if>
+
+      <if test="actualcustomerid != null and actualcustomerid != '' ">  <![CDATA[ #{actualcustomerid } , ]]></if>
+
+      <if test="rakcmodel != null and rakcmodel != '' ">  <![CDATA[ #{rakcmodel } , ]]></if>
+
+      <if test="internetexportId != null and internetexportId != '' ">  <![CDATA[ #{internetexportId } , ]]></if>
+
+      <if test="ticketId != null and ticketId != '' ">  <![CDATA[ #{ticketId } , ]]></if>
+
+      <if test="dftype != null and dftype != '' ">  <![CDATA[ #{dftype } , ]]></if>
+
+      <if test="idcno != null and idcno != '' ">  <![CDATA[ #{idcno } , ]]></if>
+
+      <!--<if test="id != null and id != '' ">  <![CDATA[ #{id } , ]]></if>-->
+
+      <if test="roomid != null and roomid != '' ">  <![CDATA[ #{roomid } , ]]></if>
+
+      <if test="name != null and name != '' ">  <![CDATA[ #{name } , ]]></if>
+
+      <if test="code != null and code != '' ">  <![CDATA[ #{code } , ]]></if>
+
+      <if test="moduleid != null and moduleid != '' ">  <![CDATA[ #{moduleid} , ]]></if>
+
+      <if test="modulename != null and modulename != '' ">  <![CDATA[ #{modulename} , ]]></if>
+
+      <if test="codeView != null and codeView != '' ">  <![CDATA[ #{codeView} , ]]></if>
+    </trim>
+  </sql>
+
+
+
+  <!-- 批量保存 -->
+  <sql id="batchInsertColumn">
+    ID,ROOMAREAID,RACKMODELID,DIRECTION,USEFOR,RENTTYPE,ARRANGEMENT,STATUS,IPRESOURCE,TOPPORTPROPERTY,BUSINESSTYPE_ID,PDU_POWERTYPE,RATEDELECTRICENERGY,ELECTRICTYPE,
+    ELECTRICENERGY,APPARENETPOWER,PDU_LOCATION,X,Y,ISRACKINSTALLED,HEIGHT,RESERVECUSTOMERID,ACTUALCUSTOMER,ACTUALCUSTOMERID,RAKCMODEL,INTERNETEXPORT_ID,TICKET_ID,
+    DFTYPE,IDCNO,ROOMID,NAME,CODE,MODULEID,MODULENAME,CODE_VIEW
+  </sql>
+
+  <sql id="batchInsertColumnParam">
+    #{item.roomareaid,jdbcType=VARCHAR},#{item.rackmodelid,jdbcType=BIGINT},#{item.direction,jdbcType=INTEGER},#{item.usefor,jdbcType=INTEGER},
+    #{item.renttype,jdbcType=INTEGER},#{item.arrangement,jdbcType=INTEGER},#{item.status,jdbcType=INTEGER},#{item.ipresource,jdbcType=VARCHAR},
+    #{item.topportproperty,jdbcType=VARCHAR},#{item.businesstypeId,jdbcType=VARCHAR},#{item.pduPowertype,jdbcType=VARCHAR},#{item.ratedelectricenergy,jdbcType=DECIMAL},
+    #{item.electrictype,jdbcType=VARCHAR},#{item.electricenergy,jdbcType=DECIMAL},#{item.apparenetpower,jdbcType=DECIMAL},#{item.pduLocation,jdbcType=VARCHAR},
+    #{item.x,jdbcType=DECIMAL},#{item.y,jdbcType=DECIMAL},#{item.israckinstalled,jdbcType=INTEGER},#{item.height,jdbcType=INTEGER},#{item.reservecustomerid,jdbcType=BIGINT},
+    #{item.actualcustomer,jdbcType=VARCHAR},#{item.actualcustomerid,jdbcType=BIGINT},#{item.rakcmodel,jdbcType=VARCHAR},#{item.internetexportId,jdbcType=BIGINT},
+    #{item.ticketId,jdbcType=BIGINT},#{item.dftype,jdbcType=VARCHAR},#{item.idcno,jdbcType=VARCHAR},#{item.roomid,jdbcType=VARCHAR},
+    #{item.name,jdbcType=VARCHAR},#{item.code,jdbcType=VARCHAR},#{item.moduleid,jdbcType=BIGINT},#{item.modulename,jdbcType=VARCHAR},#{item.codeView,jdbcType=VARCHAR}
+  </sql>
+  <!-- The above code Provide us with useful modules,e.g. getModelById;getModelByMap;getModelByObject;queryList;queryListByMap;queryListByObject;queryListByObjectListPage;queryListByMapListPage;updateByObject;updateByMap;deleteAll;
+      deleteById;deleteByObject;deleteByMap;deleteByList;insert;insertList -->
+  <!-- The above code is static code of small changes, the business code start
+      from here -->
+
+
+  <update id="singleUpdateInfoById">
+      update IDC_RACK SET STATUS = #{status} WHERE ID = #{resourceId} and isdelete = 0
+  </update>
+
+
+  <!-- 查询详细返回map -->
+  <select id="getMapModelById" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON  (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    where A.ID = #{0} and A.isdelete = 0
+  </select>
+
+
+  <!-- 分页查询返回map -->
+  <select id="queryIdcRackInfoListPage" parameterType="PageBean" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON  (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    <include refid="whereJoinParam" />
+      and (A.businesstype_Id in ('cabinet', 'equipment') or A.dftype = 'wiring')
+    order by A.name
+  </select>
+
+  <!-- 分页查询返回map PDF-->
+  <select id="queryPdfRackInfoListPage" parameterType="PageBean" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON  (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    <include refid="whereJoinParam" />
+    order by A.name
+  </select>
+
+  <!-- 分页查询返回map odf -->
+  <select id="queryOdfRackInfoListPage" parameterType="PageBean" resultType="map">
+    select
+    <include refid="Join_Column_List" />,count_ as connectorNum
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    <where>
+      <![CDATA[ and A.isdelete = 0
+        and exists (select 1 from idc_connector t where to_char(t.rack_id) =
+        to_char(A.id) and t.type = 'odf')]]>
+      <if test="params.searchKey!=null and params.searchKey!=''">
+        <![CDATA[ and upper(A.NAME) like  '%'||upper(#{params.searchKey})||'%' ]]></if>
+      <if test="params.searchType != null and params.searchType == 'idcroom' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and A.ROOMID = #{params.searchId} ]]>
+      </if>
+      <if test="params.searchType != null and params.searchType == 'building' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and B.BUILDINGID = #{params.searchId} ]]>
+      </if>
+      <if test="params.searchType != null and params.searchType == 'location' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{params.searchId})]]>
+      </if>
+    </where>
+    union
+    select
+    <include refid="Join_Column_List" />,count_ as connectorNum
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    <include refid="whereJoinParam" />
+    and A.dftype!='wiring'
+  </select>
+
+  <!-- 资源分配ODF架   分页查询返回map odf -->
+  <select id="queryDistributionOdfRackInfoListPage" parameterType="PageBean" resultType="map">
+    select A.ID,A.NAME
+    <!--<include refid="Join_Column_List" />,-->
+    <!--(select count(1) from idc_connector c where to_char(c.rack_id)=to_char(A.ID)) connectorNum-->
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    WHERE A.roomid=#{params.roomid} and A.isdelete = 0
+    <if test="params.searchKey !=null and params.searchKey!=''">
+        <![CDATA[ and upper(A.NAME) like  '%'||upper(#{params.searchKey})||'%' ]]></if>
+    and exists (select 1 from idc_connector t where to_char(t.rack_id) = to_char(A.id) and t.type = 'odf') order by
+    A.name
+  </select>
+
+  <select id="queryAllIdcRackInfoList" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON  (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    where
+    (A.businesstype_id != 'pdu' or A.Businesstype_Id is null) and A.isdelete = 0
+    and not exists (select 1 from idc_connector t where to_char(t.rack_id) = to_char(A.id) and t.type = 'odf')
+  </select>
+
+  <select id="queryPdfRackInfoList" parameterType="IdcRack" resultType="map">
+    select
+    <include refid="Join_Column_List" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    <include refid="whereJoinParam1" />
+    order by A.name
+  </select>
+
+  <select id="queryOdfRackInfoList" parameterType="IdcRack" resultType="map">
+    select
+    <include refid="Join_Column_List" />,count_ as connectorNum
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    <include refid="whereJoinParam1" />
+      <where>
+          <![CDATA[ and A.isdelete = 0 and exists (select 1 from idc_connector t where to_char(t.rack_id) =
+            to_char(A.id) and t.type = 'odf')]]>
+          <if test="searchKey!=null and searchKey!=''">
+              <![CDATA[ and upper(A.NAME) like '%'||upper(#{searchKey})||'%' ]]></if>
+          <if test="searchType != null and searchType == 'idcroom' and searchId != null and searchId != '' ">
+              <![CDATA[ and A.ROOMID = #{searchId} ]]>
+          </if>
+          <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+              <![CDATA[ and B.BUILDINGID = #{searchId} ]]>
+          </if>
+          <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+              <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{searchId})]]>
+          </if>
+      </where>
+    union
+    select
+    <include refid="Join_Column_List" />,count_ as connectorNum
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    <include refid="whereJoinParam1" />
+    and A.dftype!='wiring'
+  </select>
+
+  <select id="getAllRackInfo" parameterType="IdcRack" resultType="map">
+    select
+      A.ID, A.ROOMID, A.NAME, A.CODE, A.ROOMAREAID, C.NAME as RACKMODEL,C.CODE as MCODE, A.DIRECTION, CASE A.USEFOR WHEN 2 THEN '客用' ELSE '自用' end as USEFOR,
+      CASE A.RENTTYPE WHEN 0 THEN '整架出租' ELSE '按位出租' end as RENTTYPE, A.ARRANGEMENT,
+      CASE A.STATUS WHEN 110 THEN '不可用' WHEN 20 THEN '可用' WHEN 30 THEN '预留' WHEN 40 THEN '空闲' WHEN 50 THEN '预占' WHEN  55 THEN '已停机' WHEN 60 THEN '在服' ELSE '' END  AS STATUS,
+      A.IPRESOURCE, A.TOPPORTPROPERTY,
+      decode(A.businesstype_id,'equipment','客户机架','cabinet','网络头柜','pdu','PDF','df',
+      decode(A.dftype,'odf','ODF','ddf','DDF','wiring','配线柜')) as businesstypeId,
+      A.PDU_POWERTYPE, A.RATEDELECTRICENERGY,A.DFTYPE,
+      A.ELECTRICTYPE, A.ELECTRICENERGY, A.APPARENETPOWER, A.PDU_LOCATION, A.X, A.Y,
+      CASE  A.ISRACKINSTALLED WHEN  1 THEN '已安装' ELSE '未安装' END  as ISRACKINSTALLED,
+      A.HEIGHT, A.RESERVECUSTOMERID, A.ACTUALCUSTOMER, A.ACTUALCUSTOMERID, A.INTERNETEXPORT_ID,
+      A.TICKET_ID,  A.IDCNO,B.SITENAME,B.ID AS BID
+      from IDC_RACK A
+      LEFT JOIN ZB_MACHINEROOM B ON  (A.ROOMID = B.ID)
+      LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+      where A.isdelete = 0
+      <if test="searchType != null and searchType == 'idcroom' and searchId != null and searchId != '' ">
+        <![CDATA[ and A.ROOMID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+        <![CDATA[ and B.BUILDINGID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+        <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{searchId})]]>
+      </if>
+    <choose>
+      <when test="businesstypeId != null and businesstypeId != '' ">
+        and A.BUSINESSTYPE_ID = #{businesstypeId}
+      </when>
+      <otherwise>
+          and (A.businesstype_Id in ('cabinet', 'equipment') or A.dftype = 'wiring')
+      </otherwise>
+    </choose>
+  </select>
+    <select id="getRackModel" resultType="map">
+        select
+           A.NAME as name,
+           A.ID as id,
+           A.UHEIGHT as uheight
+        from DCIM_RACK_MODEL A
+    </select>
+    <select id="getInternetexport" resultType="map">
+           select
+           A.NAME as name,
+           A.ID as id,
+           A.BANDWIDTH as bandwidth,
+           A.GATEWAYIP as gatewayip,
+           A.IPTOTAL as iptotal,
+           (A.IPTOTAL-A.IPUSED) as ipfree
+        from IDC_INTERNETEXPORT A
+    </select>
+
+    <sql id="Join_Column_List" >
+    A.ID, A.ROOMID, A.NAME, A.CODE, A.ROOMAREAID, A.RACKMODELID, A.DIRECTION, A.USEFOR, A.RENTTYPE, A.ARRANGEMENT,
+    A.STATUS, A.IPRESOURCE, A.TOPPORTPROPERTY,
+    A.businesstype_id,
+    A.PDU_POWERTYPE, A.RATEDELECTRICENERGY,
+      A.ELECTRICTYPE, A.ELECTRICENERGY, A.APPARENETPOWER, A.PDU_LOCATION, A.X, A.Y,
+      A.ISRACKINSTALLED,A.MODULEID,A.MODULENAME,
+    A.HEIGHT, A.RESERVECUSTOMERID, A.ACTUALCUSTOMER, A.ACTUALCUSTOMERID, A.RAKCMODEL, A.INTERNETEXPORT_ID,
+    A.TICKET_ID, A.DFTYPE, A.IDCNO,B.SITENAME,B.ID AS BID,C.NAME as mname,C.CODE as mcode
+  </sql>
+  <sql id="whereJoinParam">
+    <where>
+      <![CDATA[ and A.isdelete = 0]]>
+      <if test="params.searchKey!=null and params.searchKey!=''">
+          <![CDATA[ and upper(A.NAME) like  '%'||upper(#{params.searchKey})||'%' ]]></if>
+      <if test="params.businesstypeId!=null and params.businesstypeId!=''"><![CDATA[ and A.BUSINESSTYPE_ID = #{params.businesstypeId} ]]></if>
+      <if test="params.dftype!=null and params.dftype!=''"><![CDATA[ and A.DFTYPE = #{params.dftype} ]]></if>
+      <if test="params.roomid!=null and params.roomid!=''"><![CDATA[ and B.ID = #{params.roomid} ]]></if>
+      <if test="params.status!=null and params.status!=''"><![CDATA[ and A.STATUS = #{params.status} ]]></if>
+      <if test="params.searchType != null and params.searchType == 'idcroom' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and A.ROOMID = #{params.searchId} ]]>
+      </if>
+      <if test="params.searchType != null and params.searchType == 'building' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and B.BUILDINGID = #{params.searchId} ]]>
+      </if>
+      <if test="params.searchType != null and params.searchType == 'location' and params.searchId != null and params.searchId != '' ">
+        <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{params.searchId})]]>
+      </if>
+    </where>
+  </sql>
+
+  <sql id="whereJoinParam1">
+    <where>
+      <![CDATA[ and A.isdelete = 0]]>
+      <if test="searchKey!=null and searchKey!=''">
+          <![CDATA[ and upper(A.NAME) like '%'||upper(#{searchKey})||'%' ]]></if>
+      <if test="businesstypeId!=null and businesstypeId!=''"><![CDATA[ and A.BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+      <if test="dftype!=null and dftype!=''"><![CDATA[ and A.DFTYPE = #{dftype} ]]></if>
+      <if test="roomid!=null and roomid!=''"><![CDATA[ and B.ID = #{roomid} ]]></if>
+      <if test="status!=null and status!=''"><![CDATA[ and A.STATUS = #{status} ]]></if>
+      <if test="searchType != null and searchType == 'idcroom' and searchId != null and searchId != '' ">
+        <![CDATA[ and A.ROOMID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+        <![CDATA[ and B.BUILDINGID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+        <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{searchId})]]>
+      </if>
+    </where>
+  </sql>
+
+  <!-- 工单使用 foreachUpdateInfo -->
+  <update id="foreachUpdateInfo" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="begin"  close="end;">
+        UPDATE IDC_RACK set STATUS = ${item.status} WHERE ID = ${item.resourceId} and isdelete = 0;
+    </foreach>
+  </update>
+<!-- 导出 ODF架 start-->
+  <select id="getAllOdfRackInfoList" parameterType="IdcRack" resultType="map">
+    select
+    <include refid="rackAndRackModelColumn" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    WHERE A.isdelete = 0 and exists (select 1 from idc_connector t where to_char(t.rack_id) =
+      to_char(A.id) and t.type = 'odf')
+    <if test="searchType != null and searchType == 'idcroom' and searchId != null and searchId != '' ">
+      <![CDATA[ and A.ROOMID = #{searchId} ]]>
+    </if>
+    <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+      <![CDATA[ and B.BUILDINGID = #{searchId} ]]>
+    </if>
+    <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+      <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{searchId})]]>
+    </if>
+    union
+    select
+    <include refid="rackAndRackModelColumn" />
+    from IDC_RACK A
+    LEFT JOIN ZB_MACHINEROOM B ON (A.ROOMID = B.ID)
+    LEFT JOIN DCIM_RACK_MODEL C ON  (A.RACKMODELID = C.ID)
+    LEFT JOIN (select con.rack_id,count(1) as count_ from idc_connector con group by con.rack_id) on(rack_id=A.id)
+    <include refid="whereExportParam" />
+    and A.dftype!='wiring'
+  </select>
+  <!-- 导出机架信息 -->
+  <sql id="rackAndRackModelColumn">
+    <![CDATA[
+    A.ID, A.ROOMID, A.NAME, A.CODE, A.ROOMAREAID, A.RACKMODELID, A.DIRECTION, A.USEFOR, A.RENTTYPE, A.ARRANGEMENT,
+    A.STATUS, A.IPRESOURCE, A.TOPPORTPROPERTY,
+    decode(A.businesstype_id,'equipment','客户机架','cabinet','网络头柜','pdu','PDF','df',
+    decode(A.dftype,'odf','ODF','ddf','DDF','wiring','配线柜')) as businesstypeId,
+    A.PDU_POWERTYPE, A.RATEDELECTRICENERGY,
+    A.ELECTRICTYPE, A.ELECTRICENERGY, A.APPARENETPOWER, A.PDU_LOCATION, A.X, A.Y, A.ISRACKINSTALLED,
+    A.HEIGHT, A.RESERVECUSTOMERID, A.ACTUALCUSTOMER, A.ACTUALCUSTOMERID, A.RAKCMODEL, A.INTERNETEXPORT_ID,
+    A.TICKET_ID, A.DFTYPE, A.IDCNO,B.SITENAME,B.ID AS BID,C.NAME as mname,C.CODE as mcode,
+    count_ as connectorNum
+    ]]>
+  </sql>
+  <sql id="whereExportParam">
+    <where>
+        A.isdelete = 0
+      <if test="businesstypeId!=null and businesstypeId!=''"><![CDATA[ and A.BUSINESSTYPE_ID = #{businesstypeId} ]]></if>
+      <if test="dftype!=null and dftype!=''"><![CDATA[ and A.DFTYPE = #{dftype} ]]></if>
+      <if test="searchType != null and searchType == 'idcroom' and searchId != null and searchId != '' ">
+        <![CDATA[ and A.ROOMID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'building' and searchId != null and searchId != '' ">
+        <![CDATA[ and B.BUILDINGID = #{searchId} ]]>
+      </if>
+      <if test="searchType != null and searchType == 'location' and searchId != null and searchId != '' ">
+        <![CDATA[ and EXISTS (select 1 from idc_building build where build.id=B.BUILDINGID and build.locationid=#{searchId})]]>
+      </if>
+    </where>
+  </sql>
+  <!-- 修改机架状态 map中key:id-机架ID，status-状态，customerId-客户ID，customerName-客户名称，ticketId-工单号 -->
+  <update id="updateRackStatusByRackIds" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="begin" close=" end;">
+      UPDATE IDC_RACK t
+      <set>
+        <if test="item.status !=null and item.status!= '' ">
+          t.STATUS = ${item.status},
+        </if>
+        <choose>
+          <when test="item.ticketId!=null and item.ticketId!='' ">
+            t.TICKET_ID = ${item.ticketId},
+          </when>
+          <otherwise>
+            t.TICKET_ID = null,
+          </otherwise>
+        </choose>
+        <choose>
+          <when test="item.customerId!=null and item.customerId!='' ">
+            t.ACTUALCUSTOMERID = ${item.customerId},
+          </when>
+          <otherwise>
+            t.ACTUALCUSTOMERID = null,
+          </otherwise>
+        </choose>
+        <choose>
+          <when test="item.customerName!=null and item.customerName!='' ">
+            t.ACTUALCUSTOMER = '${item.customerName}',
+          </when>
+          <otherwise>
+            t.ACTUALCUSTOMER = null
+          </otherwise>
+        </choose>
+      </set>
+      <where>
+        t.ID = ${item.id}
+        <if test="item.releaseReourceByTicketId!=null and item.releaseReourceByTicketId!='' ">
+          and t.TICKET_ID = ${item.releaseReourceByTicketId}
+        </if>
+        ;
+      </where>
+    </foreach>
+  </update>
+  <!-- 统计数据中心客户架总数及使用率 -->
+  <select id="getCustomerRackNum" parameterType="java.lang.Long" resultType="Map">
+   select round((case
+    when rackNum = 0 then
+                0
+               else
+    usedRackNum / rackNum
+    end) * 100,
+    2) rackusage,
+    usedRackNum,
+    rackNum
+    from (select (select count(1)
+    from idc_rack r
+    where r.businesstype_id in ('equipment','cabinet')
+      and r.status in (20,50,55,60) and r.isdelete = 0
+    and exists
+    (select 1
+    from zb_machineroom m
+      where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+    and exists (select 1
+    from idc_building b
+      where b.id = m.buildingid and b.isdelete = 0
+    and b.locationid = #{0}))) usedRackNum,
+    (select count(1)
+    from idc_rack r
+      where r.businesstype_id in ('equipment','cabinet') and r.isdelete = 0
+    and exists
+    (select 1
+    from zb_machineroom m
+      where m.id = r.roomid and m.isdelete = 0 and m.roomtype=1
+    and exists (select 1
+    from idc_building b
+      where b.id = m.buildingid and b.isdelete = 0
+    and b.locationid = #{0}))) as rackNum
+    from dual)
+  </select>
+
+  <!-- 获取客户所有占用机架 -->
+  <select id="queryUseredRackByCustomerId" parameterType="Map" resultType="Map">
+    select * from (select r.ticket_id as ticketId,r.id as rackId, r.name as rackName,ht.serial_number as serialNumber
+    from idc_rack r left join idc_his_ticket ht on (ht.ticket_inst_id=r.ticket_id)
+      where r.actualcustomerid = #{cusId} and r.isdelete = 0
+    union
+    select t.orderid as ticketId,t.rackid as rackId, k.name as rackName,hh.serial_number as serialNumber
+    from idc_rackunit t
+    inner join idc_rack k
+    on (k.id = t.rackid)
+    left join idc_his_ticket hh on (hh.ticket_inst_id=t.orderid)
+      where t.customerid = #{cusId} and k.isdelete = 0)
+    <if test="rowNum!=null and rowNum!=''"> <![CDATA[  where  rownum<#{rowNum} ]]> </if>
+    order by ticketId
+  </select>
+  <!-- 获取客户所有占用机架 page-->
+  <select id="queryUseredRackByCustomerIdPage" parameterType="PageBean" resultType="Map">
+    select *
+    from (select r1.ticket_id as ticketId,
+    r1.id as rackId,
+    r1.name as rackName,
+    m1.sitename,
+    r1.roomid,
+    decode(r1.usefor, '1', '自用', '2', '可用') as usefor,
+    decode(r1.renttype, '0', '整架出租', '1', '按机位出租') as rentType,
+    decode(r1.status,'20','可用','30','预留','40','空闲','50','预占','55','已停机','60','在服','110','不可用') as status,
+    r1.pdu_powertype as powertype,
+    r1.ratedelectricenergy,
+    r1.rackmodelid,
+    d1.name as rackModelName,
+    ht1.serial_number as serialNumber
+    from idc_rack r1
+    left join zb_machineroom m1
+    on (r1.roomid = m1.id)
+    left join dcim_rack_model d1
+    on (d1.id = r1.rackmodelid)
+    left join idc_his_ticket ht1
+    on (ht1.ticket_inst_id = r1.ticket_id)
+      where r1.actualcustomerid = #{params.cusId} and m1.isdelete = 0 and r1.isdelete = 0
+    <if test="params.selectKey!=null and params.selectKey!=''">
+        <![CDATA[ and upper(r1.name) like '%'||upper(#{params.selectKey})||'%' ]]>
+    </if>
+    union
+    select t.orderid as ticketId,
+    t.rackid as rackId,
+    r3.name as rackName,
+    m2.sitename,
+    r3.roomid,
+    decode(r3.usefor, '1', '自用', '2', '可用') as usefor,
+    decode(r3.renttype, '0', '整架出租', '1', '按机位出租') as rentType,
+    decode(r3.status,'20','可用','30','预留','40','空闲','50','预占','55','已停机','60','在服','110','不可用') as status,
+    r3.pdu_powertype as powertype,
+    r3.ratedelectricenergy,
+    r3.rackmodelid,
+    d2.name as rackModelName,
+    ht2.serial_number as serialNumber
+    from idc_rackunit t
+    inner join idc_rack r3
+    on (r3.id = t.rackid)
+    left join zb_machineroom m2
+    on (r3.roomid = m2.id)
+    left join dcim_rack_model d2
+    on (d2.id = r3.rackmodelid)
+    left join idc_his_ticket ht2
+    on (ht2.ticket_inst_id = t.orderid)
+    where t.customerid = #{params.cusId} and r3.isdelete = 0
+    <if test="params.selectKey!=null and params.selectKey!=''">
+        <![CDATA[ and upper(r3.name) like '%'||upper(#{params.selectKey})||'%' ]]>
+    </if>
+    ) order by ticketId
+  </select>
+
+  <!-- 获取资源分配的pdf架列表 -->
+  <select id="distributionPdfRackList" parameterType="PageBean" resultType="IdcRack">
+    select r.id as id,r.name as name
+    from IDC_RACK r
+      where r.status in(20,40) and r.isdelete = 0
+      and exists(select 1 from idc_mcb m where m.pwr_installedrack_id=r.id and m.pwr_pwrstatus=20 and m.isdelete =0)
+    <if test="params.roomid!=null and params.roomid!=''">
+      <![CDATA[ and r.roomid = #{params.roomid} ]]>
+    </if>
+    <if test="params.businesstypeId!=null and params.businesstypeId!=''">
+      <![CDATA[ and r.businesstype_id = #{params.businesstypeId} ]]>
+    </if>
+      <if test="params.searchKey!=null and params.searchKey!=''">
+          <![CDATA[ and upper(r.name) like '%'||upper(#{params.searchKey})||'%' ]]>
+    </if>
+      order by r.id
+  </select>
+
+    <!--删除机架  对机架进行软删除-->
+    <update id="updateRackToInvalidByIds" parameterType="java.util.List">
+        update IDC_RACK set isdelete = 1 where isdelete = 0 and id IN
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+  <!-- 通过机架名称获取机架信息 -->
+  <select id="queryRackInfoByName" resultType="IdcRack">
+    select
+    <include refid="baseColumn"/>
+    from IDC_RACK where name = #{name}
+  </select>
+
+  <!-- 通过机架IDS获取机架 -->
+  <select id="queryRackListByIds" parameterType="Map" resultType="IdcRack">
+    select
+    <include refid="baseColumn"/>
+    from IDC_RACK where isdelete = 0 and id IN
+    <foreach collection="rackIdList" index="index" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+    <if test="roomId != null and roomId != '' ">
+      <![CDATA[ and roomid = #{roomId}]]>
+    </if>
+    <if test="rackName != null and rackName != '' ">
+      <![CDATA[ and upper(name) like '%'||upper(#{rackName})||'%']]>
+    </if>
+  </select>
+
+  <!-- 通过数据中心ID查询所有的客户柜 -->
+  <select id="queryRackListByLocationId" parameterType="Map" resultType="IdcRack">
+    select
+    <include refid="baseColumn"/>
+    from IDC_RACK where isdelete = 0
+    <if test="businesstypeList!=null and businesstypeList.size()>0">
+      and businesstype_id in
+      <foreach collection="businesstypeList" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="roomIdList!=null and roomIdList.size()>0">
+      and roomid in
+      <foreach collection="roomIdList" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="locationId!=null and locationId!='' ">
+      <![CDATA[ and exists(select 1
+          from zb_machineroom m
+         where roomid=m.id and exists (select 1
+                  from idc_building b
+                 where b.id = m.buildingid
+                   and b.locationid =#{locationId}))
+      ]]>
+    </if>
+  </select>
+</mapper>

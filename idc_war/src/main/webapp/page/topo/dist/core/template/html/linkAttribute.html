@@ -1,0 +1,280 @@
+<div name="topo_link_template">
+    <div name='topo_link_attribute' class='panel panel-primary '>
+        <div name='head' class='panel-heading'>
+            <span>线属性</span>
+            <button type="button" class="close" aria-hidden="true">
+                &times;
+            </button>
+        </div>
+        <div class='panel-body '>
+            <form class='form-horizontal ' role='form'>
+                <div name="name_group" class='form-group'>
+                    <label class='col-sm-4 control-label'>名称</label>
+
+                    <div class='col-sm-7'>
+                        <input name="name" type='text' class='form-control'>
+                    </div>
+                </div>
+                <div class='form-group' name="number_group">
+                    <label class='col-sm-4 control-label'>数量</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="number_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="number_num" type="text" class="form-control" value="0" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="number_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="style_group">
+                    <label class='col-sm-4 control-label'>样式</label>
+
+                    <div class='col-sm-7'>
+                        <select name='style' class='form-control'>
+                            <option value='direct'>直线</option>
+                            <option value='fold'>折线</option>
+                            <option value='flexional'>二次折线</option>
+                            <option value='curve'>弧线</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group' name="color_group">
+                    <label class='col-sm-4 control-label'>线条颜色</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input name="selected_color" type='text' class='form-control' readonly="true">
+                        <span class="input-group-btn">
+                            <button class='btn btn-primary' type='button' data-toggle="dropdown">
+                                <span class='glyphicon glyphicon-search'></span>
+                            </button>
+                             <ul class="dropdown-menu color_selected">
+                                 <li>
+                                     <div name="color_palette"></div>
+                                 </li>
+                             </ul>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="width_group">
+                    <label class='col-sm-4 control-label'>线条宽度</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="width_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="width_num" type="text" class="form-control" value="3" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="width_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="gap_group">
+                    <label class='col-sm-4 control-label'>拐线长短</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="gap_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="gap_num" type="text" class="form-control" value="60" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="gap_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="direction_group">
+                    <label class='col-sm-4 control-label'>折线方向</label>
+
+                    <div class='col-sm-7'>
+                        <select name='direction' class='form-control'>
+                            <option value='horizontal'>水平</option>
+                            <option value='vertical'>垂直</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='form-group' name="cureOffset_group">
+                    <label class='col-sm-4 control-label'>曲线偏移</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="cureOffset_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="cureOffset_num" type="text" class="form-control" value="200" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="cureOffset_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="check_group">
+                    <label class='col-sm-4 control-label'>属性</label>
+
+                    <div class="col-sm-8">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="arrow_check_target">终箭头
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="arrow_check_source">始箭头
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="dashed_check">虚线
+                        </label>
+                    </div>
+                </div>
+                <div class='form-group' name="arrow_size_group">
+                    <label class='col-sm-4 control-label'>箭头大小</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="arrow_size_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="arrow_size_num" type="text" class="form-control" value="10" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="arrow_size_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="arrow_offset_group">
+                    <label class='col-sm-4 control-label'>箭头位置</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="arrow_offset_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="arrow_offset_num" type="text" class="form-control" value="0" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="arrow_offset_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group' name="dashed_size_group">
+                    <label class='col-sm-4 control-label'>虚线长短</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="dashed_size_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="dashed_size_num" type="text" class="form-control" value="6" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="dashed_size_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class='col-sm-offset-3 col-sm-10' name="group">
+                <button name="ok" class='btn btn-primary' type='button'>确定</button>
+                <button name="cancel" class='btn btn-primary' type='button'>关闭</button>
+            </div>
+        </div>
+    </div>
+    <div name='topo_line_attribute' class='panel panel-primary '>
+        <div name='head' class='panel-heading'>
+            画线
+            <button type="button" class="close" aria-hidden="true">
+                &times;
+            </button>
+        </div>
+        <div class='panel-body '>
+            <form class='form-horizontal ' role='form'>
+                <div class='form-group name_group'>
+                    <label class='col-sm-4 control-label'>名称</label>
+
+                    <div class='col-sm-7'>
+                        <input type='text' class='form-control name'>
+                    </div>
+                </div>
+                <div class='form-group color_group'>
+                    <label class='col-sm-4 control-label'>线条颜色</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                            <input type='text' class='form-control selected_color' readonly="true">
+                        <span class="input-group-btn">
+                            <button class='btn btn-primary' type='button' data-toggle="dropdown">
+                                <span class='glyphicon glyphicon-search'></span>
+                            </button>
+                             <ul class="dropdown-menu color_selected">
+                                 <li>
+                                     <div class="color_palette"></div>
+                                 </li>
+                             </ul>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='form-group width_group'>
+                    <label class='col-sm-4 control-label'>线条宽度</label>
+
+                    <div class=" col-sm-7">
+                        <div class="input-group">
+                        <span class="input-group-btn">
+                            <button name="width_up" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-up'></span>
+                            </button>
+                        </span>
+                            <input name="width_num" type="text" class="form-control" value="3" readonly="true">
+                        <span class="input-group-btn">
+                            <button name="width_down" class="btn btn-default" type="button">
+                                <span class='glyphicon glyphicon-chevron-down'></span>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer">
+            <div class='col-sm-offset-1 col-sm-11' name="group">
+                <button class='btn btn-primary cancel_before' type='button'>取消前一步</button>
+                <button class='btn btn-primary cancel_all' type='button'>取消全部</button>
+                <button class='btn btn-primary ok' type='button'>完成当前</button>
+            </div>
+        </div>
+    </div>
+</div>
